@@ -156,11 +156,11 @@ O **front-end** é desenvolvido com **HTML, CSS e JavaScript puro**, com **EJS**
 
 </div>
 
-### 📉 Burndown da 2° Sprint
+### 📉 Burndown da 1° Sprint
 📌 Acesse o burndown do que foi desenvolvido nessa 1° Sprint:
 <a href="">Clique aqui</a>
 
-### 🎬 Vídeo da 2° Sprint
+### 🎬 Vídeo da 1° Sprint
 📌 Acesse o vídeo com informações do que foi desenvolvido na 1° Sprint:
 <a href="">Clique aqui</a>
 
@@ -197,11 +197,33 @@ O **front-end** é desenvolvido com **HTML, CSS e JavaScript puro**, com **EJS**
 </div>
 
 ### 📉 Burndown da 2° Sprint
-📌 Acesse o burndown do que foi desenvolvido nessa 1° Sprint:
+📌 Acesse o burndown do que foi desenvolvido nessa 2° Sprint:
 <a href="">Clique aqui</a>
 
 ### 🎬 Vídeo da 2° Sprint
-📌 Acesse o vídeo com informações do que foi desenvolvido na 1° Sprint:
+📌 Acesse o vídeo com informações do que foi desenvolvido na 2° Sprint:
+<a href="">Clique aqui</a>
+
+</details>
+
+<details>
+<summary>📌 Sprint 3</summary>
+<br>
+
+<div align="center"><b>Backlog de Tarefas</b>
+<br>
+
+[![Kanban]
+
+
+</div>
+
+### 📉 Burndown da 3° Sprint
+📌 Acesse o burndown do que foi desenvolvido nessa 3° Sprint:
+<a href="">Clique aqui</a>
+
+### 🎬 Vídeo da 3° Sprint
+📌 Acesse o vídeo com informações do que foi desenvolvido na 3° Sprint:
 <a href="">Clique aqui</a>
 
 </details>
