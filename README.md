@@ -142,17 +142,17 @@ O **front-end** é desenvolvido com **HTML, CSS e JavaScript puro**, com **EJS**
 
 [![Kanban](https://img.shields.io/badge/Acompanhar_Kanban-163451?style=plastic&logo=github&logoColor=white)](https://github.com/users/octopusCode26/projects/8)
 
-| Tarefa | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
-|--------|-------------|:----------:|:----------:|:-----------:|:--------:|:---------:|
-| Organizar Ambiente Virtual | Lorenzo, Igor | `RF-00` | Médio | Fácil | ✔️ | ✔️ |
-| Definição de Conteúdo | Vitor | `RF-00` | Alta | Fácil | ✔️ | ✔️ |
-| Fluxo Principal do Usuário | Vitor | `RNF-01` | Baixa | Médio | ✔️ | ✔️ |
-| Prototipação (Figma) | Renan, Enzo, Thiago, Vitor | `RNF-01` | Alta | Difícil | ✔️ | ✔️ |
-| Organizar Arquitetura | Cauã, Igor | `RF-01` `RF-02` `RNF-05` `RNF-06` | Médio | Médio | ✔️ | ✔️ |
-| Diagrama de Caso de Uso | Alef | `RNF-06` | Alta | Médio | ✔️ | ✔️ |
-| Diagrama de Classe | Alef, Igor | `RNF-06` | Médio | Médio | ✔️ | ✔️ |
-| Diagramas de Sequência | Alef, Vitor | `RNF-06` | Baixa | Médio | ✔️ | ✔️ |
-| Nível 1 (Front-end) | Renan, Thiago, Lorenzo | `RNF-01` `RNF-02` | Baixa | Fácil | ✔️ | ✔️ |
+| Tarefa | Pontuação task | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
+|--------|:--------------:|:------------|:----------:|:----------:|:-----------:|:--------:|:---------:|
+| Organizar Ambiente Virtual |   |Lorenzo, Igor | `RF-00` | Médio | Fácil | ✔️ | ✔️ |
+| Definição de Conteúdo |   | Vitor | `RF-00` | Alta | Fácil | ✔️ | ✔️ |
+| Fluxo Principal do Usuário |   | Vitor | `RNF-01` | Baixa | Médio | ✔️ | ✔️ |
+| Prototipação (Figma) |   | Renan, Enzo, Thiago, Vitor | `RNF-01` | Alta | Difícil | ✔️ | ✔️ |
+| Organizar Arquitetura |   | Cauã, Igor | `RF-01` `RF-02` `RNF-05` `RNF-06` | Médio | Médio | ✔️ | ✔️ |
+| Diagrama de Caso de Uso |   | Alef | `RNF-06` | Alta | Médio | ✔️ | ✔️ |
+| Diagrama de Classe |   | Alef, Igor | `RNF-06` | Médio | Médio | ✔️ | ✔️ |
+| Diagramas de Sequência |   | Alef, Vitor | `RNF-06` | Baixa | Médio | ✔️ | ✔️ |
+| Nível 1 (Front-end) |   | Renan, Thiago, Lorenzo | `RNF-01` `RNF-02` | Baixa | Fácil | ✔️ | ✔️ |
 
 </div>
 
@@ -175,24 +175,24 @@ O **front-end** é desenvolvido com **HTML, CSS e JavaScript puro**, com **EJS**
 
 [![Kanban](https://img.shields.io/badge/Acompanhar_Kanban-163451?style=plastic&logo=github&logoColor=white)](https://github.com/users/octopusCode26/projects/13)
 
-| Tarefa | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
-|--------|-------------|:----------:|:----------:|:-----------:|:--------:|:---------:|
-| Sistema Cadastro | Patricia, Lorenzo, Cauã | `RF-01` `RNF-03` | Alta | Médio | ✔️ | ✔️ |
-| Tela Cadastro | Patricia, Lorenzo, Cauã | `RF-01` `RNF-01` | Alta | Médio | ✔️ | ✔️ |
-| Sistema de Login | Patricia, Lorenzo, Cauã | `RF-02` | Alta | Médio | ✔️ | ✔️ |
-| Tela de Login | Patricia, Lorenzo, Cauã | `RF-02` | Alta | Médio | ✔️ | ✔️ |
-| Sistema Questionário | Renan, Alef, Thiago | `RF-03` `RF-04` `RF-05` | Alta | Difícil | ✔️ | ✔️ |
-| Tela de Questionário | Renan, Alef, Thiago | `RF-03` `RF-04` `RF-05` | Alta | Difícil | ✔️ | ✔️ |
-| Resultado Questionário | Renan, Alef, Thiago | `RF-06` `RF-07` `RF-08` | Média | Médio | ✔️ | ✔️ |
-| Tela Revisão Questionário | Renan, Alef, Thiago | `RF-06` | Baixa | Médio | ✔️ | — |
-| Sistema Mapa | Vitor, Igor, Enzo | `RNF-01` `RNF-02` | Alta | Difícil | ✔️ | ✔️ |
-| Tela Mapa | Vitor, Igor, Enzo | `RNF-01` `RNF-02` | Alta | Difícil | ✔️ | ✔️ |
-| Sistema Progresso | Vitor, Igor, Enzo | `RF-10` `RF-11` | Alta | Médio | ✔️ | ✔️ |
-| Tela Progresso | Vitor, Igor, Enzo | `RF-10` `RF-11` | Alta | Médio | ✔️ | ✔️ |
-| Sistema Histórico | — | `RF-10` `RNF-04` | Alta | Médio | ✔️ | ✔️ |
-| Sistema de Tentativas | — | `RF-06` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
-| Sistema Emissão de Certificado | — | `RF-09` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
-| Tela de Emissão de Certificado | Patricia, Alef | `RF-09` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
+| Tarefa | Pontuação task | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
+|--------|:--------------:|:------------|:----------:|:----------:|:-----------:|:--------:|:---------:|
+| Sistema Cadastro | 9 | Patricia, Lorenzo, Cauã | `RF-01` `RNF-03` | Alta | Médio | ✔️ | ✔️ |
+| Tela Cadastro | 7 | Patricia, Lorenzo, Cauã | `RF-01` `RNF-01` | Alta | Médio | ✔️ | ✔️ |
+| Sistema de Login | 9 | Patricia, Lorenzo, Cauã | `RF-02` | Alta | Médio | ✔️ | ✔️ |
+| Tela de Login | 7 | Patricia, Lorenzo, Cauã | `RF-02` | Alta | Médio | ✔️ | ✔️ |
+| Sistema Questionário | 13 | Renan, Alef, Thiago | `RF-03` `RF-04` `RF-05` | Alta | Difícil | ✔️ | ✔️ |
+| Tela de Questionário | 8 | Renan, Alef, Thiago | `RF-03` `RF-04` `RF-05` | Alta | Difícil | ✔️ | ✔️ |
+| Resultado Questionário | 9 | Renan, Alef, Thiago | `RF-06` `RF-07` `RF-08` | Média | Médio | ✔️ | ✔️ |
+| Tela Revisão Questionário | 8 | Renan, Alef, Thiago | `RF-06` | Baixa | Médio | ✔️ | — |
+| Sistema Mapa | 13 | Vitor, Igor, Enzo | `RNF-01` `RNF-02` | Alta | Difícil | ✔️ | ✔️ |
+| Tela Mapa | 8 | Vitor, Igor, Enzo | `RNF-01` `RNF-02` | Alta | Difícil | ✔️ | ✔️ |
+| Sistema Progresso | 8 | Vitor, Igor, Enzo | `RF-10` `RF-11` | Alta | Médio | ✔️ | ✔️ |
+| Tela Progresso | 8 | Vitor, Igor, Enzo | `RF-10` `RF-11` | Alta | Médio | ✔️ | ✔️ |
+| Sistema Histórico | 5 | — | `RF-10` `RNF-04` | Alta | Médio | ✔️ | ✔️ |
+| Sistema de Tentativas | 3 | — | `RF-06` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
+| Sistema Emissão de Certificado | 3 | — | `RF-09` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
+| Tela de Emissão de Certificado | 3 | Patricia, Alef | `RF-09` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
 
 </div>
 
