@@ -725,6 +725,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   configurarFogueiraBurningdown();
   configurarBacklogVivo();
   configurarPortaDesafio();
+
   // ✅ NOVO: Desbloqueio por scroll até o final (só na primeira vez)
   configurarDesbloqueioPorScroll();
 

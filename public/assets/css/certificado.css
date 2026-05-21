@@ -7,6 +7,8 @@
   --cor-card-texto: #2c2318;
   --cor-azul-escuro: #0d1b2a;
   --sombra-card: 0 18px 32px rgba(0, 0, 0, 0.35);
+  --certificado-largura: 1123px;
+  --certificado-altura: 794px;
 }
 
 * {
@@ -14,12 +16,15 @@
 }
 
 .pagina-certificado {
-  min-height: 100vh;  
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
   background-image:
     linear-gradient(180deg, rgba(6, 5, 4, 0.2) 0%, rgba(6, 5, 4, 0.8) 25%),
     url("../img/parede_de_tijolos.png");
-  background-repeat: repeat-y;
-  background-size: 110% auto;
+  background-repeat: no-repeat;
+  background-size: cover;
   background-position: center top;
   background-color: #0f0a05;
   color:#fff;
@@ -27,54 +32,86 @@
 
 .certificado-base {
   font-family: 'Cinzel', serif;
-  width: min(90vw, 700px);
-  min-height: 550px;
-  margin: -30px auto 48px;
+  width: var(--certificado-largura);
+  height: var(--certificado-altura);
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 28px 58px 44px;
   background-image: url("../img/papel_texturizado.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  background-position: center top;
+  background-position: center center;
+  transform: scale(var(--certificado-escala, 1));
+  transform-origin: top left;
+  transition: transform 0.2s ease;
+}
+
+.certificado-visualizacao {
+  width: var(--certificado-largura);
+  height: var(--certificado-altura);
+  flex: 0 0 auto;
+  margin: 16px auto 0;
+  position: relative;
 }
 
 .cabecalho {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 140px 1fr 140px;
+  align-items: start;
+  width: 100%;
+  gap: 20px;
+}
+
+main{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+  height: calc(100vh - var(--altura-header, clamp(3rem, 8vh, 4rem)));
+  height: calc(100dvh - var(--altura-header, clamp(3rem, 8vh, 4rem)));
+  min-height: 0;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 16px 24px 88px;
+}
+
+.pagina-certificado footer {
+  margin-top: 0;
+  flex-shrink: 0;
 }
 
 .escudo {
-  width: 125%;
-  display: flex;
-  justify-content: flex-start; 
-  padding: 0;
-}
-
-.escudo img {
-  display: block;
-  width: 125%;
-  height: auto;
-  transform: translate(-65px, -35px);
-
-}
-
-.logo {
-  width: 100%;
+  width: 300px;
   display: flex;
   justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  color: var(--cor-card-texto);
-  padding-top: 17px; 
+  transform: translate(-95px, -15px);
+}
+
+.escudo img{
+  width:100%;
+  height:auto;
+}
+
+.logo{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  color:var(--cor-card-texto);
 }
 
 .logo img {
-  width: 70%;
+  width: min(260px, 80%);
   height: auto;
 }
 
 .titulo-certificado {
-  font-size: 2.5rem;
-  margin-top: 0.5rem;
+  font-size: 3rem;
+  margin: 0.4rem 0 0;
+  text-align: center;
 }
 
 p{
@@ -84,24 +121,36 @@ p{
 }
 
 .nome-certificado {
-  font-size: 1.5rem;
-  margin-top: 1rem;
-  padding: 0 0 16px 0;
+  font-size: 2rem;
+  margin: 0.5rem 0 0.4rem;
+  padding: 0;
+  text-align: center;
+}
+
+.descricao-certificado {
+  max-width: 620px;
+  margin: 0.4rem auto 1.2rem;
+  color: var(--cor-card-texto);
+  font-family: "Times New Roman", Times, serif;
+  font-size: 0.8rem;
+  line-height: 1.25;
+  text-align: center;
 }
 
 .corvo-certificado {
-  width: 125%;
+  width: 175px;
   display: flex;
-  justify-content: right;
-  padding-top: 0;
+  justify-content: center;
+  transform: translate(-50px, -7px);
 }
+
 .corvo-certificado img {
-  width: 100%;
+  width: 175%;
   height: auto;
-} 
+}
 
 .certificado-botoes-area {
-    width: 100%;
+    width: min(100%, var(--certificado-largura));
     display: flex;
     justify-content: end;
 }
@@ -111,6 +160,11 @@ p{
     background: none;
     border: none;
     border-radius: 8px;    
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon {
@@ -133,7 +187,7 @@ p{
   flex-direction: column;
   border: 2px solid #ba9961;
   border-radius: 15px;
-  width: 450px;
+  width:min(80%, 520px);
   height: 105px;
   margin: 0 auto; 
 }
@@ -147,6 +201,7 @@ p{
   border-bottom: 1px solid #ba9961;
   padding-left: 8px;
   padding-top: 4px;
+  gap: 4px
   
 }
 .email{
@@ -156,7 +211,7 @@ p{
   padding: 5px 0 5px 0;
   border-bottom: 1px solid #ba9961;
   padding-left: 8px;
-    
+  gap: 4px    
 }
 .dataDeEmissao{
   color: var(--cor-card-texto);
@@ -164,17 +219,19 @@ p{
   align-items: center;
   padding: 5px 0 5px 0;
   padding-left: 8px;
+  gap: 4px 
 }
 .icon2{
   height: 1.5rem;
 }
 
-.media{
-  color: var(--cor-card-texto);
+.media {
   display: flex;
-  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  padding: 15px;
+  gap: 15px;
+  margin: 24px 0 20px;
+  color: var(--cor-card-texto);
 }
 
 .mediaFinal{
@@ -195,12 +252,13 @@ p{
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translateX(60px);
 }
 
 
 .container-desempenho{
     font-family: 'Cinzel', serif;
-    width: 520px;
+    width: min(90%, 620px);
     color: var(--cor-fundo-escuro);
     margin: 3px auto;
     padding: 5px;
@@ -252,11 +310,146 @@ p{
     background-color: #ba9961;
 }
 
-.carimbo{
+.carimbo {
   position: absolute;
-  right: 45px;
-  width: 65px;
+  right: 4%;
+  bottom: 4px;
+  width: 125px;
   height: auto;
-
+  transform: rotate(-35deg);
+  opacity: 0.9;
 }
 
+.certificado-base {
+  position: relative;
+  overflow: visible;
+  color: var(--cor-card-texto);
+}
+
+.certificado-base.certificado-exportando {
+  position: fixed;
+  top: 0;
+  left: -12000px;
+  transform: none !important;
+  transition: none;
+  pointer-events: none;
+}
+
+.certificado-base * {
+  position: relative;
+  z-index: 1;
+}
+
+.cabecalho,
+.formulario,
+.media,
+.desempenho-carimbo {
+  opacity: 1;
+  visibility: visible;
+}
+
+.botao-voltar {
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  z-index: 20;
+}
+
+.formulario strong,
+.formulario span {
+  color: var(--cor-card-texto);
+}
+
+.mediaFinal {
+  justify-content: center;
+  font-weight: bold;
+}
+
+.nivel .linha {
+  color: var(--cor-card-texto);
+  background: transparent;
+  height: auto;
+  font-weight: bold;
+}
+
+.mediaFinal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-card-texto);
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.certificado-botoes-area {
+  position: relative;
+  z-index: 20;
+  gap: 8px;
+  padding-right: 0;
+  margin: 0 auto;
+}
+
+.certificado-botoes {
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.certificado-botoes:hover {
+  transform: translateY(-2px) scale(1.05);
+  filter: brightness(1.15);
+}
+
+@media (max-width: 1180px) {
+  main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .certificado-botoes-area {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    height: calc(100vh - clamp(3rem, 7vh, 4rem));
+    height: calc(100dvh - clamp(3rem, 7vh, 4rem));
+  }
+}
+
+@media (max-width: 640px) {
+  .pagina-certificado {
+    background-size: cover;
+  }
+
+  main {
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-bottom: 84px;
+  }
+
+  .certificado-botoes-area {
+    gap: 12px;
+  }
+
+  .certificado-botoes {
+    background-color: rgba(15, 10, 5, 0.58);
+    border: 1px solid rgba(244, 208, 63, 0.25);
+  }
+
+  .icon {
+    height: 1.75rem;
+  }
+
+  .certificado-visualizacao {
+    margin-top: 12px;
+    margin-bottom: 0;
+  }
+
+  .botao-voltar {
+    top: 74px;
+    left: 12px;
+  }
+}
