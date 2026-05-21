@@ -177,13 +177,13 @@ O **front-end** é desenvolvido com **HTML, CSS e JavaScript puro**, com **EJS**
 
 | Tarefa | Pontuação task | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
 |--------|:--------------:|:------------|:----------:|:----------:|:-----------:|:--------:|:---------:|
-| Sistema Cadastro | 9 | Patricia, Lorenzo, Cauã | `RF-01` `RNF-03` | Alta | Médio | ✔️ | ✔️ |
-| Tela Cadastro | 7 | Patricia, Lorenzo, Cauã | `RF-01` `RNF-01` | Alta | Médio | ✔️ | ✔️ |
-| Sistema de Login | 9 | Patricia, Lorenzo, Cauã | `RF-02` | Alta | Médio | ✔️ | ✔️ |
-| Tela de Login | 7 | Patricia, Lorenzo, Cauã | `RF-02` | Alta | Médio | ✔️ | ✔️ |
+| Sistema Cadastro | 8 | Patricia, Lorenzo, Cauã | `RF-01` `RNF-03` | Alta | Médio | ✔️ | ✔️ |
+| Tela Cadastro | 8 | Patricia, Lorenzo, Cauã | `RF-01` `RNF-01` | Alta | Médio | ✔️ | ✔️ |
+| Sistema de Login | 8 | Patricia, Lorenzo, Cauã | `RF-02` | Alta | Médio | ✔️ | ✔️ |
+| Tela de Login | 5 | Patricia, Lorenzo, Cauã | `RF-02` | Alta | Médio | ✔️ | ✔️ |
 | Sistema Questionário | 13 | Renan, Alef, Thiago | `RF-03` `RF-04` `RF-05` | Alta | Difícil | ✔️ | ✔️ |
 | Tela de Questionário | 8 | Renan, Alef, Thiago | `RF-03` `RF-04` `RF-05` | Alta | Difícil | ✔️ | ✔️ |
-| Resultado Questionário | 9 | Renan, Alef, Thiago | `RF-06` `RF-07` `RF-08` | Média | Médio | ✔️ | ✔️ |
+| Resultado Questionário | 8 | Renan, Alef, Thiago | `RF-06` `RF-07` `RF-08` | Média | Médio | ✔️ | ✔️ |
 | Tela Revisão Questionário | 8 | Renan, Alef, Thiago | `RF-06` | Baixa | Médio | ✔️ | — |
 | Sistema Mapa | 13 | Vitor, Igor, Enzo | `RNF-01` `RNF-02` | Alta | Difícil | ✔️ | ✔️ |
 | Tela Mapa | 8 | Vitor, Igor, Enzo | `RNF-01` `RNF-02` | Alta | Difícil | ✔️ | ✔️ |
