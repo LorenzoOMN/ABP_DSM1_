@@ -2,7 +2,7 @@
 
 <br>
 
-<img src="./docs/assets/images/scrum_dungeon.png" width="400" alt="Scrum Dungeon"/>
+<img src="./docs/assets/images/logo-principal.png" width="450" alt="Scrum Dungeon"/>
 
 <br>
 
