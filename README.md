@@ -2,7 +2,7 @@
 
 <br>
 
-<img src="https://github.com/igoriansen/Test-Room/blob/abp/assets/images/logo%202.png?raw=true" width="400" alt="Scrum Dungeon"/>
+<img src="./docs/assets/images/scrum_dungeon.png" width="400" alt="Scrum Dungeon"/>
 
 <br>
 
@@ -15,7 +15,7 @@
 
 [![▶ Entrar na Dungeon](https://img.shields.io/badge/▶_Entrar_na_Dungeon-7B4FBF?style=plastic)](https://github.com/octopusCode26/ABP_DSM1_)
 [![Protótipo](https://img.shields.io/badge/Ver_Protótipo-c8922a?style=plastic&logo=figma&logoColor=white)](https://www.figma.com/design/96DMn9UVu2MT9xJIi5pBiQ/Prototipo_Scrum-Dungeon)
-[![Sprint Atual](https://img.shields.io/badge/Sprint_2_·_Em_Andamento-5865F2?style=plastic)](https://github.com/users/octopusCode26/projects/13)
+[![Sprint Atual](https://img.shields.io/badge/Sprint_3_·_Em_Andamento-5865F2?style=plastic)](https://github.com/users/octopusCode26/projects/)
 [![Docs](https://img.shields.io/badge/Documentação-2d2d2d?style=plastic&logo=gitbook&logoColor=white)](./docs)
 
 </div>
@@ -143,7 +143,7 @@ Acesse em `http://localhost:3000`
 |--------|---------|---------------------|--------|
 | [**Sprint 1**](./docs/sprints/sprint-1.md) | 13/04 — 30/04/2026 | Prototipação · Diagramas UML · Nível 1 | ✔️ Finalizada |
 | [**Sprint 2**](./docs/sprints/sprint-2.md) | 04/05 — 21/05/2026 | Cadastro · Login · Sistema de avaliação · Mapa | ✔️ Finalizada |
-| **Sprint 3** | 25/05 — 11/06/2026 | Capítulos finais · Histórico · Resultado final | ⚪ Aguardando |
+| [**Sprint 3**](./docs/sprints/sprint-3.md) | 25/05 — 11/06/2026 | Capítulos finais · Histórico · Resultado final | 🔵 Em Andamento |
 | **Apresentação** | 22/06/2026 | Entrega e demonstração na FATEC Jacareí | ⚪ Aguardando |
 
 ---
@@ -158,6 +158,7 @@ A documentação completa está organizada em [`/docs`](./docs):
 | [Arquitetura](./docs/arquitetura.md) | Diagrama de arquitetura, rotas e modelo de dados |
 | [Sprint 1](./docs/sprints/sprint-1.md) | Backlog, burndown e demonstração |
 | [Sprint 2](./docs/sprints/sprint-2.md) | Backlog, burndown e demonstração |
+| [Sprint 3](./docs/sprints/sprint-3.md) | Backlog, burndown e demonstração |
 
 ---
 
@@ -165,7 +166,7 @@ A documentação completa está organizada em [`/docs`](./docs):
 
 <div align="center">
 
-<img src="https://github.com/igoriansen/Test-Room/blob/abp/assets/images/Layer%200%201.png?raw=true" width="100" height="100" alt="Octopus Code"/>
+<img src="./docs/assets/images/octopus.png" width="100" height="100" alt="Octopus Code"/>
 
 **`<OCTOPUS_CODE />`**
 
@@ -240,7 +241,7 @@ A documentação completa está organizada em [`/docs`](./docs):
 
 <div align="center">
 
-<img src="https://github.com/igoriansen/Test-Room/blob/abp/assets/images/corvo%201.png?raw=true" width="80" alt="O Corvo"/>
+<img src="./docs/assets/images/corvo-feliz.png" width="80" alt="O Corvo"/>
 
 <br>
 

@@ -1,6 +1,6 @@
 # 📌 Sprint 3 — Scrum Dungeon
 
-> **Período:** 25/05 — 11/06/2026 · **Status:** ⚪ Aguardando
+> **Período:** 25/05 — 11/06/2026 · **Status:** 🔵 Em Andamento
 >
 > Voltar para o [README](../../README.md).
 

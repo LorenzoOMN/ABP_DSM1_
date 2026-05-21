@@ -8,3 +8,4 @@
 | [Arquitetura](./arquitetura.md) | Diagrama de arquitetura, rotas e modelo de dados |
 | [Sprint 1](./sprints/sprint-1.md) | Backlog, burndown e demonstração da Sprint 1 |
 | [Sprint 2](./sprints/sprint-2.md) | Backlog, burndown e demonstração da Sprint 2 |
+| [Sprint 3](./sprints/sprint-3.md) | Backlog, burndown e demonstração da Sprint 3 |

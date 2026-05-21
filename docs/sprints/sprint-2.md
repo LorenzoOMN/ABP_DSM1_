@@ -40,7 +40,7 @@ Cadastro · Login · Sistema de questionário · Tela de mapa · Sistema de prog
 ## 📉 Burndown
 
 <!-- Substitua pelo link ou imagem do burndown -->
-[Ver gráfico de burndown](../assets/images/second%20sprint%20burndown.png)
+![Burndown Sprint 2](../assets/images/second%20sprint%20burndown.png)
 
 ---
 
