@@ -31,7 +31,7 @@ Prototipação no Figma · Diagramas UML · Organização da arquitetura · Nív
 ---
 ## 📁 Atas Daily
 
-[Ata Sprint 1](https://docs.google.com/document/d/1i2Qys-QMGjRbHQBXx72YsXLIKSJUncoZE_PGJq3DvGs/edit?usp=sharing)
+[Ata Sprint 1](https://docs.google.com/document/d/1i2Qys-QMGjRbHQBXx72YsXLIKSJUncoZE_PGJq3DvGs/edit?tab=t.g1b8do1k45e8)
 
 ---
 ## 📉 Burndown
