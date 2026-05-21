@@ -144,15 +144,15 @@ O **front-end** é desenvolvido com **HTML, CSS e JavaScript puro**, com **EJS**
 
 | Tarefa | Pontuação task | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
 |--------|:--------------:|:------------|:----------:|:----------:|:-----------:|:--------:|:---------:|
-| Organizar Ambiente Virtual |   |Lorenzo, Igor | `RF-00` | Médio | Fácil | ✔️ | ✔️ |
-| Definição de Conteúdo |   | Vitor | `RF-00` | Alta | Fácil | ✔️ | ✔️ |
+| Organizar Ambiente Virtual | 1  |Lorenzo, Igor | `RF-00` | Médio | Fácil | ✔️ | ✔️ |
+| Definição de Conteúdo | 3  | Vitor | `RF-00` | Alta | Fácil | ✔️ | ✔️ |
 | Fluxo Principal do Usuário |   | Vitor | `RNF-01` | Baixa | Médio | ✔️ | ✔️ |
-| Prototipação (Figma) |   | Renan, Enzo, Thiago, Vitor | `RNF-01` | Alta | Difícil | ✔️ | ✔️ |
-| Organizar Arquitetura |   | Cauã, Igor | `RF-01` `RF-02` `RNF-05` `RNF-06` | Médio | Médio | ✔️ | ✔️ |
-| Diagrama de Caso de Uso |   | Alef | `RNF-06` | Alta | Médio | ✔️ | ✔️ |
-| Diagrama de Classe |   | Alef, Igor | `RNF-06` | Médio | Médio | ✔️ | ✔️ |
-| Diagramas de Sequência |   | Alef, Vitor | `RNF-06` | Baixa | Médio | ✔️ | ✔️ |
-| Nível 1 (Front-end) |   | Renan, Thiago, Lorenzo | `RNF-01` `RNF-02` | Baixa | Fácil | ✔️ | ✔️ |
+| Prototipação (Figma) | 13  | Renan, Enzo, Thiago, Vitor | `RNF-01` | Alta | Difícil | ✔️ | ✔️ |
+| Organizar Arquitetura | 5  | Cauã, Igor | `RF-01` `RF-02` `RNF-05` `RNF-06` | Médio | Médio | ✔️ | ✔️ |
+| Diagrama de Caso de Uso | 5 | Alef | `RNF-06` | Alta | Médio | ✔️ | ✔️ |
+| Diagrama de Classe | 5 | Alef, Igor | `RNF-06` | Médio | Médio | ✔️ | ✔️ |
+| Diagramas de Sequência | 5 | Alef, Vitor | `RNF-06` | Baixa | Médio | ✔️ | ✔️ |
+| Nível 1 (Front-end) | 3 | Renan, Thiago, Lorenzo | `RNF-01` `RNF-02` | Baixa | Fácil | ✔️ | ✔️ |
 
 </div>
 
@@ -189,9 +189,9 @@ O **front-end** é desenvolvido com **HTML, CSS e JavaScript puro**, com **EJS**
 | Tela Mapa | 8 | Vitor, Igor, Enzo | `RNF-01` `RNF-02` | Alta | Difícil | ✔️ | ✔️ |
 | Sistema Progresso | 8 | Vitor, Igor, Enzo | `RF-10` `RF-11` | Alta | Médio | ✔️ | ✔️ |
 | Tela Progresso | 8 | Vitor, Igor, Enzo | `RF-10` `RF-11` | Alta | Médio | ✔️ | ✔️ |
-| Sistema Histórico | 5 | — | `RF-10` `RNF-04` | Alta | Médio | ✔️ | ✔️ |
-| Sistema de Tentativas | 3 | — | `RF-06` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
-| Sistema Emissão de Certificado | 3 | — | `RF-09` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
+| Sistema Histórico | 5 | Vitor | `RF-10` `RNF-04` | Alta | Médio | ✔️ | ✔️ |
+| Sistema de Tentativas | 3 | Vitor | `RF-06` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
+| Sistema Emissão de Certificado | 3 | Vitor | `RF-09` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
 | Tela de Emissão de Certificado | 3 | Patricia, Alef | `RF-09` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
 
 </div>
