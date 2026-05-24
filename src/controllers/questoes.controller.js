@@ -1,5 +1,5 @@
 //importando funções
-const { buscarProximaQuestao, responderQuestao } = require("../service/questoes.service");
+const { buscarProximaQuestao, responderQuestao, iniciarProximaTentativa, iniciarProximoModulo, listarModulosRespondidos, mostrarResultadoAtual } = require("../service/questoes.service");
 
 async function getProximaQuestaoController(req, res) {
   try {
@@ -44,7 +44,7 @@ async function responderQuestaoController(req, res) {
     console.log("body", req.body);
     const { id_exame, id_questao, resposta } = req.body;
 
-    const result = responderQuestao(
+    const result = await responderQuestao(
       req.usuario.id_usuario,
       id_exame,
       id_questao,
@@ -67,25 +67,13 @@ async function responderQuestaoController(req, res) {
         })
     }
 
-    if (respostaExistente) {
-      return res.status(409).json({
-        message: "questão já respondida",
-      });
+    if (result.status === "questao-ja-respondida") {
+        return res.status(409).json({
+            message: "questão já respondida",
+        })
     }
 
-    const correta = questao.alternativa_correta === respostaNormalizada;
-    const nota = correta ? 1 : 0;
-    await inserirRespostaQuestao(
-      id_exame,
-      id_questao,
-      respostaNormalizada,
-      nota,
-    );
-    return res.status(201).json({
-      correta,
-      nota,
-      mensagem: correta ? "Resposta correta!" : "Resposta incorreta",
-    });
+    return res.status(201).json(result.resposta);
   } catch (e) {
     return res.status(500).json({
       message: "erro interno do servidor",
@@ -95,31 +83,27 @@ async function responderQuestaoController(req, res) {
 
 async function proximaTentativaController(req, res) {
  try {
-    const concluido = await usuarioConcluiuModuloAtual(req.usuario.id_usuario);
-    if (!concluido) {
+    const result = await iniciarProximaTentativa(req.usuario.id_usuario);
+    
+    if (result.status === "modulo-nao-concluido") {
       return res.status(409).json({
         message: "você ainda não concluiu todas as questões do módulo atual",
       });
     }
-    
-    const modulo = await findModuloAtualByUsuario(req.usuario.id_usuario);
-    if (!modulo) {
+
+    if (result.status === "modulo-atual-nao-encontrado") {
       return res.status(404).json({
         message: "módulo atual não encontrado",
       });
     }
 
-    if (modulo.tentativa >= 2) {
+    if (result.status === "limite-tentativas") {
       return res.status(409).json({
         message: "limite de 2 tentativas atingido",
       });
     }
 
-    const grupo = await findOutroGrupoAleatorio(
-      req.usuario.id_usuario,
-      modulo.id_modulo,
-    );
-    if (!grupo) {
+    if (result.status === "grupo-alternativo-nao-encontrado") {
       return res.status(404).json({
         message: "nenhum grupo alternativo disponível para este módulo",
       });
@@ -130,13 +114,13 @@ async function proximaTentativaController(req, res) {
       grupo,
       modulo.tentativa + 1,
     );
-    if (!exame) {
+    if (result.status === "exame-nao-encontrado") {
       return res.status(404).json({
         message: "exame não encontrado para atualização",
       });
     }
 
-    return res.status(200).json(exame);
+    return res.status(200).json(result.exame);
   } catch (e) {
     return res.status(500).json({
       message: "erro interno do servidor",
@@ -147,34 +131,27 @@ async function proximaTentativaController(req, res) {
 async function proximoModuloController(req, res) {
   try {
     const idUsuario = req.usuario.id_usuario;
+    const result = await iniciarProximoModulo(idUsuario);
 
-    const concluido = await usuarioConcluiuModuloAtual(idUsuario);
-
-    if (!concluido) {
+    if (result.status === "modulo-nao-concluido") {
       return res.status(409).json({
         message: "você ainda não concluiu todas as questões do módulo atual",
       });
     }
 
-    const moduloAtual = await findModuloAtualByUsuario(idUsuario);
-
-    if (!moduloAtual) {
+    if (result.status === "modulo-atual-nao-encontrado") {
       return res.status(404).json({
         message: "módulo atual não encontrado",
       });
     }
 
-    const resultado = await findResultadoModuloAtual(idUsuario);
-
-    if (!resultado) {
+    if (result.status === "resultado-modulo-atual-nao-encontrado") {
       return res.status(404).json({
         message: "resultado do módulo atual não encontrado",
       });
     }
 
-    const progressoAtual = await findProgressoDesafio(idUsuario);
-
-    if (!progressoAtual) {
+    if (result.status === "progresso-desafio-nao-encontrado") {
       return res.status(404).json({
         message: "progresso de desafio não encontrado",
       });
@@ -268,9 +245,7 @@ async function proximoModuloController(req, res) {
       });
     }
 
-    const proximoModulo = await findProximoModuloByUsuario(idUsuario);
-
-    if (!proximoModulo) {
+    if (result.status === "todos-modulos-concluidos") {
       const progresso = await avancarDesafio(idUsuario);
 
       return res.status(200).json({
@@ -293,12 +268,11 @@ if (!grupo) {
   });
 }
 
-const exame = await updateProximoModulo(
-  moduloAtual.id_exame,
-  proximoModulo,
-  grupo,
-  1,
-);
+if (result.status === "exame-nao-encontrado") {
+    return res.status(404).json({
+        message: "exame não encontrado para atualizações"
+    })
+};
 
 const progresso = await avancarDesafio(idUsuario);
 
@@ -319,10 +293,8 @@ const progresso = await avancarDesafio(idUsuario);
 
 async function getModulosRespondidosController(req, res) {
   try {
-    const modulos = await findModulosRespondidosByUsuario(
-      req.usuario.id_usuario,
-    );
-
+    const modulos = await listarModulosRespondidos(req.usuario.id_usuario);
+    
     return res.status(200).json(modulos);
   } catch (e) {
     return res.status(500).json({
@@ -333,7 +305,7 @@ async function getModulosRespondidosController(req, res) {
 
 async function getResultadoAtualController(req, res) {
   try {
-    const resultado = await findResultadoModuloAtual(req.usuario.id_usuario);
+    const resultado = await mostrarResultadoAtual(req.usuario.id_usuario);
 
     if (!resultado) {
       return res.status(404).json({
