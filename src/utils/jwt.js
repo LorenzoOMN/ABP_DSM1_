@@ -1,5 +1,6 @@
 // cria um token para o usuário.
-// essa parte não funciona por enquanto.
+
+const env = require("../config/env");
 
 // importando as respectivas bibliotecas.
 const path = require("path");
@@ -16,8 +17,8 @@ dotenv.config({
 function createToken(payload) {
     return jwt.sign (
         payload,
-        process.env.JWT_SECRET,
-        {expiresIn: Number(process.env.DEFAULT_EXPIRES_IN_SECONDS)}
+        env.jwt.secret.JWT_SECRET,
+        {expiresIn: env.jwt.expiresInSeconds}
     );
 }
 
