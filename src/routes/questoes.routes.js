@@ -239,7 +239,7 @@ router.patch("/proximo-modulo", authMiddleware, async function (req, res) {
       });
     }
 
-    if (!resultado.aprovado) {
+   if (!resultado.aprovado_por_melhor_nota) {
       const progressoAntes = await findProgressoDesafio(idUsuario);
 
       const progresso = await registrarFalhaDesafio(idUsuario);
