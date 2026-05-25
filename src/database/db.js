@@ -1,23 +1,15 @@
 // importa o Pool de conexões da biblioteca pg.
 const { Pool } = require("pg");
 
-// importando as respectivas bibliotecas.
-const dotenv = require("dotenv");
-const path = require("path");
-
-// configura o dotenv manualmente.
-dotenv.config({
-    quiet: true,
-    path: path.resolve(__dirname, "..", "..", ".env"),
-});
+const env = require("../config/env");
 
 // montando um objeto de configuração do banco de dados usando variáveis do .env
 const config = {
-    host: process.env.POSTGRES_HOST,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB,
-    port: process.env.POSTGRES_PORT,
+    host: env.database.host,
+    user: env.database.user,
+    password: env.database.password,
+    database: env.database.database,
+    port: env.database.port,
 };
 
 // cria a conexão com o banco usando o pool com as configurações definidas acima.
