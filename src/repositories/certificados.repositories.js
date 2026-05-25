@@ -145,9 +145,11 @@ async function findCertificadoByHash(certificadoHash) {
 
 async function findDesempenhoCertificado(idUsuario) {
   const result = await pool.query(
-    `
+  `
+  WITH notas_por_exame AS (
     SELECT
       e.id_modulo,
+      e.id_exame,
       ROUND(
         (
           COALESCE(SUM(r.nota), 0)::numeric /
@@ -159,11 +161,20 @@ async function findDesempenhoCertificado(idUsuario) {
     INNER JOIN respostas r
       ON r.id_exame = e.id_exame
     WHERE e.id_usuario = $1
-    GROUP BY e.id_modulo, e.id_exame
-    ORDER BY e.id_modulo ASC, e.id_exame DESC
-    `,
-    [idUsuario]
-  );
+    GROUP BY
+      e.id_modulo,
+      e.id_exame
+  )
+
+  SELECT
+    id_modulo,
+    MAX(nota) AS nota
+  FROM notas_por_exame
+  GROUP BY id_modulo
+  ORDER BY id_modulo ASC
+  `,
+  [idUsuario]
+);
 
   const notas = [1, 2, 3, 4, 5].map((modulo) => {
     const tentativa = result.rows.find(
