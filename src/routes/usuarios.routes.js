@@ -1,7 +1,7 @@
 // importando os respectivos arquivos que está dentro de um json.
 const { Router } = require("express");
 const authMiddleware = require("../middlewares/auth.middleware");
-const { createusuarioController, updateCpfController, findByIdController, updateNomeController, updateEmailController, updateSenhaController } = require("../controllers/usuario.controller");
+const { createusuarioController, findByIdController, updateMeController } = require("../controllers/usuario.controller");
 
 // importando as respectivas bibliotecas.
 const router = Router();
@@ -9,44 +9,20 @@ const router = Router();
 // define o cadastro do usuário
 router.post("/cadastro", createusuarioController);
 
-// PATCH /api/usuarios/10/cpf
 /*
-curl -X PATCH http://localhost:3000/api/usuarios/cpf \
+curl -X PATCH http://localhost:3000/api/usuarios/me
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN" \
-  -d '{"cpf":"11122233344"}'
+  -d "(
+    "nome": "Pedro Paulo",
+    "email": "pedro.paulo@teste.com",
+    "cpf": "11122233345",
+    "senha": "123456"
+  )"
 */
-
-router.patch("/cpf", authMiddleware, updateCpfController);
+router.patch("/me", authMiddleware, updateMeController);
 
 router.get("/me", authMiddleware, findByIdController);
-
-/*
-curl -X PATCH http://localhost:3000/api/usuarios/nome \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer SEU_TOKEN" \
-  -d '{"nome":"Maria"}'
-*/
-
-router.patch("/nome", authMiddleware, updateNomeController);
-
-/*
-curl -X PATCH http://localhost:3000/api/usuarios/email \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer SEU_TOKEN" \
-  -d '{"email":"ana.clara@teste.com"}'
-*/
-
-router.patch("/email", authMiddleware, updateEmailController);
-
-/*
-curl -X PATCH http://localhost:3000/api/usuarios/senha \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer SEU_TOKEN" \
-  -d '{"senha":"123aaa"}'
-*/
-
-router.patch("/senha", authMiddleware, updateSenhaController);
 
 function getIdUsuario(params) {
   const idUsuario = Number(params.idUsuario);

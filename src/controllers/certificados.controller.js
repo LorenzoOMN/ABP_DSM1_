@@ -1,3 +1,7 @@
+const {
+    findCertificadoByHash,
+} = require("../service/certificados.service");
+
 async function getCertificadoByHashController(req, res) {
     const certificadoHash = String(req.params.hash || "").trim();
     if (!certificadoHash) {

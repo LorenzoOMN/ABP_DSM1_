@@ -15,6 +15,8 @@ const {
     findQualquerGrupoPorModulo,
 } = require("../repositories/questoes.repositories");
 
+const { findProgressoDesafio } = require("../repositories/progresso.repositories");
+
 async function buscarProximaQuestao(idUsuario) {
     const questao = await findProximaQuestaoByUsuario(idUsuario);
     if (!questao) {
@@ -76,7 +78,7 @@ async function iniciarProximaTentativa(idUsuario) {
 
     const modulo = await findModuloAtualByUsuario(idUsuario);
     if (!modulo) {
-        return res.status(404).json({
+        return ({
             status: "modulo-atual-nao-encontrado",
         });
     }
@@ -93,7 +95,7 @@ async function iniciarProximaTentativa(idUsuario) {
     );
     if (!grupo) {
         return {
-            message: "grupo-alternativo-nao-encontrado",
+            status: "grupo-alternativo-nao-encontrado",
         };
     }
 
@@ -149,6 +151,15 @@ async function iniciarProximoModulo(idUsuario) {
         return {
             status: "todos-modulos-concluidos"
         };
+    }
+
+    let grupo = await findOutroGrupoAleatorio(
+        idUsuario,
+        proximoModulo,
+    );
+
+    if (!grupo) {
+        grupo = await findQualquerGrupoPorModulo(proximoModulo);
     }
 
     const exame = await updateProximoModulo(
