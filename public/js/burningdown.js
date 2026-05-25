@@ -90,11 +90,9 @@ function preencherResumo(modulos) {
 
  const falhasNoModulo = Number(moduloDesafioAtual?.falhas_no_modulo || 0);
 
-const tentativaAtual = Math.min(falhasNoModulo + 1, 2);
-
-// Por enquanto, sem histórico persistente no banco,
-// tentativasGastas representa apenas as falhas da run atual.
-const totalTentativasGastas = falhasNoModulo;
+const totalTentativasGastas = Number(
+  moduloDesafioAtual?.tentativas_gastas_total || 0
+);
 
   const conteudosConcluidos = historiasConcluidas + desafiosConcluidos;
   const totalConteudos = totalModulos * 2;
@@ -109,9 +107,6 @@ const totalTentativasGastas = falhasNoModulo;
   atualizarTexto("porcentagemTotal", `${porcentagemTotal}%`);
   atualizarTexto("tentativasGastas", totalTentativasGastas);
 
-  // VERIFICAR - POSSIVEL FALHA DE SEGURANÇA (INFORMAÇÕES DE TAELAS DO BD)
-  console.log("Módulos recebidos no Burning Down:", modulos);
-  console.table(modulos);
 
 }
 
