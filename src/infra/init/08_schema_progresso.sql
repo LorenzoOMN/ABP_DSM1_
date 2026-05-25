@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS public.progresso_desafio (
   id_usuario INTEGER NOT NULL UNIQUE,
   modulo_desafio_atual INTEGER NOT NULL DEFAULT 1,
   falhas_no_modulo INTEGER NOT NULL DEFAULT 0,
+  tentativas_gastas_total INTEGER NOT NULL DEFAULT 0,
   certificado_liberado BOOLEAN NOT NULL DEFAULT FALSE,
   atualizado_em TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

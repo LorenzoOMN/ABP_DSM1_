@@ -11,6 +11,7 @@
   const resultadoImagem = document.getElementById("resultadoImagem");
   const resultadoHoverTexto = document.getElementById("resultadoHoverTexto");
   const resultadoEtiqueta = document.getElementById("resultadoEtiqueta");
+  const btnMelhorarNota = document.getElementById("btnMelhorarNota");
   const resultadoTituloPrincipal = document.getElementById(
     "resultadoTituloPrincipal",
   );
@@ -54,6 +55,11 @@
   }
 
   function obterMensagem(resultado) {
+    if (!resultado.aprovado && resultado.aprovado_por_melhor_nota) {
+      return `Esta tentativa não superou sua melhor nota, mas sua aprovação anterior foi mantida. Nota considerada: ${formatarPercentual(
+        resultado.nota_considerada,
+      )}%.`;
+    }
     if (resultado.aprovado) {
       return "Após uma árdua batalha mental, você encontrou os pontos fracos da criatura: objetivo claro, estrutura, detalhes úteis e entrega com valor.";
     }
@@ -74,7 +80,7 @@
   }
 
   function obterEstadoResultado(resultado) {
-    if (resultado.aprovado) {
+    if (resultado.aprovado || resultado.aprovado_por_melhor_nota) {
       return "vitoria";
     }
 
@@ -89,6 +95,8 @@
     if (!resultadoTentativas) return;
 
     const usadas = tentativasUsadas(resultado);
+    const aprovadoGeral =
+      resultado.aprovado || resultado.aprovado_por_melhor_nota;
 
     resultadoTentativas.innerHTML = "";
 
@@ -97,7 +105,7 @@
 
       img.classList.add("vida-icon");
 
-      if (i <= usadas && !resultado.aprovado) {
+      if (i <= usadas && !aprovadoGeral) {
         img.src = VIDA_PERDIDA_IMAGEM;
         img.alt = "Tentativa perdida";
       } else {
@@ -141,13 +149,29 @@
     }
   }
 
-  function atualizarBotaoAcao(resultado) {
-    if (!btnAcaoResultado) return;
+function atualizarBotaoAcao(resultado) {
+  if (!btnAcaoResultado) return;
 
-    btnAcaoResultado.disabled = false;
-    btnAcaoResultado.querySelector(".texto-botao").textContent =
-      resultado.aprovado ? "Avançar" : "Tentar novamente";
+  btnAcaoResultado.disabled = false;
+
+  const aprovadoGeral =
+    resultado.aprovado || resultado.aprovado_por_melhor_nota;
+
+  const tentativaAtual = Number(resultado.tentativa) || 1;
+
+  const podeMelhorarNota =
+    resultado.aprovado === true &&
+    tentativaAtual === 1 &&
+    resultado.pode_tentar_melhorar === true;
+
+  btnAcaoResultado.querySelector(".texto-botao").textContent =
+    aprovadoGeral ? "Avançar" : "Tentar novamente";
+
+  if (btnMelhorarNota) {
+    btnMelhorarNota.hidden = !podeMelhorarNota;
+    btnMelhorarNota.disabled = !podeMelhorarNota;
   }
+}
 
   function renderizarResultado(resultado) {
     const totalRespondidas = Number(resultado.total_respondidas) || 0;
@@ -214,7 +238,7 @@
     }
   }
 
-   function renderizarTituloResultado(resultado) {
+  function renderizarTituloResultado(resultado) {
     const estado = obterEstadoResultado(resultado);
 
     if (resultadoTituloPrincipal) {
@@ -246,79 +270,114 @@
     }
   }
 
- async function aplicarProgressao() {
-  const token = obterToken();
+  async function refazerParaMelhorarNota() {
+    const token = obterToken();
 
-  if (!token || !resultadoAtual || !btnAcaoResultado) return;
+    if (!token || !resultadoAtual || !btnMelhorarNota) return;
 
-  btnAcaoResultado.disabled = true;
-  btnAcaoResultado.querySelector(".texto-botao").textContent = "Aguarde...";
+    btnMelhorarNota.disabled = true;
+    btnMelhorarNota.querySelector(".texto-botao").textContent = "Preparando...";
 
-  try {
-    const response = await fetch("/api/questoes/proximo-modulo", {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const response = await fetch("/api/questoes/proxima-tentativa", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    /*
-      Caso 1: o jogador venceu o desafio atual.
-      Mesmo que o backend crie o próximo exame, ele deve voltar para o mapa.
-    */
-    if (resultadoAtual.aprovado) {
-      window.location.href = "/mapa";
-      return;
+      if (!response.ok) {
+        alert(data.message || "Não foi possível criar nova tentativa.");
+
+        btnMelhorarNota.disabled = false;
+        btnMelhorarNota.querySelector(".texto-botao").textContent =
+          "Refazer para melhorar nota";
+
+        return;
+      }
+
+      window.location.href = "/desafio1";
+    } catch (error) {
+      console.error("Erro ao criar tentativa de melhoria:", error);
+
+      alert("Erro de conexão ao criar nova tentativa.");
+
+      btnMelhorarNota.disabled = false;
+      btnMelhorarNota.querySelector(".texto-botao").textContent =
+        "Refazer para melhorar nota";
     }
+  }
 
-    /*
+  async function aplicarProgressao() {
+    const token = obterToken();
+
+    if (!token || !resultadoAtual || !btnAcaoResultado) return;
+
+    btnAcaoResultado.disabled = true;
+    btnAcaoResultado.querySelector(".texto-botao").textContent = "Aguarde...";
+
+    try {
+      const response = await fetch("/api/questoes/proximo-modulo", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Erro ao atualizar progresso.");
+        atualizarBotaoAcao(resultadoAtual);
+        return;
+      }
+
+      /*
+      Caso 1: o jogador venceu o desafio atual.
+      Também cobre o caso em que a tentativa atual foi pior,
+      mas uma tentativa anterior já aprovou o módulo.
+    */
+      if (resultadoAtual.aprovado || resultadoAtual.aprovado_por_melhor_nota) {
+        window.location.href = "/mapa";
+        return;
+      }
+
+      /*
       Caso 2: o jogador falhou 2 vezes e a run foi resetada.
       Nesse caso volta para o mapa para mostrar que a run retornou ao módulo 1.
     */
-    const resetouRun =
-      data.resetou_run === true ||
-      (
-        data.progresso &&
-        Number(data.progresso.falhas_no_modulo) === 0 &&
-        data.message &&
-        data.message.toLowerCase().includes("falhou 2 vezes")
-      );
+      const resetouRun =
+        data.resetou_run === true ||
+        (data.progresso &&
+          Number(data.progresso.falhas_no_modulo) === 0 &&
+          data.message &&
+          data.message.toLowerCase().includes("falhou 2 vezes"));
 
-    if (resetouRun) {
-      window.location.href = "/mapa";
-      return;
-    }
+      if (resetouRun) {
+        window.location.href = "/mapa";
+        return;
+      }
 
-    /*
+      /*
       Caso 3: o jogador falhou, mas ainda tem tentativa.
-      Agora sim ele vai para o questionário novamente.
+      Ele volta para a tela de desafio.
     */
-    if (!resultadoAtual.aprovado) {
       window.location.href = "/desafio1";
-      return;
-    }
-
-    /*
-      Caso 4: erro real.
-    */
-    if (!response.ok) {
-      alert(data.message || "Erro ao atualizar progresso.");
+    } catch (error) {
+      console.error(error);
+      alert("Erro de conexão ao atualizar progresso.");
       atualizarBotaoAcao(resultadoAtual);
-      return;
     }
-
-    window.location.href = "/mapa";
-  } catch (error) {
-    console.error(error);
-    alert("Erro de conexão ao atualizar progresso.");
-    atualizarBotaoAcao(resultadoAtual);
   }
-}
 
   if (btnAcaoResultado) {
     btnAcaoResultado.addEventListener("click", aplicarProgressao);
+  }
+
+  if (btnMelhorarNota) {
+    btnMelhorarNota.addEventListener("click", refazerParaMelhorarNota);
   }
 
   carregarResultado();
