@@ -33,13 +33,14 @@ async function concluirHistoria(idUsuario, idModulo) {
 async function findProgressoMapa(idUsuario) {
   const result = await pool.query(
     `
-    SELECT
-      m.id_modulo,
-      m.titulo,
-      COALESCE(ph.concluido, false) AS historia_concluida,
-      pd.modulo_desafio_atual,
-      pd.falhas_no_modulo,
-      pd.certificado_liberado
+   SELECT
+    m.id_modulo,
+    m.titulo,
+    COALESCE(ph.concluido, false) AS historia_concluida,
+    pd.modulo_desafio_atual,
+    pd.falhas_no_modulo,
+    pd.tentativas_gastas_total,
+    pd.certificado_liberado
     FROM modulos m
     CROSS JOIN progresso_desafio pd
     LEFT JOIN progresso_historia ph
@@ -59,11 +60,12 @@ async function findProgressoDesafio(idUsuario) {
   const result = await pool.query(
     `
     SELECT
-      id_usuario,
-      modulo_desafio_atual,
-      falhas_no_modulo,
-      certificado_liberado
-    FROM progresso_desafio
+    id_usuario,
+    modulo_desafio_atual,
+    falhas_no_modulo,
+    tentativas_gastas_total,
+    certificado_liberado
+  FROM progresso_desafio
     WHERE id_usuario = $1
     LIMIT 1
     `,
@@ -130,27 +132,35 @@ async function resetarRunDesafios(idUsuario) {
 
 // registra uma falha no desafio atual.
 async function registrarFalhaDesafio(idUsuario) {
-  // busca o progresso atual do usuário.
   const progresso = await findProgressoDesafio(idUsuario);
 
   if (!progresso) {
     return null;
   }
 
-  // soma mais uma falha.
   const novasFalhas = Number(progresso.falhas_no_modulo) + 1;
 
-  // se chegar em 2 falhas, reinicia a run completa.
   if (novasFalhas >= 2) {
+    await pool.query(
+      `
+      UPDATE progresso_desafio
+      SET
+        tentativas_gastas_total = tentativas_gastas_total + 1,
+        atualizado_em = CURRENT_TIMESTAMP
+      WHERE id_usuario = $1
+      `,
+      [idUsuario],
+    );
+
     return resetarRunDesafios(idUsuario);
   }
 
-  // atualiza apenas a quantidade de falhas.
   const result = await pool.query(
     `
     UPDATE progresso_desafio
     SET
       falhas_no_modulo = $2,
+      tentativas_gastas_total = tentativas_gastas_total + 1,
       atualizado_em = CURRENT_TIMESTAMP
     WHERE id_usuario = $1
     RETURNING *
@@ -235,7 +245,7 @@ async function isPrimeiroAcesso(idUsuario) {
         AND concluido = true
     ) AS tem_historia_concluida
     `,
-    [idUsuario]
+    [idUsuario],
   );
 
   // se NÃO concluiu nenhuma história -> primeiro acesso
@@ -251,5 +261,5 @@ module.exports = {
   registrarFalhaDesafio,
   avancarDesafio,
   historiaConcluida,
-  isPrimeiroAcesso
+  isPrimeiroAcesso,
 };
