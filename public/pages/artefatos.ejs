@@ -21,6 +21,7 @@
   <body>
     <!-- Partials (Alertas e Header) -->
     <%- include('partials/alert') %>
+    <%- include('./partials/botao_voltar') %>
     <%- include('partials/header') %>
 
     <main class="artefatos-container">
@@ -38,7 +39,6 @@
           <p class="intro-text">
             A cada <strong>sprint</strong> completada um artefato será desbloqueado, use seus conhecimentos ancestrais para enfrentar os desafios e recuperar todos.
           </p>
-          <br><br><br><br><br><br><br><br><br><br><br>
           <div class="side-image">
             <img src="/assets/img/artefatos.png" alt="Artefatos do Scrum" />
           </div>
@@ -60,8 +60,8 @@
                 <img src="/assets/img/product_backlog.png" alt="Product Backlog" />
               </div>
               
-             
-              <!-- carrosel continuação:
+              <!-- ADICIONE MAIS SLIDES AQUI QUANDO ENVIAR AS OUTRAS FOTOS -->
+              <!-- Exemplo:
               <div class="carousel-slide" data-artefato="sprint">
                 <img src="/assets/img/sprint_backlog.png" alt="Sprint Backlog" />
               </div> 

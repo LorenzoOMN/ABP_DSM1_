@@ -8,7 +8,7 @@
     --text-main: #e8dcc8;
     --text-muted: #b0a48e;
     
-    /* TIPOGRAFIA EXATA DO FIGMA */
+    /* TIPOGRAFIA */
     --font-titulo: 'Cinzel', serif;
     --font-texto: 'Source Serif 4', serif;
   }
@@ -21,7 +21,7 @@
     min-height: 100vh;
   }
   
-  /* Textos Gerais: Source Serif 4, Regular, 16px, Line-height 24px */
+  /* Textos Gerais */
   p, span, a, button, input, textarea, li {
     font-family: var(--font-texto);
     font-size: 16px;
@@ -30,7 +30,7 @@
     letter-spacing: 0%;
   }
   
-  /* Títulos: Cinzel, Bold, 18px */
+  /* Títulos */
   h1, h2, h3, h4, h5, h6,
   .section-title,
   .artefato-title,
@@ -49,7 +49,7 @@
     padding: 24px 20px 40px;
   }
   
-  /* ===== TÍTULO DA SEÇÃO (Caixa Dourada) ===== */
+  /* ===== TÍTULO DA SEÇÃO  ===== */
   .section-title-box {
     margin-bottom: 32px;
     border-bottom: 1px solid var(--gold-dark);
@@ -72,7 +72,7 @@
     display: grid;
     grid-template-columns: 1fr 1.2fr;
     gap: 48px;
-    align-items: start;
+    align-items: center;
   }
   
   /* ===== COLUNA ESQUERDA ===== */
@@ -85,11 +85,12 @@
   .intro-text {
     color: var(--text-muted);
     max-width: 320px;
+    margin-bottom: 20px; 
   }
   
   .side-image img {
     width: 100%;
-    max-width: 420px;
+    max-width: 520px; 
     display: block;
     margin: 0 auto;
     filter: drop-shadow(0 0 18px rgba(212, 168, 67, 0.25));
@@ -110,7 +111,7 @@
     margin-bottom: 8px;
   }
   
-  /* ===== CARROSSEL (Setas Grandes) ===== */
+  /* ===== CARROSSEL ===== */
   .carousel-large {
     display: flex;
     align-items: center;
@@ -197,10 +198,12 @@
     .artefatos-content {
       grid-template-columns: 1fr;
       gap: 32px;
+      align-items: start; 
     }
   
     .side-image img {
-      max-width: 320px;
+      max-width: 400px; 
+      margin-top: 0;
     }
   
     .carousel-frame {
