@@ -148,6 +148,7 @@ async function carregarVidasBurningdown() {
 
   try {
     const response = await fetch("/api/progresso/mapa", {
+      
       headers: {
         Authorization: `Bearer ${token}`,
       },

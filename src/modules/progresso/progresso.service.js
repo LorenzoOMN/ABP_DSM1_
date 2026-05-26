@@ -38,6 +38,7 @@ async function getProgressoMapaService(idUsuario) {
         // Regra: destaca o módulo que é o desafio atual
         desafio_atual: Number(modulo.id_modulo) === Number(modulo.modulo_desafio_atual),
         falhas_no_modulo: modulo.falhas_no_modulo,
+        tentativas_gastas_total: modulo.tentativas_gastas_total,
         certificado_liberado: modulo.certificado_liberado,
     }));
 
