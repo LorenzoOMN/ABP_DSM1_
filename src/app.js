@@ -89,7 +89,7 @@ app.get("/resultado", function (_req, res) {
 });
 
 app.get("/artefatos", function (_req, res) {
-    res.render("not-found");
+    res.render("artefatos");
 });
 
 app.get("/perfil", function (_req, res) {
