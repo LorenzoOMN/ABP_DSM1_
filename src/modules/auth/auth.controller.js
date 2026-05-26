@@ -7,21 +7,21 @@ const { login, cadastro } = require("./auth.service");
 // CONTROLLER: LOGIN
 // ============================================================================
 async function loginController(req, res) {
-    // 1️⃣ Controller PEGA os dados da requisição
+    // 1 Controller PEGA os dados da requisição
     const { senha } = req.body;
     const cpf = String(req.body.cpf || "")
         .replace(/\D/g, "")
         .slice(0, 11);
 
     try {
-        // 2️⃣ Controller CHAMA o Service (passa dados simples)
+        // 2 Controller CHAMA o Service (passa dados simples)
         const resultado = await login(cpf, senha);
 
-        // 3️⃣ Controller DEVOLVE a resposta HTTP
+        // 3 Controller DEVOLVE a resposta HTTP
         return res.status(200).json(resultado);
 
     } catch (error) {
-        // 4️⃣ Controller TRADUZ erros de negócio para HTTP
+        // 4 Controller TRADUZ erros de negócio para HTTP
         if (error.message === "CPF e senha são obrigatórios" ||
             error.message === "CPF deve conter 11 números") {
             return res.status(400).json({ message: error.message });
@@ -39,7 +39,7 @@ async function loginController(req, res) {
 }
 
 // ============================================================================
-// CONTROLLER: CADASTRO (NOVO!)
+// CONTROLLER: CADASTRO
 // ============================================================================
 async function cadastroController(req, res) {
     // 1 Controller PEGA os dados da requisição
@@ -78,5 +78,5 @@ async function cadastroController(req, res) {
 // ============================================================================
 module.exports = {
     loginController,
-    cadastroController  // ← Novo controller exportado
+    cadastroController
 };

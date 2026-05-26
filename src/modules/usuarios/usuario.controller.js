@@ -2,6 +2,11 @@
 
 // Importa apenas o SERVICE (nunca repository direto)
 const usuariosService = require('./usuarios.service');
+const { updateUsuarioCpfService,
+    updateUsuarioNomeService,
+    updateUsuarioEmailService,
+    updateUsuarioSenhaService,
+    findUsuarioByIdService } = require('./usuarios.service');
 
 // ============================================================================
 // CONTROLLER: OBTER DADOS DO USUÁRIO ATUAL (GET /me)
@@ -17,7 +22,7 @@ async function getMeController(req, res) {
 
     try {
         // 2️⃣ Controller CHAMA o Service
-        const usuario = await usuariosService.findUsuarioByIdService(idUsuario);
+        const usuario = await findUsuarioByIdService(idUsuario);
 
         // 3️⃣ Controller DEVOLVE a resposta HTTP
         if (!usuario) {
@@ -58,7 +63,7 @@ async function updateCpfController(req, res) {
 
     try {
         // 2️⃣ Controller CHAMA o Service
-        const usuarioAtualizado = await usuariosService.updateUsuarioCpfService(idUsuario, cpf);
+        const usuarioAtualizado = await updateUsuarioCpfService(idUsuario, cpf);
 
         // 3️⃣ Controller DEVOLVE a resposta HTTP
         return res.status(200).json(usuarioAtualizado);
@@ -100,7 +105,7 @@ async function updateNomeController(req, res) {
     }
 
     try {
-        const usuarioAtualizado = await usuariosService.updateUsuarioNomeService(idUsuario, nome.trim());
+        const usuarioAtualizado = await updateUsuarioNomeService(idUsuario, nome.trim());
         return res.status(200).json(usuarioAtualizado);
     } catch (error) {
         if (error.message === "nome é obrigatório") {
@@ -136,7 +141,7 @@ async function updateEmailController(req, res) {
     }
 
     try {
-        const usuarioAtualizado = await usuariosService.updateUsuarioEmailService(idUsuario, email.trim());
+        const usuarioAtualizado = await updateUsuarioEmailService(idUsuario, email.trim());
         return res.status(200).json(usuarioAtualizado);
     } catch (error) {
         if (error.message === "email obrigatório") {
@@ -174,7 +179,7 @@ async function updateSenhaController(req, res) {
     }
 
     try {
-        const usuarioAtualizado = await usuariosService.updateUsuarioSenhaService(idUsuario, senha);
+        const usuarioAtualizado = await updateUsuarioSenhaService(idUsuario, senha);
         return res.status(200).json(usuarioAtualizado);
     } catch (error) {
         if (error.message.includes("obrigatória") || error.message.includes("6 caracteres")) {

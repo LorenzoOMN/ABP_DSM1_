@@ -1,48 +1,43 @@
-//importando funções
+// src/modules/questoes/questoes.routes.js
 
 const { Router } = require("express");
 const authMiddleware = require("../../shared/middlewares/auth.middleware");
-const { getProximaQuestao, responderQuestao, getProximaTentativa, getProximoModulo, getModulosRespondidos, getResultadoAtual } = require("./questoes.controller");
+
+// Importa TODOS os controllers
+const {
+  getProximaQuestao,
+  responderQuestao,
+  getProximaTentativa,
+  getProximoModulo, 
+  getModulosRespondidos,
+  getResultadoAtual,
+} = require("./questoes.controller");
+
 const router = Router();
 
+// ============================================================================
+// ROTAS PROTEGIDAS (todas usam authMiddleware)
+// ============================================================================
 
-/*
-curl -X GET http://localhost:3000/api/questoes/proxima-questao \
--H "Authorization: Bearer SEU_TOKEN"
-*/
-
+// GET /api/questoes/proxima-questao
 router.get("/proxima-questao", authMiddleware, getProximaQuestao);
 
-/* Teste salvando resposta do usuário
-curl -X POST http://localhost:3000/api/questoes/responder \ 
-  -H "Content-Type: application/json" \ 
-  -H "Authorization: Bearer SEU_TOKEN" 
-  -d '{"id_exame":"11","id_questao":"21","resposta":"c"}' 
-*/
-
-//Sistema de encontrar questões, registrar e checar respostas do usuário
+// POST /api/questoes/responder
 router.post("/responder", authMiddleware, responderQuestao);
 
-/* implementando próxima tentativa
-curl -X PATCH http://localhost:3000/api/questoes/proxima-tentativa \ 
-  -H "Authorization: Bearer SEU_TOKEN" 
-*/
+// PATCH /api/questoes/proxima-tentativa
 router.patch("/proxima-tentativa", authMiddleware, getProximaTentativa);
- 
 
-/* Implementando progressão de módulos
-curl -X PATCH http://localhost:3000/api/questoes/proximo-modulo \ 
-  -H "Authorization: Bearer SEU_TOKEN" 
-*/
+// PATCH /api/questoes/proximo-modulo ← CORRIGIDO!
 router.patch("/proximo-modulo", authMiddleware, getProximoModulo);
 
-/* Acompanhar progresso
-curl -X GET http://localhost:3000/api/questoes/modulos-respondidos \ 
-  -H "Authorization: Bearer SEU_TOKEN" 
-*/
+// GET /api/questoes/modulos-respondidos
 router.get("/modulos-respondidos", authMiddleware, getModulosRespondidos);
 
+// GET /api/questoes/resultado-atual
 router.get("/resultado-atual", authMiddleware, getResultadoAtual);
 
-// exporta o "router" para outros arquivos.
+// ============================================================================
+// EXPORTAÇÃO
+// ============================================================================
 module.exports = router;

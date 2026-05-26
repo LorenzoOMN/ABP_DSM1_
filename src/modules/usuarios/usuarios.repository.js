@@ -110,63 +110,6 @@ async function createUsuario(nome, email, cpf, senha) {
   }
 }
 
-async function updateUsuarioCpf(idUsuario, cpf) {
-  const result = await pool.query(
-    `
-    UPDATE usuarios
-    SET cpf = $1
-    WHERE id_usuario = $2
-    RETURNING id_usuario
-    `,
-    [cpf, idUsuario],
-  );
-
-  return result.rows[0] || null;
-}
-
-async function updateUsuarioNome(idUsuario, nome) {
-  const result = await pool.query(
-    `
-    UPDATE usuarios
-    SET nome = $1
-    WHERE id_usuario = $2
-    RETURNING id_usuario
-    `,
-    [nome, idUsuario],
-  );
-
-  return result.rows[0] || null;
-}
-
-async function updateUsuarioEmail(idUsuario, email) {
-  const result = await pool.query(
-    `
-    UPDATE usuarios
-    SET email = $1
-    WHERE id_usuario = $2
-    RETURNING id_usuario
-    `,
-    [email, idUsuario],
-  );
-
-  return result.rows[0] || null;
-}
-
-async function updateUsuarioSenha(idUsuario, senha) {
-  const senhaCodificada = hashPassword(senha);
-  const result = await pool.query(
-    `
-    UPDATE usuarios
-    SET senha = $1
-    WHERE id_usuario = $2
-    RETURNING id_usuario
-    `,
-    [senhaCodificada, idUsuario],
-  );
-
-  return result.rows[0] || null;
-}
-
 async function findUsuarioById(idUsuario) {
   const result = await pool.query(
     `
@@ -270,16 +213,67 @@ async function desbloquearBarraNavegacao(idUsuario) {
   }
 }
 
+async function updateUsuario(idUsuario, dados) {
+  const fields = [];
+  const values = [];
+  let paramIndex = 1;
+
+  if (dados.nome) {
+    fields.push(`nome = $${paramIndex}`);
+    values.push(dados.nome);
+    paramIndex++;
+  }
+
+  if (dados.email) {
+    fields.push(`email = $${paramIndex}`);
+    values.push(dados.email);
+    paramIndex++;
+  }
+
+  if (dados.cpf) {
+    fields.push(`cpf = $${paramIndex}`);
+    values.push(dados.cpf);
+    paramIndex++;
+  }
+
+  if (dados.senha) {
+    fields.push(`senha = $${paramIndex}`);
+    values.push(hashPassword(dados.senha));
+    paramIndex++;
+  }
+
+  if (!fields.length) {
+    return null;
+  }
+
+  values.push(idUsuario);
+
+  /*
+  Explicando $${paramIndex}:
+  O primeiro $ é do JavaScript, para interpolar variável dentro da template string.
+  O segundo faz parte da sintaxe do PostgreSQL para parâmetros preparados: $1, $2, ...
+  */
+  const result = await pool.query(
+    `
+    UPDATE usuarios
+    SET ${fields.join(", ")}
+    WHERE id_usuario = $${paramIndex}
+    RETURNING id_usuario
+    `,
+    values,
+  );
+
+  return result.rows[0] || null;
+}
+
+
 // exportando a respectiva função para outros arquivos.
 module.exports = {
   createUsuario,
-  updateUsuarioCpf,
   findUsuarioById,
-  updateUsuarioNome,
-  updateUsuarioEmail,
-  updateUsuarioSenha,
   findUsuarioByCpfAndSenha,
   insertProgressoDesafioInicial,
   verificarBarraDesbloqueada,
-  desbloquearBarraNavegacao
+  desbloquearBarraNavegacao,
+  updateUsuario
 };

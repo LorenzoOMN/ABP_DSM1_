@@ -1,6 +1,6 @@
 // src/modules/questoes/questoes.service.js
 
-// Importa repositories (orquestração entre módulos)
+// Importa repositories
 const {
     findProximaQuestaoByUsuario,
     findQuestaoDoExameByUsuario,
@@ -15,6 +15,8 @@ const {
     findModulosRespondidosByUsuario,
     findResultadoModuloAtual,
     findQualquerGrupoPorModulo,
+    findExameExistente,
+    criarExameInicial,
 } = require("./questoes.repository");
 
 const {
@@ -28,14 +30,10 @@ const {
 // FUNÇÃO: OBTER PRÓXIMA QUESTÃO
 // ============================================================================
 async function getProximaQuestaoService(idUsuario) {
-    if (!idUsuario) {
-        throw new Error("ID do usuário é obrigatório");
-    }
+    if (!idUsuario) throw new Error("ID do usuário é obrigatório");
 
     const progresso = await findProgressoDesafio(idUsuario);
-    if (!progresso) {
-        throw new Error("Progresso de desafio não encontrado");
-    }
+    if (!progresso) throw new Error("Progresso de desafio não encontrado");
 
     const historiaLiberada = await historiaConcluida(idUsuario, progresso.modulo_desafio_atual);
     if (!historiaLiberada) {
@@ -46,11 +44,8 @@ async function getProximaQuestaoService(idUsuario) {
     }
 
     const questao = await findProximaQuestaoByUsuario(idUsuario);
-    if (!questao) {
-        throw new Error("Nenhuma questão pendente encontrada");
-    }
+    if (!questao) throw new Error("Nenhuma questão pendente encontrada");
 
-    // Formatação de dados (regra de apresentação)
     return {
         ...questao,
         imagem: questao.imagem ? `/imagens/questoes/${questao.imagem}` : null,
@@ -64,7 +59,6 @@ async function responderQuestaoService(idUsuario, idExame, idQuestao, resposta) 
     if (!idUsuario || !idExame || !idQuestao) {
         throw new Error("ID do usuário, exame e questão são obrigatórios");
     }
-
     if (!resposta || resposta.trim() === "") {
         throw new Error("Resposta é obrigatória");
     }
@@ -72,9 +66,7 @@ async function responderQuestaoService(idUsuario, idExame, idQuestao, resposta) 
     const respostaNormalizada = resposta.trim().toLowerCase();
 
     const questao = await findQuestaoDoExameByUsuario(idUsuario, idExame, idQuestao);
-    if (!questao) {
-        throw new Error("Questão não encontrada para este exame");
-    }
+    if (!questao) throw new Error("Questão não encontrada para este exame");
 
     const respostaExistente = await findRespostaByExameEQuestao(idExame, idQuestao);
     if (respostaExistente) {
@@ -99,19 +91,13 @@ async function responderQuestaoService(idUsuario, idExame, idQuestao, resposta) 
 // FUNÇÃO: OBTER PRÓXIMA TENTATIVA
 // ============================================================================
 async function getProximaTentativaService(idUsuario) {
-    if (!idUsuario) {
-        throw new Error("ID do usuário é obrigatório");
-    }
+    if (!idUsuario) throw new Error("ID do usuário é obrigatório");
 
     const concluido = await usuarioConcluiuModuloAtual(idUsuario);
-    if (!concluido) {
-        throw new Error("Módulo atual não concluído");
-    }
+    if (!concluido) throw new Error("Módulo atual não concluído");
 
     const modulo = await findModuloAtualByUsuario(idUsuario);
-    if (!modulo) {
-        throw new Error("Módulo atual não encontrado");
-    }
+    if (!modulo) throw new Error("Módulo atual não encontrado");
 
     if (modulo.tentativa >= 2) {
         const error = new Error("Limite de tentativas atingido");
@@ -120,14 +106,10 @@ async function getProximaTentativaService(idUsuario) {
     }
 
     const grupo = await findOutroGrupoAleatorio(idUsuario, modulo.id_modulo);
-    if (!grupo) {
-        throw new Error("Nenhum grupo alternativo disponível");
-    }
+    if (!grupo) throw new Error("Nenhum grupo alternativo disponível");
 
     const exame = await updateProximaTentativa(modulo.id_exame, grupo, modulo.tentativa + 1);
-    if (!exame) {
-        throw new Error("Erro ao atualizar exame");
-    }
+    if (!exame) throw new Error("Erro ao atualizar exame");
 
     return exame;
 }
@@ -136,32 +118,22 @@ async function getProximaTentativaService(idUsuario) {
 // FUNÇÃO: AVANÇAR PARA PRÓXIMO MÓDULO (LÓGICA COMPLEXA)
 // ============================================================================
 async function getProximoModuloService(idUsuario) {
-    if (!idUsuario) {
-        throw new Error("ID do usuário é obrigatório");
-    }
+    if (!idUsuario) throw new Error("ID do usuário é obrigatório");
 
-    // 1. Validações iniciais
+    // Validações iniciais
     const concluido = await usuarioConcluiuModuloAtual(idUsuario);
-    if (!concluido) {
-        throw new Error("Módulo atual não concluído");
-    }
+    if (!concluido) throw new Error("Módulo atual não concluído");
 
     const moduloAtual = await findModuloAtualByUsuario(idUsuario);
-    if (!moduloAtual) {
-        throw new Error("Módulo atual não encontrado");
-    }
+    if (!moduloAtual) throw new Error("Módulo atual não encontrado");
 
     const resultado = await findResultadoModuloAtual(idUsuario);
-    if (!resultado) {
-        throw new Error("Resultado do módulo não encontrado");
-    }
+    if (!resultado) throw new Error("Resultado do módulo não encontrado");
 
     const progressoAtual = await findProgressoDesafio(idUsuario);
-    if (!progressoAtual) {
-        throw new Error("Progresso de desafio não encontrado");
-    }
+    if (!progressoAtual) throw new Error("Progresso de desafio não encontrado");
 
-    // 2. Valida consistência módulo/progresso
+    // Valida consistência
     if (Number(resultado.id_modulo) !== Number(progressoAtual.modulo_desafio_atual)) {
         const error = new Error("Inconsistência entre questionário e desafio atual");
         error.code = "INCONSISTENCIA_MODULO";
@@ -170,23 +142,20 @@ async function getProximoModuloService(idUsuario) {
         throw error;
     }
 
-    // 3. FLUXO: Usuário NÃO foi aprovado
-    if (!resultado.aprovado) {
+    // Fluxo: NÃO aprovado
+    if (!resultado.aprovado_por_melhor_nota) {
         return await _processarReprovacao(idUsuario, moduloAtual, resultado, progressoAtual);
     }
 
-    // 4. FLUXO: Usuário foi aprovado → avançar ou concluir
+    // Fluxo: Aprovado → avançar ou concluir
     return await _processarAprovacao(idUsuario, moduloAtual);
 }
 
-// ─────────────────────────────────────────────────────────────
-// FUNÇÃO AUXILIAR: Processar reprovação (lógica interna)
 // ─────────────────────────────────────────────────────────────
 async function _processarReprovacao(idUsuario, moduloAtual, resultado, progressoAtual) {
     const progressoAntes = await findProgressoDesafio(idUsuario);
     const progresso = await registrarFalhaDesafio(idUsuario);
 
-    // Verifica se resetou a run (2 falhas no mesmo módulo)
     const resetouRun =
         progresso &&
         Number(progresso.modulo_desafio_atual) === 1 &&
@@ -197,19 +166,14 @@ async function _processarReprovacao(idUsuario, moduloAtual, resultado, progresso
         return await _resetarRun(idUsuario, moduloAtual, resultado);
     }
 
-    // Nova tentativa no mesmo módulo
     return await _novaTentativaModulo(idUsuario, moduloAtual, resultado, progresso);
 }
 
 // ─────────────────────────────────────────────────────────────
 async function _resetarRun(idUsuario, moduloAtual, resultado) {
     let grupoReset = await findOutroGrupoAleatorio(idUsuario, 1);
-    if (!grupoReset) {
-        grupoReset = await findQualquerGrupoPorModulo(1);
-    }
-    if (!grupoReset) {
-        throw new Error("Nenhum grupo encontrado para reiniciar módulo 1");
-    }
+    if (!grupoReset) grupoReset = await findQualquerGrupoPorModulo(1);
+    if (!grupoReset) throw new Error("Nenhum grupo encontrado para reiniciar módulo 1");
 
     const exameResetado = await updateProximoModulo(moduloAtual.id_exame, 1, grupoReset, 1);
 
@@ -226,12 +190,8 @@ async function _resetarRun(idUsuario, moduloAtual, resultado) {
 // ─────────────────────────────────────────────────────────────
 async function _novaTentativaModulo(idUsuario, moduloAtual, resultado, progresso) {
     let grupo = await findOutroGrupoAleatorio(idUsuario, resultado.id_modulo);
-    if (!grupo) {
-        grupo = await findQualquerGrupoPorModulo(resultado.id_modulo);
-    }
-    if (!grupo) {
-        throw new Error("Nenhum grupo encontrado para este módulo");
-    }
+    if (!grupo) grupo = await findQualquerGrupoPorModulo(resultado.id_modulo);
+    if (!grupo) throw new Error("Nenhum grupo encontrado para este módulo");
 
     const novaTentativa = await updateProximaTentativa(
         moduloAtual.id_exame,
@@ -251,12 +211,9 @@ async function _novaTentativaModulo(idUsuario, moduloAtual, resultado, progresso
 }
 
 // ─────────────────────────────────────────────────────────────
-// FUNÇÃO AUXILIAR: Processar aprovação (lógica interna)
-// ─────────────────────────────────────────────────────────────
 async function _processarAprovacao(idUsuario, moduloAtual) {
     const proximoModulo = await findProximoModuloByUsuario(idUsuario);
 
-    // Caso: último módulo concluído → fim do desafio
     if (!proximoModulo) {
         const progresso = await avancarDesafio(idUsuario);
         return {
@@ -267,14 +224,9 @@ async function _processarAprovacao(idUsuario, moduloAtual) {
         };
     }
 
-    // Caso: há próximo módulo → preparar exame
     let grupo = await findOutroGrupoAleatorio(idUsuario, proximoModulo);
-    if (!grupo) {
-        grupo = await findQualquerGrupoPorModulo(proximoModulo);
-    }
-    if (!grupo) {
-        throw new Error("Nenhum grupo encontrado para o próximo módulo");
-    }
+    if (!grupo) grupo = await findQualquerGrupoPorModulo(proximoModulo);
+    if (!grupo) throw new Error("Nenhum grupo encontrado para o próximo módulo");
 
     const exame = await updateProximoModulo(moduloAtual.id_exame, proximoModulo, grupo, 1);
     const progresso = await avancarDesafio(idUsuario);
@@ -291,20 +243,14 @@ async function _processarAprovacao(idUsuario, moduloAtual) {
 // FUNÇÕES SIMPLES (CRUD-style)
 // ============================================================================
 async function getModulosRespondidosService(idUsuario) {
-    if (!idUsuario) {
-        throw new Error("ID do usuário é obrigatório");
-    }
+    if (!idUsuario) throw new Error("ID do usuário é obrigatório");
     return await findModulosRespondidosByUsuario(idUsuario);
 }
 
 async function getResultadoAtualService(idUsuario) {
-    if (!idUsuario) {
-        throw new Error("ID do usuário é obrigatório");
-    }
+    if (!idUsuario) throw new Error("ID do usuário é obrigatório");
     const resultado = await findResultadoModuloAtual(idUsuario);
-    if (!resultado) {
-        throw new Error("Resultado atual não encontrado");
-    }
+    if (!resultado) throw new Error("Resultado atual não encontrado");
     return resultado;
 }
 

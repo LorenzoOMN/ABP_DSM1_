@@ -1,11 +1,12 @@
 // importando os respectivos arquivos que está dentro de um json.
 const {
   createUsuario,
-  updateUsuarioCpf,
   findUsuarioById,
-  updateUsuarioNome,
-  updateUsuarioEmail,
-  updateUsuarioSenha
+  findUsuarioByCpfAndSenha,
+  insertProgressoDesafioInicial,
+  verificarBarraDesbloqueada,
+  desbloquearBarraNavegacao,
+  updateUsuario
 } = require("./usuarios.repository");
 
 // define o cadastro do usuário

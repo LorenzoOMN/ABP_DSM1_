@@ -406,7 +406,6 @@ async function findModulosRespondidosByUsuario(idUsuario) {
 } 
 
 async function findResultadoModuloAtual(idUsuario) {
-
   const result = await pool.query(
     `
     WITH progresso AS (
@@ -422,40 +421,81 @@ async function findResultadoModuloAtual(idUsuario) {
         e.id_modulo,
         e.tentativa
       FROM exames e
-
       INNER JOIN progresso p
         ON p.modulo_desafio_atual = e.id_modulo
-
       WHERE e.id_usuario = $1
-
       ORDER BY e.id_exame DESC
       LIMIT 1
+    ),
+
+    resultado_atual AS (
+      SELECT
+        e.id_exame,
+        e.id_modulo,
+        e.tentativa,
+        COUNT(r.id_resposta)::INTEGER AS total_respondidas,
+        COALESCE(SUM(r.nota), 0)::INTEGER AS acertos,
+        ROUND(
+          (
+            COALESCE(SUM(r.nota), 0)::numeric /
+            NULLIF(COUNT(r.id_resposta), 0)
+          ) * 100,
+          2
+        ) AS percentual
+      FROM exame_atual e
+      LEFT JOIN respostas r
+        ON r.id_exame = e.id_exame
+      GROUP BY
+        e.id_exame,
+        e.id_modulo,
+        e.tentativa
+    ),
+
+    resultados_do_modulo AS (
+      SELECT
+        e.id_exame,
+        e.id_modulo,
+        e.tentativa,
+        ROUND(
+          (
+            COALESCE(SUM(r.nota), 0)::numeric /
+            NULLIF(COUNT(r.id_resposta), 0)
+          ) * 100,
+          2
+        ) AS percentual
+      FROM exames e
+      INNER JOIN progresso p
+        ON p.modulo_desafio_atual = e.id_modulo
+      INNER JOIN respostas r
+        ON r.id_exame = e.id_exame
+      WHERE e.id_usuario = $1
+      GROUP BY
+        e.id_exame,
+        e.id_modulo,
+        e.tentativa
     )
 
     SELECT
-      e.id_exame,
-      e.id_modulo,
-      e.tentativa,
-      COUNT(r.id_resposta)::INTEGER AS total_respondidas,
-      COALESCE(SUM(r.nota), 0)::INTEGER AS acertos,
-
-      ROUND(
-        (
-          COALESCE(SUM(r.nota), 0)::numeric /
-          NULLIF(COUNT(r.id_resposta), 0)
-        ) * 100,
-        2
-      ) AS percentual
-
-    FROM exame_atual e
-
-    LEFT JOIN respostas r
-      ON r.id_exame = e.id_exame
-
+      ra.id_exame,
+      ra.id_modulo,
+      ra.tentativa,
+      ra.total_respondidas,
+      ra.acertos,
+      ra.percentual,
+      COALESCE(MAX(rm.percentual), ra.percentual) AS melhor_percentual,
+      COALESCE(MAX(rm.percentual), ra.percentual) >= 70 AS aprovado_por_melhor_nota,
+      COUNT(rm.id_exame)::INTEGER AS total_tentativas_modulo,
+      COALESCE(MAX(rm.tentativa), ra.tentativa)::INTEGER AS maior_tentativa_modulo
+    FROM resultado_atual ra
+    LEFT JOIN resultados_do_modulo rm
+      ON rm.id_modulo = ra.id_modulo
     GROUP BY
-      e.id_exame,
-      e.id_modulo,
-      e.tentativa
+      ra.id_exame,
+      ra.id_modulo,
+      ra.tentativa,
+      ra.total_respondidas,
+      ra.acertos,
+      ra.percentual
     `,
     [idUsuario]
   );
@@ -464,17 +504,27 @@ async function findResultadoModuloAtual(idUsuario) {
 
   if (!row) return null;
 
+  const percentual = Number(row.percentual) || 0;
+  const melhorPercentual = Number(row.melhor_percentual) || percentual;
+  const maiorTentativaModulo = Number(row.maior_tentativa_modulo) || 1;
+
   return {
     id_exame: row.id_exame,
     id_modulo: row.id_modulo,
     tentativa: row.tentativa,
     total_respondidas: row.total_respondidas,
     acertos: row.acertos,
-    percentual: Number(row.percentual),
-    aprovado: Number(row.percentual) >= 70
+    percentual,
+    aprovado: percentual >= 70,
+
+    melhor_percentual: melhorPercentual,
+    nota_considerada: melhorPercentual,
+    aprovado_por_melhor_nota: melhorPercentual >= 70,
+    total_tentativas_modulo: Number(row.total_tentativas_modulo) || 1,
+    maior_tentativa_modulo: maiorTentativaModulo,
+    pode_tentar_melhorar: percentual >= 70 && maiorTentativaModulo < 2,
   };
 }
-
 // verifica se já existe um exame para o usuário nesse módulo
 // retorna o exame se existir, ou null se não existir
 async function findExameExistente(idUsuario, idModulo) {
