@@ -1,0 +1,38 @@
+.glossario {
+  position: relative;
+  color: #e06025;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.glossario::after {
+  content: attr(data-tooltip);
+
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 220px;
+
+  background-color: #2c2318;
+  border: 1px solid #d6ad35;
+  color: white;
+
+  padding: 10px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  text-align: center;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.2s ease;
+
+  z-index: 999;
+}
+
+.glossario:hover::after {
+  opacity: 1;
+}
