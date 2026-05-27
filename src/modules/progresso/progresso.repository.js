@@ -79,31 +79,6 @@ async function findProgressoDesafio(idUsuario) {
 // IMPORTANTE: artefatos do usuário NÃO devem ser removidos no reset da run
 // NOVA FUNÇÃO: limpa o histórico de grupos usados no módulo 1, permitindo q sorteie do zero novamente
 async function resetarRunDesafios(idUsuario) {
-  // 1. primeiro deleta as respostas dos exames do módulo 1 desse usuário
-  // precisa ser antes porque respostas dependem dos exames (chave estrangeira)
-  await pool.query(
-    `
-    DELETE FROM respostas
-    WHERE id_exame IN (
-      SELECT id_exame FROM exames
-      WHERE id_usuario = $1
-        AND id_modulo = 1
-    )
-    `,
-    [idUsuario],
-  );
-
-  // 2. agora sim pode deletar os exames do módulo 1
-  await pool.query(
-    `
-    DELETE FROM exames
-    WHERE id_usuario = $1
-      AND id_modulo = 1
-    `,
-    [idUsuario],
-  );
-
-  // 3. reseta o progresso da run
   const result = await pool.query(
     `
     UPDATE progresso_desafio
@@ -117,15 +92,6 @@ async function resetarRunDesafios(idUsuario) {
     `,
     [idUsuario],
   );
-
-  // cria o exame inicial do módulo 1 para o usuário recomeçar
-  let grupo = await findOutroGrupoAleatorio(idUsuario, 1);
-  if (!grupo) {
-    grupo = await findQualquerGrupoPorModulo(1);
-  }
-  if (grupo) {
-    await criarExameInicial(idUsuario, 1, grupo);
-  }
 
   return result.rows[0] || null;
 }

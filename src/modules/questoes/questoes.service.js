@@ -105,10 +105,21 @@ async function getProximaTentativaService(idUsuario) {
         throw error;
     }
 
-    const grupo = await findOutroGrupoAleatorio(idUsuario, modulo.id_modulo);
-    if (!grupo) throw new Error("Nenhum grupo alternativo disponível");
+  let grupo = await findOutroGrupoAleatorio(idUsuario, modulo.id_modulo);
 
-    const exame = await updateProximaTentativa(modulo.id_exame, grupo, modulo.tentativa + 1);
+if (!grupo) {
+  grupo = await findQualquerGrupoPorModulo(modulo.id_modulo);
+}
+
+if (!grupo) {
+  throw new Error("Nenhum grupo encontrado para este módulo");
+}
+
+const exame = await updateProximaTentativa(
+  modulo.id_exame,
+  grupo,
+  Number(modulo.tentativa) + 1
+);
     if (!exame) throw new Error("Erro ao atualizar exame");
 
     return exame;
@@ -171,20 +182,26 @@ async function _processarReprovacao(idUsuario, moduloAtual, resultado, progresso
 
 // ─────────────────────────────────────────────────────────────
 async function _resetarRun(idUsuario, moduloAtual, resultado) {
-    let grupoReset = await findOutroGrupoAleatorio(idUsuario, 1);
-    if (!grupoReset) grupoReset = await findQualquerGrupoPorModulo(1);
-    if (!grupoReset) throw new Error("Nenhum grupo encontrado para reiniciar módulo 1");
+  let grupoReset = await findOutroGrupoAleatorio(idUsuario, 1);
 
-    const exameResetado = await updateProximoModulo(moduloAtual.id_exame, 1, grupoReset, 1);
+  if (!grupoReset) {
+    grupoReset = await findQualquerGrupoPorModulo(1);
+  }
 
-    return {
-        aprovado: false,
-        resetou_run: true,
-        message: "Você falhou 2 vezes. Sua run foi reiniciada para o módulo 1.",
-        percentual: resultado.percentual,
-        nota_minima: 70,
-        exame: exameResetado,
-    };
+  if (!grupoReset) {
+    throw new Error("Nenhum grupo encontrado para reiniciar módulo 1");
+  }
+
+  const exameResetado = await criarExameInicial(idUsuario, 1, grupoReset);
+
+  return {
+    aprovado: false,
+    resetou_run: true,
+    message: "Você falhou 2 vezes. Sua run foi reiniciada para o módulo 1.",
+    percentual: resultado.percentual,
+    nota_minima: 70,
+    exame: exameResetado,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────
