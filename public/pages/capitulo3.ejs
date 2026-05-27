@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capítulo 3 | Scrum Dungeon</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/capitulo3.css" />
+  <link rel="stylesheet" href="../assets/css/burningdown.css" />
+</head>
+
+<body>
+  <!-- ALERT -->
+  <%- include('partials/alert') %>
+
+  <%- include('partials/header') %>
+
+  <%- include('./partials/botao_voltar') %>
+
+  <main class="capitulo-page">
+
+  <section class="capitulo-hero">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="chapter-kicker">Capítulo 3</p>
+      <h1>A Sala do Tempo</h1>
+      <p>
+        Aqui a união é necessária e o tempo está correndo contra você. Apresse-se!
+      </p>
+
+        </div>
+  </section>
+
+  <!-- Barra de progresso do capitulo -->
+ <section class="chapter-progress-wrap">
+  <nav class="chapter-progress">
+    <button class="progress-item active" data-step="missao" data-scroll-to="#missao" type="button">
+      <img src="/assets/img/capitulo_3/icone_missao.png" alt="" />
+      <span>A Missão</span>
+    </button>
+
+    <button class="progress-item" data-step="bussola" data-scroll-to="#bussola" type="button">
+      <img src="/assets/img/capitulo_3/icone_bussola.png" alt="" />
+      <span>O Objetivo</span>
+    </button>
+
+    <button class="progress-item" data-step="mesa" data-scroll-to="#mesa" type="button">
+      <img src="/assets/img/capitulo_3/mesa.png" alt="" />
+      <span>A Planning</span>
+    </button>
+
+    <button class="progress-item" data-step="manifesto" data-scroll-to="#manifesto" type="button">
+      <img src="/assets/img/capitulo_1/icones/manifesto.png" alt="" />
+      <span>A Daily</span>
+    </button>
+
+    <button class="progress-item" data-step="principios" data-scroll-to="#principios" type="button">
+      <img src="/assets/img/capitulo_1/icones/principios.png" alt="" />
+      <span>O Incremento</span>
+    </button>
+
+    <button class="progress-item" data-step="fogueira" data-scroll-to="#fogueira" type="button">
+      <img src="/assets/img/capitulo_1/icones/fogueira.png" alt="" />
+      <span>Retrospectiva</span>
+    </button>
+
+    <button class="progress-item" data-step="backlog" data-scroll-to="#backlog" type="button">
+      <img src="/assets/img/capitulo_1/icones/product-backlog.png" alt="" />
+      <span>A União</span>
+    </button>
+
+    <button class="progress-item" data-step="porta" data-scroll-to="#porta" type="button">
+      <img src="/assets/img/capitulo_1/icones/porta.png" alt="" />
+      <span>Desafio</span>
+    </button>
+  </nav>
+</section>
+
+  <section class="story-block reveal" id="missao" data-step="missao">
+   <div class="story-side-icon">
+  <img src="/assets/img/capitulo_3/icone_missao.png" alt="icone missao">
+</div>
+   
+    <div class="story-text">
+      <span class="section-number">01</span>
+      <h2>A Missão</h2>
+
+      <p>
+        Ao chegar nessa sala algo está diferente. 
+        Um clarão de luz lhe cega e em seguida aparece uma sala antiga, porém com aparência de nova.
+      </p>
+
+      <p style="padding: 1.2rem 0 0 0;">
+        Uma mesa redonda, cadeiras ao redor, o salão de reunião dos heróis de outrora. 
+        Surge o fantasma de um herói do passado que lhe diz:
+      </p>
+
+      <blockquote>
+        Em um reino organizado pelos princípios do Scrum, as grandes jornadas são divididas em ciclos chamados Sprints. 
+        Cada Sprint representa uma missão de curta duração, na qual um grupo de aventureiros precisa alcançar um objetivo claro antes que o tempo se esgote. 
+      </blockquote>
+    </div>
+
+    <div class="story-art">
+      <img src="/assets/img/capitulo_3/fantasma_cap3.png" alt="Fantasma do passado">
+    </div>
+  </section>
+
+<section class="story-block reveal" id="objetivo" data-step="objetivo">
+ <div class="story-side-icon" >
+  <img src="/assets/img/capitulo_3/icone_bussola.png" alt="icone bussola">
+</div>
+  
+  <div class="story-text" style="text-align: justify;">
+    <span class="section-number">02</span>
+    <h2>O Objetivo</h2>
+
+    <p>
+      E o fantasma continua com sua voz retumbante: 
+      "Esse objetivo é conhecido como <strong>Sprint Goal,</strong> ela é a bússola 
+      que orienta todas as decisões do grupo durante a aventura."
+      Ele estende as mãos e lhe entrega algo:
+
+    </p>
+  </div>
+
+  <div class="bussola">
+    <img src="/assets/img/capitulo_3/bussola_cap3.png" alt="mao e bussola">
+  </div>
+
+  <div class="story-text">
+    <p>
+      "Sem ela, o grupo de aventureiros facilmente se perdem em tarefas aleatórias, 
+      como mercenários correndo atrás de qualquer contrato brilhante."
+      </p>
+      
+  </div>
+
+</section>
+
+  <section class="story-block reveal" id="mesa" data-step="mesa">
+    <div class="story-side-icon">
+  <img src="/assets/img/capitulo_3/mesa.png" alt="mesa">
+</div>
+
+    <div class="story-text">
+      <span class="section-number">03</span>
+      <h2>A Planning</h2>
+
+      <p>
+        "Antes de iniciar a missão, ocorre o Conselho de Planejamento, 
+       conhecido como <strong>Sprint Planning</strong>. Nesse encontro, mestres estrategistas, 
+       guardiões do produto e aventureiros definem o que será feito e como a missão será executada. 
+       O planejamento existe para garantir que todos partam na mesma direção e entendam claramente o propósito da jornada."
+      </p>
+
+    </div>
+ <div class="mesa-art">
+  <div class="mesa-hotspots">
+    <img src="/assets/img/capitulo_3/mesa.png" alt="mesa dos herois" />
+
+    <button class="mesa-hotspot hotspot-1" type="button">
+      <span>O Product Owner apresenta o objetivo da Sprint.</span>
+    </button>
+
+    <button class="mesa-hotspot hotspot-2" type="button">
+      <span>O time de heróis-dev define quais itens entram na Sprint.</span>
+    </button>
+
+    <button class="mesa-hotspot hotspot-3" type="button">
+      <span>Todos alinham como o trabalho será realizado.</span>
+    </button>
+
+    <button class="mesa-hotspot hotspot-4" type="button">
+      <span>O cliente - É aquele que demanda a jornada aos heróis.</span>
+    </button>
+  </div>
+</div>
+
+  </section>
+
+  <section class="story-block reveal" id="manifesto" data-step="manifesto">
+    <div class="story-side-icon">
+  <img src="/assets/img/capitulo_1/icones/manifesto.png" alt="">
+</div>
+
+    <div class="story-text">
+      <span class="section-number">04</span>
+      <h2>As Runas do Manifesto Ágil</h2>
+
+      <p>
+        Quatro runas douradas surgem na parede. Elas revelam os valores
+        que mudaram a forma de criar software.
+      </p>
+    </div>
+
+    <div class="runas-grid">
+      <button class="runa-btn" data-runa="individuos">
+        <img src="/assets/img/capitulo_1/runas/runa-individuos.png" alt="Runa de indivíduos e interações">
+      </button>
+
+      <button class="runa-btn" data-runa="software">
+        <img src="/assets/img/capitulo_1/runas/runa-software.png" alt="Runa de software funcionando">
+      </button>
+
+      <button class="runa-btn" data-runa="cliente">
+        <img src="/assets/img/capitulo_1/runas/runa-cliente.png" alt="Runa de colaboração com o cliente">
+      </button>
+
+      <button class="runa-btn" data-runa="mudancas">
+        <img src="/assets/img/capitulo_1/runas/runa-mudancas.png" alt="Runa de responder a mudanças">
+      </button>
+    </div>
+
+    <article class="info-card" id="runa-info">
+      <h3>Escolha uma runa</h3>
+      <p>O Manifesto Ágil está gravado nelas.</p>
+    </article>
+  </section>
+
+  <section class="story-block reveal" id="principios" data-step="principios">
+    <div class="story-side-icon">
+  <img src="/assets/img/capitulo_1/icones/principios.png" alt="">
+</div>
+    
+    <div class="story-text">
+      <span class="section-number">05</span>
+      <h2>As 12 Inscrições Menores</h2>
+
+      <p>
+        Doze tábuas antigas surgem ao redor da sala. Cada uma guarda
+        um princípio ágil.
+      </p>
+    </div>
+
+    <div class="principios-grid">
+      <% for (let i = 1; i <= 12; i++) { %>
+        <button class="principio-btn" data-principio="<%= i %>">
+          <img 
+            src="/assets/img/capitulo_1/12-principios/principio-<%= String(i).padStart(2, '0') %>.png" 
+            alt="Princípio ágil <%= i %>"
+          >
+        </button>
+      <% } %>
+    </div>
+
+    <article class="info-card" id="principio-info">
+      <h3>Escolha uma inscrição</h3>
+      <p>Cada tábua revela um princípio ágil.</p>
+    </article>
+  </section>
+
+  <section class="story-block reveal" id="fogueira" data-step="fogueira">
+   <div class="story-side-icon">
+  <img src="/assets/img/capitulo_1/icones/fogueira.png" alt="">
+</div>
+   
+    <div class="story-text">
+      <span class="section-number">06</span>
+      <h2>A Fogueira do Progresso</h2>
+
+      <p>
+        Uma fogueira surge sobre a pedra. Suas chamas revelam o que já foi feito,
+        o que ainda falta e por que progresso precisa ser visível.
+      </p>
+
+      <blockquote>
+        “Não espere o fim da jornada para descobrir se estava no caminho certo.”
+      </blockquote>
+    </div>
+
+  <div class="story-art">
+  <button
+    class="fogueira-interativa"
+    id="btnFogueiraBurningdown"
+    type="button"
+    aria-label="Acessar Burning Down"
+  >
+    <img
+      src="/assets/img/capitulo_1/icones/fogueira.png"
+      alt="Fogueira do Burning Down"
+    />
+
+    <span class="fogueira-tooltip">
+      Enxergue seu progresso nas chamas do Burning Down
+    </span>
+  </button>
+</div>
+  </section>
+
+  <section class="story-block reveal" id="backlog" data-step="backlog">
+   <div class="story-side-icon">
+  <img src="/assets/img/capitulo_1/icones/product-backlog.png" alt="">
+</div>
+    <div class="story-text">
+      <span class="section-number">07</span>
+      <h2>O Product Backlog</h2>
+
+      <p>
+        Um pergaminho vivo lista funcionalidades, melhorias, correções
+        e requisitos. Os itens mais valiosos brilham no topo.
+      </p>
+
+      <p>
+        O Product Backlog é mantido pelo Product Owner e muda conforme
+        novas informações aparecem.
+      </p>
+    </div>
+
+    <div class="story-art">
+      <img src="/assets/img/capitulo_1/icones/product-backlog.png" alt="Product Backlog">
+    </div>
+
+
+    
+<div class="backlog-vivo">
+  <div class="backlog-header">
+    <h3>Product Backlog Vivo</h3>
+ <p>
+  O pergaminho vivo treme em suas mãos. As tarefas estão todas ali,
+  mas algo parece errado: o brilho dos itens não segue nenhuma ordem.
+</p>
+<blockquote>
+  “Um backlog sem prioridade é só uma lista de desejos com capa bonita.”
+</blockquote>
+  </div>
+
+  <div class="backlog-lista" id="backlogLista">
+    <button
+      class="backlog-card prioridade-baixa"
+      type="button"
+      data-prioridade="4"
+      data-titulo="Brilho extra no baú"
+      data-explicacao="Ideias cosméticas podem ser úteis, mas nem sempre são urgentes. Se há problemas maiores, elas podem ficar mais abaixo no Product Backlog."
+    >
+      <span class="backlog-rank">?</span>
+      <span class="backlog-nome">Adicionar brilho extra no baú</span>
+      <span class="backlog-tag">Baixa</span>
+    </button>
+
+    <button
+      class="backlog-card prioridade-alta"
+      type="button"
+      data-prioridade="1"
+      data-titulo="Corrigir bug crítico da quest"
+      data-explicacao="Itens críticos, urgentes ou de grande impacto costumam subir no Product Backlog, pois podem impedir o avanço do produto ou da jornada."
+    >
+      <span class="backlog-rank">?</span>
+      <span class="backlog-nome">Corrigir bug crítico da quest</span>
+      <span class="backlog-tag">Alta</span>
+    </button>
+
+    <button
+      class="backlog-card prioridade-media"
+      type="button"
+      data-prioridade="2"
+      data-titulo="Criar tela de inventário"
+      data-explicacao="Funcionalidades importantes para a experiência do usuário podem ter prioridade média ou alta, dependendo do valor que entregam ao produto."
+    >
+      <span class="backlog-rank">?</span>
+      <span class="backlog-nome">Criar tela de inventário</span>
+      <span class="backlog-tag">Média</span>
+    </button>
+
+    <button
+      class="backlog-card prioridade-media"
+      type="button"
+      data-prioridade="3"
+      data-titulo="Melhorar feedback do usuário"
+      data-explicacao="Melhorias que ajudam o jogador a entender o que está acontecendo geram valor, mas podem vir depois de itens mais críticos."
+    >
+      <span class="backlog-rank">?</span>
+      <span class="backlog-nome">Melhorar feedback do usuário</span>
+      <span class="backlog-tag">Média</span>
+    </button>
+  </div>
+
+  <div class="backlog-acoes">
+    <button class="btn-secondary" id="btnPriorizarBacklog" type="button">
+      Priorizar Backlog
+    </button>
+
+    <button class="btn-secondary hidden" id="btnBaguncarBacklog" type="button">
+      Bagunçar novamente
+    </button>
+  </div>
+
+  <article class="info-card backlog-info" id="backlogInfo">
+    <h3>O pergaminho está inquieto...</h3>
+    <p>
+      Clique em um item para investigar seu valor, ou priorize o backlog
+      para revelar a ordem mais adequada da missão.
+    </p>
+  </article>
+</div>
+
+  </section>
+
+  <section class="story-block reveal final-block" id="porta" data-step="porta">
+   <div class="story-side-icon">
+  <img src="/assets/img/capitulo_1/icones/porta.png" alt="">
+</div>
+    <div class="story-text">
+      <span class="section-number">08</span>
+      <h2>A Primeira Porta</h2>
+
+      <p>
+        No fim da sala, uma porta se abre. Atrás dela, a criatura
+        Documentação Confusa v1.0 rosna entre pilhas de papéis e bugs voadores.
+      </p>
+
+      <p>
+  Ao chegar aqui, você pode registrar sua jornada como concluída.
+  A partir disso, a primeira porta será liberada e o desafio do módulo poderá ser enfrentado.
+</p>
+
+<button class="btn-primary" id="btnConcluirHistoria" type="button">
+  Concluir história e encarar a primeira porta
+</button>
+
+<p class="status-historia" id="statusHistoria"></p>
+
+    </div>
+
+    <div class="story-art">
+  <div class="porta-boss-scene" id="portaBossScene">
+    <span class="porta-boss-glow"></span>
+
+    <img
+      class="porta-boss-silhueta"
+      src="/assets/img/capitulo_1/inimigos/boss-silhueta.png"
+      alt="Silhueta da Documentação Confusa"
+    />
+
+    <img
+      class="porta-boss-img"
+      src="/assets/img/capitulo_1/porta-boss.png"
+      alt="Porta entreaberta da primeira dungeon"
+    />
+
+    <img
+      class="porta-boss-bug"
+      src="/assets/img/capitulo_1/inimigos/bug-escopo.png"
+      alt="Bug voador segurando uma placa"
+    />
+
+    <span class="porta-boss-tooltip">
+      Algo rosna atrás da porta...
+    </span>
+
+    <span class="porta-entrar-text">
+  ENTRE
+</span>
+
+  </div>
+</div>
+  </section>
+
+</main>
+
+ <!-- ===================== NAVEGAÇÃO INFERIOR — única e permanente ===================== -->
+  <%- include('partials/navegacao_inferior') %>
+
+  <!-- ===================== FOOTER ===================== -->
+  <%- include('partials/footer') %>
+
+ 
+
+  <script src="/js/main.js"></script>
+  <script src="/js/capitulo1.js"></script>
+</body>
+
+</html>

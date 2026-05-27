@@ -11,7 +11,7 @@ const router = require("./routes");
 // inicializa o express
 const app = express();
 
-const cors = require('cors');
+const cors = require("cors");
 app.use(cors());
 
 // permite que o servidor receba JSON no corpo das requisições
@@ -53,6 +53,11 @@ app.get("/", function (_req, res) {
 // rota capítulo 1
 app.get("/capitulo1", function (_req, res) {
   res.render("capitulo1"); // procura public/pages/capitulo1.ejs
+});
+
+// rota capítulo 3
+app.get("/capitulo3", function (_req, res) {
+  res.render("capitulo3");
 });
 
 // rota do mapa
