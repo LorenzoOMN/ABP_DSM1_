@@ -1,0 +1,17 @@
+{
+  "scrum": "Framework ágil para gerenciamento de projetos.",
+
+  "sprint": "É um ciclo de trabalho do Scrum com duração definida, onde a equipe desenvolve parte do projeto.",
+
+  "P.O": "Significa Product Owner, responsável por definir prioridades e representar os interesses do cliente no Scrum.",
+
+  "daily": "Reunião diária rápida da equipe.",
+
+  "requisitos": "São funcionalidades, necessidades ou objetivos que precisam ser desenvolvidos no projeto.",
+  
+  "metodologias-ageis": "São formas de organizar projetos com foco em colaboração, adaptação e entregas rápidas.",
+
+  "principio-agil": "É uma diretriz que orienta equipes a desenvolver software com colaboração, adaptação e entrega contínua.",
+
+  "burning-down": "É um gráfico usado no Scrum para acompanhar o progresso das tarefas ao longo do tempo."
+}
