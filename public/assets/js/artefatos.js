@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <p>O <strong>Product Backlog</strong> é criado transformando a ideia do produto em uma lista de subtarefas, detalhadas com o time e organizadas por prioridade — e ele <span class="highlight">continua evoluindo durante todo o desenvolvimento</span>. O responsável por este artefato é o <strong>Product Owner</strong>.</p>
         `
       }
-      // Adicione outros artefatos aqui:
+      // Adicione outros artefatos:
       // sprint: { nome: 'SPRINT BACKLOG', descricao: '...' },
     };
   

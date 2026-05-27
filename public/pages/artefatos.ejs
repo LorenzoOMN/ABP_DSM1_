@@ -5,21 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sala dos Artefatos | Scrum Quest</title>
 
-    <!-- Fontes do Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Source+Serif+4:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-
     <!-- CSS -->
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/artefatos.css" />
   </head>
 
   <body>
-    <%- include('partials/alert') %> <%- include('partials/header') %>
+    <%- include('partials/alert') %> <%- include('partials/header') %> <%- include('partials/botao_voltar') %>
 
     <main class="artefatos-container">
       <!-- TÍTULO DA SEÇÃO -->
@@ -29,14 +21,14 @@
 
       <!-- CONTEÚDO PRINCIPAL -->
       <section class="artefatos-content">
-        <!-- COLUNA ESQUERDA: Texto Intro + Imagem Lateral -->
+        <!-- COLUNA ESQUERDA -->
         <div class="artefatos-left">
           <p class="intro-text">
             A cada <strong>sprint</strong> completada um artefato será
             desbloqueado, use seus conhecimentos ancestrais para enfrentar os
             desafios e recuperar todos.
           </p>
-          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+          <br><br><br><br><br><br><br><br><br><br><br>
           <div class="side-image">
             <img src="/assets/img/artefatos.png" alt="Artefatos do Scrum" />
           </div>
@@ -61,7 +53,8 @@
                   alt="Product Backlog"
                 />
               </div>
-
+              
+             
               <!-- carrosel continuação:
               <div class="carousel-slide" data-artefato="sprint">
                 <img src="/assets/img/sprint_backlog.png" alt="Sprint Backlog" />
@@ -108,7 +101,7 @@
     %>
 
     <!-- Scripts -->
-    <script src="/js/main.js"></script>
-    <script src="/js/artefatos.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/artefatos.js"></script>
   </body>
 </html>
