@@ -4,14 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sala dos Artefatos | Scrum Quest</title>
-    
-    <!-- Fontes do Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Source+Serif+4:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
 
     <!-- CSS -->
     <link rel="stylesheet" href="/assets/css/main.css" />
@@ -19,12 +11,9 @@
   </head>
 
   <body>
-    <!-- Partials (Alertas e Header) -->
-    <%- include('partials/alert') %>
-    <%- include('partials/header') %>
+    <%- include('partials/alert') %> <%- include('partials/header') %> <%- include('partials/botao_voltar') %>
 
     <main class="artefatos-container">
-      
       <!-- TÍTULO DA SEÇÃO -->
       <section class="section-title-box">
         <h1 class="section-title">SALA DOS ARTEFATOS</h1>
@@ -32,11 +21,12 @@
 
       <!-- CONTEÚDO PRINCIPAL -->
       <section class="artefatos-content">
-        
-        <!-- COLUNA ESQUERDA: Texto Intro + Imagem Lateral -->
+        <!-- COLUNA ESQUERDA -->
         <div class="artefatos-left">
           <p class="intro-text">
-            A cada <strong>sprint</strong> completada um artefato será desbloqueado, use seus conhecimentos ancestrais para enfrentar os desafios e recuperar todos.
+            A cada <strong>sprint</strong> completada um artefato será
+            desbloqueado, use seus conhecimentos ancestrais para enfrentar os
+            desafios e recuperar todos.
           </p>
           <br><br><br><br><br><br><br><br><br><br><br>
           <div class="side-image">
@@ -46,18 +36,22 @@
 
         <!-- COLUNA DIREITA: Título Artefato + Carrossel + Descrição -->
         <div class="artefatos-right">
-          
           <!-- Título Dinâmico do Artefato -->
           <h2 class="artefato-title" id="nomeArtefato">PRODUCT BACKLOG</h2>
 
           <!-- CARROSSEL FUNCIONAL -->
           <div class="carousel-large">
-            <button class="carousel-arrow prev" aria-label="Anterior">‹‹</button>
-            
+            <button class="carousel-arrow prev" aria-label="Anterior">
+              ‹‹
+            </button>
+
             <div class="carousel-frame">
               <!-- Slide 1: Product Backlog -->
               <div class="carousel-slide active" data-artefato="backlog">
-                <img src="/assets/img/product_backlog.png" alt="Product Backlog" />
+                <img
+                  src="/assets/img/product_backlog.png"
+                  alt="Product Backlog"
+                />
               </div>
               
              
@@ -67,30 +61,47 @@
               </div> 
               -->
             </div>
-            
+
             <button class="carousel-arrow next" aria-label="Próximo">››</button>
           </div>
 
           <!-- DESCRIÇÃO DINÂMICA DO ARTEFATO -->
           <div class="artefato-description" id="descricaoArtefato">
-            <p>Pense no <strong>Product Backlog</strong> como a <span class="highlight">lista de missões</span>.</p>
-            <p>É basicamente um inventário de tudo que precisa ser feito para evoluir na quest (ou <strong>produto</strong>). Cada item é uma missão (ex: "criar novo inimigo", "melhorar o mapa", "corrigir bug do pulo")</p>
-            <p>As missões ficam <span class="highlight">ordenadas por prioridade</span> (as mais importantes ficam no topo). O time vai pegando as missões uma por vez e assim segue avançando na campanha.</p>
-            <p>O <strong>Product Backlog</strong> é criado transformando a ideia do produto em uma lista de subtarefas, detalhadas com o time e organizadas por prioridade — e ele <span class="highlight">continua evoluindo durante todo o desenvolvimento</span>. O responsável por este artefato é o <strong>Product Owner</strong>.</p>
+            <p>
+              Pense no <strong>Product Backlog</strong> como a
+              <span class="highlight">lista de missões</span>.
+            </p>
+            <p>
+              É basicamente um inventário de tudo que precisa ser feito para
+              evoluir na quest (ou <strong>produto</strong>). Cada item é uma
+              missão (ex: "criar novo inimigo", "melhorar o mapa", "corrigir bug
+              do pulo")
+            </p>
+            <p>
+              As missões ficam
+              <span class="highlight">ordenadas por prioridade</span> (as mais
+              importantes ficam no topo). O time vai pegando as missões uma por
+              vez e assim segue avançando na campanha.
+            </p>
+            <p>
+              O <strong>Product Backlog</strong> é criado transformando a ideia
+              do produto em uma lista de subtarefas, detalhadas com o time e
+              organizadas por prioridade — e ele
+              <span class="highlight"
+                >continua evoluindo durante todo o desenvolvimento</span
+              >. O responsável por este artefato é o
+              <strong>Product Owner</strong>.
+            </p>
           </div>
-
         </div>
       </section>
     </main>
 
-    <!-- Navegação Inferior -->
-    <%- include('partials/navegacao_inferior') %>
-
-    <!-- Footer -->
-    <%- include('partials/footer') %>
+    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
+    %>
 
     <!-- Scripts -->
-    <script src="/js/main.js"></script>
-    <script src="/js/artefatos.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/artefatos.js"></script>
   </body>
 </html>
