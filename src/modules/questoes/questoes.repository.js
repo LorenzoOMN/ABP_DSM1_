@@ -125,30 +125,49 @@ async function inserirRespostaQuestao(id_exame, id_questao, resposta, nota) {
 
 async function usuarioConcluiuModuloAtual(idUsuario) {
   const result = await pool.query(
-    ` 
-    WITH exame_atual AS ( 
-      SELECT 
-        id_exame, 
-        id_modulo, 
-        grupo 
-      FROM exames 
-      WHERE id_usuario = $1 
-      ORDER BY id_exame DESC 
+    `
+    WITH progresso AS (
+      SELECT modulo_desafio_atual
+      FROM progresso_desafio
+      WHERE id_usuario = $1
       LIMIT 1
- ) 
-    SELECT NOT EXISTS ( 
-      SELECT 1 
-      FROM exame_atual e 
-      INNER JOIN questoes q 
-        ON q.id_modulo = e.id_modulo 
-       AND q.grupo IS NOT DISTINCT FROM e.grupo 
-      WHERE NOT EXISTS ( 
-        SELECT 1 
-        FROM respostas r 
-        WHERE r.id_exame = e.id_exame 
-          AND r.id_questao = q.id_questao 
-      ) 
-    ) AS concluido 
+    ),
+
+    exame_atual AS (
+      SELECT
+        e.id_exame,
+        e.id_modulo,
+        e.grupo
+      FROM exames e
+      INNER JOIN progresso p
+        ON p.modulo_desafio_atual = e.id_modulo
+      WHERE e.id_usuario = $1
+      ORDER BY e.id_exame DESC
+      LIMIT 1
+    ),
+
+    resumo AS (
+      SELECT
+        e.id_exame,
+        COUNT(DISTINCT q.id_questao)::INTEGER AS total_questoes,
+        COUNT(DISTINCT r.id_questao)::INTEGER AS total_respondidas
+      FROM exame_atual e
+      INNER JOIN questoes q
+        ON q.id_modulo = e.id_modulo
+       AND q.grupo IS NOT DISTINCT FROM e.grupo
+      LEFT JOIN respostas r
+        ON r.id_exame = e.id_exame
+       AND r.id_questao = q.id_questao
+      GROUP BY e.id_exame
+    )
+
+    SELECT
+      COALESCE(total_questoes, 0) AS total_questoes,
+      COALESCE(total_respondidas, 0) AS total_respondidas,
+      COALESCE(total_questoes, 0) > 0
+        AND COALESCE(total_respondidas, 0) >= COALESCE(total_questoes, 0)
+        AS concluido
+    FROM resumo
     `,
     [idUsuario],
   );
@@ -522,7 +541,7 @@ async function findResultadoModuloAtual(idUsuario) {
     aprovado_por_melhor_nota: melhorPercentual >= 70,
     total_tentativas_modulo: Number(row.total_tentativas_modulo) || 1,
     maior_tentativa_modulo: maiorTentativaModulo,
-    pode_tentar_melhorar: percentual >= 70 && maiorTentativaModulo < 2,
+    pode_tentar_melhorar: percentual >= 70 && Number(row.tentativa) === 1,
   };
 }
 // verifica se já existe um exame para o usuário nesse módulo
