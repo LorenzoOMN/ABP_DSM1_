@@ -41,6 +41,8 @@ app.use("/", express.static(publicPath));
 app.use("/assets", express.static(assetsPath));
 // Libera as imagens das questões
 app.use("/assets/img/questoes", express.static(imagensQuestoesPath));
+// Libera imagens dos artefatos (e qualquer outra imagem em seed-data/imagens)
+app.use("/assets/img/artefatos", express.static(imagensQuestoesPath));
 
 // ==========================================
 // CONFIGURAÇÃO DO EJS

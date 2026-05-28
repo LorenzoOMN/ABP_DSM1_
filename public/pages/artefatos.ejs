@@ -24,7 +24,6 @@
 
     <!-- CONTEÚDO PRINCIPAL -->
     <section class="artefatos-content">
-      
       <!-- COLUNA ESQUERDA -->
       <div class="artefatos-left">
         <p class="intro-text">
@@ -36,36 +35,33 @@
         <div class="side-image">
           <img src="/assets/img/artefatos.png" alt="Artefatos do Scrum" />
         </div>
-
-        <!-- NOVO: Lista de Cards dos Artefatos (preenchida dinamicamente pelo JS) -->
-        <div id="lista-artefatos" class="artefatos-grid">
-          <p class="loading">Carregando artefatos...</p>
-        </div>
       </div>
 
       <!-- COLUNA DIREITA: Título Artefato + Carrossel + Descrição -->
       <div class="artefatos-right">
         
-        <!-- Título Dinâmico do Artefato -->
-        <h2 class="artefato-title" id="nomeArtefato">Selecione um artefato</h2>
+        <!-- Título Dinâmico do Artefato (inicialmente vazio) -->
+        <h2 class="artefato-title" id="nomeArtefato">Carregando...</h2>
 
-        <!-- CARROSSEL FUNCIONAL -->
+        <!-- CARROSSEL (container vazio - JS preenche) -->
         <div class="carousel-large">
           <button class="carousel-arrow prev" aria-label="Anterior">‹‹</button>
 
           <div class="carousel-frame" id="carousel-frame">
-            <!-- Slide será inserido dinamicamente pelo JavaScript -->
-            <div class="carousel-slide active">
-              <p class="placeholder">Clique em um artefato desbloqueado para ver os detalhes.</p>
-            </div>
+            <!-- Conteúdo será inserido dinamicamente pelo artefatos.js -->
+            <p style="color: var(--text-muted); text-align: center; padding: 2rem;">
+              Carregando artefatos...
+            </p>
           </div>
 
           <button class="carousel-arrow next" aria-label="Próximo">››</button>
         </div>
 
-        <!-- DESCRIÇÃO DINÂMICA DO ARTEFATO -->
+        <!-- DESCRIÇÃO (inicialmente vazia - JS preenche) -->
         <div class="artefato-description" id="descricaoArtefato">
-          <p class="placeholder">Clique em um artefato desbloqueado para ver os detalhes.</p>
+          <p style="color: var(--text-muted); text-align: center;">
+            Selecione um artefato para ver os detalhes.
+          </p>
         </div>
 
       </div>

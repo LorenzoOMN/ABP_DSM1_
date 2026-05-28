@@ -9,7 +9,7 @@ const {
 const router = Router();
 
 // Rotas EXPLÍCITAS para a API
-router.get("/artefatos", authMiddleware, listarArtefatosController);
-router.get("/artefatos/:id", authMiddleware, detalheArtefatoController);
+router.get("/", authMiddleware, listarArtefatosController);
+router.get("/:id", authMiddleware, detalheArtefatoController);
 
 module.exports = router;

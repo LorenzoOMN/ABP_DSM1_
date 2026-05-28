@@ -1,29 +1,5 @@
-id,titulo,descricao_curta,conteudo_longo,imagem_url,capitulo_requisito
-1,"Product Backlog","Um antigo documento que revela os segredos do Scrum","
-<p>
-  Pense no <strong>Product Backlog</strong> como a
-  <span class="highlight">lista de missões</span>.
-</p>
-<p>
-  É basicamente um inventário de tudo que precisa ser feito para
-  evoluir na quest (ou <strong>produto</strong>). Cada item é uma
-  missão (ex: "criar novo inimigo", "melhorar o mapa", "corrigir bug
-  do pulo")
-</p>
-<p>
-  As missões ficam
-  <span class="highlight">ordenadas por prioridade</span> (as mais
-  importantes ficam no topo). O time vai pegando as missões uma por
-  vez e assim segue avançando na campanha.
-</p>
-<p>
-  O <strong>Product Backlog</strong> é criado transformando a ideia
-  do produto em uma lista de subtarefas, detalhadas com o time e
-  organizadas por prioridade — e ele
-  <span class="highlight">continua evoluindo durante todo o desenvolvimento</span>. O responsável por
-  este artefato é o
-  <strong>Product Owner</strong>.
-</p>","artefato_1.png",1
+id,titulo,descricao_curta,conteudo_longo,imagem,capitulo_requisito
+1,"Product Backlog","Um antigo documento que revela os segredos do Scrum","<p>Pense no <strong>Product Backlog</strong> como a <span class=""highlight"">lista de missões</span>.</p><p>É basicamente um inventário de tudo que precisa ser feito para evoluir na quest (ou <strong>produto</strong>). Cada item é uma missão (ex: ""criar novo inimigo"", ""melhorar o mapa"", ""corrigir bug do pulo"")</p><p>As missões ficam <span class=""highlight"">ordenadas por prioridade</span> (as mais importantes ficam no topo). O time vai pegando as missões uma por vez e assim segue avançando na campanha.</p><p>O <strong>Product Backlog</strong> é criado transformando a ideia do produto em uma lista de subtarefas, detalhadas com o time e organizadas por prioridade — e ele <span class=""highlight"">continua evoluindo durante todo o desenvolvimento</span>. O responsável por este artefato é o <strong>Product Owner</strong>.</p>","artefato_1.png",1
 2,"A Espada do Product Owner","Uma lâmina lendária que representa a visão do produto","Forjada nas montanhas da priorização, esta espada é empunhada apenas por aqueles que dominam a arte de maximizar o valor do produto.","artefato_2.png",2
 3,"O Escudo do Scrum Master","Proteção contra impedimentos e distrações","Este escudo mágico foi criado para proteger o time de tudo que poderia atrapalhar seu fluxo.","artefato_3.png",3
-4,"O Escudo do Scrum Master","Proteção contra impedimentos e distrações","Este escudo mágico foi criado para proteger o time de tudo que poderia atrapalhar seu fluxo.","artefato_4.png",3
+4,"O Escudo do Scrum Master","Proteção contra impedimentos e distrações","Este escudo mágico foi criado para proteger o time de tudo que poderia atrapalhar seu fluxo.","artefato_4.png",4
