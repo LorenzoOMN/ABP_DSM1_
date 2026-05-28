@@ -113,7 +113,7 @@ async function createUsuario(nome, email, cpf, senha) {
 async function findUsuarioById(idUsuario) {
   const result = await pool.query(
     `
-    SELECT id_usuario, nome, email, cpf
+    SELECT id_usuario, nome, email, cpf, is_admin
     FROM usuarios
     WHERE id_usuario = $1
     `,
@@ -126,7 +126,7 @@ async function findUsuarioById(idUsuario) {
 async function findUsuarioByCpfAndSenha(cpf, senha) {
   const result = await pool.query(
     `
-    SELECT id_usuario, nome, email, cpf, senha, barra_desbloqueada
+    SELECT id_usuario, nome, email, cpf, senha, barra_desbloqueada, is_admin
     FROM usuarios
     WHERE cpf = $1
     `,
@@ -150,7 +150,8 @@ async function findUsuarioByCpfAndSenha(cpf, senha) {
     nome: usuario.nome,
     email: usuario.email,
     cpf: usuario.cpf,
-    barra_desbloqueada: usuario.barra_desbloqueada  // ← NOVO
+    barra_desbloqueada: usuario.barra_desbloqueada,
+    is_admin: usuario.is_admin 
   };
 }
 

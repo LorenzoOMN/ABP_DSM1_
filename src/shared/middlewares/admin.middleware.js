@@ -1,36 +1,31 @@
-/**
- * Middleware para verificar se o usuário é administrador
- * Deve ser usado APÓS o authMiddleware
- */
 const adminMiddleware = (req, res, next) => {
-    try {
-        // Verifica se o usuário existe (injetado pelo authMiddleware)
-        if (!req.usuario) {
-            return res.status(401).json({
-                message: 'Usuário não autenticado'
-            });
-        }
+  console.log('🔍 [ADMIN] Verificando permissão...');
+  console.log('🔍 [ADMIN] req.usuario:', req.usuario);
+  console.log('🔍 [ADMIN] req.usuario.is_admin:', req.usuario?.is_admin);
+  console.log('🔍 [ADMIN] Tipo:', typeof req.usuario?.is_admin);
+  console.log('🔍 [ADMIN] É true?:', req.usuario?.is_admin === true);
 
-        // Verifica se o usuário é admin
-        // Ajuste o campo conforme seu modelo de usuário (isAdmin, role, tipo_usuario, etc)
-        const isAdmin = req.usuario.isAdmin ||
-            req.usuario.role === 'admin' ||
-            req.usuario.tipo_usuario === 'admin';
+  if (!req.usuario) {
+    return res.status(401).json({ message: 'Usuário não autenticado' });
+  }
 
-        if (!isAdmin) {
-            return res.status(403).json({
-                message: 'Acesso negado. É necessário ser administrador.'
-            });
-        }
+  // Tenta diferentes formatos de is_admin
+  const isAdmin = req.usuario.is_admin === true || 
+                  req.usuario.is_admin === 'true' ||
+                  req.usuario.is_admin === 1 ||
+                  req.usuario.is_admin === 't'; // PostgreSQL as vezes retorna 't'
 
-        // Usuário é admin, continua
-        next();
-    } catch (error) {
-        console.error('Erro no adminMiddleware:', error);
-        return res.status(500).json({
-            message: 'Erro ao verificar permissões de administrador'
-        });
-    }
+  console.log('🔍 [ADMIN] isAdmin result:', isAdmin);
+
+  if (!isAdmin) {
+    console.log('❌ [ADMIN] ACESSO NEGADO');
+    return res.status(403).json({ 
+      message: 'Acesso negado. É necessário ser administrador.' 
+    });
+  }
+
+  console.log('✅ [ADMIN] ACESSO PERMITIDO');
+  next();
 };
 
 module.exports = adminMiddleware;

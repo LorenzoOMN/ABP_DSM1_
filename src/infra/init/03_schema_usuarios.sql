@@ -19,7 +19,7 @@ ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false;
 -- Define SEU usuário como admin (substitua pelo seu email)
 UPDATE usuarios 
 SET is_admin = true 
-WHERE email = 'seu_email_aqui@exemplo.com';
+WHERE email = '44@44';
 
 -- Verificar se funcionou
 -- SELECT id_usuario, email, nome, is_admin 
