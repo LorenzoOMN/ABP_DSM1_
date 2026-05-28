@@ -95,6 +95,11 @@ app.get("/certificado", function (_req, res) {
   res.render("certificado"); // procura public/pages/certificado.ejs
 });
 
+//rota para capitulo 2
+app.get("/capitulo2", function (_req, res) {
+  res.render("capitulo2"); // procura public/pages/capitulo2.ejs
+});
+
 // ROTAS DA API
 app.use("/api", router);
 
