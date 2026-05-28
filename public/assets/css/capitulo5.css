@@ -1,0 +1,255 @@
+.capitulo5-page {
+  min-height: 100vh;
+  color: #f3e5c0;
+  background:
+    linear-gradient(rgba(3, 4, 8, 0.35), rgba(3, 4, 8, 0.88)),
+    url("/assets/img/capitulo_5/cap5-background.png");
+  background-size: cover;
+  background-position: top center;
+  background-attachment: fixed;
+  padding: 2rem 2rem 8rem 8.5rem;
+}
+
+.capitulo5-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 110px;
+  padding: 1rem 0.5rem;
+  background: rgba(5, 5, 8, 0.78);
+  border-right: 1px solid rgba(218, 169, 58, 0.35);
+  z-index: 20;
+}
+
+.capitulo5-logo {
+  width: 82px;
+  display: block;
+  margin: 0 auto 2rem;
+}
+
+.capitulo5-nav {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.capitulo5-nav-item {
+  color: #f3e5c0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: grid;
+  place-items: center;
+  gap: 0.25rem;
+}
+
+.capitulo5-nav-item span {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(218, 169, 58, 0.6);
+  background: rgba(13, 10, 8, 0.86);
+}
+
+.capitulo5-nav-item.active span {
+  background: #d9a536;
+  color: #1b1206;
+  box-shadow: 0 0 18px rgba(217, 165, 54, 0.7);
+}
+
+.capitulo5-hero {
+  min-height: 82vh;
+  display: grid;
+  grid-template-columns: minmax(280px, 460px) 1fr;
+  align-items: center;
+  gap: 2rem;
+}
+
+.capitulo5-hero-content {
+  max-width: 480px;
+  padding: 2rem;
+  background: rgba(5, 5, 8, 0.54);
+  border: 1px solid rgba(218, 169, 58, 0.28);
+  border-radius: 18px;
+  backdrop-filter: blur(6px);
+}
+
+.chapter-kicker {
+  color: #d9a536;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.capitulo5-hero h1,
+.capitulo5-step h2 {
+  font-family: "Cinzel", serif;
+  color: #f5d27a;
+}
+
+.capitulo5-hero h1 {
+  font-size: clamp(2.8rem, 6vw, 5.8rem);
+  line-height: 0.95;
+  margin: 0.5rem 0 1rem;
+}
+
+.capitulo5-hero p {
+  line-height: 1.7;
+  color: #eadfc9;
+}
+
+.capitulo5-destaque {
+  color: #ffc94d !important;
+  font-weight: 700;
+}
+
+.capitulo5-party-card {
+  justify-self: start;
+  align-self: center;
+  padding: 1rem 1.25rem;
+  background: #ead8a8;
+  color: #221507;
+  border: 2px solid #8c6420;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.capitulo5-step {
+  width: min(880px, 100%);
+  margin: 0 auto 5rem;
+  padding: 2rem;
+  background: rgba(7, 7, 10, 0.78);
+  border: 1px solid rgba(218, 169, 58, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.section-number {
+  color: #d9a536;
+  font-family: "Cinzel", serif;
+  font-size: 1.8rem;
+}
+
+.capitulo5-step h2 {
+  margin: 0.25rem 0 0.75rem;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.capitulo5-step p {
+  color: #eadfc9;
+  line-height: 1.7;
+}
+
+.artefatos-grid,
+.simple-choice-grid,
+.anti-time-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.artefato-card,
+.choice-card,
+.anti-card {
+  min-height: 130px;
+  padding: 1rem;
+  color: #f3e5c0;
+  background: rgba(18, 14, 10, 0.9);
+  border: 1px solid rgba(218, 169, 58, 0.35);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.artefato-card,
+.choice-card {
+  cursor: pointer;
+}
+
+.artefato-card img {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 0.75rem;
+}
+
+.artefato-card.ativo,
+.choice-card.ativo {
+  border-color: #ffc94d;
+  box-shadow: 0 0 18px rgba(255, 201, 77, 0.35);
+}
+
+.capitulo5-info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(230, 194, 112, 0.12);
+  border: 1px solid rgba(230, 194, 112, 0.3);
+  border-radius: 12px;
+}
+
+.story-formula {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.story-formula span {
+  padding: 1rem;
+  background: rgba(18, 14, 10, 0.9);
+  border: 1px solid rgba(218, 169, 58, 0.35);
+  border-radius: 12px;
+}
+
+.status-historia {
+  margin-top: 1rem;
+  color: #ffc94d;
+  font-weight: 700;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 820px) {
+  .capitulo5-page {
+    padding: 1rem 1rem 7rem;
+  }
+
+  .capitulo5-sidebar {
+    position: sticky;
+    top: 0;
+    width: auto;
+    margin: 0 -1rem 1rem;
+    padding: 0.75rem;
+  }
+
+  .capitulo5-nav {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .capitulo5-logo {
+    display: none;
+  }
+
+  .capitulo5-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: 2rem;
+  }
+}

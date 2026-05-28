@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Capítulo 5 | Scrum Dungeon</title>
+
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/capitulo5.css" />
+  <link rel="stylesheet" href="../assets/css/burningdown.css" />
+</head>
+
+<body>
+  <%- include('partials/alert') %>
+  <%- include('partials/header') %>
+  <%- include('./partials/botao_voltar') %>
+
+  <main class="capitulo5-page">
+    <aside class="capitulo5-sidebar">
+      <img class="capitulo5-logo" src="/assets/img/logo_scrum_simples.png" alt="Scrum Dungeon" />
+
+      <nav class="capitulo5-nav" aria-label="Progresso do capítulo 5">
+        <button class="capitulo5-nav-item active" data-scroll-to="#artefatos" type="button">
+          <span>1</span>
+          Artefatos
+        </button>
+
+        <button class="capitulo5-nav-item" data-scroll-to="#impedimentos" type="button">
+          <span>2</span>
+          Impedimentos
+        </button>
+
+        <button class="capitulo5-nav-item" data-scroll-to="#user-stories" type="button">
+          <span>3</span>
+          User Stories
+        </button>
+
+        <button class="capitulo5-nav-item" data-scroll-to="#valor" type="button">
+          <span>4</span>
+          Quadro de Valor
+        </button>
+
+        <button class="capitulo5-nav-item" data-scroll-to="#caminhos" type="button">
+          <span>5</span>
+          Caminhos
+        </button>
+
+        <button class="capitulo5-nav-item" data-scroll-to="#anti-time" type="button">
+          <span>6</span>
+          Anti-Time
+        </button>
+
+        <button class="capitulo5-nav-item" data-scroll-to="#porta-final" type="button">
+          <span>★</span>
+          Porta Final
+        </button>
+      </nav>
+    </aside>
+
+    <section class="capitulo5-hero">
+      <div class="capitulo5-hero-content">
+        <p class="chapter-kicker">Capítulo 5</p>
+        <h1>O Mestre do Fluxo</h1>
+
+        <p>
+          Vocês caminham pela ponte rumo ao desconhecido. Então suas armas começam a brilhar.
+          Você começa a refletir sobre tudo que viveram até ali, estratégias se reorganizam.
+        </p>
+
+        <p class="capitulo5-destaque">
+          Uma última porta surge distante a entrada de um enorme castelo no fim da ponte. Ela não está trancada. Ela espera.
+        </p>
+      </div>
+
+      <div class="capitulo5-party-card">
+        Essa é a última etapa da jornada.
+      </div>
+    </section>
+
+    <section class="capitulo5-step reveal" id="artefatos" data-step="artefatos">
+      <span class="section-number">01</span>
+      <h2>Encaixe os Artefatos</h2>
+      <p>
+        Cada artefato conquistado representa uma parte essencial do fluxo ágil.
+        Clique nos artefatos para reconhecer seu papel antes da batalha final.
+      </p>
+
+      <div class="artefatos-grid">
+        <button class="artefato-card" type="button" data-feedback="O Product Backlog organiza o trabalho pelo valor.">
+          <img src="/assets/img/artefatos/artefato-1-backlog.png" alt="Artefato Product Backlog" />
+          <span>Product Backlog</span>
+        </button>
+
+        <button class="artefato-card" type="button" data-feedback="O medalhão representa o time colaborando em torno do mesmo objetivo.">
+          <img src="/assets/img/artefatos/artefato-2-medalhao.png" alt="Medalhão do time" />
+          <span>Medalhão dos Papéis</span>
+        </button>
+
+        <button class="artefato-card" type="button" data-feedback="A ampulheta lembra que a Sprint tem tempo limitado e foco claro.">
+          <img src="/assets/img/artefatos/artefato-3-ampulheta.png" alt="Ampulheta da Sprint" />
+          <span>Ampulheta da Sprint</span>
+        </button>
+
+        <button class="artefato-card" type="button" data-feedback="O baú representa melhoria contínua e aprendizado acumulado.">
+          <img src="/assets/img/artefatos/artefato-4-bau.png" alt="Baú da melhoria" />
+          <span>Baú da Melhoria</span>
+        </button>
+      </div>
+
+      <article class="capitulo5-info" id="artefatosInfo">
+        <h3>Interação</h3>
+        <p>Clique em um artefato para revelar seu significado.</p>
+      </article>
+    </section>
+
+    <section class="capitulo5-step reveal" id="impedimentos" data-step="impedimentos">
+      <span class="section-number">02</span>
+      <h2>Remova os Impedimentos</h2>
+      <p>
+        Nada pode bloquear um time que entende o fluxo. O Scrum Master não faz o trabalho pelo time,
+        mas ajuda a remover obstáculos.
+      </p>
+
+      <div class="simple-choice-grid">
+        <button class="choice-card" type="button">Falta de comunicação</button>
+        <button class="choice-card" type="button">Dependência externa</button>
+        <button class="choice-card" type="button">Objetivo pouco claro</button>
+      </div>
+    </section>
+
+    <section class="capitulo5-step reveal" id="user-stories" data-step="user-stories">
+      <span class="section-number">03</span>
+      <h2>Forja das User Stories</h2>
+      <p>
+        Requisitos confusos precisam se transformar em histórias claras, com papel,
+        necessidade, benefício e critérios de aceitação.
+      </p>
+
+      <div class="story-formula">
+        <span>Como aventureiro</span>
+        <span>quero visualizar meu progresso</span>
+        <span>para saber quanto falta para concluir a jornada</span>
+      </div>
+    </section>
+
+    <section class="capitulo5-step reveal" id="valor" data-step="valor">
+      <span class="section-number">04</span>
+      <h2>Quadro de Valor</h2>
+      <p>
+        O Product Owner prioriza o que realmente gera valor, equilibrando impacto,
+        risco, urgência e aprendizado.
+      </p>
+
+      <div class="simple-choice-grid">
+        <button class="choice-card" type="button">Corrigir erro que impede o usuário de finalizar</button>
+        <button class="choice-card" type="button">Adicionar efeito visual no botão</button>
+        <button class="choice-card" type="button">Refatorar parte crítica que causa retrabalho</button>
+      </div>
+    </section>
+
+    <section class="capitulo5-step reveal" id="caminhos" data-step="caminhos">
+      <span class="section-number">05</span>
+      <h2>Mapa dos Caminhos</h2>
+      <p>
+        Um time ágil aprende com feedback, adapta o plano e entrega valor em ciclos curtos.
+      </p>
+
+      <div class="simple-choice-grid">
+        <button class="choice-card" type="button">Ouvir feedback e adaptar</button>
+        <button class="choice-card" type="button">Ignorar mudanças até o final</button>
+        <button class="choice-card" type="button">Entregar tudo apenas no último dia</button>
+      </div>
+    </section>
+
+    <section class="capitulo5-step reveal" id="anti-time" data-step="anti-time">
+      <span class="section-number">06</span>
+      <h2>Espelho Invertido: O Anti-Time</h2>
+      <p>
+        O Anti-Time representa comportamentos que quebram colaboração, transparência e aprendizado.
+      </p>
+
+      <div class="anti-time-grid">
+        <article class="anti-card">
+          <h3>O PO Caótico</h3>
+          <p>Tudo é urgente. Tudo muda sem critério.</p>
+        </article>
+
+        <article class="anti-card">
+          <h3>O Time Silencioso</h3>
+          <p>Cada um trabalha isolado e ninguém compartilha impedimentos.</p>
+        </article>
+
+        <article class="anti-card">
+          <h3>O Falso Scrum Master</h3>
+          <p>Manda em todos, centraliza decisões e não facilita o fluxo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="capitulo5-step reveal final-step" id="porta-final" data-step="porta-final">
+      <span class="section-number">Final</span>
+      <h2>A Porta Final</h2>
+
+      <p>
+        A inscrição na porta diz: “Aquele que entende o fluxo… torna-se parte dele.”
+      </p>
+
+      <p>
+        Ao concluir esta história, o último desafio será liberado.
+      </p>
+
+      <button class="btn-primary" id="btnConcluirHistoria" type="button">
+        Concluir história e atravessar a porta
+      </button>
+
+      <p class="status-historia" id="statusHistoria"></p>
+
+      <button class="btn-primary porta-final-btn hidden" id="btnEntrarDesafio" type="button">
+        Encarar o desafio final
+      </button>
+    </section>
+  </main>
+
+  <%- include('partials/navegacao_inferior') %>
+  <%- include('partials/footer') %>
+
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/capitulo5.js"></script>
+</body>
+
+</html>
