@@ -16,7 +16,8 @@ const sqlFiles = [
     "05_schema_respostas.sql",
     "06_seed_modulos.sql",
     "07_seed_questoes.sql",
-    "08_schema_progresso.sql"
+    "08_schema_progresso.sql",
+    "09_schema_artefatos.sql"
 ];
 
 async function runSqlFiles() {
