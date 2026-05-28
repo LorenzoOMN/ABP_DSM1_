@@ -1,6 +1,6 @@
 const fs = require("fs/promises");
 const path = require("path");
-require('dotenv').config()
+require('dotenv').config();
 const pool = require("../shared/database/db");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
