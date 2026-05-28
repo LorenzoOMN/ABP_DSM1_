@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Questões | Scrum Dungeon</title>
+    <link rel="stylesheet" href="../assets/css/main.css"> 
+    <link rel="stylesheet" href="../assets/css/admin_questoes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="dungeon-theme">
+
+    <%- include('./partials/header') %> 
+
+    <main class="admin-container">
+        
+        <header class="page-header">
+            <h1>Grimório das Questões</h1>
+            <p>Gerencie os desafios e enigmas da masmorra.</p>
+        </header>
+
+        <!-- Botão de Adicionar -->
+        <div style="margin-bottom: 1rem; text-align: right;">
+            <button class="btn-action btn-add" onclick="window.location.href='/admin/questoes/novo'">
+                + Nova Questão
+            </button>
+        </div>
+
+        <!-- Painel da Tabela -->
+        <div class="rpg-panel">
+            <table class="quest-table">
+                <thead>
+                    <tr>
+                        <th width="10%">ID</th>
+                        <th width="40%">Enunciado</th>
+                        <th width="15%">Módulo</th>
+                        <th width="15%">Dificuldade</th>
+                        <th width="20%">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                    <!-- Dados serão carregados via JavaScript -->
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 2rem;">
+                            <span class="loading">Carregando grimório...</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <%- include('./partials/footer') %> 
+    <%- include('./partials/navegacao_inferior') %> 
+
+    <script src="../assets/js/admin_questoes.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+</body>
+</html>
