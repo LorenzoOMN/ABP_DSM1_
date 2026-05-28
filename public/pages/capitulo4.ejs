@@ -4,54 +4,576 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Capitulo 4 | Scrum Dungeon</title>
+  <title>Capítulo 4 | Scrum Dungeon</title>
   <link rel="stylesheet" href="../assets/css/main.css" />
   <link rel="stylesheet" href="../assets/css/capitulo1.css" />
+  <link rel="stylesheet" href="../assets/css/capitulo4.css" />
   <link rel="stylesheet" href="../assets/css/burningdown.css" />
 </head>
 
 <body>
   <%- include('partials/alert') %>
-
   <%- include('partials/header') %>
-
   <%- include('./partials/botao_voltar') %>
 
-  <main class="capitulo-page">
-    <section class="capitulo-hero">
+  <main class="capitulo-page capitulo4-page">
+    <section class="capitulo-hero capitulo4-hero">
       <div class="hero-overlay"></div>
 
       <div class="hero-content">
-        <p class="chapter-kicker">Capitulo 4</p>
+        <p class="chapter-kicker">Capítulo 4</p>
         <h1>O Ciclo do Tempo</h1>
         <p>
-          Aqui, qualidade e melhoria continua testam sua disciplina agil.
+          A Sprint entrou em crise. A ampulheta parou, os cartões se acumulam
+          e a dungeon começa a reagir ao caos do trabalho. Para restaurar o
+          fluxo, vocês precisam atravessar oito atos sobre Kanban, qualidade,
+          métricas e melhoria contínua.
         </p>
+
+        <div
+          class="time-state-panel"
+          id="ampulhetaEstado"
+          data-estado="travada"
+          aria-label="Estado narrativo da ampulheta"
+        >
+          <span class="time-state-label">Ampulheta</span>
+          <strong>Travada</strong>
+          <p>O tempo não flui porque o trabalho também não flui.</p>
+        </div>
       </div>
     </section>
 
-    <section class="story-block reveal" id="capitulo4">
-      <div class="story-side-icon">
-        <img src="/assets/img/capitulo_1/icones/despertar.png" alt="">
+    <section class="chapter-progress-wrap">
+      <nav class="chapter-progress" aria-label="Atos do capítulo">
+        <button class="progress-item active" data-step="ampulheta" data-scroll-to="#ato-ampulheta" type="button">
+          <span class="progress-glyph">01</span>
+          <span>Ampulheta</span>
+        </button>
+        <button class="progress-item" data-step="kanban" data-scroll-to="#ato-kanban" type="button">
+          <span class="progress-glyph">02</span>
+          <span>Kanban</span>
+        </button>
+        <button class="progress-item" data-step="dod" data-scroll-to="#ato-dod" type="button">
+          <span class="progress-glyph">03</span>
+          <span>DoD</span>
+        </button>
+        <button class="progress-item" data-step="cicd" data-scroll-to="#ato-cicd" type="button">
+          <span class="progress-glyph">04</span>
+          <span>CI/CD</span>
+        </button>
+        <button class="progress-item" data-step="divida" data-scroll-to="#ato-divida" type="button">
+          <span class="progress-glyph">05</span>
+          <span>Dívida</span>
+        </button>
+        <button class="progress-item" data-step="metricas" data-scroll-to="#ato-metricas" type="button">
+          <span class="progress-glyph">06</span>
+          <span>Métricas</span>
+        </button>
+        <button class="progress-item" data-step="stakeholders" data-scroll-to="#ato-stakeholders" type="button">
+          <span class="progress-glyph">07</span>
+          <span>Stakeholders</span>
+        </button>
+        <button class="progress-item" data-step="melhoria" data-scroll-to="#ato-melhoria" type="button">
+          <span class="progress-glyph">08</span>
+          <span>Melhoria</span>
+        </button>
+      </nav>
+    </section>
+
+    <aside class="corvo-card" id="cartaoCorvo" aria-live="polite">
+      <img class="corvo-card__image" src="/assets/img/corvo_sem_sombra.png" alt="Corvo guia da dungeon" />
+      <div class="corvo-card__content">
+        <span class="corvo-card__eyebrow">Cartão do Corvo</span>
+        <h2>Observe o fluxo</h2>
+        <p>
+          Ao longo do capítulo, este cartão vai explicar os conceitos reais por
+          trás de cada cena da dungeon.
+        </p>
       </div>
+    </aside>
+
+    <section class="story-block reveal capitulo4-ato" id="ato-ampulheta" data-step="ampulheta">
+      <div class="story-side-icon"><span class="side-glyph">I</span></div>
 
       <div class="story-text">
-        <span class="section-number">04</span>
-        <h2>Capitulo 4</h2>
-
+        <span class="section-number">Ato 01</span>
+        <h2>A Ampulheta Travada</h2>
         <p>
-          Esta pagina usa a mesma base visual do Capitulo 1 e esta pronta
-          para receber o conteudo completo do quarto capitulo.
+          Depois da terceira porta, o pântano fica imóvel. Até a névoa parece
+          suspensa no ar. No centro do caminho, a ampulheta flutua, mas a areia
+          não cai.
         </p>
+        <p>
+          O Corvo pousa sobre uma pedra rachada e observa o Product Backlog e o
+          Sprint Backlog se abrirem no chão. Várias tarefas brilham, mas nenhuma
+          atravessa o caminho até o fim.
+        </p>
+        <p class="concept-highlight">
+          Conceito real: trabalho iniciado não é o mesmo que trabalho concluído.
+          Uma Sprint precisa de foco e de fluxo saudável.
+        </p>
+        <div class="interaction-placeholder" data-future-interaction="ampulheta">
+          Espaço reservado para a ampulheta narrativa.
+        </div>
+        <p class="fixacao">A Sprint só respira quando o trabalho flui.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal capitulo4-ato" id="ato-kanban" data-step="kanban">
+      <div class="story-side-icon"><span class="side-glyph">II</span></div>
+
+      <div class="story-text">
+        <span class="section-number">Ato 02</span>
+        <h2>O Quadro das Tarefas Presas</h2>
+        <p>
+          A névoa se abre como uma cortina pesada. Na parede, um quadro antigo
+          pulsa em quatro colunas. Os cartões não estão apenas listados: eles
+          estão presos.
+        </p>
+        <p>
+          Três cartões se empilham em Desenvolvimento, tremendo como se
+          disputassem o mesmo espaço. O Corvo inclina a cabeça: "Não confundam
+          movimento com progresso."
+        </p>
+        <p class="concept-highlight">
+          Conceito real: Kanban mostra o fluxo de trabalho. WIP significa Work
+          In Progress e limita o trabalho em andamento para evitar sobrecarga.
+        </p>
+        <div class="kanban-stage" data-future-interaction="kanban">
+          <div class="kanban-stage__header">
+            <h3>Quadro Kanban da Sprint</h3>
+            <p>Observe onde o trabalho está parado antes de tentar avançar.</p>
+          </div>
+
+          <div class="kanban-board" aria-label="Quadro Kanban da Sprint em crise">
+            <section class="kanban-column" data-column="a-fazer">
+              <h4>A Fazer</h4>
+              <button class="kanban-card" data-card="priorizar-feedback" type="button">
+                Priorizar feedback dos usuários
+              </button>
+              <button class="kanban-card" data-card="ajustar-backlog" type="button">
+                Ajustar Product Backlog
+              </button>
+            </section>
+
+            <section class="kanban-column kanban-column--limited" data-column="desenvolvimento" data-wip-limit="2">
+              <h4>
+                Em Desenvolvimento
+                <span class="kanban-wip-counter" data-wip-counter>WIP 0/2</span>
+              </h4>
+              <button class="kanban-card" data-card="api-missoes" type="button">
+                Implementar API de missões
+              </button>
+              <button class="kanban-card" data-card="tela-bau" type="button">
+                Criar tela do baú
+              </button>
+              <button class="kanban-card kanban-card--blocked" data-card="atalho-perigoso" type="button">
+                Atalho perigoso tentando entrar
+              </button>
+            </section>
+
+            <section class="kanban-column" data-column="teste">
+              <h4>Teste</h4>
+              <button class="kanban-card" data-card="validar-criterios" type="button">
+                Validar critérios de aceitação
+              </button>
+            </section>
+
+            <section class="kanban-column" data-column="concluido">
+              <h4>Concluído</h4>
+              <button class="kanban-card kanban-card--done" data-card="login" type="button">
+                Login integrado
+              </button>
+            </section>
+          </div>
+        </div>
+        <p class="fixacao">Começar menos pode ser o caminho para terminar mais.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal capitulo4-ato" id="ato-dod" data-step="dod">
+      <div class="story-side-icon"><span class="side-glyph">III</span></div>
+
+      <div class="story-text">
+        <span class="section-number">Ato 03</span>
+        <h2>A Forja do Pronto</h2>
+        <p>
+          Quando o quadro começa a fazer sentido, uma porta de ferro sobe do
+          chão. Sobre ela está gravado: "Somente incrementos prontos
+          atravessam."
+        </p>
+        <p>
+          O guerreiro tenta empurrar um cartão quase finalizado. A forja acende
+          por um instante, depois se apaga. O metal da porta permanece frio.
+          Quase pronto ainda não é pronto.
+        </p>
+        <p class="concept-highlight">
+          Conceito real: Definition of Done, ou DoD, define quando um incremento
+          pode ser considerado realmente pronto e protege a qualidade.
+        </p>
+        <div class="dod-forge" data-future-interaction="dod">
+          <div class="dod-forge__header">
+            <h3>Forja da Definition of Done</h3>
+            <p>Marque os critérios que fazem um incremento ser realmente pronto.</p>
+          </div>
+
+          <div class="dod-checklist" aria-label="Critérios da Definition of Done">
+            <label class="dod-check">
+              <input type="checkbox" data-dod-check="codigo-integrado" />
+              <span>Código integrado ao trabalho principal</span>
+            </label>
+
+            <label class="dod-check">
+              <input type="checkbox" data-dod-check="testes-executados" />
+              <span>Testes executados com sucesso</span>
+            </label>
+
+            <label class="dod-check">
+              <input type="checkbox" data-dod-check="criterios-aceitacao" />
+              <span>Critérios de aceitação atendidos</span>
+            </label>
+
+            <label class="dod-check">
+              <input type="checkbox" data-dod-check="revisao-realizada" />
+              <span>Revisão realizada pelo time</span>
+            </label>
+
+            <label class="dod-check">
+              <input type="checkbox" data-dod-check="sem-defeitos-criticos" />
+              <span>Sem defeitos críticos conhecidos</span>
+            </label>
+          </div>
+
+          <button class="btn-secondary dod-forge__button" id="btnValidarDod" type="button">
+            Testar incremento na forja
+          </button>
+        </div>
+        <p class="fixacao">Pronto é um acordo visível, não uma sensação.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal capitulo4-ato" id="ato-cicd" data-step="cicd">
+      <div class="story-side-icon"><span class="side-glyph">IV</span></div>
+
+      <div class="story-text">
+        <span class="section-number">Ato 04</span>
+        <h2>As Runas de CI e CD</h2>
+        <p>
+          A forja libera uma ponte mecânica. Duas runas se acendem em sequência:
+          CI e CD. As engrenagens parecem prontas para girar, mas a ponte treme
+          quando alguém tenta atravessar sem testar.
+        </p>
+        <p>
+          O grupo percebe que integrar código rapidamente não basta. Se o
+          caminho não for confiável, a entrega vira uma travessia no escuro.
+        </p>
+        <p class="concept-highlight">
+          Conceito real: Integração Contínua integra e testa código com
+          frequência. Entrega Contínua automatiza o caminho de deploy.
+          Testes automatizados reduzem risco e retrabalho.
+        </p>
+        <div class="pipeline-bridge" data-future-interaction="cicd">
+          <div class="pipeline-bridge__header">
+            <h3>Ponte de CI/CD</h3>
+            <p>Execute as etapas na ordem certa para atravessar com segurança.</p>
+          </div>
+
+          <div class="pipeline-steps" aria-label="Pipeline de Integração Contínua e Entrega Contínua">
+            <button class="pipeline-step" type="button" data-pipeline-step="integrar">
+              <span class="pipeline-step__sigla">CI</span>
+              <strong>Integrar</strong>
+              <small>Unir o código ao trabalho principal</small>
+            </button>
+
+            <button class="pipeline-step" type="button" data-pipeline-step="testar">
+              <span class="pipeline-step__sigla">CI</span>
+              <strong>Testar</strong>
+              <small>Executar testes automatizados</small>
+            </button>
+
+            <button class="pipeline-step" type="button" data-pipeline-step="entregar">
+              <span class="pipeline-step__sigla">CD</span>
+              <strong>Preparar entrega</strong>
+              <small>Deixar o deploy confiável</small>
+            </button>
+          </div>
+
+          <p class="pipeline-bridge__status" id="pipelineStatus">
+            A ponte aguarda a primeira runa.
+          </p>
+        </div>
+        <p class="fixacao">Integrar sem testar é só espalhar o erro mais depressa.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal capitulo4-ato" id="ato-divida" data-step="divida">
+      <div class="story-side-icon"><span class="side-glyph">V</span></div>
+
+      <div class="story-text">
+        <span class="section-number">Ato 05</span>
+        <h2>As Correntes da Dívida Técnica</h2>
+        <p>
+          Do outro lado da ponte, as ferramentas ficam pesadas. Correntes surgem
+          nos tornozelos dos Developers, cada uma marcada por um atalho tomado
+          com pressa.
+        </p>
+        <p>
+          "Pulamos os testes." "Duplicamos para terminar." "Depois arruma." As
+          inscrições brilham nas correntes. Cada escolha que parecia economizar
+          tempo agora puxa o time para trás.
+        </p>
+        <p class="concept-highlight">
+          Conceito real: dívida técnica nasce de decisões técnicas ruins ou
+          apressadas. Refatoração melhora a estrutura interna sem mudar o
+          comportamento externo.
+        </p>
+        <div class="technical-debt" data-future-interaction="divida">
+          <div class="technical-debt__header">
+            <h3>Correntes da Dívida Técnica</h3>
+            <p>Observe os atalhos que deixaram o fluxo mais pesado.</p>
+          </div>
+
+          <div class="debt-chain-list" aria-label="Atalhos que geraram dívida técnica">
+            <article class="debt-chain" data-debt-chain="duplicacao">
+              <strong>Duplicamos para terminar</strong>
+              <span>O código ficou mais difícil de manter.</span>
+            </article>
+
+            <article class="debt-chain" data-debt-chain="sem-testes">
+              <strong>Pulamos os testes</strong>
+              <span>O risco de defeitos escondidos aumentou.</span>
+            </article>
+
+            <article class="debt-chain" data-debt-chain="depois-arruma">
+              <strong>Depois arruma</strong>
+              <span>O retrabalho foi empurrado para o futuro.</span>
+            </article>
+          </div>
+
+          <button class="btn-secondary technical-debt__button" id="btnRefatorarDivida" type="button">
+            Refatorar trecho crítico
+          </button>
+        </div>
+        <p class="fixacao">Atalhos técnicos cobram juros.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal capitulo4-ato" id="ato-metricas" data-step="metricas">
+      <div class="story-side-icon"><span class="side-glyph">VI</span></div>
+
+      <div class="story-text">
+        <span class="section-number">Ato 06</span>
+        <h2>O Oráculo das Métricas</h2>
+        <p>
+          As correntes se soltam parcialmente e revelam uma sala circular.
+          Relógios, gráficos e ampulhetas flutuam ao redor do grupo. Uma voz
+          pergunta se vocês medem para aprender ou para punir.
+        </p>
+        <p>
+          Quando alguém tenta apontar os números como acusação, os ponteiros
+          giram sem sentido. Quando o time olha para aprender, os instrumentos
+          finalmente se alinham.
+        </p>
+        <p class="concept-highlight">
+          Conceito real: Burndown mostra trabalho restante, Burnup mostra
+          trabalho concluído acumulado, Velocity apoia previsões internas, Lead
+          Time mede pedido até entrega e Cycle Time mede início até conclusão.
+        </p>
+        <div class="metrics-oracle" data-future-interaction="metricas">
+          <div class="metrics-oracle__header">
+            <h3>Instrumentos do Oráculo</h3>
+            <p>Escolha uma métrica para entender que sinal ela revela sobre o fluxo.</p>
+          </div>
+
+          <div class="metric-rune-list" aria-label="Métricas ágeis do Oráculo">
+            <button class="metric-rune" type="button" data-metric="burndown">
+              <strong>Burndown</strong>
+              <span>Trabalho restante</span>
+            </button>
+
+            <button class="metric-rune" type="button" data-metric="burnup">
+              <strong>Burnup</strong>
+              <span>Trabalho concluído acumulado</span>
+            </button>
+
+            <button class="metric-rune" type="button" data-metric="velocity">
+              <strong>Velocity</strong>
+              <span>Ritmo interno da equipe</span>
+            </button>
+
+            <button class="metric-rune" type="button" data-metric="lead-time">
+              <strong>Lead Time</strong>
+              <span>Pedido até entrega</span>
+            </button>
+
+            <button class="metric-rune" type="button" data-metric="cycle-time">
+              <strong>Cycle Time</strong>
+              <span>Início até conclusão</span>
+            </button>
+          </div>
+
+          <p class="metrics-oracle__status" id="metricStatus">
+            O Oráculo aguarda a escolha de um instrumento.
+          </p>
+        </div>
+        <p class="fixacao">Métrica é bússola, não chicote.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal capitulo4-ato" id="ato-stakeholders" data-step="stakeholders">
+      <div class="story-side-icon"><span class="side-glyph">VII</span></div>
+
+      <div class="story-text">
+        <span class="section-number">Ato 07</span>
+        <h2>A Ponte dos Stakeholders</h2>
+        <p>
+          A próxima ponte não range por causa do peso do time, mas por causa das
+          vozes ao redor: mudar, acelerar, adicionar, interromper. O Product
+          Owner tenta ouvir tudo ao mesmo tempo.
+        </p>
+        <p>
+          O Bardo segura o alaúde contra o peito. Feedback importa, mas precisa
+          virar decisão consciente. Nem toda urgência deve entrar imediatamente
+          no fluxo da Sprint.
+        </p>
+        <p class="concept-highlight">
+          Conceito real: valor percebido importa mais que velocidade isolada.
+          Feedback deve alimentar o Product Backlog, não destruir o foco.
+        </p>
+        <div class="stakeholder-bridge" data-future-interaction="stakeholders">
+          <div class="stakeholder-bridge__header">
+            <h3>Pedidos na Ponte</h3>
+            <p>Classifique cada pedido sem deixar toda urgência destruir o foco.</p>
+          </div>
+
+          <div class="stakeholder-request-list" aria-label="Pedidos de stakeholders para classificar">
+            <article class="stakeholder-request" data-correct-action="backlog">
+              <strong>Erro impede concluir a missão principal</strong>
+              <p>Impacta valor imediato para o jogador.</p>
+              <div class="stakeholder-actions">
+                <button type="button" data-stakeholder-action="backlog">Product Backlog</button>
+                <button type="button" data-stakeholder-action="depois">Depois</button>
+                <button type="button" data-stakeholder-action="recusar">Recusar</button>
+              </div>
+            </article>
+
+            <article class="stakeholder-request" data-correct-action="depois">
+              <strong>Nova animação decorativa no baú</strong>
+              <p>Pode ser útil, mas não resolve a crise da Sprint.</p>
+              <div class="stakeholder-actions">
+                <button type="button" data-stakeholder-action="backlog">Product Backlog</button>
+                <button type="button" data-stakeholder-action="depois">Depois</button>
+                <button type="button" data-stakeholder-action="recusar">Recusar</button>
+              </div>
+            </article>
+
+            <article class="stakeholder-request" data-correct-action="recusar">
+              <strong>Adicionar cinco pedidos sem objetivo claro</strong>
+              <p>Aumenta escopo sem mostrar valor percebido.</p>
+              <div class="stakeholder-actions">
+                <button type="button" data-stakeholder-action="backlog">Product Backlog</button>
+                <button type="button" data-stakeholder-action="depois">Depois</button>
+                <button type="button" data-stakeholder-action="recusar">Recusar</button>
+              </div>
+            </article>
+          </div>
+
+          <p class="stakeholder-bridge__status" id="stakeholderStatus">
+            A ponte aguarda decisões conscientes.
+          </p>
+        </div>
+        <p class="fixacao">Nem toda urgência é valor.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal capitulo4-ato final-block" id="ato-melhoria" data-step="melhoria">
+      <div class="story-side-icon"><span class="side-glyph">VIII</span></div>
+
+      <div class="story-text">
+        <span class="section-number">Ato 08</span>
+        <h2>O Baú da Melhoria Contínua</h2>
+        <p>
+          As vozes desaparecem aos poucos. A ampulheta volta a se mover, mas
+          ainda não está estável. Não há inimigo visível, apenas o time cansado
+          olhando para o próprio processo.
+        </p>
+        <p>
+          O Corvo pousa diante de um baú fechado. Ele não pede força, velocidade
+          ou mais promessas. O baú se abre quando o grupo responde: o que
+          fizemos bem, o que deu errado e o que vamos melhorar?
+        </p>
+        <p class="concept-highlight">
+          Conceito real: retrospectiva e melhoria contínua ajudam a equipe a
+          evoluir. Qualidade e responsabilidade compartilhada por todo o time.
+        </p>
+        <div class="retro-chest" data-future-interaction="melhoria">
+          <div class="retro-chest__header">
+            <h3>Retrospectiva do Time</h3>
+            <p>Responda às três perguntas para abrir o baú da melhoria.</p>
+          </div>
+
+          <div class="retro-question-list" aria-label="Perguntas da retrospectiva">
+            <label class="retro-question">
+              <span>O que fizemos bem?</span>
+              <textarea
+                data-retro-answer="bom"
+                rows="3"
+                placeholder="Exemplo: tornamos o fluxo visível no Kanban."
+              ></textarea>
+            </label>
+
+            <label class="retro-question">
+              <span>O que nos atrapalhou?</span>
+              <textarea
+                data-retro-answer="problema"
+                rows="3"
+                placeholder="Exemplo: começamos trabalho demais ao mesmo tempo."
+              ></textarea>
+            </label>
+
+            <label class="retro-question">
+              <span>Qual melhoria vamos testar na próxima Sprint?</span>
+              <textarea
+                data-retro-answer="melhoria"
+                rows="3"
+                placeholder="Exemplo: respeitar limite de WIP antes de puxar nova tarefa."
+              ></textarea>
+            </label>
+          </div>
+
+          <button class="btn-secondary retro-chest__button" id="btnAbrirBauMelhoria" type="button">
+            Abrir baú da melhoria
+          </button>
+
+          <p class="retro-chest__status" id="retroStatus">
+            O baú ainda está fechado. A melhoria precisa virar uma decisão concreta.
+          </p>
+        </div>
+        <p class="fixacao">
+          Não é só sobre o que entregamos. É sobre como aprendemos a entregar
+          melhor.
+        </p>
+
+        <button class="btn-primary" id="btnConcluirHistoria" type="button">
+          Concluir história e encarar a quarta porta
+        </button>
+        <p class="status-historia" id="statusHistoria"></p>
+      </div>
+
+      <div class="treasure-panel" id="portaBossScene">
+        <h3>Baú da Melhoria Contínua</h3>
+        <p>Equipes fortes não nascem prontas. Elas evoluem a cada ciclo.</p>
+        <span class="porta-boss-tooltip">A Horda de Stakeholders Selvagens se aproxima.</span>
+        <span class="porta-entrar-text">ENTRE</span>
       </div>
     </section>
   </main>
 
   <%- include('partials/navegacao_inferior') %>
-
   <%- include('partials/footer') %>
 
   <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/capitulo4.js"></script>
 </body>
 
 </html>
