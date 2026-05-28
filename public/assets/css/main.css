@@ -679,6 +679,8 @@ footer {
 
     white-space: normal;
 
+    word-wrap: break-word;
+
     opacity: 0;
 
     visibility: hidden;
@@ -802,4 +804,37 @@ footer {
     .vida-icon {
         width: 32px;
     }
+}
+
+/* ================= RESPONSIVIDADE GLOSSARIO ================= */
+
+@media (max-width: 768px) {
+
+    .glossario::after {
+
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        bottom: 125%;
+
+        width: 140px;
+
+        max-width: 140px;
+
+        padding: 8px;
+
+        font-size: 11px;
+
+        line-height: 1.4;
+
+        text-align: center;
+
+        white-space: normal;
+
+        overflow-wrap: break-word;
+
+        z-index: 99999;
+    }
+
 }
