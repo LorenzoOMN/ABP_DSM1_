@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS public.questoes (
   alternativa_c TEXT,
   alternativa_d TEXT,
   imagem VARCHAR(255),
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- 👈 COLUNA ADICIONADA
   CONSTRAINT fk_questoes_modulo
     FOREIGN KEY (id_modulo)
     REFERENCES public.modulos (id_modulo)

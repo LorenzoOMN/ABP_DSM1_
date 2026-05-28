@@ -1,232 +1,512 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap');
+
+
 /* ===== VARIÁVEIS & RESET ===== */
 :root {
-    --bg-dark: #1a1410;
-    --bg-panel: #241e16;
-    --gold-primary: #d4a843;
-    --gold-light: #f0d078;
-    --gold-dark: #8a6d2b;
-    --text-main: #e8dcc8;
-    --text-muted: #b0a48e;
-    
-    /* TIPOGRAFIA EXATA DO FIGMA */
-    --font-titulo: 'Cinzel', serif;
-    --font-texto: 'Source Serif 4', serif;
-  }
+  --bg-dark: #1a1410;
+  --bg-panel: #241e16;
+  --gold-primary: #d4a843;
+  --gold-light: #f0d078;
+  --gold-dark: #8a6d2b;
+  --text-main: #f5e6c8;
+  --text-muted: #c9b48a;
+}
+
+/* ===== BASE & TIPOGRAFIA GLOBAL ===== */
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: "Source Serif 4", serif;
+  min-height: 100vh;
+}
+
+/* Textos Gerais */
+p,
+span,
+a,
+button,
+input,
+textarea,
+li {
+  font-family: "Source Serif 4", serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+
+/* Títulos */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.section-title,
+.artefato-title,
+.nav-item span {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.2;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.artefatos-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+}
+
+/* ===== TÍTULO DA SEÇÃO  ===== */
+.section-title-box {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--gold-dark);
+  padding-bottom: 16px;
+}
+
+.section-title {
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: 1px solid #996B0F;
+  outline: 1px solid #996B0F;
+  outline-offset: 6px;
+  display: inline-block;
+  padding: 16px 32px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  font-size: clamp(22px, 3vw, 32px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== GRID DE CONTEÚDO ===== */
+.artefatos-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: center;
+}
+
+/* ===== COLUNA ESQUERDA ===== */
+.artefatos-left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.intro-text {
+  color: var(--text-main);
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.35;
+  max-width: 100%;
+}
+
+.side-image img {
+  width: 100%;
+  max-width: 520px;
+  display: block;
+  margin: 0 auto;
+  filter:
+    drop-shadow(0 0 28px rgba(255, 120, 0, 0.45)) drop-shadow(0 0 54px rgba(244, 208, 63, 0.18));
+}
+
+/* ===== COLUNA DIREITA ===== */
+.artefatos-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.artefato-title {
+  color: var(--gold-light);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+/* ===== CARROSSEL ===== */
+.carousel-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin: 24px 0; /* ← Fixo, não depende do texto */
+}
+
+.carousel-arrow {
+  background: none;
+  border: none;
+  color: var(--gold-primary);
+  font-size: 3.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0 8px;
+  user-select: none;
+}
+
+.carousel-arrow:hover {
+  color: var(--gold-light);
+  transform: scale(1.1);
+  text-shadow: 0 0 10px rgba(240, 208, 120, 0.6);
+}
+
+.carousel-frame {
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--gold-dark);
+  border-radius: 16px;
+  background: var(--bg-panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  pointer-events: none;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.carousel-slide img {
+  max-width: 95%;
+  max-height: 95%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* ===== DESCRIÇÃO (LAYOUT 100% ESTÁVEL - SEM SHIFT) ===== */
+.artefato-description {
+  color: var(--text-muted);
   
-  /* ===== BASE & TIPOGRAFIA GLOBAL ===== */
-  body {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    font-family: var(--font-texto);
-    min-height: 100vh;
-  }
+  /* Altura EXATA e FIXA - nunca muda */
+  height: 180px;
   
-  /* Textos Gerais: Source Serif 4, Regular, 16px, Line-height 24px */
-  p, span, a, button, input, textarea, li {
-    font-family: var(--font-texto);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0%;
-  }
+  /* Scroll SEMPRE visível - ocupa espaço fixo desde o início */
+  overflow-y: scroll;
   
-  /* Títulos: Cinzel, Bold, 18px */
-  h1, h2, h3, h4, h5, h6,
-  .section-title,
-  .artefato-title,
-  .nav-item span {
-    font-family: var(--font-titulo);
-    font-weight: 700;
-    font-size: 18px;
-    line-height: auto;
-    letter-spacing: 0%;
-  }
+  /* Garante que o espaço da scrollbar seja reservado */
+  scrollbar-gutter: stable;
   
-  /* ===== CONTAINER PRINCIPAL ===== */
-  .artefatos-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px 20px 40px;
-  }
+  /* Espaçamento fixo */
+  margin-top: 24px;
+  padding-right: 12px;
   
-  /* ===== TÍTULO DA SEÇÃO (Caixa Dourada) ===== */
-  .section-title-box {
-    margin-bottom: 32px;
-    border-bottom: 1px solid var(--gold-dark);
-    padding-bottom: 16px;
+  /* Transição suave apenas para opacidade (não afeta altura) */
+  transition: opacity 0.15s ease;
+}
+
+.artefato-description p {
+  margin-bottom: 14px;
+}
+
+.artefato-description strong,
+.artefato-description .highlight {
+  color: #f5e6c8;
+  font-weight: 700;
+}
+
+/* ===== SCROLLBAR PERSONALIZADA (SEMPRE VISÍVEL) ===== */
+.artefato-description::-webkit-scrollbar {
+  width: 8px;
+}
+
+.artefato-description::-webkit-scrollbar-track {
+  background: rgba(138, 109, 43, 0.15);
+  border-radius: 4px;
+}
+
+.artefato-description::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 4px;
+  border: 2px solid rgba(138, 109, 43, 0.15);
+}
+
+.artefato-description::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-primary);
+}
+
+/* Firefox */
+.artefato-description {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dark) rgba(138, 109, 43, 0.15);
+}
+
+/* ===== GRID DE CARDS DOS ARTEFATOS ===== */
+.artefatos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+/* Card base */
+.artefato-card {
+  position: relative;
+  border: 2px solid var(--gold-dark);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-panel);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+
+.artefato-card:hover:not(.bloqueado) {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(212, 168, 67, 0.3);
+  border-color: var(--gold-primary);
+}
+
+.artefato-card.selecionado {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 0 2px var(--gold-light);
+}
+
+/* Card bloqueado */
+.artefato-card.bloqueado {
+  filter: grayscale(80%);
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* Container da imagem */
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  background: var(--bg-dark);
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay com cadeado */
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cadeado {
+  font-size: 2.5rem;
+  color: var(--gold-light);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Conteúdo do card */
+.card-content {
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.card-content h3 {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  font-family: "Cinzel", serif;
+}
+
+.bloqueado-msg {
+  color: var(--gold-dark);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.status-desbloqueado {
+  display: inline-block;
+  background: var(--gold-dark);
+  color: var(--bg-dark);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Mensagens */
+.info-login {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(212, 168, 67, 0.1);
+  border: 2px solid var(--gold-dark);
+  border-radius: 8px;
+  color: var(--gold-light);
+  font-family: "Cinzel", serif;
+}
+
+.loading,
+.error,
+.vazio {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 1rem;
+  color: var(--text-muted);
+}
+
+.error {
+  color: #c95c5c;
+}
+
+/* ===== ESTILOS PARA ARTEFATOS BLOQUEADOS ===== */
+
+/* Imagem com filtro quando bloqueada */
+.img-bloqueada {
+  filter: grayscale(80%) brightness(0.4);
+  transition: filter 0.3s ease;
+}
+
+/* Overlay sobre a imagem bloqueada */
+.overlay-bloqueado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Ícone do cadeado */
+.cadeado-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 10px rgba(212, 168, 67, 0.8));
+  animation: pulse-bloqueado 2s ease-in-out infinite;
+}
+
+@keyframes pulse-bloqueado {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
-  
-  .section-title {
-    color: var(--gold-light);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    border: 2px solid var(--gold-dark);
-    display: inline-block;
-    padding: 10px 28px;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.4);
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
   }
-  
-  /* ===== GRID DE CONTEÚDO ===== */
+}
+
+/* Texto do capítulo bloqueado */
+.texto-bloqueado {
+  color: var(--gold-light);
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  margin: 0;
+}
+
+/* Texto de descrição para artefato bloqueado */
+.bloqueado-text {
+  color: var(--gold-dark);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Slide ativo */
+.carousel-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Imagem dentro do slide */
+.carousel-slide img {
+  max-width: 95%;
+  max-height: 95%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 900px) {
   .artefatos-content {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 48px;
+    grid-template-columns: 1fr;
+    gap: 32px;
     align-items: start;
   }
-  
-  /* ===== COLUNA ESQUERDA ===== */
-  .artefatos-left {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  
-  .intro-text {
-    color: var(--text-muted);
-    max-width: 320px;
-  }
-  
+
   .side-image img {
-    width: 100%;
-    max-width: 420px;
-    display: block;
-    margin: 0 auto;
-    filter: drop-shadow(0 0 18px rgba(212, 168, 67, 0.25));
+    max-width: 400px;
+    margin-top: 0;
   }
-  
-  /* ===== COLUNA DIREITA ===== */
-  .artefatos-right {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .artefato-title {
-    color: var(--gold-light);
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
-  }
-  
-  /* ===== CARROSSEL (Setas Grandes) ===== */
-  .carousel-large {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    margin: 20px 0;
-  }
-  
-  .carousel-arrow {
-    background: none;
-    border: none;
-    color: var(--gold-primary);
-    font-size: 3.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    line-height: 1;
-    padding: 0 8px;
-    user-select: none;
-  }
-  
-  .carousel-arrow:hover {
-    color: var(--gold-light);
-    transform: scale(1.1);
-    text-shadow: 0 0 10px rgba(240, 208, 120, 0.6);
-  }
-  
+
   .carousel-frame {
-    width: 100%;
-    max-width: 460px;
-    aspect-ratio: 4/3;
-    position: relative;
-    overflow: hidden;
-    border: 3px solid var(--gold-dark);
-    border-radius: 16px;
-    background: var(--bg-panel);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+    max-width: 100%;
+  }
+
+  .carousel-arrow {
+    font-size: 2.8rem;
   }
   
-  .carousel-slide {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out;
-    pointer-events: none;
-  }
-  
-  .carousel-slide.active {
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 1;
-  }
-  
-  .carousel-slide img {
-    max-width: 95%;
-    max-height: 95%;
-    object-fit: contain;
-    border-radius: 8px;
-  }
-  
-  /* ===== DESCRIÇÃO ===== */
   .artefato-description {
-    color: var(--text-muted);
+    height: 160px; /* Um pouco menor em tablets */
+  }
+}
+
+@media (max-width: 520px) {
+  .artefatos-container {
+    padding: 16px 12px 120px; /* ← AUMENTADO para não cobrir com nav */
+  }
+
+  .section-title {
+    font-size: 16px;
+    padding: 8px 20px;
+  }
+
+  .artefato-title {
+    font-size: 16px;
+  }
+
+  .carousel-arrow {
+    font-size: 2.2rem;
   }
   
-  .artefato-description p {
-    margin-bottom: 14px;
+  .artefato-description {
+    height: 140px; /* Menor em mobile */
+    font-size: 14px;
+    padding-right: 8px;
   }
   
-  .artefato-description strong,
-  .artefato-description .highlight {
-    color: var(--gold-light);
-    font-weight: 600;
+  .artefato-description::-webkit-scrollbar {
+    width: 6px; /* Scrollbar mais fina em mobile */
   }
-  
-  /* ===== RESPONSIVO ===== */
-  @media (max-width: 900px) {
-    .artefatos-content {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-  
-    .side-image img {
-      max-width: 320px;
-    }
-  
-    .carousel-frame {
-      max-width: 100%;
-    }
-  
-    .carousel-arrow {
-      font-size: 2.8rem;
-    }
-  }
-  
-  @media (max-width: 520px) {
-    .artefatos-container {
-      padding: 16px 12px 32px;
-    }
-  
-    .section-title {
-      font-size: 16px;
-      padding: 8px 20px;
-    }
-  
-    .artefato-title {
-      font-size: 16px;
-    }
-  
-    .carousel-arrow {
-      font-size: 2.2rem;
-    }
-  }
+}
