@@ -25,5 +25,19 @@
 
   "velocity": "É a medida da quantidade de trabalho que uma equipe consegue concluir durante uma sprint.",
 
-  "scrum master": "É o responsável por orientar a equipe e garantir que as práticas do Scrum sejam seguidas corretamente."
+  "scrum-master": "É o responsável por orientar a equipe e garantir que as práticas do Scrum sejam seguidas corretamente.",
+
+  "sprint-review": "É a reunião onde a equipe apresenta o que foi desenvolvido ao final da sprint.",
+
+  "sprint-retrospective": "É a reunião onde a equipe analisa o que funcionou bem e o que pode melhorar após a sprint.",
+
+  "increment": "É a versão atualizada do produto com todas as melhorias concluídas durante a sprint.",
+
+  "definition-of-done": "É o conjunto de critérios que define quando uma tarefa ou funcionalidade está realmente concluída.",
+
+  "kanban": "É um método visual de organização de tarefas usado para acompanhar o fluxo de trabalho da equipe.",
+
+  "release": "É uma versão do produto disponibilizada para os usuários após a conclusão de melhorias e funcionalidades.",
+
+  "iteration": "É um ciclo de desenvolvimento onde a equipe trabalha em melhorias e funcionalidades do projeto."
 }
