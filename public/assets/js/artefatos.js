@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function obterToken() {
     // Verifica o token salvo no localStorage
     const token = localStorage.getItem("token");
-    
+
     // Se não tiver token, não redireciona imediatamente para permitir
     // que a página carregue como "visitante" (arte fatos bloqueados),
     // a menos que você queira forçar o login.
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.log('Acesso à API restrito ou erro:', response.status);
     } else {
       const { success, data } = await response.json();
-      
+
       if (success && data) {
         artefatos = data;
       } else {
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function atualizarCarrosselComArtefatos() {
     const carouselFrame = document.querySelector('.carousel-frame');
-    
+
     if (!artefatos || artefatos.length === 0) {
       // Fallback visual se não houver dados
       carouselFrame.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">Nenhum artefato encontrado.</p>';
@@ -106,11 +106,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     carouselFrame.innerHTML = slidesHTML;
     slidesMapeadas = document.querySelectorAll('.carousel-slide');
-    
+
     // Seleciona o primeiro desbloqueado automaticamente
     const primeiroDesbloqueado = Array.from(slidesMapeadas).findIndex(s => s.dataset.desbloqueado === 'true');
     currentIndex = primeiroDesbloqueado !== -1 ? primeiroDesbloqueado : 0;
-    
+
     atualizarVisualizacao();
   }
 
@@ -153,18 +153,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (descricaoArtefatoEl) {
-      if (artefatoAtual.desbloqueado) {
-        // ✅ Conteúdo real para desbloqueados
-        descricaoArtefatoEl.innerHTML = artefatoAtual.conteudo_longo;
-      } else {
-        // 🔒 Mensagem de bloqueio
-        descricaoArtefatoEl.innerHTML = `
+      // Fade out suave
+      descricaoArtefatoEl.style.opacity = '0';
+
+      setTimeout(() => {
+        if (artefatoAtual.desbloqueado) {
+          // ✅ Conteúdo completo direto (sem botão "Ler mais")
+          descricaoArtefatoEl.innerHTML = artefatoAtual.conteudo_longo;
+        } else {
+          descricaoArtefatoEl.innerHTML = `
           <p class="bloqueado-text">
             🔒 Desbloqueie o <strong>Capítulo ${artefatoAtual.capitulo_requisito}</strong> 
             para descobrir os segredos deste artefato.
           </p>
         `;
-      }
+        }
+
+        // Fade in
+        descricaoArtefatoEl.style.opacity = '1';
+
+        // Reseta scroll para o topo ao trocar de artefato
+        descricaoArtefatoEl.scrollTop = 0;
+      }, 150);
     }
   }
 });
