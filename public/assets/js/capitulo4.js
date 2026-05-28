@@ -1,5 +1,5 @@
 const ID_MODULO = 4;
-const SCROLL_OFFSET = 150;
+const SCROLL_OFFSET = 110;
 
 const corvoPorAto = {
   ampulheta: {
@@ -223,6 +223,23 @@ function configurarScrollParaBotoes() {
   document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
     botao.addEventListener("click", () => {
       rolarParaElemento(botao.dataset.scrollTo);
+    });
+  });
+}
+
+function configurarInsightAmpulheta() {
+  document.querySelectorAll("[data-insight='ampulheta']").forEach((botao) => {
+    botao.addEventListener("click", () => {
+      atualizarAmpulheta(
+        "sobrecarregada",
+        "Instável",
+        "A Sprint começou, mas o fluxo ainda não está saudável. Há trabalho iniciado demais e pouco trabalho concluído.",
+      );
+
+      mostrarCartaoCorvo(
+        "O tempo segue o fluxo",
+        "A ampulheta não mede só prazo. Nesta dungeon, ela mostra se o trabalho atravessa o caminho até ficar pronto. Trabalho iniciado não é trabalho concluído.",
+      );
     });
   });
 }
@@ -567,8 +584,7 @@ function configurarRetrospectiva() {
 }
 
 function configurarProgressoVisual() {
-  const secoes = document.querySelectorAll(".capitulo4-ato[data-step]");
-  const marcadores = document.querySelectorAll(".chapter-progress .progress-item");
+  const secoes = document.querySelectorAll(".journey-scene[data-step], .cinematic-hero[data-step]");
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -577,14 +593,10 @@ function configurarProgressoVisual() {
 
         const step = entry.target.dataset.step;
 
-        marcadores.forEach((marcador) => {
-          marcador.classList.toggle("active", marcador.dataset.step === step);
-        });
-
         atualizarCartaoCorvo(step);
       });
     },
-    { threshold: 0.45 },
+    { threshold: 0.38 },
   );
 
   secoes.forEach((secao) => observer.observe(secao));
@@ -732,6 +744,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   ajustarScrollPorHashInicial();
   configurarRevealNoScroll();
   configurarProgressoVisual();
+  configurarInsightAmpulheta();
   configurarFeedbackKanban();
   configurarForjaDod();
   configurarPonteCicd();
