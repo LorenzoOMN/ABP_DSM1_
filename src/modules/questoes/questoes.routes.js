@@ -11,6 +11,7 @@ const {
   getProximoModulo, 
   getModulosRespondidos,
   getResultadoAtual,
+  getTodasQuestoes,
 } = require("./questoes.controller");
 
 const router = Router();
@@ -36,6 +37,9 @@ router.get("/modulos-respondidos", authMiddleware, getModulosRespondidos);
 
 // GET /api/questoes/resultado-atual
 router.get("/resultado-atual", authMiddleware, getResultadoAtual);
+
+// GET /api/questoes/todas
+router.get("/todas", authMiddleware, getTodasQuestoes);
 
 // ============================================================================
 // EXPORTAÇÃO

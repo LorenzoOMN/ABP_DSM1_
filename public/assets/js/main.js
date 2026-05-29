@@ -196,6 +196,11 @@ function mostrarAlerta(mensagem, tipo) {
   const alerta = document.getElementById("custom-alert");
   const texto = document.getElementById("custom-alert-message");
 
+  if (!alerta || !texto) {
+    console.warn("mostrarAlerta: #custom-alert não encontrado.", mensagem);
+    return;
+  }
+
   // Define mensagem
   texto.innerText = mensagem;
 
