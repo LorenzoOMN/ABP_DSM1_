@@ -196,61 +196,132 @@ h6,
   border-radius: 8px;
 }
 
-/* ===== DESCRIÇÃO (LAYOUT 100% ESTÁVEL - SEM SHIFT) ===== */
+/* ===== DESCRIÇÃO EM FORMATO PERGAMINHO REAL (CORREÇÃO DE FONTE) ===== */
 .artefato-description {
-  color: var(--text-muted);
-  
-  /* Altura EXATA e FIXA - nunca muda */
+  /* Altura FIXA - mantém comportamento original */
   height: 180px;
-  
-  /* Scroll SEMPRE visível - ocupa espaço fixo desde o início */
   overflow-y: scroll;
-  
-  /* Garante que o espaço da scrollbar seja reservado */
   scrollbar-gutter: stable;
-  
-  /* Espaçamento fixo */
   margin-top: 24px;
-  padding-right: 12px;
-  
-  /* Transição suave apenas para opacidade (não afeta altura) */
+  padding: 20px 24px;
+  padding-right: 32px;
+  position: relative;
+  z-index: 1;
   transition: opacity 0.15s ease;
+  
+  /* FUNDO PERGAMINHO: Gradiente radial simulando papel envelhecido */
+  background: 
+    radial-gradient(ellipse at center, 
+      #d4b896 0%, 
+      #c9a87c 25%, 
+      #b89b6a 50%, 
+      #a68b5a 75%, 
+      #8a7040 100%);
+  
+  /* Moldura irregular e sombreamento de pergaminho */
+  border: 1px solid #6b5830;
+  border-radius: 2px 18px 4px 16px;
+  box-shadow: 
+    /* Sombra externa de pergaminho */
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    /* Bordas internas de desgaste */
+    inset 0 0 30px rgba(90, 70, 40, 0.5),
+    inset 2px 2px 10px rgba(255, 240, 200, 0.2),
+    inset -2px -2px 10px rgba(60, 45, 20, 0.6);
 }
 
+/* Efeito de textura de papel (pattern sutil) */
+.artefato-description::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 115, 85, 0.08) 2px,
+      rgba(139, 115, 85, 0.08) 4px
+    );
+  pointer-events: none;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+/* Simulação de pontas enroladas (efeito 3D) */
+.artefato-description::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 24px;
+  background: linear-gradient(225deg, #8a7040 0%, #b89b6a 40%, transparent 100%);
+  border-bottom-left-radius: 12px;
+  box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Ajuste de cores do texto para contraste sobre pergaminho 
+   NOTA: Removido font-family e font-size para herdar do global (Source Serif 4, 16px) */
 .artefato-description p {
+  font-size: 18px; 
+  color: #3a2f20; 
   margin-bottom: 14px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
 }
 
 .artefato-description strong,
 .artefato-description .highlight {
-  color: #f5e6c8;
+  color: #1a1410;
   font-weight: 700;
 }
 
-/* ===== SCROLLBAR PERSONALIZADA (SEMPRE VISÍVEL) ===== */
+/* Mensagem de bloqueado adaptada ao pergaminho */
+.bloqueado-text {
+  color: #6b4a20;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+/* Scrollbar adaptada ao pergaminho (mantém funcionalidade) */
 .artefato-description::-webkit-scrollbar {
   width: 8px;
 }
-
 .artefato-description::-webkit-scrollbar-track {
-  background: rgba(138, 109, 43, 0.15);
+  background: rgba(107, 88, 48, 0.3);
   border-radius: 4px;
+  border: 1px solid rgba(139, 115, 85, 0.2);
 }
-
 .artefato-description::-webkit-scrollbar-thumb {
-  background: var(--gold-dark);
+  background: linear-gradient(180deg, #8a7040, #6b5830);
   border-radius: 4px;
-  border: 2px solid rgba(138, 109, 43, 0.15);
+  border: 2px solid rgba(107, 88, 48, 0.3);
 }
-
 .artefato-description::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-primary);
+  background: linear-gradient(180deg, #a68b5a, #8a7040);
 }
 
-/* Firefox */
+/* Firefox scrollbar */
 .artefato-description {
   scrollbar-width: thin;
-  scrollbar-color: var(--gold-dark) rgba(138, 109, 43, 0.15);
+  scrollbar-color: #8a7040 rgba(107, 88, 48, 0.3);
+}
+
+/* Efeito hover sutil (iluminação de pergaminho) */
+.artefato-description:hover {
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.7),
+    0 4px 10px rgba(0, 0, 0, 0.5),
+    inset 0 0 35px rgba(90, 70, 40, 0.4),
+    inset 3px 3px 12px rgba(255, 240, 200, 0.15),
+    inset -3px -3px 12px rgba(60, 45, 20, 0.7);
 }
 
 /* ===== GRID DE CARDS DOS ARTEFATOS ===== */
