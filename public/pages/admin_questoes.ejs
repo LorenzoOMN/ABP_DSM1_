@@ -12,7 +12,11 @@
 
 <body class="dungeon-theme">
 
-    <%- include('./partials/header') %>
+    <!-- ALERT -->
+    <%- include('partials/alert') %>
+
+    <!-- CABEÇALHO -->
+    <%- include('partials/header') %>
 
     <main class="admin-container">
 
@@ -23,7 +27,7 @@
 
         <!-- Botão de Adicionar -->
         <div style="margin-bottom: 1rem; text-align: right;">
-            <button class="btn-action btn-add" onclick="window.location.href='/admin/questoes/novo'">
+            <button class="btn-action btn-add" onclick="abrirModalCriacao()">
                 + Nova Questão
             </button>
         </div>

@@ -65,10 +65,21 @@ app.get("/capitulo1", function (_req, res) {
     res.render("capitulo1");
 });
 
-// Rota capítulo 4
+// Rota capitulo 2
+app.get("/capitulo2", function (_req, res) {
+    res.render("capitulo2");
+});
+
+// Rota capitulo 3
+app.get("/capitulo3", function (_req, res) {
+    res.render("capitulo3");
+});
+
+// Rota capitulo 4
 app.get("/capitulo4", function (_req, res) {
     res.render("capitulo4");
 });
+
 
 // Rota do mapa
 app.get("/mapa", function (_req, res) {

@@ -1,10 +1,4 @@
 const adminMiddleware = (req, res, next) => {
-  console.log('🔍 [ADMIN] Verificando permissão...');
-  console.log('🔍 [ADMIN] req.usuario:', req.usuario);
-  console.log('🔍 [ADMIN] req.usuario.is_admin:', req.usuario?.is_admin);
-  console.log('🔍 [ADMIN] Tipo:', typeof req.usuario?.is_admin);
-  console.log('🔍 [ADMIN] É true?:', req.usuario?.is_admin === true);
-
   if (!req.usuario) {
     return res.status(401).json({ message: 'Usuário não autenticado' });
   }
@@ -15,7 +9,7 @@ const adminMiddleware = (req, res, next) => {
                   req.usuario.is_admin === 1 ||
                   req.usuario.is_admin === 't'; // PostgreSQL as vezes retorna 't'
 
-  console.log('🔍 [ADMIN] isAdmin result:', isAdmin);
+  console.log('[ADMIN] isAdmin result:', isAdmin);
 
   if (!isAdmin) {
     console.log('❌ [ADMIN] ACESSO NEGADO');
@@ -24,7 +18,7 @@ const adminMiddleware = (req, res, next) => {
     });
   }
 
-  console.log('✅ [ADMIN] ACESSO PERMITIDO');
+  console.log('[ADMIN] ACESSO PERMITIDO');
   next();
 };
 

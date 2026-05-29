@@ -196,61 +196,171 @@ h6,
   border-radius: 8px;
 }
 
-/* ===== DESCRIÇÃO (LAYOUT 100% ESTÁVEL - SEM SHIFT) ===== */
+/* ===== DESCRIÇÃO EM FORMATO PERGAMINHO REAL (CORREÇÃO DE FONTE) ===== */
 .artefato-description {
-  color: var(--text-muted);
-  
-  /* Altura EXATA e FIXA - nunca muda */
-  height: 180px;
-  
-  /* Scroll SEMPRE visível - ocupa espaço fixo desde o início */
+  height: 290px ;
   overflow-y: scroll;
-  
-  /* Garante que o espaço da scrollbar seja reservado */
   scrollbar-gutter: stable;
-  
-  /* Espaçamento fixo */
   margin-top: 24px;
-  padding-right: 12px;
-  
-  /* Transição suave apenas para opacidade (não afeta altura) */
+  padding: 20px 24px;
+  padding-right: 32px;
+  position: relative;
+  z-index: 1;
   transition: opacity 0.15s ease;
+  
+  /* FUNDO PERGAMINHO: Gradiente radial simulando papel envelhecido */
+  background: 
+    radial-gradient(ellipse at center, 
+      #d4b896 0%, 
+      #c9a87c 25%, 
+      #b89b6a 50%, 
+      #a68b5a 75%, 
+      #8a7040 100%);
+  
+  /* Moldura irregular e sombreamento de pergaminho */
+  border: 1px solid #6b5830;
+  border-radius: 2px 18px 4px 16px;
+  box-shadow: 
+    /* Sombra externa de pergaminho */
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    /* Bordas internas de desgaste */
+    inset 0 0 30px rgba(90, 70, 40, 0.5),
+    inset 2px 2px 10px rgba(255, 240, 200, 0.2),
+    inset -2px -2px 10px rgba(60, 45, 20, 0.6);
 }
 
+/* Efeito de textura de papel (pattern sutil) */
+.artefato-description::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 115, 85, 0.08) 2px,
+      rgba(139, 115, 85, 0.08) 4px
+    );
+  pointer-events: none;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+/* Simulação de pontas enroladas (efeito 3D) */
+.artefato-description::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 24px;
+  background: linear-gradient(225deg, #8a7040 0%, #b89b6a 40%, transparent 100%);
+  border-bottom-left-radius: 12px;
+  box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===== PADRONIZAÇÃO DE FONTE DENTRO DO PERGAMINHO  ===== */
+
+/* Parágrafos */
 .artefato-description p {
+  font-size: 18px !important; 
+  color: #3a2f20; 
   margin-bottom: 14px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+/* Listas (caso o conteúdo tenha bullet points) */
+.artefato-description ul,
+.artefato-description ol {
+  margin: 14px 0;
+  padding-left: 20px;
+}
+
+.artefato-description li {
+  font-size: 18px !important; 
+  color: #3a2f20;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.artefato-description span {
+  font-size: 18px !important;
+  color: #3a2f20;
+}
+
+/* Títulos e subtítulos internos */
+.artefato-description h3,
+.artefato-description h4,
+.artefato-description h5 {
+  font-family: "Cinzel", serif; 
+  font-size: 20px !important; 
+  color: #1a1410;
+  margin-top: 16px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+/* Negrito e Destaques */
+.artefato-description strong,
+.artefato-description .highlight {
+  color: #1a1410;
+  font-weight: 700;
+  font-size: 18px !important; 
 }
 
 .artefato-description strong,
 .artefato-description .highlight {
-  color: #f5e6c8;
+  color: #1a1410;
   font-weight: 700;
 }
 
-/* ===== SCROLLBAR PERSONALIZADA (SEMPRE VISÍVEL) ===== */
+/* Mensagem de bloqueado adaptada ao pergaminho */
+.bloqueado-text {
+  color: #6b4a20;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+/* Scrollbar adaptada ao pergaminho (mantém funcionalidade) */
 .artefato-description::-webkit-scrollbar {
   width: 8px;
 }
-
 .artefato-description::-webkit-scrollbar-track {
-  background: rgba(138, 109, 43, 0.15);
+  background: rgba(107, 88, 48, 0.3);
   border-radius: 4px;
+  border: 1px solid rgba(139, 115, 85, 0.2);
 }
-
 .artefato-description::-webkit-scrollbar-thumb {
-  background: var(--gold-dark);
+  background: linear-gradient(180deg, #8a7040, #6b5830);
   border-radius: 4px;
-  border: 2px solid rgba(138, 109, 43, 0.15);
+  border: 2px solid rgba(107, 88, 48, 0.3);
 }
-
 .artefato-description::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-primary);
+  background: linear-gradient(180deg, #a68b5a, #8a7040);
 }
 
-/* Firefox */
+/* Firefox scrollbar */
 .artefato-description {
   scrollbar-width: thin;
-  scrollbar-color: var(--gold-dark) rgba(138, 109, 43, 0.15);
+  scrollbar-color: #8a7040 rgba(107, 88, 48, 0.3);
+}
+
+/* Efeito hover sutil (iluminação de pergaminho) */
+.artefato-description:hover {
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.7),
+    0 4px 10px rgba(0, 0, 0, 0.5),
+    inset 0 0 35px rgba(90, 70, 40, 0.4),
+    inset 3px 3px 12px rgba(255, 240, 200, 0.15),
+    inset -3px -3px 12px rgba(60, 45, 20, 0.7);
 }
 
 /* ===== GRID DE CARDS DOS ARTEFATOS ===== */
@@ -456,57 +566,169 @@ h6,
   border-radius: 8px;
 }
 
+
 /* ===== RESPONSIVO ===== */
+
+/* --- TABLETS E NOTEBOOKS PEQUENOS (Até 900px) --- */
 @media (max-width: 900px) {
+  .artefatos-container {
+    padding: 24px 20px 100px; 
+  }
+
+  .section-title-box {
+    margin-top: 50px; 
+  }
+
   .artefatos-content {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column; 
     gap: 32px;
-    align-items: start;
+    align-items: center;
+  }
+
+  .artefatos-left {
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    gap: 12px; /
+  }
+
+  .intro-text {
+    font-size: 18px;
+    max-width: 600px;
   }
 
   .side-image img {
-    max-width: 400px;
+    max-width: 280px; 
     margin-top: 0;
   }
 
+  .artefatos-right {
+    width: 100%;
+    max-width: 600px; 
+  }
+
   .carousel-frame {
-    max-width: 100%;
+    max-width: 100%; 
+    aspect-ratio: 4/3;
   }
 
   .carousel-arrow {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
   }
-  
+
   .artefato-description {
-    height: 160px; /* Um pouco menor em tablets */
+    height: 220px; 
+    padding: 16px 20px;
+    padding-right: 28px;
   }
 }
 
+/* --- CELULARES / MOBILE (Até 520px) --- */
 @media (max-width: 520px) {
   .artefatos-container {
-    padding: 16px 12px 120px; /* ← AUMENTADO para não cobrir com nav */
+    padding: 16px 12px 110px; 
+  }
+
+  .section-title-box {
+    margin-top: 45px; 
+  }
+
+  .section-title-box {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
   }
 
   .section-title {
+    font-size: 18px; 
+    padding: 10px 16px;
+    outline-offset: 4px;
+  }
+
+  .intro-text {
     font-size: 16px;
-    padding: 8px 20px;
+    line-height: 1.4;
+  }
+
+  .artefatos-left {
+    gap: 8px; 
+  }
+
+  .side-image img {
+    max-width: 200px; 
   }
 
   .artefato-title {
-    font-size: 16px;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .carousel-large {
+    gap: 12px;
+    margin: 16px 0;
   }
 
   .carousel-arrow {
-    font-size: 2.2rem;
+    font-size: 2rem;
+    padding: 0 4px;
   }
-  
+
+  .carousel-frame {
+    border-radius: 12px;
+    border-width: 2px;
+  }
+
   .artefato-description {
-    height: 140px; /* Menor em mobile */
-    font-size: 14px;
-    padding-right: 8px;
+    height: 200px; 
+    margin-top: 16px;
+    padding: 14px 16px;
+    padding-right: 24px;
+    border-radius: 2px 12px 4px 10px;
+  }
+
+  .artefato-description p,
+  .artefato-description li,
+  .artefato-description span,
+  .artefato-description strong {
+    font-size: 16px !important; 
+    line-height: 1.5;
+  }
+
+  .artefato-description::-webkit-scrollbar {
+    width: 6px; 
   }
   
-  .artefato-description::-webkit-scrollbar {
-    width: 6px; /* Scrollbar mais fina em mobile */
+  .artefato-description::after {
+    width: 24px;
+    height: 18px;
+    border-bottom-left-radius: 8px;
+  }
+}
+
+/* --- DESKTOPS GRANDES (Acima de 1200px) --- */
+@media (min-width: 1201px) {
+  .artefatos-container {
+    max-width: 1100px; 
+    padding: 40px 40px 80px;
+  }
+
+  .section-title-box {
+    margin-top: 70px; 
+  }
+
+  .artefatos-content {
+    gap: 60px; 
+  }
+
+  .intro-text {
+    font-size: 20px;
+  }
+
+  .side-image img {
+    max-width: 480px;
+  }
+
+  .carousel-frame {
+    max-width: 500px;
   }
 }

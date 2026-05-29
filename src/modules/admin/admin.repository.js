@@ -86,7 +86,27 @@ async function findQuestaoByIdRepository(idQuestao) {
 }
 
 async function createQuestaoRepository(dados) {
+    // ← Garante que id_questao NÃO será usado
+    const { id_questao, ...dadosParaInserir } = dados;
+    
     const {
+      id_modulo,
+      grupo,
+      numero,
+      dificuldade,
+      enunciado,
+      alternativa_a,
+      alternativa_b,
+      alternativa_c,
+      alternativa_d,
+      alternativa_correta,
+      imagem,
+    } = dadosParaInserir;
+  
+    // ← NOTE: id_questao NÃO está na lista de colunas!
+    const result = await pool.query(
+      `
+      INSERT INTO questoes (
         id_modulo,
         grupo,
         numero,
@@ -98,56 +118,41 @@ async function createQuestaoRepository(dados) {
         alternativa_d,
         alternativa_correta,
         imagem,
-    } = dados;
-
-    const result = await pool.query(
-        `
-    INSERT INTO questoes (
-    id_modulo,
-    grupo,
-    numero,
-    dificuldade,
-    enunciado,
-    alternativa_a,
-    alternativa_b,
-    alternativa_c,
-    alternativa_d,
-    alternativa_correta,
-    imagem
-    )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-    RETURNING 
-    id_questao,
-    id_modulo,
-    grupo,
-    numero,
-    dificuldade,
-    enunciado,
-    alternativa_a,
-    alternativa_b,
-    alternativa_c,
-    alternativa_d,
-    alternativa_correta,
-    imagem,
-    criado_em
-    `,
-        [
-            id_modulo,
-            grupo || null,
-            numero || null,
-            dificuldade || null,
-            enunciado,
-            alternativa_a || null,
-            alternativa_b || null,
-            alternativa_c || null,
-            alternativa_d || null,
-            alternativa_correta,
-            imagem || null,
-        ]
+        criado_em
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, CURRENT_TIMESTAMP)
+      RETURNING 
+        id_questao,
+        id_modulo,
+        grupo,
+        numero,
+        dificuldade,
+        enunciado,
+        alternativa_a,
+        alternativa_b,
+        alternativa_c,
+        alternativa_d,
+        alternativa_correta,
+        imagem,
+        criado_em
+      `,
+      [
+        id_modulo,
+        grupo || null,
+        numero || null,
+        dificuldade || null,
+        enunciado,
+        alternativa_a || null,
+        alternativa_b || null,
+        alternativa_c || null,
+        alternativa_d || null,
+        alternativa_correta,
+        imagem || null,
+      ]
     );
-
+  
     return result.rows[0];
-}
+  }
 
 async function updateQuestaoRepository(idQuestao, dadosAtualizados) {
     const fields = [];
@@ -169,7 +174,7 @@ async function updateQuestaoRepository(idQuestao, dadosAtualizados) {
 
     const query = `
     UPDATE questoes
-    SET ${fields.join(', ')}, atualizado_em = NOW()
+    SET ${fields.join(', ')}
     WHERE id_questao = $${paramIndex}
     RETURNING 
     id_questao,
@@ -184,8 +189,7 @@ async function updateQuestaoRepository(idQuestao, dadosAtualizados) {
     alternativa_d,
     alternativa_correta,
     imagem,
-    criado_em,
-    atualizado_em
+    criado_em
 `;
 
     const result = await pool.query(query, values);
