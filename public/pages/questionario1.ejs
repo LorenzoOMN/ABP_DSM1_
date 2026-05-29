@@ -10,6 +10,7 @@
 
   <body class="pagina-questionario">
     <%- include('partials/header') %> <%- include('./partials/botao_voltar') %>
+    <%- include('partials/alert') %>
 
     <main class="corpo-questionario">
       <section class="tela">
@@ -35,6 +36,11 @@
           </div>
 
           <p class="progresso-percentual" id="texto-percentual">0%</p>
+
+          <div class="timer-box">
+            <span class="timer-icone">⏳</span>
+            <span id="timer-questao" class="timer-valor">20:00</span>
+          </div>
         </section>
 
         <section class="questao-box" aria-labelledby="enunciado-questao">
@@ -102,7 +108,7 @@
     <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
     %>
 
-    <script src="/js/main.js"></script>
-    <script src="/js/questionario1.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/questionario1.js"></script>
   </body>
 </html>
