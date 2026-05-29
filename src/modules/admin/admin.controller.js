@@ -51,57 +51,60 @@ async function getAdminQuestaoById(req, res) {
 }
 
 // POST - Criar nova questão
+// POST - Criar nova questão
 async function createQuestao(req, res) {
     try {
-        const {
-            id_modulo,
-            grupo,
-            numero,
-            dificuldade,
-            enunciado,
-            alternativa_a,
-            alternativa_b,
-            alternativa_c,
-            alternativa_d,
-            alternativa_correta,
-            imagem,
-        } = req.body;
-
-        // Validações básicas
-        if (!id_modulo || !enunciado || !alternativa_correta) {
-            return res.status(400).json({
-                message: "Campos obrigatórios: id_modulo, enunciado e alternativa_correta"
-            });
-        }
-
-        // Valida alternativa correta
-        const alternativasValidas = ['a', 'b', 'c', 'd'];
-        if (!alternativasValidas.includes(alternativa_correta.toLowerCase())) {
-            return res.status(400).json({
-                message: "alternativa_correta deve ser 'a', 'b', 'c' ou 'd'"
-            });
-        }
-
-        const novaQuestao = await createQuestaoService({
-            id_modulo,
-            grupo,
-            numero,
-            dificuldade,
-            enunciado,
-            alternativa_a,
-            alternativa_b,
-            alternativa_c,
-            alternativa_d,
-            alternativa_correta: alternativa_correta.toLowerCase(),
-            imagem,
+      // ← FORÇA a remoção de id_questao, mesmo se o frontend enviar
+      const { id_questao, ...dadosQuestao } = req.body;
+      
+      const {
+        id_modulo,
+        grupo,
+        numero,
+        dificuldade,
+        enunciado,
+        alternativa_a,
+        alternativa_b,
+        alternativa_c,
+        alternativa_d,
+        alternativa_correta,
+        imagem,
+      } = dadosQuestao;  // ← Use dadosQuestao, NÃO req.body
+  
+      // Validações básicas
+      if (!id_modulo || !enunciado || !alternativa_correta) {
+        return res.status(400).json({ 
+          message: "Campos obrigatórios: id_modulo, enunciado e alternativa_correta" 
         });
-
-        return res.status(201).json(novaQuestao);
+      }
+  
+      const alternativasValidas = ['a', 'b', 'c', 'd'];
+      if (!alternativasValidas.includes(alternativa_correta.toLowerCase())) {
+        return res.status(400).json({ 
+          message: "alternativa_correta deve ser 'a', 'b', 'c' ou 'd'" 
+        });
+      }
+  
+      const novaQuestao = await createQuestaoService({
+        id_modulo,
+        grupo,
+        numero,
+        dificuldade,
+        enunciado,
+        alternativa_a,
+        alternativa_b,
+        alternativa_c,
+        alternativa_d,
+        alternativa_correta: alternativa_correta.toLowerCase(),
+        imagem,
+      });
+  
+      return res.status(201).json(novaQuestao);
     } catch (error) {
-        console.error("Erro em createQuestao:", error);
-        return res.status(500).json({ message: "Erro interno do servidor" });
+      console.error("Erro em createQuestao:", error);
+      return res.status(500).json({ message: "Erro interno do servidor" });
     }
-}
+  }
 
 // PUT/PATCH - Atualizar questão
 async function updateQuestao(req, res) {
