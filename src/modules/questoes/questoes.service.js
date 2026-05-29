@@ -133,14 +133,12 @@ const exame = await updateProximaTentativa(
 // FUNÇÃO: AVANÇAR PARA PRÓXIMO MÓDULO (LÓGICA COMPLEXA)
 // ============================================================================
 async function getProximoModuloService(idUsuario, idExame) {
-    console.log("[DEBUG proximo-modulo] chamado com idUsuario:", idUsuario, "| idExame:", idExame);
     if (!idUsuario) throw new Error("ID do usuário é obrigatório");
 
     let moduloAtual, resultado;
 
     if (idExame) {
         const concluido = await exameEstaConcluido(idExame);
-        console.log("[DEBUG proximo-modulo] idExame:", idExame, "| concluido:", concluido);
         if (!concluido) throw new Error("Módulo atual não concluído");
 
         moduloAtual = await findExameById(idExame);
@@ -149,17 +147,6 @@ async function getProximoModuloService(idUsuario, idExame) {
         resultado = await findResultadoByExameId(idExame);
         if (!resultado) throw new Error("Resultado do módulo não encontrado");
 
-        // Atualiza o progresso para o módulo correto antes de processar
-        // (necessário quando o reset já moveu o progresso)
-        const progressoAtual = await findProgressoDesafio(idUsuario);
-        if (!progressoAtual) throw new Error("Progresso de desafio não encontrado");
-
-        // Se o progresso já foi resetado para outro módulo, precisamos
-        // apontar o progresso pro módulo do exame que estamos processando
-        if (Number(progressoAtual.modulo_desafio_atual) !== Number(moduloAtual.id_modulo)) {
-            // Busca o progresso correto para o módulo deste exame
-            // e processa com base no resultado real
-        }
     } else {
         // Caminho legado: usa o progresso atual
         const concluido = await usuarioConcluiuModuloAtual(idUsuario);
@@ -195,7 +182,6 @@ async function getProximoModuloService(idUsuario, idExame) {
 
 // ─────────────────────────────────────────────────────────────
 async function _processarReprovacao(idUsuario, moduloAtual, resultado, progressoAtual) {
-    console.log("[DEBUG _reprovacao] moduloAtual:", JSON.stringify(moduloAtual), "| resultado.aprovado:", resultado?.aprovado, "| progressoAtual:", JSON.stringify(progressoAtual));
     const progressoAntes = await findProgressoDesafio(idUsuario);
     const progresso = await registrarFalhaDesafio(idUsuario);
 

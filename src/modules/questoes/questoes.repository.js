@@ -117,7 +117,6 @@ async function inserirRespostaQuestao(id_exame, id_questao, resposta, nota) {
    `,
     [id_exame, id_questao, nota, resposta],
   );
-  console.log("result", result);
   return result.rows[0];
 }
 
@@ -707,27 +706,7 @@ async function findResultadoByExameId(idExame) {
   };
 }
 
-module.exports = {
-  findProximaQuestaoByUsuario,
-  findQuestaoDoExameByUsuario,
-  findRespostaByExameEQuestao,
-  inserirRespostaQuestao,
-  usuarioConcluiuModuloAtual,
-  findModuloAtualByUsuario,
-  findOutroGrupoAleatorio,
-  updateProximaTentativa,
-  findProximoModuloByUsuario,
-  updateProximoModulo,
-  findModulosRespondidosByUsuario,
-  findResultadoModuloAtual,
-  findQualquerGrupoPorModulo,
-  findExameExistente,
-  criarExameInicial,
-  findTodasQuestoesDoExame,
-  exameEstaConcluido,
-  findExameById,
-  findResultadoByExameId,
-};
+
 // Busca todas as questões do exame atual do usuário (para navegação local)
 async function findTodasQuestoesDoExame(idUsuario) {
   const result = await pool.query(
@@ -777,3 +756,25 @@ async function findTodasQuestoesDoExame(idUsuario) {
   );
   return result.rows;
 }
+
+module.exports = {
+  findProximaQuestaoByUsuario,
+  findQuestaoDoExameByUsuario,
+  findRespostaByExameEQuestao,
+  inserirRespostaQuestao,
+  usuarioConcluiuModuloAtual,
+  findModuloAtualByUsuario,
+  findOutroGrupoAleatorio,
+  updateProximaTentativa,
+  findProximoModuloByUsuario,
+  updateProximoModulo,
+  findModulosRespondidosByUsuario,
+  findResultadoModuloAtual,
+  findQualquerGrupoPorModulo,
+  findExameExistente,
+  criarExameInicial,
+  findTodasQuestoesDoExame,
+  exameEstaConcluido,
+  findExameById,
+  findResultadoByExameId,
+};
