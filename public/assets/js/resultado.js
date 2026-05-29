@@ -310,10 +310,24 @@ function atualizarBotaoAcao(resultado) {
     }
   }
 
+  // Guarda a resposta do proximo-modulo para não chamar duas vezes
+  let progressaoJaAplicada = false;
+
   async function aplicarProgressao() {
     const token = obterToken();
 
     if (!token || !resultadoAtual || !btnAcaoResultado) return;
+
+    // Aprovado: vai pro mapa sem chamar o endpoint de novo
+    // (o endpoint já foi chamado ou não é necessário)
+    if (resultadoAtual.aprovado || resultadoAtual.aprovado_por_melhor_nota) {
+      window.location.href = "/mapa";
+      return;
+    }
+
+    // Evita double-click ou chamada dupla
+    if (progressaoJaAplicada) return;
+    progressaoJaAplicada = true;
 
     btnAcaoResultado.disabled = true;
     btnAcaoResultado.querySelector(".texto-botao").textContent = "Aguarde...";
@@ -323,30 +337,25 @@ function atualizarBotaoAcao(resultado) {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          // Prioriza o id_exame salvo pelo questionário (correto mesmo após reset de run)
+          id_exame: sessionStorage.getItem('ultimo_id_exame') || resultadoAtual.id_exame,
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
         mostrarAlerta(data.message || "Erro ao atualizar progresso.", "erro");
+        progressaoJaAplicada = false;
         atualizarBotaoAcao(resultadoAtual);
         return;
       }
 
       /*
-      Caso 1: o jogador venceu o desafio atual.
-      Também cobre o caso em que a tentativa atual foi pior,
-      mas uma tentativa anterior já aprovou o módulo.
-    */
-      if (resultadoAtual.aprovado || resultadoAtual.aprovado_por_melhor_nota) {
-        window.location.href = "/mapa";
-        return;
-      }
-
-      /*
-      Caso 2: o jogador falhou 2 vezes e a run foi resetada.
-      Nesse caso volta para o mapa para mostrar que a run retornou ao módulo 1.
+      Caso 1: run resetada (falhou 2 vezes) → volta pro mapa
     */
       const resetouRun =
         data.resetou_run === true ||
@@ -356,18 +365,21 @@ function atualizarBotaoAcao(resultado) {
           data.message.toLowerCase().includes("falhou 2 vezes"));
 
       if (resetouRun) {
+        sessionStorage.removeItem('ultimo_id_exame');
         window.location.href = "/mapa";
         return;
       }
 
       /*
-      Caso 3: o jogador falhou, mas ainda tem tentativa.
-      Ele volta para a tela de desafio.
+      Caso 2: falhou, mas ainda tem tentativa → volta pro desafio
     */
+      sessionStorage.removeItem('ultimo_id_exame');
       window.location.href = "/desafio1";
+
     } catch (error) {
       console.error(error);
       mostrarAlerta("Erro de conexão ao atualizar progresso.", "erro");
+      progressaoJaAplicada = false;
       atualizarBotaoAcao(resultadoAtual);
     }
   }

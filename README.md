@@ -116,7 +116,7 @@ POSTGRES_DB=abp
 POSTGRES_PORT=5432
 
 JWT_SECRET=sua_chave_secreta
-DEFAULT_EXPIRES_IN_SECONDS=600
+DEFAULT_EXPIRES_IN_SECONDS=7200
 ```
 
 > ⚠️ Nunca commite o `.env` — ele já está no `.gitignore`.
