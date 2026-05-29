@@ -105,7 +105,7 @@
 
         <button class="artefato-card" type="button" data-feedback="O baú representa melhoria contínua e aprendizado acumulado.">
           <img src="/assets/img/artefatos/artefato-4-bau.png" alt="Baú da melhoria" />
-          <span>Baú da Melhoria</span>
+          <span>Baú da Interação</span>
         </button>
       </div>
 
@@ -123,11 +123,82 @@
         mas ajuda a remover obstáculos.
       </p>
 
-      <div class="simple-choice-grid">
-        <button class="choice-card" type="button">Falta de comunicação</button>
-        <button class="choice-card" type="button">Dependência externa</button>
-        <button class="choice-card" type="button">Objetivo pouco claro</button>
+            <div class="impedimentos-arena">
+        <button class="impedimento-criatura" type="button" data-impedimento="duplo">
+          <img src="/assets/img/capitulo_5/duplo-icon.png" alt="O Duplo" />
+          <span>O Duplo</span>
+        </button>
+
+        <button class="impedimento-criatura" type="button" data-impedimento="stakeholder">
+          <img src="/assets/img/capitulo_5/stake-holder-selvagem-icon.png" alt="Stakeholder Selvagem" />
+          <span>Stakeholder Selvagem</span>
+        </button>
+
+        <button class="impedimento-criatura" type="button" data-impedimento="necrobranch">
+          <img src="/assets/img/capitulo_5/necrobranch-icon-simples.png" alt="Necrobranch Commitada" />
+          <span>Necrobranch Commitada</span>
+        </button>
+
+        <button class="impedimento-criatura" type="button" data-impedimento="bug">
+          <img src="/assets/img/capitulo_5/bug-infernal-icon.png" alt="Bug Infernal" />
+          <span>Bug Infernal</span>
+        </button>
       </div>
+
+      <p class="impedimentos-status" id="impedimentosStatus">
+        Resolva os 4 impedimentos para limpar o caminho da ponte.
+      </p>
+
+      <div class="impedimento-modal hidden" id="impedimentoModal" aria-hidden="true">
+  <div class="impedimento-modal-overlay" data-fechar-impedimento></div>
+
+  <article class="impedimento-carta">
+    <button class="impedimento-fechar" type="button" data-fechar-impedimento>
+      ×
+    </button>
+
+    <div class="impedimento-carta-grid">
+      <div class="impedimento-carta-imagem-area">
+        <img id="impedimentoImagem" src="" alt="" />
+      </div>
+
+      <div class="impedimento-carta-conteudo">
+        <p class="impedimento-kicker">Impedimento encontrado</p>
+        <h3 id="impedimentoTitulo">Nome do impedimento</h3>
+
+        <div class="impedimento-tabs">
+          <button class="impedimento-tab active" type="button" data-tab="descricao">
+            Descrição
+          </button>
+
+          <button class="impedimento-tab" type="button" data-tab="solucao">
+            Solução
+          </button>
+
+          <button class="impedimento-tab" type="button" data-tab="aprendizado">
+            Aprendizado
+          </button>
+        </div>
+
+        <div class="impedimento-tab-conteudo active" id="tabDescricao">
+          <p id="impedimentoDescricao"></p>
+        </div>
+
+        <div class="impedimento-tab-conteudo" id="tabSolucao">
+          <p id="impedimentoSolucao"></p>
+        </div>
+
+        <div class="impedimento-tab-conteudo" id="tabAprendizado">
+          <p id="impedimentoAprendizado"></p>
+        </div>
+
+        <button class="btn-resolver-impedimento" type="button" id="btnResolverImpedimento">
+          Resolver impedimento
+        </button>
+      </div>
+    </div>
+  </article>
+</div>
     </section>
 
     <section class="capitulo5-step reveal" id="user-stories" data-step="user-stories">
