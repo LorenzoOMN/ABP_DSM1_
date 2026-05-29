@@ -22,9 +22,9 @@ async function sincronizarSequenceQuestoes() {
         false
       );
     `);
-    console.log('✅ Sequence de questões sincronizado automaticamente.');
+    console.log('Sequence de questões sincronizado automaticamente.');
   } catch (err) {
-    console.warn('⚠️ Aviso: Não foi possível sincronizar o sequence no startup.');
+    console.warn('Aviso: Não foi possível sincronizar o sequence no startup.');
   }
 }
 

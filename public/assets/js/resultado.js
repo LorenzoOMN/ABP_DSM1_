@@ -289,7 +289,7 @@ function atualizarBotaoAcao(resultado) {
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.message || "Não foi possível criar nova tentativa.");
+        mostrarAlerta(data.message || "Não foi possível criar nova tentativa.", "erro");
 
         btnMelhorarNota.disabled = false;
         btnMelhorarNota.querySelector(".texto-botao").textContent =
@@ -302,7 +302,7 @@ function atualizarBotaoAcao(resultado) {
     } catch (error) {
       console.error("Erro ao criar tentativa de melhoria:", error);
 
-      alert("Erro de conexão ao criar nova tentativa.");
+      mostrarAlerta("Erro de conexão ao criar nova tentativa.", "erro");
 
       btnMelhorarNota.disabled = false;
       btnMelhorarNota.querySelector(".texto-botao").textContent =
@@ -329,7 +329,7 @@ function atualizarBotaoAcao(resultado) {
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.message || "Erro ao atualizar progresso.");
+        mostrarAlerta(data.message || "Erro ao atualizar progresso.", "erro");
         atualizarBotaoAcao(resultadoAtual);
         return;
       }
@@ -367,7 +367,7 @@ function atualizarBotaoAcao(resultado) {
       window.location.href = "/desafio1";
     } catch (error) {
       console.error(error);
-      alert("Erro de conexão ao atualizar progresso.");
+      mostrarAlerta("Erro de conexão ao atualizar progresso.", "erro");
       atualizarBotaoAcao(resultadoAtual);
     }
   }
