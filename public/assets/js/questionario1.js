@@ -174,13 +174,26 @@
   }
 
   function restaurarSelecao(idQuestao) {
-    const salva = respostas[idQuestao];
-    botoesResposta.forEach(function (botao) {
-      const marcado = salva && salva !== 'pulada' && botao.dataset.alternativa === salva;
-      botao.classList.toggle('is-selected', marcado);
-      botao.setAttribute('aria-pressed', marcado ? 'true' : 'false');
-    });
-  }
+  const salva = respostas[idQuestao];
+
+  botoesResposta.forEach(function (botao) {
+
+    // limpa tudo primeiro
+    botao.classList.remove('is-selected');
+    botao.setAttribute('aria-pressed', 'false');
+
+    // aplica somente na alternativa correta
+    const marcado =
+      salva &&
+      salva !== RESPOSTA_PULADA &&
+      botao.dataset.alternativa === salva;
+
+    if (marcado) {
+      botao.classList.add('is-selected');
+      botao.setAttribute('aria-pressed', 'true');
+    }
+  });
+}
 
   function renderizarQuestao() {
     const q = questaoAtual();
