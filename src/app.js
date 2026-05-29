@@ -16,6 +16,7 @@ const questoesModule = require('./modules/questoes');
 const progressoModule = require('./modules/progresso');
 const navbarModule = require('./modules/navbar');
 const artefatosModule = require('./modules/artefatos');
+const adminModule = require('./modules/admin');
 
 // Inicializa o express
 const app = express();
@@ -109,6 +110,11 @@ app.get("/certificado", function (_req, res) {
     res.render("certificado");
 });
 
+// Rota para admin de questões (CRUD)
+app.get("/admin", function (_req, res) {
+    res.render("admin_questoes");
+});
+
 // ==========================================
 // ROTAS DA API (PROTEGIDAS COM AUTH)
 // ==========================================
@@ -123,6 +129,7 @@ app.use("/api/questoes", authMiddleware, questoesModule);
 app.use("/api/progresso", authMiddleware, progressoModule);
 app.use("/api/navbar", authMiddleware, navbarModule);
 app.use("/api/artefatos", authMiddleware, artefatosModule);
+app.use('/api/admin', authMiddleware, adminModule); // Rotas de admin (algumas podem ter authMiddleware, outras não, dependendo da necessidade)
 
 // ==========================================
 // ROTA 404 (SEMPRE POR ÚLTIMO)

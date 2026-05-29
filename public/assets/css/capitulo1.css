@@ -40,7 +40,6 @@
 .hero-content h1,
 .story-text h2 {
   font-family: "Cinzel", serif;
-  white-space: nowrap;
 }
 
 .hero-content h1 {
@@ -1258,4 +1257,14 @@ blockquote {
     white-space: normal;
     bottom: -4rem;
   }
+}
+
+/* ================= CORREÇÃO TOOLTIP MOBILE ================= */
+
+.story-block,
+.story-text {
+  overflow-wrap: break-word;
+}
+blockquote {
+    overflow: visible;
 }
