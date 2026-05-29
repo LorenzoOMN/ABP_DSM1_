@@ -14,7 +14,7 @@ function getToken() {
 function verificarAutenticacao() {
     const token = getToken();
     if (!token) {
-        alert('Você precisa estar logado para acessar esta área.');
+        mostrarAlerta('Você precisa estar logado para acessar esta área.', "erro");
         window.location.href = '/';
         return false;
     }
@@ -115,11 +115,15 @@ function renderizarCards(questoes) {
 
 // Modal functions
 function abrirModalEdicao(idQuestao) {
-    const questao = questoesCarregadas.find(q => q.id_questao === idQuestao);
-    if (!questao) return;
+  const questao = questoesCarregadas.find(q => q.id_questao === idQuestao);
+  if (!questao) return;
 
-    const modal = document.getElementById('modal-questao');
-    const body = modal.querySelector('.modal-body');
+  const modal = document.getElementById('modal-questao');
+  const body = modal.querySelector('.modal-body');
+  const header = modal.querySelector('.modal-header h2');
+  
+  // Muda o título para edição
+  header.textContent = 'Editar Questão';
 
     body.innerHTML = `
     <form id="form-editar-questao" onsubmit="salvarEdicao(event, ${questao.id_questao})">
@@ -197,36 +201,75 @@ function abrirModalEdicao(idQuestao) {
 }
 
 function fecharModal() {
-    document.getElementById('modal-questao').classList.remove('active');
+  const modal = document.getElementById('modal-questao');
+  const header = modal.querySelector('.modal-header h2');
+  
+  // Reseta o título para o padrão
+  header.textContent = 'Editar Questão';
+  
+  modal.classList.remove('active');
 }
 
 async function salvarEdicao(event, idQuestao) {
-    event.preventDefault();
-
-    const form = event.target;
-    const formData = new FormData(form);
-    const dados = Object.fromEntries(formData);
-
-    const token = getToken();
-
-    try {
-        const response = await fetch(`/api/admin/questoes/${idQuestao}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dados)
-        });
-
-        if (!response.ok) throw new Error('Erro ao salvar');
-
-        alert('Questão atualizada com sucesso!');
-        fecharModal();
-        carregarQuestoes();
-    } catch (error) {
-        alert('Erro ao salvar: ' + error.message);
-    }
+  event.preventDefault();
+  
+  const form = event.target;
+  const formData = new FormData(form);
+  const dados = Object.fromEntries(formData);
+  
+  // Remove id_questao se estiver presente
+  delete dados.id_questao;
+  
+  // Garante alternativa_correta em minúsculo
+  dados.alternativa_correta = dados.alternativa_correta?.toLowerCase();
+  
+  const token = getToken();
+  
+  // Verifica se tem token
+  if (!token) {
+    mostrarAlerta('Sessão expirada. Faça login novamente.', "erro");
+      window.location.href = '/';
+      return;
+  }
+  
+  const btnSubmit = form.querySelector('button[type="submit"]');
+  const textoOriginal = btnSubmit.textContent;
+  btnSubmit.textContent = 'Salvando...';
+  btnSubmit.disabled = true;
+  
+  try {
+      const response = await fetch(`/api/admin/questoes/${idQuestao}`, {
+          method: 'PUT',  // ou 'PATCH'
+          headers: {
+              'Authorization': `Bearer ${token}`,  // ← Token aqui!
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dados)
+      });
+      
+      
+      if (response.status === 401) {
+          throw new Error('Sessão expirada. Faça login novamente.');
+      }
+      
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erro ao salvar questão');
+      }
+      
+      const questaoAtualizada = await response.json();
+      
+      mostrarAlerta('Questão atualizada com sucesso!', "sucesso");
+      fecharModal();
+      carregarQuestoes();
+      
+  } catch (error) {
+      console.error('Erro ao salvar:', error);
+      mostrarAlerta('Erro ao salvar questão: ' + error.message, "erro");
+  } finally {
+      btnSubmit.textContent = textoOriginal;
+      btnSubmit.disabled = false;
+  }
 }
 
 
@@ -315,7 +358,7 @@ function resetarFiltrosECarregar() {
 // Editar questão
 function editarQuestao(id) {
     console.log('Editar questão:', id);
-    alert(`Editar questão ${id} - Em desenvolvimento`);
+    mostrarAlerta(`Editar questão ${id} - Em desenvolvimento`, "erro");
 }
 
 // Deletar questão
@@ -339,12 +382,158 @@ async function deletarQuestao(id) {
             throw new Error('Erro ao deletar questão');
         }
 
-        alert('Questão deletada com sucesso!');
+        mostrarAlerta('Questão deletada com sucesso!', "sucesso");
         carregarQuestoes(); // Recarrega com filtros atuais
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao deletar questão: ' + error.message);
+        mostrarAlerta('Erro ao deletar questão: ' + error.message, "erro");
     }
+}
+
+// ============================================
+// FUNÇÕES DE CRIAÇÃO DE QUESTÃO
+// ============================================
+
+// Abrir modal para CRIAR nova questão (campos vazios)
+function abrirModalCriacao() {
+  const modal = document.getElementById('modal-questao');
+  const body = modal.querySelector('.modal-body');
+  const header = modal.querySelector('.modal-header h2');
+  
+  // Muda o título do modal
+  header.textContent = 'Nova Questão';
+  
+  // Formulário com campos vazios
+  body.innerHTML = `
+    <form id="form-criar-questao" onsubmit="salvarNovaQuestao(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Módulo *</label>
+          <select name="id_modulo" required>
+            <option value="">Selecione...</option>
+            <option value="1">Módulo 1</option>
+            <option value="2">Módulo 2</option>
+            <option value="3">Módulo 3</option>
+            <option value="4">Módulo 4</option>
+            <option value="5">Módulo 5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Dificuldade *</label>
+          <select name="dificuldade" required>
+            <option value="">Selecione...</option>
+            <option value="fácil">Fácil</option>
+            <option value="média">Média</option>
+            <option value="difícil">Difícil</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Enunciado *</label>
+        <textarea name="enunciado" required placeholder="Digite o enunciado da questão..."></textarea>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Alternativa A *</label>
+          <input type="text" name="alternativa_a" required placeholder="Texto da alternativa A">
+        </div>
+        <div class="form-group">
+          <label>Alternativa B *</label>
+          <input type="text" name="alternativa_b" required placeholder="Texto da alternativa B">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Alternativa C *</label>
+          <input type="text" name="alternativa_c" required placeholder="Texto da alternativa C">
+        </div>
+        <div class="form-group">
+          <label>Alternativa D *</label>
+          <input type="text" name="alternativa_d" required placeholder="Texto da alternativa D">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Alternativa Correta *</label>
+        <select name="alternativa_correta" required>
+          <option value="">Selecione...</option>
+          <option value="a">A</option>
+          <option value="b">B</option>
+          <option value="c">C</option>
+          <option value="d">D</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>Imagem (opcional)</label>
+        <input type="text" name="imagem" placeholder="Ex: questao_151.png">
+        <small style="color: #a09070; display: block; margin-top: 0.3rem;">
+          Nome do arquivo de imagem (deve estar na pasta /assets/img/questoes/)
+        </small>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+        <button type="submit" class="btn-salvar">Criar Questão</button>
+      </div>
+    </form>
+  `;
+  
+  modal.classList.add('active');
+}
+
+// Salvar nova questão via API POST
+async function salvarNovaQuestao(event) {
+  event.preventDefault();
+  
+  const form = event.target;
+  const formData = new FormData(form);
+  let dados = Object.fromEntries(formData);
+  
+  // ← REMOVE explicitamente id_questao se existir
+  delete dados.id_questao;
+  
+  // Garante alternativa_correta em minúsculo
+  dados.alternativa_correta = dados.alternativa_correta?.toLowerCase();
+  
+  const token = getToken();
+  
+  const btnSubmit = form.querySelector('button[type="submit"]');
+  const textoOriginal = btnSubmit.textContent;
+  btnSubmit.textContent = 'Criando...';
+  btnSubmit.disabled = true;
+  
+  try {
+      const response = await fetch('/api/admin/questoes', {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dados)
+      });
+      
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erro ao criar questão');
+      }
+      
+      const novaQuestao = await response.json();
+      
+      mostrarAlerta('Questão criada com sucesso!', "sucesso");
+      fecharModal();
+      carregarQuestoes();
+      
+  } catch (error) {
+      console.error('Erro ao criar:', error);
+      mostrarAlerta('Erro ao criar questão: ' + error.message, "erro");
+  } finally {
+      btnSubmit.textContent = textoOriginal;
+      btnSubmit.disabled = false;
+  }
 }
 
 // Inicializar quando a página carregar
