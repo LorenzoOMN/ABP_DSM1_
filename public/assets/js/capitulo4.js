@@ -1,79 +1,38 @@
 const ID_MODULO = 4;
-const SCROLL_OFFSET = 110;
+const SCROLL_OFFSET = 88;
 
-const corvoPorAto = {
-  ampulheta: {
-    titulo: "A Sprint precisa respirar",
-    texto:
-      "Trabalho iniciado não é trabalho concluído. Antes de acelerar, o time precisa enxergar onde o fluxo travou.",
-  },
-  kanban: {
-    titulo: "Kanban revela o caminho",
-    texto:
-      "Kanban visualiza o fluxo. Quando muitos cartões param na mesma coluna, existe um gargalo. O limite de WIP ajuda a reduzir sobrecarga.",
-  },
-  dod: {
-    titulo: "Pronto precisa ter acordo",
-    texto:
-      "Definition of Done define quando um incremento está realmente pronto. Sem esse acordo, qualidade vira opinião.",
-  },
-  cicd: {
-    titulo: "Integrar exige testar",
-    texto:
-      "Integração Contínua testa o código com frequência. Entrega Contínua torna o caminho de deploy mais confiável.",
-  },
-  divida: {
-    titulo: "Atalhos cobram juros",
-    texto:
-      "Dívida técnica nasce quando uma decisão apressada facilita o presente, mas cria retrabalho no futuro. Refatoração reduz esse peso.",
-  },
-  metricas: {
-    titulo: "Métrica é bússola",
-    texto:
-      "Burndown, Burnup, Velocity, Lead Time e Cycle Time servem para aprender sobre o fluxo, não para punir a equipe.",
-  },
-  stakeholders: {
-    titulo: "Nem toda urgência é valor",
-    texto:
-      "Feedback deve alimentar o Product Backlog. Aceitar toda urgência sem avaliar valor pode quebrar o foco da Sprint.",
-  },
-  melhoria: {
-    titulo: "O time melhora o processo",
-    texto:
-      "Retrospectiva e melhoria contínua ajudam a equipe a ajustar como trabalha. Qualidade é responsabilidade compartilhada.",
-  },
-};
+const kanbanFlow = ["todo", "doing", "test", "done"];
+const pipelineFlow = ["integrar", "testar", "entregar"];
+const completedPipelineSteps = new Set();
+let retrospectiveUnlocked = false;
 
-const fluxoKanban = ["a-fazer", "desenvolvimento", "teste", "concluido"];
-const fluxoPipeline = ["integrar", "testar", "entregar"];
-const pipelineConcluido = new Set();
-let corvoFeedbackLiberadoEm = 0;
+document.documentElement.classList.add("capitulo4-motion");
 
-const metricasData = {
+const metrics = {
   burndown: {
-    titulo: "Burndown mostra o restante",
-    texto:
-      "Burndown Chart mostra quanto trabalho ainda falta ao longo do tempo. Ele ajuda o time a enxergar se o plano da Sprint está se aproximando do fim.",
+    title: "Burndown mostra o restante",
+    text:
+      "Burndown Chart mostra quanto trabalho ainda falta ao longo do tempo. Ele ajuda a enxergar se a Sprint se aproxima do fim.",
   },
   burnup: {
-    titulo: "Burnup mostra o acumulado",
-    texto:
-      "Burnup Chart mostra o trabalho concluído acumulado. Ele deixa claro o quanto já foi entregue e como o escopo evolui.",
+    title: "Burnup mostra o acumulado",
+    text:
+      "Burnup Chart mostra o trabalho concluido acumulado e deixa visivel como o escopo evolui.",
   },
   velocity: {
-    titulo: "Velocity é previsão interna",
-    texto:
-      "Velocity ajuda a própria equipe a prever capacidade futura. Ela não deve ser usada para comparar equipes diferentes.",
+    title: "Velocity e previsao interna",
+    text:
+      "Velocity ajuda a propria equipe a prever capacidade futura. Ela nao deve comparar equipes diferentes.",
   },
   "lead-time": {
-    titulo: "Lead Time começa no pedido",
-    texto:
-      "Lead Time mede o tempo total desde a solicitação até a entrega. Ele mostra a experiência completa de espera.",
+    title: "Lead Time comeca no pedido",
+    text:
+      "Lead Time mede o tempo total desde a solicitacao ate a entrega. Ele mostra a espera completa do ponto de vista do pedido.",
   },
   "cycle-time": {
-    titulo: "Cycle Time começa no início do trabalho",
-    texto:
-      "Cycle Time mede quanto tempo um item leva desde que começa a ser desenvolvido até ser concluído.",
+    title: "Cycle Time comeca no trabalho",
+    text:
+      "Cycle Time mede quanto tempo um item leva desde que comeca a ser desenvolvido ate ser concluido.",
   },
 };
 
@@ -88,535 +47,373 @@ function obterToken() {
   return token;
 }
 
-function obterColunaDoCartao(cartao) {
-  return cartao.closest(".kanban-column");
+function rolarParaElemento(selector, offset = SCROLL_OFFSET) {
+  const target = document.querySelector(selector);
+
+  if (!target) return;
+
+  const top = target.getBoundingClientRect().top + window.scrollY - offset;
+
+  window.scrollTo({ top, behavior: "smooth" });
 }
 
-function obterProximaColuna(colunaAtual) {
-  const colunaAtualId = colunaAtual?.dataset.column;
-  const indiceAtual = fluxoKanban.indexOf(colunaAtualId);
-  const proximaColunaId = fluxoKanban[indiceAtual + 1];
-
-  if (!proximaColunaId) return null;
-
-  return document.querySelector(`[data-column="${proximaColunaId}"]`);
-}
-
-function colunaPodeReceberCartao(coluna) {
-  const limiteWip = Number(coluna.dataset.wipLimit);
-
-  if (!limiteWip) return true;
-
-  const totalCartoes = coluna.querySelectorAll(".kanban-card").length;
-
-  return totalCartoes < limiteWip;
-}
-
-function atualizarAmpulheta(estado, titulo, texto) {
-  const ampulheta = document.getElementById("ampulhetaEstado");
-
-  if (!ampulheta) return;
-
-  const tituloElemento = ampulheta.querySelector("strong");
-  const textoElemento = ampulheta.querySelector("p");
-
-  ampulheta.dataset.estado = estado;
-
-  if (tituloElemento) {
-    tituloElemento.textContent = titulo;
-  }
-
-  if (textoElemento) {
-    textoElemento.textContent = texto;
-  }
-}
-
-function atualizarEstadoWipKanban() {
-  const colunasComLimite = document.querySelectorAll("[data-wip-limit]");
-  let existeColunaSobrecarregada = false;
-
-  colunasComLimite.forEach((coluna) => {
-    const limiteWip = Number(coluna.dataset.wipLimit);
-    const totalCartoes = coluna.querySelectorAll(".kanban-card").length;
-    const contador = coluna.querySelector("[data-wip-counter]");
-    const passouDoLimite = totalCartoes > limiteWip;
-
-    if (contador) {
-      contador.textContent = `WIP ${totalCartoes}/${limiteWip}`;
-    }
-
-    coluna.classList.toggle("kanban-column--over-limit", passouDoLimite);
-
-    if (passouDoLimite) {
-      existeColunaSobrecarregada = true;
-    }
-  });
-
-  if (existeColunaSobrecarregada) {
-    atualizarAmpulheta(
-      "sobrecarregada",
-      "Sobrecarregada",
-      "Há trabalho demais em andamento. A areia tenta cair, mas o gargalo segura o tempo.",
-    );
-    return;
-  }
-
-  atualizarAmpulheta(
-    "fluindo",
-    "Fluindo",
-    "O limite de WIP voltou a ser respeitado. A areia começa a cair no ritmo do trabalho.",
-  );
-}
-
-function moverCartaoParaProximaColuna(cartao) {
-  const colunaAtual = obterColunaDoCartao(cartao);
-  const proximaColuna = obterProximaColuna(colunaAtual);
-
-  if (!proximaColuna) {
-    mostrarCartaoCorvo(
-      "Este item já chegou ao fim",
-      "Quando um cartão está em Concluído, ele atravessou o fluxo. O próximo passo é garantir que ele respeitou a qualidade esperada.",
-    );
-    return;
-  }
-
-  if (!colunaPodeReceberCartao(proximaColuna)) {
-    mostrarCartaoCorvo(
-      "WIP bloqueou a entrada",
-      "A coluna Em Desenvolvimento já atingiu seu limite de WIP. Começar mais trabalho agora aumentaria a sobrecarga e esconderia o gargalo.",
-    );
-    return;
-  }
-
-  proximaColuna.appendChild(cartao);
-  atualizarEstadoWipKanban();
-  cartao.classList.add("kanban-card--moved");
-
-  if (proximaColuna.dataset.column === "concluido") {
-    cartao.classList.add("kanban-card--done");
-  }
-
-  setTimeout(() => {
-    cartao.classList.remove("kanban-card--moved");
-  }, 450);
-
-  mostrarCartaoCorvo(
-    "O fluxo avançou",
-    "Mover um cartão para a próxima coluna mostra o trabalho atravessando o Kanban. O objetivo é reduzir acúmulos e fazer os itens chegarem a Concluído.",
-  );
-}
-
-function rolarParaElemento(seletor, offset = SCROLL_OFFSET) {
-  const alvo = document.querySelector(seletor);
-
-  if (!alvo) return;
-
-  const posicaoAlvo = alvo.getBoundingClientRect().top + window.scrollY - offset;
-
-  window.scrollTo({
-    top: posicaoAlvo,
-    behavior: "smooth",
-  });
-}
-
-function configurarScrollParaBotoes() {
-  document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
-    botao.addEventListener("click", () => {
-      rolarParaElemento(botao.dataset.scrollTo);
+function configurarScrollGuiado() {
+  document.querySelectorAll("[data-scroll-to]").forEach((button) => {
+    button.addEventListener("click", () => {
+      rolarParaElemento(button.dataset.scrollTo);
     });
   });
-}
-
-function configurarInsightAmpulheta() {
-  document.querySelectorAll("[data-insight='ampulheta']").forEach((botao) => {
-    botao.addEventListener("click", () => {
-      atualizarAmpulheta(
-        "sobrecarregada",
-        "Instável",
-        "A Sprint começou, mas o fluxo ainda não está saudável. Há trabalho iniciado demais e pouco trabalho concluído.",
-      );
-
-      mostrarCartaoCorvo(
-        "O tempo segue o fluxo",
-        "A ampulheta não mede só prazo. Nesta dungeon, ela mostra se o trabalho atravessa o caminho até ficar pronto. Trabalho iniciado não é trabalho concluído.",
-      );
-    });
-  });
-}
-
-function ajustarScrollPorHashInicial() {
-  const hash = window.location.hash;
-
-  if (!hash) return;
-
-  setTimeout(() => {
-    rolarParaElemento(hash);
-  }, 250);
 }
 
 function configurarRevealNoScroll() {
-  const elementos = document.querySelectorAll(".reveal");
-
+  const elements = document.querySelectorAll(".reveal");
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("visible");
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
       });
     },
     { threshold: 0.18 },
   );
 
-  elementos.forEach((el) => observer.observe(el));
+  elements.forEach((element) => observer.observe(element));
 }
 
-function atualizarCartaoCorvo(step) {
-  const card = document.getElementById("cartaoCorvo");
-  const conteudo = corvoPorAto[step];
-
-  if (Date.now() < corvoFeedbackLiberadoEm) return;
-
-  if (!card || !conteudo) return;
-
-  mostrarCartaoCorvo(conteudo.titulo, conteudo.texto, false);
-}
-
-function mostrarCartaoCorvo(titulo, texto, fixarFeedback = true) {
-  const card = document.getElementById("cartaoCorvo");
-
-  if (!card) return;
-
-  if (fixarFeedback) {
-    corvoFeedbackLiberadoEm = Date.now() + 3200;
-  }
-
-  card.innerHTML = `
-    <img class="corvo-card__image" src="/assets/img/corvo_sem_sombra.png" alt="Corvo guia da dungeon" />
-    <div class="corvo-card__content">
-      <span class="corvo-card__eyebrow">Cartão do Corvo</span>
-      <h2>${titulo}</h2>
-      <p>${texto}</p>
-    </div>
-  `;
-}
-
-function configurarFeedbackKanban() {
-  const cartoes = document.querySelectorAll(".kanban-card");
-
-  atualizarEstadoWipKanban();
-
-  cartoes.forEach((cartao) => {
-    cartao.addEventListener("click", () => {
-      if (cartao.classList.contains("kanban-card--blocked")) {
-        mostrarCartaoCorvo(
-          "WIP demais trava o fluxo",
-          "Este cartão representa trabalho tentando entrar em uma coluna que já passou do limite. O limite de WIP protege o time contra sobrecarga e ajuda a revelar gargalos.",
-        );
-        return;
-      }
-
-      moverCartaoParaProximaColuna(cartao);
-    });
-  });
-}
-
-function obterChecksDod() {
-  return Array.from(document.querySelectorAll("[data-dod-check]"));
-}
-
-function validarDefinitionOfDone() {
-  const forja = document.querySelector(".dod-forge");
-  const checks = obterChecksDod();
-  const totalChecks = checks.length;
-  const checksMarcados = checks.filter((check) => check.checked).length;
-
-  if (checksMarcados < totalChecks) {
-    if (forja) {
-      forja.classList.remove("dod-forge--complete");
-    }
-
-    mostrarCartaoCorvo(
-      "Quase pronto ainda não é pronto",
-      `A Definition of Done precisa estar completa. Por enquanto, ${checksMarcados}/${totalChecks} critérios foram atendidos. A forja não libera incrementos incompletos.`,
-    );
-    return;
-  }
-
-  if (forja) {
-    forja.classList.add("dod-forge--complete");
-  }
-
-  mostrarCartaoCorvo(
-    "Incremento pronto",
-    "Todos os critérios da Definition of Done foram atendidos. Agora o incremento tem uma definição visível de qualidade, não apenas uma sensação de estar pronto.",
-  );
-}
-
-function configurarForjaDod() {
-  const botaoValidar = document.getElementById("btnValidarDod");
-
-  if (!botaoValidar) return;
-
-  botaoValidar.addEventListener("click", validarDefinitionOfDone);
-}
-
-function atualizarStatusPipeline(texto) {
-  const status = document.getElementById("pipelineStatus");
-
-  if (!status) return;
-
-  status.textContent = texto;
-}
-
-function obterProximaEtapaPipeline() {
-  return fluxoPipeline[pipelineConcluido.size];
-}
-
-function concluirEtapaPipeline(botao) {
-  const etapa = botao.dataset.pipelineStep;
-
-  pipelineConcluido.add(etapa);
-  botao.classList.add("pipeline-step--complete");
-
-  if (etapa === "integrar") {
-    atualizarStatusPipeline("Código integrado. Agora a ponte exige testes automatizados.");
-  }
-
-  if (etapa === "testar") {
-    atualizarStatusPipeline("Testes executados. A entrega pode ser preparada com mais confiança.");
-  }
-
-  if (etapa === "entregar") {
-    atualizarStatusPipeline("Pipeline completo. A ponte está estável para a entrega.");
-    document.querySelector(".pipeline-bridge")?.classList.add("pipeline-bridge--complete");
-  }
-}
-
-function executarEtapaPipeline(botao) {
-  const etapa = botao.dataset.pipelineStep;
-  const proximaEtapa = obterProximaEtapaPipeline();
-
-  if (pipelineConcluido.has(etapa)) {
-    mostrarCartaoCorvo(
-      "Etapa já executada",
-      "Esta runa do pipeline já foi ativada. Em CI/CD, repetir sinais sem necessidade não melhora o fluxo; o importante é seguir o caminho confiável.",
-    );
-    return;
-  }
-
-  if (etapa !== proximaEtapa) {
-    mostrarCartaoCorvo(
-      "A ponte rejeitou o atalho",
-      "O pipeline precisa seguir a ordem: integrar, testar e só então preparar a entrega. Pular testes automatizados aumenta o risco de espalhar defeitos.",
-    );
-    atualizarStatusPipeline("A ponte tremeu: uma etapa obrigatória foi pulada.");
-    return;
-  }
-
-  concluirEtapaPipeline(botao);
-
-  mostrarCartaoCorvo(
-    "Pipeline avançou",
-    "CI/CD reduz risco quando o time integra, testa e prepara a entrega em um caminho confiável. A automação protege o fluxo.",
-  );
-}
-
-function configurarPonteCicd() {
-  document.querySelectorAll("[data-pipeline-step]").forEach((botao) => {
-    botao.addEventListener("click", () => executarEtapaPipeline(botao));
-  });
-}
-
-function configurarRefatoracaoDivida() {
-  const botaoRefatorar = document.getElementById("btnRefatorarDivida");
-  const painelDivida = document.querySelector(".technical-debt");
-
-  if (!botaoRefatorar || !painelDivida) return;
-
-  botaoRefatorar.addEventListener("click", () => {
-    painelDivida.classList.add("technical-debt--refactored");
-    document.querySelectorAll(".debt-chain").forEach((corrente) => {
-      corrente.classList.add("debt-chain--released");
-    });
-
-    botaoRefatorar.disabled = true;
-    botaoRefatorar.textContent = "Dívida reduzida";
-
-    mostrarCartaoCorvo(
-      "Refatoração soltou as correntes",
-      "Refatorar melhora a estrutura interna do código sem mudar o comportamento externo. O usuário vê o mesmo produto, mas o time ganha um caminho mais seguro para evoluir.",
-    );
-  });
-}
-
-function configurarMetricas() {
-  const status = document.getElementById("metricStatus");
-  const botoes = document.querySelectorAll("[data-metric]");
-
-  botoes.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const metrica = metricasData[botao.dataset.metric];
-
-      if (!metrica) return;
-
-      botoes.forEach((item) => item.classList.remove("metric-rune--active"));
-      botao.classList.add("metric-rune--active");
-
-      if (status) {
-        status.textContent = metrica.texto;
-      }
-
-      mostrarCartaoCorvo(metrica.titulo, metrica.texto);
-    });
-  });
-}
-
-function atualizarStatusStakeholders() {
-  const status = document.getElementById("stakeholderStatus");
-  const total = document.querySelectorAll(".stakeholder-request").length;
-  const resolvidos = document.querySelectorAll(".stakeholder-request--resolved").length;
-
-  if (!status) return;
-
-  status.textContent =
-    resolvidos === total
-      ? "Todos os pedidos foram tratados sem quebrar o foco da Sprint."
-      : `${resolvidos}/${total} pedidos classificados com decisão consciente.`;
-}
-
-function configurarStakeholders() {
-  document.querySelectorAll("[data-stakeholder-action]").forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const pedido = botao.closest(".stakeholder-request");
-
-      if (!pedido || pedido.classList.contains("stakeholder-request--resolved")) return;
-
-      const acaoEscolhida = botao.dataset.stakeholderAction;
-      const acaoCorreta = pedido.dataset.correctAction;
-
-      if (acaoEscolhida !== acaoCorreta) {
-        pedido.classList.add("stakeholder-request--wrong");
-        mostrarCartaoCorvo(
-          "Decisão apressada",
-          "Nem toda urgência é valor. Antes de interromper o fluxo, o Product Owner precisa avaliar impacto, foco e valor percebido.",
-        );
-        return;
-      }
-
-      pedido.classList.remove("stakeholder-request--wrong");
-      pedido.classList.add("stakeholder-request--resolved");
-      pedido.querySelectorAll("button").forEach((item) => {
-        item.disabled = true;
-      });
-
-      atualizarStatusStakeholders();
-
-      mostrarCartaoCorvo(
-        "Pedido bem tratado",
-        "Feedback saudável alimenta o Product Backlog sem transformar toda urgência em interrupção. Proteger foco também é proteger valor.",
-      );
-    });
-  });
-
-  atualizarStatusStakeholders();
-}
-
-function obterRespostasRetrospectiva() {
-  return Array.from(document.querySelectorAll("[data-retro-answer]"));
-}
-
-function validarRetrospectiva() {
-  const bau = document.querySelector(".retro-chest");
-  const botao = document.getElementById("btnAbrirBauMelhoria");
-  const status = document.getElementById("retroStatus");
-  const respostas = obterRespostasRetrospectiva();
-  const respostasPreenchidas = respostas.filter((campo) => campo.value.trim().length >= 4);
-
-  if (respostasPreenchidas.length < respostas.length) {
-    const pendentes = respostas.length - respostasPreenchidas.length;
-
-    if (status) {
-      status.textContent =
-        pendentes === 1
-          ? "Ainda falta uma resposta para transformar aprendizado em melhoria."
-          : `Ainda faltam ${pendentes} respostas para transformar aprendizado em melhoria.`;
-    }
-
-    mostrarCartaoCorvo(
-      "Retrospectiva incompleta",
-      "A melhoria contínua precisa de reflexão concreta. Responda o que funcionou, o que atrapalhou e qual experimento o time vai testar na próxima Sprint.",
-    );
-    return;
-  }
-
-  if (bau) {
-    bau.classList.add("retro-chest--complete");
-  }
-
-  if (botao) {
-    botao.disabled = true;
-    botao.textContent = "Baú aberto";
-  }
-
-  if (status) {
-    status.textContent =
-      "Baú aberto. A retrospectiva virou uma melhoria concreta para o próximo ciclo.";
-  }
-
-  atualizarAmpulheta(
-    "restaurada",
-    "Restaurada",
-    "A areia volta a cair com calma. O time aprendeu com o ciclo e escolheu uma melhoria para testar.",
-  );
-
-  mostrarCartaoCorvo(
-    "Melhoria contínua desbloqueada",
-    "Retrospectiva não é reunião para culpar pessoas. É o momento em que o time aprende com o próprio processo e escolhe um ajuste pequeno para evoluir.",
-  );
-}
-
-function configurarRetrospectiva() {
-  const botao = document.getElementById("btnAbrirBauMelhoria");
-
-  if (!botao) return;
-
-  botao.addEventListener("click", validarRetrospectiva);
-}
-
-function configurarProgressoVisual() {
-  const secoes = document.querySelectorAll(".journey-scene[data-step], .cinematic-hero[data-step]");
+function configurarProgressoDeCena() {
+  const scenes = document.querySelectorAll(".film-scene[data-scene]");
+  const progressItems = document.querySelectorAll(".chapter-progress .progress-item");
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
 
-        const step = entry.target.dataset.step;
+        const scene = entry.target.dataset.scene;
 
-        atualizarCartaoCorvo(step);
+        progressItems.forEach((item) => {
+          item.classList.toggle("active", item.dataset.sceneTarget === scene);
+        });
       });
     },
-    { threshold: 0.38 },
+    { threshold: 0.42 },
   );
 
-  secoes.forEach((secao) => observer.observe(secao));
+  scenes.forEach((scene) => observer.observe(scene));
+}
+
+function configurarAmpulheta() {
+  const button = document.getElementById("btnExaminarAmpulheta");
+  const status = document.getElementById("ampulhetaEstado");
+
+  if (!button || !status) return;
+
+  button.addEventListener("click", () => {
+    status.textContent =
+      "A ampulheta reage: a Sprint nao precisa de mais pressa, precisa de fluxo visivel ate Concluido.";
+    button.classList.add("hourglass-relic--awake");
+
+  });
+}
+
+function obterColunaDoCartao(card) {
+  return card.closest(".kanban-column");
+}
+
+function obterProximaColuna(column) {
+  const current = column?.dataset.column;
+  const next = kanbanFlow[kanbanFlow.indexOf(current) + 1];
+
+  if (!next) return null;
+
+  return document.querySelector(`[data-column="${next}"]`);
+}
+
+function colunaPodeReceberCartao(column) {
+  const limit = Number(column.dataset.wipLimit);
+
+  if (!limit) return true;
+
+  return column.querySelectorAll(".kanban-card").length < limit;
+}
+
+function atualizarKanban() {
+  document.querySelectorAll("[data-wip-limit]").forEach((column) => {
+    const limit = Number(column.dataset.wipLimit);
+    const total = column.querySelectorAll(".kanban-card").length;
+    const counter = column.querySelector("[data-wip-counter]");
+
+    if (counter) {
+      counter.textContent = `WIP ${total}/${limit}`;
+    }
+
+    column.classList.toggle("kanban-column--over-limit", total > limit);
+  });
+}
+
+function moverCartao(card) {
+  const column = obterColunaDoCartao(card);
+  const nextColumn = obterProximaColuna(column);
+
+  if (card.classList.contains("kanban-card--blocked")) {
+    return;
+  }
+
+  if (!nextColumn) {
+    return;
+  }
+
+  if (!colunaPodeReceberCartao(nextColumn)) {
+    return;
+  }
+
+  nextColumn.appendChild(card);
+  card.classList.toggle("kanban-card--done", nextColumn.dataset.column === "done");
+  card.classList.add("kanban-card--moved");
+  atualizarKanban();
+
+  setTimeout(() => card.classList.remove("kanban-card--moved"), 420);
+
+}
+
+function configurarKanban() {
+  atualizarKanban();
+
+  document.querySelectorAll(".kanban-card").forEach((card) => {
+    card.addEventListener("click", () => moverCartao(card));
+  });
+}
+
+function configurarDod() {
+  const button = document.getElementById("btnValidarDod");
+  const panel = document.querySelector(".dod-forge");
+
+  if (!button || !panel) return;
+
+  button.addEventListener("click", () => {
+    const checks = Array.from(document.querySelectorAll("[data-dod-check]"));
+    const checked = checks.filter((check) => check.checked).length;
+
+    if (checked < checks.length) {
+      panel.classList.remove("dod-forge--complete");
+      panel.classList.add("stakeholder-request--wrong");
+      setTimeout(() => panel.classList.remove("stakeholder-request--wrong"), 420);
+      return;
+    }
+
+    panel.classList.add("dod-forge--complete");
+  });
+}
+
+function proximaEtapaPipeline() {
+  return pipelineFlow[completedPipelineSteps.size];
+}
+
+function configurarPipeline() {
+  const status = document.getElementById("pipelineStatus");
+  const panel = document.querySelector(".pipeline-panel");
+
+  document.querySelectorAll("[data-pipeline-step]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const step = button.dataset.pipelineStep;
+
+      if (completedPipelineSteps.has(step)) {
+        return;
+      }
+
+      if (step !== proximaEtapaPipeline()) {
+        if (status) {
+          status.textContent = "A ponte tremeu: uma etapa obrigatoria foi pulada.";
+        }
+
+        if (panel) {
+          panel.classList.remove("pipeline-panel--shake");
+          void panel.offsetWidth;
+          panel.classList.add("pipeline-panel--shake");
+        }
+
+        return;
+      }
+
+      completedPipelineSteps.add(step);
+      button.classList.add("pipeline-step--complete");
+
+      if (status) {
+        const messages = {
+          integrar: "Codigo integrado. Agora a ponte exige testes automatizados.",
+          testar: "Testes executados. A entrega pode ser preparada com mais confianca.",
+          entregar: "Pipeline completo. A ponte esta estavel para a entrega.",
+        };
+        status.textContent = messages[step];
+      }
+
+    });
+  });
+}
+
+function configurarDividaTecnica() {
+  const button = document.getElementById("btnRefatorarDivida");
+  const panel = document.querySelector(".debt-panel");
+
+  if (!button || !panel) return;
+
+  button.addEventListener("click", () => {
+    panel.classList.add("debt-panel--refactored");
+    button.disabled = true;
+    button.textContent = "Divida reduzida";
+
+  });
+}
+
+function configurarMetricas() {
+  const status = document.getElementById("metricStatus");
+  const buttons = document.querySelectorAll("[data-metric]");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const metric = metrics[button.dataset.metric];
+
+      if (!metric) return;
+
+      buttons.forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+
+      if (status) {
+        status.textContent = metric.text;
+      }
+
+    });
+  });
+}
+
+function atualizarStakeholders() {
+  const status = document.getElementById("stakeholderStatus");
+  const total = document.querySelectorAll(".stakeholder-request").length;
+  const resolved = document.querySelectorAll(".stakeholder-request--resolved").length;
+
+  if (status) {
+    status.textContent =
+      resolved === total
+        ? "Todos os pedidos foram tratados sem quebrar o foco da Sprint."
+        : `${resolved}/${total} pedidos tratados com decisao consciente.`;
+  }
+}
+
+function configurarStakeholders() {
+  document.querySelectorAll("[data-stakeholder-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const request = button.closest(".stakeholder-request");
+
+      if (!request || request.classList.contains("stakeholder-request--resolved")) return;
+
+      if (button.dataset.stakeholderAction !== request.dataset.correctAction) {
+        request.classList.add("stakeholder-request--wrong");
+        setTimeout(() => request.classList.remove("stakeholder-request--wrong"), 420);
+
+        return;
+      }
+
+      request.classList.add("stakeholder-request--resolved");
+      request.querySelectorAll("button").forEach((item) => {
+        item.disabled = true;
+      });
+
+      atualizarStakeholders();
+
+    });
+  });
+
+  atualizarStakeholders();
+}
+
+function configurarRetrospectiva() {
+  const button = document.getElementById("btnAbrirBauMelhoria");
+  const status = document.getElementById("retroStatus");
+  const panel = document.querySelector(".retro-panel");
+  const chest = document.getElementById("bauMelhoria");
+
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    const answers = Array.from(document.querySelectorAll("[data-retro-answer]"));
+    const filled = answers.filter((answer) => answer.value.trim().length >= 4);
+
+    if (filled.length < answers.length) {
+      const missing = answers.length - filled.length;
+
+      if (status) {
+        status.textContent =
+          missing === 1
+            ? "Ainda falta uma resposta para transformar aprendizado em melhoria."
+            : `Ainda faltam ${missing} respostas para transformar aprendizado em melhoria.`;
+      }
+
+      return;
+    }
+
+    if (status) {
+      status.textContent = "Bau aberto. A retrospectiva virou melhoria concreta para a proxima Sprint.";
+    }
+
+    button.disabled = true;
+    button.textContent = "Bau aberto";
+    retrospectiveUnlocked = true;
+
+    if (panel) {
+      panel.classList.add("retro-panel--open");
+    }
+
+    if (chest) {
+      const label = chest.querySelector("strong");
+
+      if (label) {
+        label.textContent = "Bau aberto";
+      }
+    }
+
+    habilitarConclusaoHistoria();
+
+  });
+}
+
+function habilitarConclusaoHistoria() {
+  const button = document.getElementById("btnConcluirHistoria");
+  const status = document.getElementById("statusHistoria");
+
+  if (!button) return;
+
+  button.disabled = false;
+
+  if (status && !status.dataset.completed) {
+    status.textContent = "Retrospectiva completa. Agora registre a historia e libere a quarta porta.";
+  }
 }
 
 async function concluirHistoria() {
   const token = obterToken();
-  const btnConcluir = document.getElementById("btnConcluirHistoria");
-  const portaBoss = document.getElementById("portaBossScene");
+  const button = document.getElementById("btnConcluirHistoria");
+  const gate = document.getElementById("portaBossScene");
   const status = document.getElementById("statusHistoria");
 
   if (!token) return;
 
-  if (btnConcluir) {
-    btnConcluir.disabled = true;
-    btnConcluir.textContent = "Registrando progresso...";
+  if (!retrospectiveUnlocked) {
+    if (status) {
+      status.textContent = "Abra o Bau da Melhoria Continua antes de concluir a historia.";
+    }
+
+    rolarParaElemento("#cena-melhoria");
+    return;
+  }
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Registrando progresso...";
   }
 
   if (status) {
-    status.textContent = "A dungeon está registrando sua jornada...";
+    status.textContent = "A dungeon esta registrando sua jornada...";
   }
 
   try {
@@ -630,23 +427,18 @@ async function concluirHistoria() {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || "Não foi possível registrar o progresso.");
+      throw new Error(data.message || "Nao foi possivel registrar o progresso.");
+    }
+
+    liberarPortaDesafio();
+
+    if (button) {
+      button.classList.add("hidden");
     }
 
     if (status) {
-      status.textContent =
-        "História concluída. A quarta porta foi liberada. Aproxime-se dela para entrar.";
-    }
-
-    if (btnConcluir) {
-      btnConcluir.classList.add("hidden");
-    }
-
-    if (portaBoss) {
-      portaBoss.classList.add("porta-liberada");
-      portaBoss.setAttribute("role", "button");
-      portaBoss.setAttribute("tabindex", "0");
-      portaBoss.setAttribute("aria-label", "Entrar no desafio do modulo 4");
+      status.dataset.completed = "true";
+      status.textContent = "Historia concluida. A quarta porta foi liberada. Aproxime-se dela para entrar.";
     }
   } catch (error) {
     console.error(error);
@@ -655,35 +447,46 @@ async function concluirHistoria() {
       status.textContent = "Erro ao registrar progresso. Tente novamente.";
     }
 
-    if (btnConcluir) {
-      btnConcluir.disabled = false;
-      btnConcluir.textContent = "Tentar concluir novamente";
+    if (button) {
+      button.disabled = false;
+      button.textContent = "Tentar concluir novamente";
     }
   }
 }
 
-function configurarConclusaoHistoria() {
-  const btnConcluir = document.getElementById("btnConcluirHistoria");
+function liberarPortaDesafio() {
+  const gate = document.getElementById("portaBossScene");
 
-  if (btnConcluir) {
-    btnConcluir.addEventListener("click", concluirHistoria);
+  if (!gate) return;
+
+  gate.classList.add("porta-liberada");
+  gate.setAttribute("role", "button");
+  gate.setAttribute("tabindex", "0");
+  gate.setAttribute("aria-label", "Entrar no desafio do modulo 4");
+}
+
+function configurarConclusaoHistoria() {
+  const button = document.getElementById("btnConcluirHistoria");
+
+  if (button) {
+    button.addEventListener("click", concluirHistoria);
   }
 }
 
 function configurarPortaDesafio() {
-  const portaBoss = document.getElementById("portaBossScene");
+  const gate = document.getElementById("portaBossScene");
 
-  if (!portaBoss) return;
+  if (!gate) return;
 
   function entrarNoDesafio() {
-    if (!portaBoss.classList.contains("porta-liberada")) return;
+    if (!gate.classList.contains("porta-liberada")) return;
 
     localStorage.setItem("moduloAtual", ID_MODULO);
     window.location.href = "/desafio1";
   }
 
-  portaBoss.addEventListener("click", entrarNoDesafio);
-  portaBoss.addEventListener("keydown", (event) => {
+  gate.addEventListener("click", entrarNoDesafio);
+  gate.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       entrarNoDesafio();
@@ -705,50 +508,49 @@ async function carregarEstadoHistoria() {
 
     const data = await response.json();
 
-    if (!response.ok) return;
+    if (!response.ok || !Array.isArray(data.modulos)) return;
 
-    const modulo = data.modulos.find((m) => Number(m.id_modulo) === ID_MODULO);
+    const moduleState = data.modulos.find((module) => Number(module.id_modulo) === ID_MODULO);
 
-    if (!modulo || !modulo.historia_concluida) return;
+    if (!moduleState?.historia_concluida) return;
 
-    const btnConcluir = document.getElementById("btnConcluirHistoria");
-    const portaBoss = document.getElementById("portaBossScene");
+    const button = document.getElementById("btnConcluirHistoria");
     const status = document.getElementById("statusHistoria");
 
-    if (btnConcluir) {
-      btnConcluir.classList.add("hidden");
+    if (button) {
+      button.classList.add("hidden");
     }
 
     if (status) {
-      status.textContent =
-        "História concluída. A quarta porta foi liberada. Aproxime-se dela para entrar.";
+      status.dataset.completed = "true";
+      status.textContent = "Historia concluida. A quarta porta foi liberada. Aproxime-se dela para entrar.";
     }
 
-    if (portaBoss) {
-      portaBoss.classList.add("porta-liberada");
-      portaBoss.setAttribute("role", "button");
-      portaBoss.setAttribute("tabindex", "0");
-      portaBoss.setAttribute("aria-label", "Entrar no desafio do modulo 4");
-    }
+    liberarPortaDesafio();
   } catch (error) {
     console.error(error);
   }
+}
+
+function ajustarScrollPorHashInicial() {
+  if (!window.location.hash) return;
+
+  setTimeout(() => rolarParaElemento(window.location.hash), 250);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
   await carregarEstadoHistoria();
 
-  atualizarCartaoCorvo("ampulheta");
-  configurarScrollParaBotoes();
+  configurarScrollGuiado();
   ajustarScrollPorHashInicial();
   configurarRevealNoScroll();
-  configurarProgressoVisual();
-  configurarInsightAmpulheta();
-  configurarFeedbackKanban();
-  configurarForjaDod();
-  configurarPonteCicd();
-  configurarRefatoracaoDivida();
+  configurarProgressoDeCena();
+  configurarAmpulheta();
+  configurarKanban();
+  configurarDod();
+  configurarPipeline();
+  configurarDividaTecnica();
   configurarMetricas();
   configurarStakeholders();
   configurarRetrospectiva();
