@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capítulo 3 | Scrum Dungeon</title>
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/capitulo3.css" />
+  </head>
+
+  <body>
+    <!-- ALERT -->
+    <%- include('partials/alert') %> <%- include('partials/header') %> <%-
+    include('./partials/botao_voltar') %>
+
+    <main class="capitulo-page">
+      <section class="capitulo-hero">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+          <p class="chapter-kicker">Capítulo 3</p>
+          <h1>A Sala do Tempo</h1>
+          <p>
+            Aqui a união é necessária e o tempo está correndo contra você.
+            Apresse-se!
+          </p>
+        </div>
+      </section>
+
+      <!-- Barra de progresso do capitulo -->
+      <section class="chapter-progress-wrap">
+        <nav class="chapter-progress">
+          <button
+            class="progress-item active"
+            data-step="missao"
+            data-scroll-to="#missao"
+            type="button"
+          >
+            <img src="/assets/img/capitulo_3/icone_missao.png" alt="" />
+            <span>A Missão</span>
+          </button>
+
+          <button
+            class="progress-item"
+            data-step="objetivo"
+            data-scroll-to="#objetivo"
+            type="button"
+          >
+            <img src="/assets/img/capitulo_3/icone_bussola.png" alt="" />
+            <span>O Objetivo</span>
+          </button>
+
+          <button
+            class="progress-item"
+            data-step="mesa"
+            data-scroll-to="#mesa"
+            type="button"
+          >
+            <img src="/assets/img/capitulo_3/mesa.png" alt="" />
+            <span>A Planning</span>
+          </button>
+
+          <button
+            class="progress-item"
+            data-step="daily"
+            data-scroll-to="#daily"
+            type="button"
+          >
+            <img src="/assets/img/capitulo_3/icone_daily.png" alt="" />
+            <span>A Daily</span>
+          </button>
+
+          <button
+            class="progress-item"
+            data-step="incremento"
+            data-scroll-to="#incremento"
+            type="button"
+          >
+            <img
+              src="/assets/img/capitulo_3/icone_incremento.PNG"
+              alt="icone_incremento"
+            />
+            <span>O Incremento</span>
+          </button>
+
+          <button
+            class="progress-item"
+            data-step="retrospectiva"
+            data-scroll-to="#retrospectiva"
+            type="button"
+          >
+            <img src="/assets/img/capitulo_3/icone_retrospectiva.png" alt="" />
+            <span>Retrospectiva</span>
+          </button>
+
+          <button
+            class="progress-item"
+            data-step="fogueira"
+            data-scroll-to="#fogueira"
+            type="button"
+          >
+            <img src="/assets/img/capitulo_1/icones/fogueira.png" alt="" />
+            <span>Fogueira</span>
+          </button>
+
+          <button
+            class="progress-item"
+            data-step="uniao"
+            data-scroll-to="#uniao"
+            type="button"
+          >
+            <img
+              src="/assets/img/capitulo_3/icone_uniao.png"
+              alt=""
+            />
+            <span>A União</span>
+          </button>
+
+          <button
+            class="progress-item"
+            data-step="portal"
+            data-scroll-to="#portal"
+            type="button"
+          >
+            <img src="/assets/img/capitulo_3/portal.PNG" alt="portal" />
+            <span>Desafio</span>
+          </button>
+        </nav>
+      </section>
+
+      <section class="story-block reveal" id="missao" data-step="missao">
+        <div class="story-side-icon">
+          <img
+            src="/assets/img/capitulo_3/icone_missao.png"
+            alt="icone missao"
+          />
+        </div>
+
+        <div class="story-text">
+          <span class="section-number">01</span>
+          <h2>A Missão</h2>
+
+          <p>
+            Ao chegar nessa sala algo está diferente. Um clarão de luz lhe cega
+            e em seguida aparece uma sala antiga, porém com aparência de nova.
+          </p>
+
+          <p style="padding: 1.2rem 0 0 0">
+            Uma mesa redonda, cadeiras ao redor, o salão de reunião dos heróis
+            de outrora. Surge o fantasma de um herói do passado que lhe diz:
+          </p>
+
+          <p class="fala-fantasma">
+            Em um reino organizado pelos princípios do Scrum, as grandes
+            jornadas são divididas em ciclos chamados
+            <strong style="color: blanchedalmond">Sprints.</strong>
+            Cada Sprint representa uma missão de curta duração, na qual um grupo
+            de aventureiros precisa alcançar um objetivo claro antes que o tempo
+            se esgote.
+          </p>
+        </div>
+
+        <div class="story-art">
+          <img
+            src="/assets/img/capitulo_3/fantasma_cap3.png"
+            alt="Fantasma do passado"
+          />
+        </div>
+      </section>
+
+      <section class="story-block reveal" id="objetivo" data-step="objetivo">
+        <div class="story-side-icon">
+          <img
+            src="/assets/img/capitulo_3/icone_bussola.png"
+            alt="icone bussola"
+          />
+        </div>
+
+        <div class="story-text" style="text-align: justify">
+          <span class="section-number">02</span>
+          <h2>O Objetivo</h2>
+
+          <p>
+            E o fantasma continua com sua voz retumbante: "Esse objetivo é
+            conhecido como
+            <strong style="color: goldenrod">Sprint Goal,</strong> ela é a
+            bússola que orienta todas as decisões do grupo durante a aventura."
+            Ele estende as mãos e lhe entrega algo:
+          </p>
+        </div>
+
+        <div class="bussola">
+          <img
+            src="/assets/img/capitulo_3/bussola_cap3.png"
+            alt="mao e bussola"
+          />
+        </div>
+
+        <div class="story-text">
+          <p>
+            "Sem ela, o grupo de aventureiros facilmente se perdem em tarefas
+            aleatórias, como mercenários correndo atrás de qualquer contrato
+            brilhante."
+          </p>
+        </div>
+      </section>
+
+      <section class="story-block reveal" id="mesa" data-step="mesa">
+        <div class="story-side-icon">
+          <img src="/assets/img/capitulo_3/mesa.png" alt="mesa" />
+        </div>
+
+        <div class="story-text">
+          <span class="section-number">03</span>
+          <h2>A Planning</h2>
+
+          <p>
+            "Antes de iniciar a missão, ocorre o Conselho de Planejamento,
+            conhecido como <strong>Sprint Planning</strong>. Nesse encontro,
+            mestres estrategistas, guardiões do produto e aventureiros definem o
+            que será feito e como a missão será executada."
+          </p>
+
+          <p>
+            "Agora Explore o salão dos heróis e encontre as resposta que procura
+            jovem herói." - Diz o fantasma.
+          </p>
+        </div>
+        <div class="mesa-art">
+          <div class="mesa-hotspots">
+            <img src="/assets/img/capitulo_3/mesa.png" alt="mesa dos herois" />
+
+            <button class="mesa-hotspot hotspot-1" type="button">
+              <span>O Product Owner apresenta o objetivo da Sprint.</span>
+            </button>
+
+            <button class="mesa-hotspot hotspot-2" type="button">
+              <span
+                >O time de heróis-dev define quais itens entram na Sprint.</span
+              >
+            </button>
+
+            <button class="mesa-hotspot hotspot-3" type="button">
+              <span>Todos alinham como o trabalho será realizado.</span>
+            </button>
+
+            <button class="mesa-hotspot hotspot-4" type="button">
+              <span>O cliente:é quem demanda a jornada aos heróis.</span>
+            </button>
+
+            <button class="mesa-hotspot hotspot-5" type="button">
+              <span
+                >O Scrum Master é o facilitador e líder do grupo de
+                heróis-dev.</span
+              >
+            </button>
+
+            <button class="mesa-hotspot hotspot-6" type="button">
+              <span
+                >O planejamento existe para garantir que todos partam na mesma
+                direção e entendam claramente o propósito da jornada.</span
+              >
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-block reveal" id="daily" data-step="daily">
+        <div class="story-side-icon">
+          <img src="/assets/img/capitulo_3/icone_daily.png" alt="icone_daily" />
+        </div>
+
+        <div class="story-text" style="text-align: justify">
+          <span class="section-number">04</span>
+          <h2>A Daily</h2>
+          <p>
+            Você encontra um livro caído, e ao abrir percebe que ele é um relato
+            diário do que cada herói decidia fazer.
+          </p>
+          <div class="herois-daily">
+            <button
+              class="daily-book"
+              type="button"
+              aria-label="Abrir diario dos herois"
+              aria-expanded="false"
+            >
+              <img
+                src="/assets/img/capitulo_3/herois_daily.png"
+                alt="imagems de herois reunidos em torno de fogueira"
+              />
+            </button>
+          </div>
+
+          <p>
+            "A cada amanhecer nos reunimos em torno da fogueira, em poucos
+            minutos checamos como está nossa missão. E definimos o que faremos a
+            seguir e quais desafios poderemos enfrentar."
+          </p>
+
+          <p>
+            "Nos esforçamos para sermos rápidos, não é hora de debater a
+            natureza de dragões ou a origem da magia."
+          </p>
+          <p>
+            Com isso você nota que a Daily é feita para
+            <strong>manter o foco, alinhamento e ritmo da missão.</strong>
+          </p>
+            <blockquote>
+            <strong>Lembre-se: </strong>Todo o sistema Scrum funciona baseado em três pilares: transparência, inspeção e adaptação. 
+            Por isso, cada evento possui um tempo limite definido, evitando reuniões intermináveis dignas de um conselho de 
+            anciões que debate durante três luas sem decidir nada.
+          </blockquote>
+        </div>
+      </section>
+
+      <section
+        class="story-block reveal"
+        id="incremento"
+        data-step="incremento"
+      >
+        <div class="story-side-icon">
+          <img
+            src="/assets/img/capitulo_3/icone_incremento.PNG"
+            alt="icone_incremento"
+          />
+        </div>
+
+        <div class="story-text">
+          <span class="section-number">05</span>
+          <h2>O Incremento</h2>
+          <p>
+            Continuando sua leitura você descobre que o grupo de aventureiros de
+            outrora criaram o <strong>Incremento</strong> durante sua missão, e
+            que na grande Assembleia da Revisão, chamada
+            <strong>Sprint Review</strong> esse artefato era apresentado aos
+            sábios. 
+            
+            <p>Nesse momento, o cliente, conselheiros do reino e demais interessados
+            analisam o que foi entregue e oferecem feedback. 
+          </p>
+          </p>
+          <p>
+            A <strong>Review</strong> não é apenas um desfile de troféus e
+            tesouros; ela existe para garantir diálogo, aprendizado e adaptação
+            do rumo da campanha.
+          </p>
+        </div>
+
+        <div class="incremento">
+          <img
+            src="/assets/img/capitulo_3/inscremento.png"
+            alt="incremento_mapa"
+          />
+        </div>
+      </section>
+      <section class="story-block reveal" id="retrospectiva" data-step="retrospectiva">
+        <div class="story-side-icon">
+          <img src="/assets/img/capitulo_3/icone_retrospectiva.png" alt="" />
+        </div>
+      
+
+        <div class="story-text">
+          <span class="section-number">06</span>
+          <h2>A Retrospectiva</h2>
+          <p>
+            Depois da revisão, os aventureiros participam da <strong>Retrospectiva</strong>, um encontro reservado onde refletem sobre seus próprios métodos de trabalho. 
+            Discutem falhas, acertos, comunicação e formas de melhorar nas próximas jornadas. 
+            Aventureiros que ignoram esse momento costumam repetir os mesmos erros eternamente — e acabam tombando para problemas pequenos que poderiam ter sido resolvidos muito antes.
+          </p>
+          <div class="retrospectiva-art">
+            <button
+              class="retrospectiva-scroll"
+              type="button"
+              aria-label="Desenrolar pergaminho da retrospectiva"
+              aria-expanded="false"
+            >
+              <img
+                class="retrospectiva-img"
+                src="/assets/img/capitulo_3/retrospectiva.png"
+                alt="Herois em reuniao retrospectiva"
+              />
+              <img
+                class="pergaminho-img"
+                src="/assets/img/capitulo_3/pergaminho_retrop.png"
+                alt="Pergaminho fechado"
+              />
+              <span class="retrospectiva-hotspot retrospectiva-hotspot-1">
+                <span class="retrospectiva-tooltip">
+                  Nessa reunião o cliente não participa, ela é exclusiva dos heróis-dev.
+                </span>
+             </span>
+            </button>
+          </div>
+        
+        </div>
+      </section>
+      <section
+        class="story-block reveal"
+        id="fogueira"
+        data-step="fogueira"
+      >
+        <div class="story-side-icon">
+          <img src="/assets/img/capitulo_1/icones/fogueira.png" alt="" />
+        </div>
+        <div class="story-text">
+          <span class="section-number">07</span>
+          <h2>A Fogueira do Progresso</h2>
+
+          <p>
+            Uma fogueira surge sobre a pedra, você já viu isso antes. Suas chamas revelam o que já foi
+            feito, o que ainda falta e por que progresso precisa ser visível.
+          </p>
+
+          <blockquote>
+            “Agora que você sabe a importância do tempo em sua missão, 
+            verifique se o está aproveitando bem.”
+          </blockquote>
+        </div>
+
+        <div class="story-art">
+          <button
+            class="fogueira-interativa"
+            id="btnFogueiraBurningdown"
+            type="button"
+            aria-label="Acessar Burning Down"
+          >
+            <img
+              src="/assets/img/capitulo_1/icones/fogueira.png"
+              alt="Fogueira do Burning Down"
+            />
+
+            <span class="fogueira-tooltip">
+              Enxergue seu progresso nas chamas do Burning Down
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <section class="story-block reveal" id="uniao" data-step="uniao">
+        <div class="story-side-icon">
+          <img src="/assets/img/capitulo_3/icone_uniao.png" alt="maos unidas icone" />
+        </div>
+        <div class="story-text">
+          <span class="section-number">08</span>
+          <h2>A União</h2>
+
+          <p>No fim, o verdadeiro poder do Scrum não está apenas em realizar cerimônias, 
+            mas em manter um grupo de aventureiros <strong>unida</strong>, 
+            focada no objetivo da missão e capaz de aprender continuamente a cada nova aventura.
+          </p>
+
+          <p>Sem ela o grupo tomba no primeiro desafio, não importa se goblin ou dragão, um grupo desunido é sempre derrotado.</p>
+          </div>
+          <div class="uniao">
+            <img src="/assets/img/capitulo_3/uniao.png" alt="mãos dos herois unidas" />
+          </div>
+
+        
+      </section>
+
+      <section
+        class="story-block reveal final-block"
+        id="portal"
+        data-step="portal"
+      >
+        <div class="story-side-icon">
+          <img src="/assets/img/capitulo_3/portal.PNG" alt="" />
+        </div>
+        <div class="story-text">
+          <span class="section-number">09</span>
+          <h2>A Terceira Porta</h2>
+
+          <p>
+            Seu tempo nessa sala acabou, agora corra para a próxima Sprint!
+          </p>
+
+          <p>
+            Ao chegar aqui, você pode registrar sua jornada como concluída. A
+            partir disso, a terceira porta será liberada e o desafio do módulo
+            poderá ser enfrentado.
+          </p>
+
+          <button class="btn-primary" id="btnConcluirHistoria" type="button">
+            Concluir história e encarar a terceira porta
+          </button>
+
+          <p class="status-historia" id="statusHistoria"></p>
+        </div>
+
+        <div class="story-art">
+          <div class="portal" id="portalScene">
+            <img
+              class="portal-img"
+              src="/assets/img/capitulo_3/portal.PNG"
+              alt="portal do tempo"
+            />
+            <a
+              class="ampulheta-link"
+              href="/desafio3"
+              aria-label="Entrar na próxima página pela ampulheta"
+            >
+              <img
+                class="ampulheta-img"
+                src="/assets/img/capitulo_3/ampulheta.PNG"
+                alt="ampulheta"
+              />
+            </a>            
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================== NAVEGAÇÃO INFERIOR — única e permanente ===================== -->
+    <%- include('partials/navegacao_inferior') %>
+
+    <!-- ===================== FOOTER ===================== -->
+    <%- include('partials/footer') %>
+
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/capitulo3.js"></script>
+  </body>
+</html>

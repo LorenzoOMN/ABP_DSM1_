@@ -257,6 +257,20 @@ function configurarPergaminho() {
   });
 }
 
+function configurarDailyBook() {
+  const dailyBook = document.querySelector(".daily-book");
+
+  if (!dailyBook) return;
+
+  dailyBook.addEventListener("click", () => {
+    dailyBook.classList.toggle("is-open");
+    dailyBook.setAttribute(
+      "aria-expanded",
+      String(dailyBook.classList.contains("is-open")),
+    );
+  });
+}
+
 function configurarFogueiraBurningdown() {
   const fogueira = document.getElementById("btnFogueiraBurningdown");
 
@@ -721,6 +735,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   configurarRunas();
   configurarPrincipios();
   configurarPergaminho();
+  configurarDailyBook();
   configurarConclusaoHistoria();
   configurarFogueiraBurningdown();
   configurarBacklogVivo();
