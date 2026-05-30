@@ -6,7 +6,9 @@ const pipelineFlow = ["integrar", "testar", "entregar"];
 const completedPipelineSteps = new Set();
 let retrospectiveUnlocked = false;
 
-document.documentElement.classList.add("capitulo4-motion");
+if (typeof document !== "undefined") {
+  document.documentElement.classList.add("capitulo4-motion");
+}
 
 const metrics = {
   burndown: {
@@ -36,6 +38,53 @@ const metrics = {
   },
 };
 
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function calcularProgressoBlackoutHero(scrollY, heroTop, heroHeight) {
+  if (heroHeight <= 0) {
+    return scrollY > heroTop ? 1 : 0;
+  }
+
+  return clamp((scrollY - heroTop) / heroHeight, 0, 1);
+}
+
+function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0) {
+  const progress = clamp(blackoutProgress, 0, 1);
+  const intro = clamp(introProgress, 0, 1);
+  const preludeStart = 0.86;
+  const preludeOpacity = clamp((progress - preludeStart) / (1 - preludeStart), 0, 1);
+  const outroStart = 0.86;
+  const outro = clamp((intro - outroStart) / (1 - outroStart), 0, 1);
+  const lineThresholds = [0.14, 0.3, 0.46, 0.62, 0.76];
+  const showPrelude = preludeOpacity > 0 && outro < 1;
+  const showHourglass = progress >= 1 && outro < 1;
+  const visibleLines = showHourglass
+    ? lineThresholds.filter((threshold) => intro >= threshold).length
+    : 0;
+  const activeLineIndex = visibleLines > 0 ? visibleLines - 1 : -1;
+
+  let phase = "hidden";
+
+  if (progress >= 1) {
+    if (outro < 1) {
+      phase = intro >= outroStart ? "outro" : "full";
+    }
+  } else if (progress > 0) {
+    phase = "prelude";
+  }
+
+  return {
+    introOpacity: showHourglass ? 1 - outro : preludeOpacity,
+    phase,
+    showHourglass,
+    showPrelude,
+    activeLineIndex,
+    visibleLines,
+  };
+}
+
 function obterToken() {
   const token = localStorage.getItem("token");
 
@@ -62,6 +111,88 @@ function configurarScrollGuiado() {
     button.addEventListener("click", () => {
       rolarParaElemento(button.dataset.scrollTo);
     });
+  });
+}
+
+function configurarBlackoutDaHero() {
+  const hero = document.querySelector(".capitulo-hero");
+  const introSpace = document.getElementById("introScrollSpace");
+  const blackout = document.getElementById("viewportBlackout");
+  const intro = document.getElementById("capitulo4IntroNarrativa");
+  const prelude = document.getElementById("introPrelude");
+  const lines = Array.from(document.querySelectorAll("[data-intro-line]"));
+
+  if (!hero || !blackout) return;
+
+  let heroTop = 0;
+  let heroHeight = 0;
+  let introSpaceTop = 0;
+  let introSpaceHeight = 0;
+  let ticking = false;
+
+  function medirHero() {
+    const rect = hero.getBoundingClientRect();
+    heroTop = rect.top + window.scrollY;
+    heroHeight = hero.offsetHeight;
+
+    if (introSpace) {
+      const introRect = introSpace.getBoundingClientRect();
+      introSpaceTop = introRect.top + window.scrollY;
+      introSpaceHeight = introSpace.offsetHeight;
+    }
+  }
+
+  function aplicarBlackout() {
+    const blackoutProgress = calcularProgressoBlackoutHero(window.scrollY, heroTop, heroHeight);
+    const introScroll = Math.max(0, window.scrollY - introSpaceTop);
+    const introProgress = introSpaceHeight > 0
+      ? clamp(introScroll / introSpaceHeight, 0, 1)
+      : 0;
+    const blackoutOutro = introProgress > 0.88
+      ? clamp((introProgress - 0.88) / 0.12, 0, 1)
+      : 0;
+
+    blackout.style.opacity = String(blackoutProgress >= 1
+      ? 1 - blackoutOutro
+      : blackoutProgress);
+
+    if (intro && prelude && lines.length > 0) {
+      const introState = calcularEstadoIntroNarrativa(
+        blackoutProgress,
+        introProgress,
+      );
+
+      intro.classList.toggle("is-prelude", introState.phase === "prelude");
+      intro.classList.toggle("is-full", introState.phase === "full" || introState.phase === "outro");
+      intro.classList.toggle("is-outro", introState.phase === "outro");
+      intro.style.opacity = introState.phase === "hidden"
+        ? "0"
+        : String(introState.introOpacity);
+      prelude.style.opacity = introState.showPrelude ? "" : "0";
+
+      lines.forEach((line, index) => {
+        line.classList.toggle("is-active", index === introState.activeLineIndex);
+      });
+
+    }
+
+    ticking = false;
+  }
+
+  function agendarAtualizacao() {
+    if (ticking) return;
+
+    ticking = true;
+    window.requestAnimationFrame(aplicarBlackout);
+  }
+
+  medirHero();
+  aplicarBlackout();
+
+  window.addEventListener("scroll", agendarAtualizacao, { passive: true });
+  window.addEventListener("resize", () => {
+    medirHero();
+    agendarAtualizacao();
   });
 }
 
@@ -111,7 +242,7 @@ function configurarAmpulheta() {
 
   button.addEventListener("click", () => {
     status.textContent =
-      "A ampulheta reage: a Sprint nao precisa de mais pressa, precisa de fluxo visivel ate Concluido.";
+      "A ampulheta reage: a Sprint não precisa de mais pressa, precisa de fluxo visível até Concluído.";
     button.classList.add("hourglass-relic--awake");
 
   });
@@ -538,26 +669,36 @@ function ajustarScrollPorHashInicial() {
   setTimeout(() => rolarParaElemento(window.location.hash), 250);
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  obterToken();
-  await carregarEstadoHistoria();
+if (typeof document !== "undefined") {
+  document.addEventListener("DOMContentLoaded", async () => {
+    obterToken();
+    await carregarEstadoHistoria();
 
-  configurarScrollGuiado();
-  ajustarScrollPorHashInicial();
-  configurarRevealNoScroll();
-  configurarProgressoDeCena();
-  configurarAmpulheta();
-  configurarKanban();
-  configurarDod();
-  configurarPipeline();
-  configurarDividaTecnica();
-  configurarMetricas();
-  configurarStakeholders();
-  configurarRetrospectiva();
-  configurarConclusaoHistoria();
-  configurarPortaDesafio();
+    configurarScrollGuiado();
+    configurarBlackoutDaHero();
+    ajustarScrollPorHashInicial();
+    configurarRevealNoScroll();
+    configurarProgressoDeCena();
+    configurarAmpulheta();
+    configurarKanban();
+    configurarDod();
+    configurarPipeline();
+    configurarDividaTecnica();
+    configurarMetricas();
+    configurarStakeholders();
+    configurarRetrospectiva();
+    configurarConclusaoHistoria();
+    configurarPortaDesafio();
 
-  if (typeof verificarEAtualizarNavbar === "function") {
-    verificarEAtualizarNavbar();
-  }
-});
+    if (typeof verificarEAtualizarNavbar === "function") {
+      verificarEAtualizarNavbar();
+    }
+  });
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    calcularEstadoIntroNarrativa,
+    calcularProgressoBlackoutHero,
+  };
+}

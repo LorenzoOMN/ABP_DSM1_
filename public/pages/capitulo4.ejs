@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Capitulo 4 | Scrum Dungeon</title>
+  <title>Capítulo 4 | Scrum Dungeon</title>
   <link rel="stylesheet" href="../assets/css/main.css" />
   <link rel="stylesheet" href="../assets/css/capitulo4.css" />
 </head>
@@ -13,22 +13,177 @@
   <%- include('partials/alert') %>
   <%- include('partials/header') %>
   <%- include('./partials/botao_voltar') %>
+  <div class="viewport-blackout" id="viewportBlackout" aria-hidden="true"></div>
+  <section class="capitulo4-intro" id="capitulo4IntroNarrativa" aria-live="polite" aria-label="Introdução narrativa do capítulo 4">
+    <p class="intro-prelude" id="introPrelude">
+      A areia não cai.
+    </p>
+
+    <div class="intro-hourglass-frame">
+      <img
+        class="intro-hourglass-image"
+        id="introHourglassImage"
+        src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png"
+        alt="Ampulheta travada do capítulo 4"
+      >
+    </div>
+
+    <div class="intro-lines" id="introLines">
+      <p class="capitulo4-intro-line" data-intro-line>
+        A terceira porta ficou para trás.
+      </p>
+      <p class="capitulo4-intro-line" data-intro-line>
+        A Ampulheta da Sprint foi conquistada, mas o tempo não obedece.
+      </p>
+      <p class="capitulo4-intro-line" data-intro-line>
+        O ciclo existe. O fluxo falhou.
+      </p>
+      <p class="capitulo4-intro-line" data-intro-line>
+        Cada passo adiante agora cobra clareza, ritmo e entrega real.
+      </p>
+      <p class="capitulo4-intro-line" data-intro-line>
+        É na travessia do tempo quebrado que a quarta jornada começa.
+      </p>
+    </div>
+  </section>
 
   <main class="capitulo-page" id="capitulo4">
     <section class="capitulo-hero" id="inicio-capitulo4">
       <div class="hero-overlay" aria-hidden="true"></div>
 
       <div class="hero-content">
-        <p class="chapter-kicker">Capitulo 4</p>
+        <p class="chapter-kicker">Capítulo 4</p>
         <h1>Travessia Viva do Tempo Quebrado</h1>
         <p>
-          A terceira porta ficou para tras. A Ampulheta da Sprint esta em suas maos,
-          mas a areia nao cai. O ciclo existe. O fluxo, ainda nao.
+          A terceira porta ficou para trás. A Ampulheta da Sprint está em suas mãos,
+          mas a areia não cai. O ciclo existe. O fluxo, ainda não.
         </p>
 
-        <button class="btn-primary" type="button" data-scroll-to="#cena-ampulheta">
-          Entrar na nevoa
+        <button class="btn-primary" type="button" data-scroll-to="#introScrollSpace">
+          Entrar na névoa
         </button>
+      </div>
+    </section>
+
+    <section class="intro-scroll-space" id="introScrollSpace" aria-hidden="true"></section>
+
+    <section class="chapter-progress-wrap" aria-label="Progresso do capítulo 4">
+      <nav class="chapter-progress">
+        <button class="progress-item active" data-scroll-to="#cena-ampulheta" type="button">
+          <span>01</span>
+          <small>Ampulheta</small>
+        </button>
+        <button class="progress-item" data-scroll-to="#cena-kanban" type="button">
+          <span>02</span>
+          <small>Kanban</small>
+        </button>
+        <button class="progress-item" data-scroll-to="#cena-forja" type="button">
+          <span>03</span>
+          <small>Forja</small>
+        </button>
+        <button class="progress-item" data-scroll-to="#cena-ponte" type="button">
+          <span>04</span>
+          <small>Ponte</small>
+        </button>
+      </nav>
+    </section>
+
+    <section id="cena-ampulheta" class="story-block immersive-scene reveal">
+      <div class="scene-atmosphere" aria-hidden="true"></div>
+
+      <div class="story-side-icon" aria-hidden="true">
+        <span>01</span>
+      </div>
+
+      <div class="story-text">
+        <span class="section-number">Cena 01</span>
+        <h2>A Ampulheta Parada</h2>
+        <p class="scene-impact">
+          A areia permanece presa entre dois instantes.
+        </p>
+        <p>
+          A Sprint começou, mas nada se move. O grupo tem um ciclo, tem urgência
+          e tem uma missão. Ainda assim, o tempo parece recusar qualquer avanço.
+        </p>
+        <p>
+          O Corvo entende o sinal: não basta iniciar tarefas. O fluxo precisa ser visto,
+          cuidado e levado até uma entrega real.
+        </p>
+        <button class="btn-primary hourglass-relic" id="btnExaminarAmpulheta" type="button">
+          Examinar a ampulheta
+        </button>
+        <p class="scene-status" id="ampulhetaEstado" aria-live="polite">
+          A relíquia vibra em silêncio, como se esperasse clareza antes de voltar a respirar.
+        </p>
+      </div>
+
+      <div class="story-art">
+        <img src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png" alt="Ampulheta travada do capítulo 4">
+      </div>
+    </section>
+
+    <section class="story-block reveal" id="cena-kanban">
+      <div class="story-side-icon" aria-hidden="true">
+        <span>02</span>
+      </div>
+
+      <div class="story-text">
+        <span class="section-number">Cena 02</span>
+        <h2>Corredor dos Cartões Presos</h2>
+        <p>
+          O caminho abaixo da capa agora tem corpo suficiente para o scroll continuar.
+          Aqui podemos testar se o preto total acontece exatamente no fim da hero.
+        </p>
+        <blockquote>
+          Trabalho iniciado não é trabalho concluído.
+        </blockquote>
+      </div>
+
+      <div class="story-art">
+        <img src="/assets/img/capitulo_4/kanban-corredor-pixel.png" alt="Corredor kanban do capítulo 4">
+      </div>
+    </section>
+
+    <section class="story-block reveal" id="cena-forja">
+      <div class="story-side-icon" aria-hidden="true">
+        <span>03</span>
+      </div>
+
+      <div class="story-text">
+        <span class="section-number">Cena 03</span>
+        <h2>A Forja do Quase Pronto</h2>
+        <p>
+          Copiei a ideia dos blocos do capítulo 1 para manter um padrão conhecido,
+          mas com conteúdo e imagens do capítulo 4.
+        </p>
+        <p>
+          Assim você consegue rolar com conforto e avaliar a transição de escurecimento sem depender da página final.
+        </p>
+      </div>
+
+      <div class="story-art">
+        <img src="/assets/img/capitulo_4/forja-dod-pixel.png" alt="Forja da definition of done do capítulo 4">
+      </div>
+    </section>
+
+    <section class="story-block reveal final-block" id="cena-ponte">
+      <div class="story-side-icon" aria-hidden="true">
+        <span>04</span>
+      </div>
+
+      <div class="story-text">
+        <span class="section-number">Cena 04</span>
+        <h2>A Ponte das Runas</h2>
+        <p>
+          Este último bloco fecha a área de teste com uma distância de scroll suficiente para validar o comportamento visual.
+        </p>
+        <button class="btn-primary" type="button" data-scroll-to="#inicio-capitulo4">
+          Voltar ao topo
+        </button>
+      </div>
+
+      <div class="story-art">
+        <img src="/assets/img/capitulo_4/ponte-cicd-pixel.png" alt="Ponte CI CD do capítulo 4">
       </div>
     </section>
   </main>
