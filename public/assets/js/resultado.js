@@ -149,29 +149,35 @@
     }
   }
 
-function atualizarBotaoAcao(resultado) {
-  if (!btnAcaoResultado) return;
+  function atualizarBotaoAcao(resultado) {
+    if (!btnAcaoResultado) return;
 
-  btnAcaoResultado.disabled = false;
+    btnAcaoResultado.disabled = false;
 
-  const aprovadoGeral =
-    resultado.aprovado || resultado.aprovado_por_melhor_nota;
+    const aprovadoGeral = resultado.aprovado || resultado.aprovado_por_melhor_nota;
+    const tentativaAtual = Number(resultado.tentativa) || 1;
+    const percentual = Number(resultado.percentual) || 0;
 
-  const tentativaAtual = Number(resultado.tentativa) || 1;
+    // Condição atualizada: esconde se nota for 100%
+    const podeMelhorarNota =
+      resultado.aprovado === true &&
+      tentativaAtual === 1 &&
+      resultado.pode_tentar_melhorar === true &&
+      percentual < 100;  // ← Nova verificação
 
-  const podeMelhorarNota =
-    resultado.aprovado === true &&
-    tentativaAtual === 1 &&
-    resultado.pode_tentar_melhorar === true;
+    btnAcaoResultado.querySelector(".texto-botao").textContent =
+      aprovadoGeral ? "Avançar" : "Tentar novamente";
 
-  btnAcaoResultado.querySelector(".texto-botao").textContent =
-    aprovadoGeral ? "Avançar" : "Tentar novamente";
+    if (btnMelhorarNota) {
+      btnMelhorarNota.hidden = !podeMelhorarNota;
+      btnMelhorarNota.disabled = !podeMelhorarNota;
 
-  if (btnMelhorarNota) {
-    btnMelhorarNota.hidden = !podeMelhorarNota;
-    btnMelhorarNota.disabled = !podeMelhorarNota;
+      // Opcional: adicionar tooltip explicativo
+      if (percentual >= 100) {
+        btnMelhorarNota.title = "Parabéns! Você atingiu a nota máxima.";
+      }
+    }
   }
-}
 
   function renderizarResultado(resultado) {
     const totalRespondidas = Number(resultado.total_respondidas) || 0;
@@ -315,21 +321,16 @@ function atualizarBotaoAcao(resultado) {
 
   async function aplicarProgressao() {
     const token = obterToken();
-
     if (!token || !resultadoAtual || !btnAcaoResultado) return;
 
-    // Aprovado: vai pro mapa sem chamar o endpoint de novo
-    // (o endpoint já foi chamado ou não é necessário)
-    if (resultadoAtual.aprovado || resultadoAtual.aprovado_por_melhor_nota) {
-      window.location.href = "/mapa";
-      return;
-    }
+    // 🔥 SEMPRE chamar a API, independente de aprovado ou não
+    // O backend decide a lógica de avançar/resetar/nova tentativa
 
-    // Evita double-click ou chamada dupla
     if (progressaoJaAplicada) return;
     progressaoJaAplicada = true;
 
     btnAcaoResultado.disabled = true;
+    const textoOriginal = btnAcaoResultado.querySelector(".texto-botao").textContent;
     btnAcaoResultado.querySelector(".texto-botao").textContent = "Aguarde...";
 
     try {
@@ -340,7 +341,7 @@ function atualizarBotaoAcao(resultado) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // Prioriza o id_exame salvo pelo questionário (correto mesmo após reset de run)
+          // Prioriza id_exame salvo pelo questionário (evita problemas pós-reset)
           id_exame: sessionStorage.getItem('ultimo_id_exame') || resultadoAtual.id_exame,
         }),
       });
@@ -350,37 +351,51 @@ function atualizarBotaoAcao(resultado) {
       if (!response.ok) {
         mostrarAlerta(data.message || "Erro ao atualizar progresso.", "erro");
         progressaoJaAplicada = false;
-        atualizarBotaoAcao(resultadoAtual);
+        btnAcaoResultado.disabled = false;
+        btnAcaoResultado.querySelector(".texto-botao").textContent = textoOriginal;
         return;
       }
 
-      /*
-      Caso 1: run resetada (falhou 2 vezes) → volta pro mapa
-    */
-      const resetouRun =
-        data.resetou_run === true ||
-        (data.progresso &&
-          Number(data.progresso.falhas_no_modulo) === 0 &&
-          data.message &&
-          data.message.toLowerCase().includes("falhou 2 vezes"));
-
-      if (resetouRun) {
+      // ✅ Caso 1: Run resetada (falhou 2 vezes no módulo 1)
+      if (data.resetou_run === true) {
         sessionStorage.removeItem('ultimo_id_exame');
+        mostrarAlerta("Sua run foi reiniciada. Retorne ao Módulo 1.", "info");
         window.location.href = "/mapa";
         return;
       }
 
-      /*
-      Caso 2: falhou, mas ainda tem tentativa → volta pro desafio
-    */
-      sessionStorage.removeItem('ultimo_id_exame');
-      window.location.href = "/desafio1";
+      // ✅ Caso 2: Aprovado e há próximo módulo → backend retornou novo exame
+      if (data.aprovado && data.exame?.id_exame) {
+        // Salva contexto do novo exame para o questionário usar
+        sessionStorage.setItem('ultimo_id_exame', String(data.exame.id_exame));
+        mostrarAlerta("Módulo concluído! Avançando para o próximo...", "sucesso");
+        window.location.href = "/questionario"; // ← Use a rota genérica
+        return;
+      }
+
+      // ✅ Caso 3: Aprovado e SEM próximo módulo (concluiu tudo)
+      if (data.aprovado && data.certificado_liberado) {
+        window.location.href = "/certificado"; // ou "/mapa" se não tiver certificado
+        return;
+      }
+
+      // ✅ Caso 4: Reprovado com tentativas restantes → nova tentativa no mesmo módulo
+      if (!data.aprovado && data.exame?.id_exame) {
+        sessionStorage.setItem('ultimo_id_exame', String(data.exame.id_exame));
+        mostrarAlerta("Nova tentativa disponível. Boa sorte!", "info");
+        window.location.href = "/questionario";
+        return;
+      }
+
+      // Fallback seguro
+      window.location.href = "/mapa";
 
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao aplicar progressão:", error);
       mostrarAlerta("Erro de conexão ao atualizar progresso.", "erro");
       progressaoJaAplicada = false;
-      atualizarBotaoAcao(resultadoAtual);
+      btnAcaoResultado.disabled = false;
+      btnAcaoResultado.querySelector(".texto-botao").textContent = textoOriginal;
     }
   }
 
