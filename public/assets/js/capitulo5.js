@@ -1,5 +1,16 @@
 const ID_MODULO = 5;
 
+const ETAPAS_CAPITULO_5 = [
+  "artefatos",
+  "impedimentos",
+  "user-stories",
+  "valor",
+  "caminhos",
+  "anti-time",
+];
+
+const etapasConcluidas = new Set();
+
 const IMPEDIMENTOS = {
   duplo: {
     titulo: "O Duplo",
@@ -10,6 +21,20 @@ const IMPEDIMENTOS = {
       "Facilite uma conversa com o time, torne responsabilidades visíveis e redistribua o trabalho antes que uma pessoa vire gargalo.",
     aprendizado:
       "Um time saudável não depende de uma pessoa sobrecarregada. Transparência e colaboração reduzem gargalos.",
+    opcoes: [
+      { texto: "Redistribuir responsabilidades com o time", correta: true },
+      { texto: "Clarificar papéis e responsabilidades", correta: true },
+      { texto: "Quebrar tarefas grandes em partes menores", correta: true },
+      { texto: "Colocar tudo nas mãos da pessoa mais rápida", correta: false },
+      {
+        texto: "Ignorar a sobrecarga porque a pessoa dá conta",
+        correta: false,
+      },
+      {
+        texto: "Adicionar mais tarefas sem revisar prioridades",
+        correta: false,
+      },
+    ],
   },
 
   stakeholder: {
@@ -22,6 +47,17 @@ const IMPEDIMENTOS = {
       "Mostre incrementos de valor, alinhe expectativas e registre decisões importantes para transformar ruído em colaboração.",
     aprendizado:
       "Stakeholders não são inimigos. Eles precisam de transparência, escuta e entregas frequentes de valor.",
+    opcoes: [
+      { texto: "Alinhar expectativas com clareza", correta: true },
+      { texto: "Mostrar incrementos de valor", correta: true },
+      { texto: "Registrar decisões e acordos importantes", correta: true },
+      { texto: "Prometer tudo imediatamente", correta: false },
+      { texto: "Ignorar o stakeholder até a entrega final", correta: false },
+      {
+        texto: "Mudar o backlog sem conversar com o Product Owner",
+        correta: false,
+      },
+    ],
   },
 
   necrobranch: {
@@ -33,6 +69,20 @@ const IMPEDIMENTOS = {
       "Verifique a branch, atualize com a base correta, resolva conflitos, teste e só então faça commits claros.",
     aprendizado:
       "Git também faz parte do fluxo. Branches organizadas reduzem retrabalho, conflitos e bugs inesperados.",
+    opcoes: [
+      { texto: "Verificar o status da branch antes de alterar", correta: true },
+      { texto: "Atualizar a branch com a base correta", correta: true },
+      {
+        texto: "Resolver conflitos, testar e só então commitar",
+        correta: true,
+      },
+      { texto: "Commmitar rápido para resolver depois", correta: false },
+      {
+        texto: "Ignorar conflitos se a tela aparentemente abriu",
+        correta: false,
+      },
+      { texto: "Misturar várias correções sem mensagem clara", correta: false },
+    ],
   },
 
   bug: {
@@ -44,10 +94,18 @@ const IMPEDIMENTOS = {
       "Reproduza o erro, leia os logs, isole a causa, teste a correção e peça ajuda ao time quando necessário.",
     aprendizado:
       "Nem todo bug se vence sozinho. Diagnóstico, testes e colaboração protegem o fluxo.",
+    opcoes: [
+      { texto: "Reproduzir o erro antes de corrigir", correta: true },
+      { texto: "Isolar a causa do problema", correta: true },
+      { texto: "Pedir ajuda ou parear com alguém do time", correta: true },
+      { texto: "Alterar vários arquivos sem testar", correta: false },
+      { texto: "Ignorar logs e mensagens de erro", correta: false },
+      { texto: "Subir correção sem validar", correta: false },
+    ],
   },
 };
-
 const impedimentosResolvidos = new Set();
+const respostasImpedimentos = {};
 let impedimentoAtual = null;
 
 function obterToken() {
@@ -128,20 +186,35 @@ function configurarInteracoesSimples() {
   });
 
   const artefatosInfo = document.getElementById("artefatosInfo");
+  const artefatos = document.querySelectorAll(".artefato-card");
 
-  document.querySelectorAll(".artefato-card").forEach((card) => {
+  artefatos.forEach((card, index) => {
+    const idArtefato = card.dataset.artefato || `artefato-${index + 1}`;
+
+    card.dataset.artefato = idArtefato;
+
     card.addEventListener("click", () => {
-      document.querySelectorAll(".artefato-card").forEach((item) => {
+      artefatos.forEach((item) => {
         item.classList.remove("ativo");
       });
 
       card.classList.add("ativo");
+      card.classList.add("visualizado");
+
+      artefatosVisualizados.add(idArtefato);
 
       if (artefatosInfo) {
         artefatosInfo.innerHTML = `
           <h3>${card.innerText.trim()}</h3>
           <p>${card.dataset.feedback}</p>
+          <p class="artefatos-progresso">
+            Artefatos reconhecidos: ${artefatosVisualizados.size}/${artefatos.length}
+          </p>
         `;
+      }
+
+      if (artefatosVisualizados.size === artefatos.length) {
+        concluirEtapaCapitulo5("artefatos");
       }
     });
   });
@@ -166,17 +239,22 @@ async function concluirHistoria() {
   }
 
   try {
-    const response = await fetch(`/api/progresso/historia/${ID_MODULO}/concluir`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `/api/progresso/historia/${ID_MODULO}/concluir`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || "Não foi possível registrar o progresso.");
+      throw new Error(
+        data.message || "Não foi possível registrar o progresso.",
+      );
     }
 
     if (status) {
@@ -263,6 +341,75 @@ function configurarEntradaDesafio() {
   });
 }
 
+function renderizarOpcoesImpedimento(idImpedimento) {
+  const impedimento = IMPEDIMENTOS[idImpedimento];
+  const container = document.getElementById("impedimentoOpcoes");
+  const feedback = document.getElementById("impedimentoFeedback");
+  const desafio = document.getElementById("impedimentoDesafio");
+
+  if (!container || !impedimento) return;
+
+  const resolvido = impedimentosResolvidos.has(idImpedimento);
+
+  if (!respostasImpedimentos[idImpedimento]) {
+    respostasImpedimentos[idImpedimento] = new Set();
+  }
+
+  const respostasSalvas = respostasImpedimentos[idImpedimento];
+
+  container.innerHTML = "";
+
+  impedimento.opcoes.forEach((opcao, index) => {
+    const label = document.createElement("label");
+    label.className = "impedimento-opcao";
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.value = String(index);
+    input.disabled = resolvido;
+
+    if (resolvido && opcao.correta) {
+      input.checked = true;
+      label.classList.add("selecionada");
+    } else if (respostasSalvas.has(index)) {
+      input.checked = true;
+      label.classList.add("selecionada");
+    }
+
+    input.addEventListener("change", () => {
+      if (input.checked) {
+        respostasSalvas.add(index);
+      } else {
+        respostasSalvas.delete(index);
+      }
+
+      label.classList.toggle("selecionada", input.checked);
+    });
+
+    const span = document.createElement("span");
+    span.textContent = opcao.texto;
+
+    label.appendChild(input);
+    label.appendChild(span);
+
+    container.appendChild(label);
+  });
+
+  if (feedback) {
+    feedback.textContent = resolvido
+      ? "Impedimento resolvido. Solução e aprendizado desbloqueados."
+      : "";
+
+    feedback.className = resolvido
+      ? "impedimento-feedback sucesso"
+      : "impedimento-feedback";
+  }
+
+  if (desafio) {
+    desafio.classList.toggle("resolvido", resolvido);
+  }
+}
+
 function abrirModalImpedimento(idImpedimento) {
   const impedimento = IMPEDIMENTOS[idImpedimento];
 
@@ -281,17 +428,27 @@ function abrirModalImpedimento(idImpedimento) {
   const resolvido = impedimentosResolvidos.has(idImpedimento);
 
   if (imagem) {
-    imagem.src = resolvido && impedimento.imagemResolvida
-      ? impedimento.imagemResolvida
-      : impedimento.imagem;
+    imagem.src =
+      resolvido && impedimento.imagemResolvida
+        ? impedimento.imagemResolvida
+        : impedimento.imagem;
 
     imagem.alt = impedimento.titulo;
   }
 
   if (titulo) titulo.textContent = impedimento.titulo;
   if (descricao) descricao.textContent = impedimento.descricao;
-  if (solucao) solucao.textContent = impedimento.solucao;
-  if (aprendizado) aprendizado.textContent = impedimento.aprendizado;
+  if (solucao) {
+    solucao.textContent = resolvido
+      ? impedimento.solucao
+      : "Resolva o mini desafio para desbloquear a solução.";
+  }
+
+  if (aprendizado) {
+    aprendizado.textContent = resolvido
+      ? impedimento.aprendizado
+      : "Resolva o mini desafio para desbloquear o aprendizado.";
+  }
 
   if (btnResolver) {
     btnResolver.disabled = resolvido;
@@ -300,6 +457,9 @@ function abrirModalImpedimento(idImpedimento) {
       ? "Impedimento resolvido"
       : "Resolver impedimento";
   }
+
+  renderizarOpcoesImpedimento(idImpedimento);
+  atualizarTabsBloqueadasImpedimento(resolvido);
 
   ativarTabImpedimento("descricao");
 
@@ -317,6 +477,16 @@ function fecharModalImpedimento() {
   modal.classList.add("hidden");
   modal.setAttribute("aria-hidden", "true");
   impedimentoAtual = null;
+}
+
+function atualizarTabsBloqueadasImpedimento(resolvido) {
+  document.querySelectorAll(".impedimento-tab").forEach((tab) => {
+    const nomeTab = tab.dataset.tab;
+    const bloqueada = !resolvido && nomeTab !== "descricao";
+
+    tab.classList.toggle("bloqueada", bloqueada);
+    tab.disabled = bloqueada;
+  });
 }
 
 function ativarTabImpedimento(nomeTab) {
@@ -368,12 +538,50 @@ function atualizarStatusImpedimentos() {
         ? "Todos os impedimentos foram resolvidos. O caminho da ponte está livre."
         : `Impedimentos resolvidos: ${resolvidos}/${total}.`;
   }
+  if (resolvidos === total && total > 0) {
+    concluirEtapaCapitulo5("impedimentos");
+  }
 }
 
 function resolverImpedimentoAtual() {
   if (!impedimentoAtual) return;
 
+  const impedimento = IMPEDIMENTOS[impedimentoAtual];
+  const feedback = document.getElementById("impedimentoFeedback");
+
+  if (!impedimento) return;
+
+  const selecionadas = Array.from(
+    respostasImpedimentos[impedimentoAtual] || [],
+  );
+
+  const corretas = impedimento.opcoes
+    .map((opcao, index) => (opcao.correta ? index : null))
+    .filter((index) => index !== null);
+
+  const acertouQuantidade = selecionadas.length === corretas.length;
+
+  const acertouTodas =
+    acertouQuantidade &&
+    corretas.every((index) => selecionadas.includes(index));
+
+  if (!acertouTodas) {
+    if (feedback) {
+      feedback.textContent =
+        "A criatura resiste. Escolha exatamente as 3 ações que melhor removem este impedimento.";
+      feedback.className = "impedimento-feedback erro";
+    }
+
+    return;
+  }
+
   impedimentosResolvidos.add(impedimentoAtual);
+
+  if (feedback) {
+    feedback.textContent =
+      "Impedimento resolvido. Solução e aprendizado desbloqueados.";
+    feedback.className = "impedimento-feedback sucesso";
+  }
 
   atualizarStatusImpedimentos();
 
@@ -406,8 +614,91 @@ function configurarMiniGameImpedimentos() {
   atualizarStatusImpedimentos();
 }
 
+function atualizarProgressoCapitulo() {
+  const totalConcluidas = etapasConcluidas.size;
+  const totalEtapas = ETAPAS_CAPITULO_5.length;
+
+  document.querySelectorAll(".capitulo5-progresso-texto").forEach((elemento) => {
+    elemento.textContent = `${totalConcluidas} / ${totalEtapas}`;
+  });
+
+  document.querySelectorAll(".capitulo5-nav-item").forEach((botao) => {
+    const destino = botao.dataset.scrollTo?.replace("#", "");
+
+    if (!destino) return;
+
+    botao.classList.toggle("concluida", etapasConcluidas.has(destino));
+  });
+
+  const portaBloqueada = document.getElementById("portaBloqueada");
+  const btnConcluir = document.getElementById("btnConcluirHistoria");
+
+  const todasConcluidas = totalConcluidas === totalEtapas;
+
+  if (portaBloqueada) {
+    portaBloqueada.classList.toggle("liberada", todasConcluidas);
+
+    portaBloqueada.textContent = todasConcluidas
+      ? "As 6 etapas foram concluídas. A porta reconhece seu domínio do fluxo."
+      : `A porta ainda observa sua jornada. Complete as 6 etapas para atravessá-la. Progresso: ${totalConcluidas}/${totalEtapas}.`;
+  }
+
+  if (btnConcluir) {
+    btnConcluir.classList.toggle("hidden", !todasConcluidas);
+  }
+}
+
+function concluirEtapaCapitulo5(nomeEtapa) {
+  if (!ETAPAS_CAPITULO_5.includes(nomeEtapa)) return;
+
+  etapasConcluidas.add(nomeEtapa);
+
+  const secao = document.querySelector(`[data-step="${nomeEtapa}"]`);
+  const botao = document.querySelector(`[data-complete-step="${nomeEtapa}"]`);
+
+  if (secao) {
+    secao.classList.add("etapa-concluida");
+  }
+
+  if (botao) {
+    botao.classList.add("concluida");
+    botao.disabled = true;
+    botao.textContent = "Etapa concluída";
+  }
+
+  atualizarProgressoCapitulo();
+}
+
+function configurarConclusaoDasEtapas() {
+  document.querySelectorAll("[data-complete-step]").forEach((botao) => {
+    botao.addEventListener("click", () => {
+      concluirEtapaCapitulo5(botao.dataset.completeStep);
+    });
+  });
+
+  atualizarProgressoCapitulo();
+}
+
+function inserirIndicadorProgresso() {
+  const sidebar = document.querySelector(".capitulo5-sidebar");
+
+  if (!sidebar) return;
+
+  const indicadorExistente = sidebar.querySelector(".capitulo5-progresso-texto");
+
+  if (indicadorExistente) return;
+
+  const indicador = document.createElement("div");
+  indicador.className = "capitulo5-progresso-texto";
+  indicador.textContent = `0 / ${ETAPAS_CAPITULO_5.length}`;
+
+  sidebar.appendChild(indicador);
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
+
+  inserirIndicadorProgresso();
 
   await carregarEstadoHistoria();
 
@@ -416,7 +707,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   configurarProgressoVisual();
   configurarInteracoesSimples();
   configurarMiniGameImpedimentos();
+  configurarConclusaoDasEtapas();
   configurarConclusaoHistoria();
   configurarEntradaDesafio();
-  
 });

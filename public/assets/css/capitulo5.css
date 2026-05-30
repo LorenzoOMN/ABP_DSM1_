@@ -183,6 +183,31 @@
   box-shadow: 0 0 18px rgba(255, 201, 77, 0.35);
 }
 
+.artefato-card.visualizado {
+  border-color: rgba(120, 255, 142, 0.75);
+  box-shadow: 0 0 18px rgba(120, 255, 142, 0.18);
+}
+
+.artefato-card.visualizado::after {
+  content: "Visto";
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.55rem;
+  color: #b9ffbf;
+  background: rgba(12, 72, 32, 0.75);
+  border: 1px solid rgba(120, 255, 142, 0.55);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.artefatos-progresso {
+  margin-top: 0.75rem !important;
+  color: #f5d27a !important;
+  font-weight: 800;
+}
+
 .capitulo5-info {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -217,7 +242,9 @@
 .reveal {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
 }
 
 .reveal.visible {
@@ -312,25 +339,31 @@
 .impedimento-modal {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 9999;
   display: grid;
   place-items: center;
   padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.impedimento-modal.hidden {
+  display: none !important;
 }
 
 .impedimento-modal-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(4px);
+  z-index: 0;
 }
 
 .impedimento-carta {
   position: relative;
+  z-index: 1;
   width: min(920px, 100%);
   max-height: 88vh;
   overflow-y: auto;
-  z-index: 1;
   padding: 1.5rem;
   color: #f3e5c0;
   background:
@@ -431,6 +464,8 @@
 }
 
 .btn-resolver-impedimento {
+  position: sticky;
+  bottom: 0;
   margin-top: 1rem;
   width: 100%;
   padding: 0.95rem 1.25rem;
@@ -443,6 +478,11 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   cursor: pointer;
+  z-index: 2;
+}
+
+.btn-resolver-impedimento:hover {
+  filter: brightness(1.08);
 }
 
 .btn-resolver-impedimento.resolvido {
@@ -451,6 +491,123 @@
   border-color: rgba(120, 255, 142, 0.55);
   cursor: default;
 }
+
+.impedimento-desafio {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(5, 5, 8, 0.42);
+  border: 1px solid rgba(218, 169, 58, 0.25);
+  border-radius: 14px;
+}
+
+.impedimento-desafio h4 {
+  margin: 0 0 0.5rem;
+  color: #f5d27a;
+  font-family: "Cinzel", serif;
+}
+
+.impedimento-desafio p {
+  margin: 0 0 1rem;
+  color: #eadfc9;
+  line-height: 1.6;
+}
+
+.impedimento-opcoes {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.impedimento-opcao {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem;
+  color: #f3e5c0;
+  background: rgba(18, 14, 10, 0.9);
+  border: 1px solid rgba(218, 169, 58, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.impedimento-opcao:hover {
+  border-color: rgba(255, 201, 77, 0.7);
+}
+
+.impedimento-opcao.selecionada {
+  border-color: #ffc94d;
+  box-shadow: 0 0 14px rgba(255, 201, 77, 0.22);
+}
+
+.impedimento-opcao input {
+  accent-color: #d9a536;
+}
+
+.impedimento-feedback {
+  margin-top: 1rem !important;
+  font-weight: 800;
+}
+
+.impedimento-feedback.erro {
+  color: #ff8b8b;
+}
+
+.impedimento-feedback.sucesso {
+  color: #b9ffbf;
+}
+
+.impedimento-tab.bloqueada {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.impedimento-tab.bloqueada::after {
+  content: " 🔒";
+}
+
+.impedimento-desafio.resolvido {
+  border-color: rgba(120, 255, 142, 0.45);
+  background: rgba(12, 72, 32, 0.25);
+}
+
+.capitulo5-progresso-texto {
+  margin: 1rem auto 0;
+  padding: 0.75rem;
+  color: #f5d27a;
+  background: rgba(13, 10, 8, 0.86);
+  border: 1px solid rgba(218, 169, 58, 0.35);
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.capitulo5-step.etapa-concluida {
+  border-color: rgba(120, 255, 142, 0.55);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(120, 255, 142, 0.12);
+}
+
+.capitulo5-nav-item.concluida span {
+  border-color: rgba(120, 255, 142, 0.8);
+  background: rgba(12, 72, 32, 0.85);
+  color: #b9ffbf;
+}
+
+.porta-bloqueada {
+  padding: 1rem;
+  color: #f5d27a;
+  background: rgba(80, 38, 18, 0.42);
+  border: 1px solid rgba(255, 201, 77, 0.35);
+  border-radius: 12px;
+}
+
+.porta-bloqueada.liberada {
+  color: #b9ffbf;
+  background: rgba(12, 72, 32, 0.35);
+  border-color: rgba(120, 255, 142, 0.45);
+}
+
 
 @media (max-width: 760px) {
   .impedimento-carta-grid {
