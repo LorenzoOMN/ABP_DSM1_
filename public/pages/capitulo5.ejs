@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Capítulo 5 | Scrum Dungeon</title>
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/capitulo5.css" />
+    <link rel="stylesheet" href="../assets/css/burningdown.css" />
+  </head>
+
+  <body>
+    <%- include('partials/alert') %> <%- include('partials/header') %> <%-
+    include('./partials/botao_voltar') %>
+
+    <main class="capitulo5-page">
+      <aside class="capitulo5-sidebar">
+        <img
+          class="capitulo5-logo"
+          src="/assets/img/logo_scrum_simples.png"
+          alt="Scrum Dungeon"
+        />
+
+        <nav class="capitulo5-nav" aria-label="Progresso do capítulo 5">
+          <button
+  class="capitulo5-nav-item active"
+  data-scroll-to="#duplo"
+  type="button"
+>
+  <span>1</span>
+  O Duplo
+</button>
+
+<button
+  class="capitulo5-nav-item"
+  data-scroll-to="#stakeholder"
+  type="button"
+>
+  <span>2</span>
+  Stakeholder
+</button>
+
+<button
+  class="capitulo5-nav-item"
+  data-scroll-to="#necrobranch"
+  type="button"
+>
+  <span>3</span>
+  Necrobranch
+</button>
+
+<button
+  class="capitulo5-nav-item"
+  data-scroll-to="#bug-infernal"
+  type="button"
+>
+  <span>4</span>
+  Bug Infernal
+</button>
+
+<button
+  class="capitulo5-nav-item"
+  data-scroll-to="#forja-mvp"
+  type="button"
+>
+  <span>5</span>
+  Forja
+</button>
+
+<button
+  class="capitulo5-nav-item"
+  data-scroll-to="#porta-final"
+  type="button"
+>
+  <span>★</span>
+  Porta Final
+</button>
+        </nav>
+      </aside>
+
+      <section class="capitulo5-hero">
+        <div class="capitulo5-hero-content">
+          <p class="chapter-kicker">Capítulo 5</p>
+          <h1>O Mestre do Fluxo</h1>
+
+          <p>
+            Vocês caminham pela ponte rumo ao desconhecido. Então suas armas
+            começam a brilhar. Você começa a refletir sobre tudo que viveram até
+            ali, estratégias se reorganizam.
+          </p>
+
+          <p class="capitulo5-destaque">
+            Uma última porta surge distante a entrada de um enorme castelo no
+            fim da ponte. Ela não está trancada. Ela espera.
+          </p>
+        </div>
+
+        <div class="capitulo5-party-card">
+          Essa é a última etapa da jornada.
+        </div>
+      </section>
+
+      <section
+  class="capitulo5-step reveal obstaculo-step"
+  id="duplo"
+  data-step="duplo"
+>
+  <span class="section-number">01</span>
+  <p class="chapter-kicker">Obstáculo 1</p>
+  <h2>O Duplo</h2>
+
+  <div class="obstaculo-layout">
+    <div>
+      <p>
+        Uma sombra idêntica ao grupo surge no meio da ponte. Ela copia gestos,
+        acumula tarefas e confunde as funções do time.
+      </p>
+
+      <p>
+        Quanto menos clareza existe sobre quem faz o quê, mais forte o Duplo se
+        torna. Para vencê-lo, o time precisa reconhecer seus papéis e quebrar o
+        ciclo do Anti-Time.
+      </p>
+    </div>
+
+    <img
+      class="obstaculo-img"
+      src="/assets/img/capitulo_5/duplo-icon.png"
+      alt="O Duplo"
+    />
+  </div>
+
+  <article class="capitulo5-info">
+    <h3>Conceito Scrum</h3>
+    <p>
+      Um time saudável precisa de papéis claros, responsabilidades visíveis e
+      colaboração real. O Scrum Master facilita essa clareza sem mandar no time.
+    </p>
+  </article>
+
+  <div class="anti-time-grid">
+    <article class="anti-card">
+      <h3>PO Caótico</h3>
+      <p>Tudo muda sem critério e o time perde direção.</p>
+    </article>
+
+    <article class="anti-card">
+      <h3>Time Silencioso</h3>
+      <p>Impedimentos aparecem, mas ninguém fala sobre eles.</p>
+    </article>
+
+    <article class="anti-card">
+      <h3>Falso Scrum Master</h3>
+      <p>Centraliza decisões e tenta comandar em vez de facilitar.</p>
+    </article>
+  </div>
+
+  <article class="capitulo5-info">
+    <h3>Artefato usado</h3>
+    <p>
+      <strong>Medalhão dos Papéis.</strong> Ao colocá-lo no Duplo, a maldição se
+      desfaz e ele se revela como um Dev Lendário perdido.
+    </p>
+  </article>
+
+  <button class="btn-primary" data-complete-step="duplo" type="button">
+    Usar Medalhão dos Papéis
+  </button>
+</section>
+
+<section
+  class="capitulo5-step reveal obstaculo-step"
+  id="stakeholder"
+  data-step="stakeholder"
+>
+  <span class="section-number">02</span>
+  <p class="chapter-kicker">Obstáculo 2</p>
+  <h2>Stakeholder Selvagem</h2>
+
+  <div class="obstaculo-layout">
+    <div>
+      <p>
+        Vozes surgem da escuridão exigindo mudanças, novos requisitos e entregas
+        impossíveis. O Stakeholder Selvagem cresce quando não existe alinhamento.
+      </p>
+
+      <p>
+        O time precisa transformar ruído em conversa, pedido em item de backlog
+        e expectativa em acordo claro.
+      </p>
+    </div>
+
+    <img
+      class="obstaculo-img"
+      src="/assets/img/capitulo_5/stake-holder-selvagem-icon.png"
+      alt="Stakeholder Selvagem"
+    />
+  </div>
+
+  <article class="capitulo5-info">
+    <h3>Conceito Scrum</h3>
+    <p>
+      Stakeholders não são inimigos. Eles precisam de transparência, escuta,
+      feedback frequente e visibilidade sobre o que está sendo entregue.
+    </p>
+  </article>
+
+  <div class="simple-choice-grid">
+    <button class="choice-card" type="button">
+      Ouvir o feedback antes de reagir
+    </button>
+
+    <button class="choice-card" type="button">
+      Registrar decisões no backlog
+    </button>
+
+    <button class="choice-card" type="button">
+      Priorizar com base em valor
+    </button>
+  </div>
+
+  <article class="capitulo5-info">
+    <h3>Artefato usado</h3>
+    <p>
+      <strong>Product Backlog.</strong> Com ele, o grupo organiza os pedidos e o
+      Stakeholder Selvagem se torna um aliado, entregando o Aval de Aprovação.
+    </p>
+  </article>
+
+  <button class="btn-primary" data-complete-step="stakeholder" type="button">
+    Organizar o Backlog
+  </button>
+</section>
+
+<section
+  class="capitulo5-step reveal obstaculo-step"
+  id="necrobranch"
+  data-step="necrobranch"
+>
+  <span class="section-number">03</span>
+  <p class="chapter-kicker">Obstáculo 3</p>
+  <h2>Necrobranch Commitada</h2>
+
+  <div class="obstaculo-layout">
+    <div>
+      <p>
+        Uma branch esquecida retorna dos mortos, carregada de conflitos, commits
+        quebrados e código instável.
+      </p>
+
+      <p>
+        Para sobreviver, o time precisa decidir o que recuperar primeiro. Nem
+        tudo tem o mesmo valor, risco ou urgência.
+      </p>
+    </div>
+
+    <img
+      class="obstaculo-img"
+      src="/assets/img/capitulo_5/necrobranch-icon-simples.png"
+      alt="Necrobranch Commitada"
+    />
+  </div>
+
+  <article class="capitulo5-info">
+    <h3>Conceito Scrum</h3>
+    <p>
+      O Scrum Master ajuda o time a enxergar gargalos, riscos e prioridades.
+      Recuperar o fluxo é mais importante do que tentar resolver tudo ao mesmo
+      tempo.
+    </p>
+  </article>
+
+  <div class="simple-choice-grid">
+    <button class="choice-card" type="button">
+      Recuperar o que desbloqueia o time
+    </button>
+
+    <button class="choice-card" type="button">
+      Proteger a versão funcional
+    </button>
+
+    <button class="choice-card" type="button">
+      Testar antes de integrar
+    </button>
+  </div>
+
+  <article class="capitulo5-info">
+    <h3>Artefato usado</h3>
+    <p>
+      <strong>Ampulheta da Sprint.</strong> Ao girá-la, o time consegue recuperar
+      a Main Funcional, mas o Dev Lendário se sacrifica para conter a
+      instabilidade da branch.
+    </p>
+  </article>
+
+  <button class="btn-primary" data-complete-step="necrobranch" type="button">
+    Girar a Ampulheta
+  </button>
+</section>
+
+<section
+  class="capitulo5-step reveal obstaculo-step"
+  id="bug-infernal"
+  data-step="bug-infernal"
+>
+  <span class="section-number">04</span>
+  <p class="chapter-kicker">Obstáculo 4</p>
+  <h2>Bug Infernal</h2>
+
+  <div class="obstaculo-layout">
+    <div>
+      <p>
+        O Bug Infernal não pode ser vencido no chute. Cada correção apressada o
+        torna mais forte.
+      </p>
+
+      <p>
+        Para aprisioná-lo, o time precisa entender o problema, reproduzir o erro
+        e validar a correção.
+      </p>
+    </div>
+
+    <img
+      class="obstaculo-img"
+      src="/assets/img/capitulo_5/bug-infernal-icon.png"
+      alt="Bug Infernal"
+    />
+  </div>
+
+  <article class="capitulo5-info">
+    <h3>Conceito Scrum</h3>
+    <p>
+      Uma entrega só gera confiança quando existe clareza sobre o comportamento
+      esperado, o comportamento atual e os critérios de validação.
+    </p>
+  </article>
+
+  <div class="story-formula">
+    <span>Comportamento esperado</span>
+    <span>Comportamento atual</span>
+    <span>Critério para validar a correção</span>
+  </div>
+
+  <article class="capitulo5-info">
+    <h3>Artefato usado</h3>
+    <p>
+      <strong>Baú da Melhoria.</strong> O bug é isolado e aprisionado. O baú se
+      transforma em um Escudo Mágico, sinal de um produto testado.
+    </p>
+  </article>
+
+  <button class="btn-primary" data-complete-step="bug-infernal" type="button">
+    Aprisionar o Bug no Baú
+  </button>
+</section>
+
+<section
+  class="capitulo5-step reveal forja-step"
+  id="forja-mvp"
+  data-step="forja-mvp"
+>
+  <span class="section-number">05</span>
+  <p class="chapter-kicker">A Forja</p>
+  <h2>A Forja do MVP</h2>
+
+  <p>
+    Após vencer os quatro obstáculos, o grupo chega à forja. Cada item
+    conquistado representa uma parte essencial de uma entrega ágil.
+  </p>
+
+  <ul class="forja-lista">
+    <li><strong>Medalhão dos Papéis:</strong> o time entende suas responsabilidades.</li>
+    <li><strong>Aval de Aprovação:</strong> o stakeholder validou o caminho.</li>
+    <li><strong>Main Funcional:</strong> existe uma versão funcionando.</li>
+    <li><strong>Ampulheta Quebrada:</strong> a Sprint chegou ao fim.</li>
+    <li><strong>Escudo Mágico:</strong> o produto foi testado.</li>
+  </ul>
+
+  <article class="capitulo5-info">
+    <h3>Resultado</h3>
+    <p>
+      Os artefatos se unem e formam o <strong>MVP</strong>: uma entrega mínima,
+      funcional, validada e com valor suficiente para atravessar a porta final.
+    </p>
+  </article>
+
+  <button class="btn-primary" data-complete-step="forja-mvp" type="button">
+    Forjar o MVP
+  </button>
+</section>
+        <span class="section-number">Final</span>
+        <h2>A Porta Final</h2>
+
+        <p>
+          A inscrição na porta diz: “Aquele que entende o fluxo… torna-se parte
+          dele.”
+        </p>
+
+        <p>Ao concluir esta história, o último desafio será liberado.</p>
+
+        <p class="porta-bloqueada" id="portaBloqueada">
+  A porta ainda observa sua jornada. Resolva os obstáculos e forje o MVP para atravessá-la.
+</p>
+
+        <button class="btn-primary hidden" id="btnConcluirHistoria" type="button">
+          Concluir história e atravessar a porta
+        </button>
+
+        <p class="status-historia" id="statusHistoria"></p>
+
+        <button
+          class="btn-primary porta-final-btn hidden"
+          id="btnEntrarDesafio"
+          type="button"
+        >
+          Encarar o desafio final
+        </button>
+      </section>
+    </main>
+
+    
+        <div
+          class="impedimento-modal hidden"
+          id="impedimentoModal"
+          aria-hidden="true"
+        >
+          <div class="impedimento-modal-overlay" data-fechar-impedimento></div>
+
+          <article class="impedimento-carta">
+            <button
+              class="impedimento-fechar"
+              type="button"
+              data-fechar-impedimento
+            >
+              ×
+            </button>
+
+            <div class="impedimento-carta-grid">
+              <div class="impedimento-carta-imagem-area">
+                <img id="impedimentoImagem" src="" alt="" />
+              </div>
+
+              <div class="impedimento-carta-conteudo">
+                <p class="impedimento-kicker">Impedimento encontrado</p>
+                <h3 id="impedimentoTitulo">Nome do impedimento</h3>
+
+                <div class="impedimento-tabs">
+                  <button
+                    class="impedimento-tab active"
+                    type="button"
+                    data-tab="descricao"
+                  >
+                    Descrição
+                  </button>
+
+                  <button
+                    class="impedimento-tab"
+                    type="button"
+                    data-tab="solucao"
+                  >
+                    Solução
+                  </button>
+
+                  <button
+                    class="impedimento-tab"
+                    type="button"
+                    data-tab="aprendizado"
+                  >
+                    Aprendizado
+                  </button>
+                </div>
+
+                <div class="impedimento-tab-conteudo active" id="tabDescricao">
+                  <p id="impedimentoDescricao"></p>
+                </div>
+
+                <div class="impedimento-tab-conteudo" id="tabSolucao">
+                  <p id="impedimentoSolucao"></p>
+                </div>
+
+                <div class="impedimento-tab-conteudo" id="tabAprendizado">
+                  <p id="impedimentoAprendizado"></p>
+                </div>
+
+                <div class="impedimento-desafio" id="impedimentoDesafio">
+                  <h4>Mini desafio</h4>
+                  <p>Escolha as 3 ações que melhor removem este impedimento.</p>
+
+                  <div class="impedimento-opcoes" id="impedimentoOpcoes"></div>
+
+                  <p class="impedimento-feedback" id="impedimentoFeedback"></p>
+                </div>
+
+                <button
+                  class="btn-resolver-impedimento"
+                  type="button"
+                  id="btnResolverImpedimento"
+                >
+                  Resolver impedimento
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
+    %>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/capitulo5.js"></script>
+  </body>
+</html>
