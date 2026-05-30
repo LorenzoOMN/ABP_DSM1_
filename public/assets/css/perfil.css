@@ -23,9 +23,9 @@ body {
     width: 100%;
     max-width: 600px;
 
-    background: #1a1a1a;
+    background: #E2CFA2;
 
-    border: 2px solid #8b5a2b;
+    border: 8px solid #8b5a2b;
 
     border-radius: 16px;
 
@@ -38,9 +38,9 @@ body {
 
     text-align: center;
 
-    margin-bottom: 32px;
+    margin-bottom: 50px;
 
-    color: #f2c572;
+    color: #0f0f0f;
 }
 
 .perfil-info {
@@ -56,7 +56,7 @@ body {
 
 .label {
     font-weight: bold;
-    color: #d6a75f;
+    color: #0f0f0f;
 }
 
 .perfil-topo {
@@ -73,6 +73,8 @@ body {
 
     background-color: white;
 
+    border: 3px solid #8b5a2b;
+
     border-radius: 8px;
 
     flex-shrink: 0;
@@ -87,11 +89,11 @@ body {
 .nome-usuario {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #f0b35d;
+    color: #0f0f0f;
 }
 
 .email-usuario {
-    color: #d8d8d8;
+    color: #ffffff;
     font-size: 1rem;
 }
 
