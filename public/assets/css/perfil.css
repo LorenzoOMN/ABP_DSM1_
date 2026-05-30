@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
 
     background-image: url("/assets/img/parede_de_tijolos.png");
     background-size: cover;
@@ -63,6 +64,7 @@ body {
 .label {
     font-weight: bold;
     color: #0f0f0f;
+    font-size: 1.5rem;
 }
 
 .perfil-topo {
