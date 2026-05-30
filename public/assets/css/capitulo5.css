@@ -699,3 +699,86 @@
     padding-top: 2rem;
   }
 }
+.duplo-desafio {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.duplo-cenario {
+  padding: 1rem;
+  background: rgba(18, 14, 10, 0.92);
+  border: 1px solid rgba(218, 169, 58, 0.28);
+  border-radius: 16px;
+}
+
+.duplo-cenario h3 {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.duplo-etiqueta {
+  margin: 0;
+  color: #d9a73f;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.duplo-opcoes {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.duplo-opcao {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(234, 223, 201, 0.18);
+  border-radius: 12px;
+  color: #eadfc9;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.duplo-opcao:hover {
+  transform: translateY(-1px);
+  border-color: rgba(218, 169, 58, 0.6);
+  background: rgba(218, 169, 58, 0.1);
+}
+
+.duplo-opcao.ativo {
+  border-color: rgba(218, 169, 58, 0.95);
+  background: rgba(218, 169, 58, 0.18);
+}
+
+.duplo-opcao.correta {
+  border-color: rgba(120, 255, 142, 0.75);
+  background: rgba(120, 255, 142, 0.12);
+}
+
+.duplo-opcao:disabled {
+  cursor: not-allowed;
+}
+
+.duplo-feedback {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #eadfc9;
+}
+
+.duplo-feedback.erro {
+  border: 1px solid rgba(255, 101, 101, 0.55);
+  background: rgba(255, 101, 101, 0.1);
+}
+
+.duplo-feedback.sucesso {
+  border: 1px solid rgba(120, 255, 142, 0.65);
+  background: rgba(120, 255, 142, 0.1);
+}

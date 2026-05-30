@@ -10,6 +10,14 @@ const ETAPAS_CAPITULO_5 = [
 
 const etapasConcluidas = new Set();
 
+const RESPOSTAS_DUPLO = {
+  "po-caotico": "priorizar-backlog",
+  "time-silencioso": "expor-impedimentos",
+  "falso-scrum-master": "facilitar-autonomia",
+};
+
+const respostasDuplo = {};
+
 const IMPEDIMENTOS = {
   duplo: {
     titulo: "O Duplo",
@@ -668,6 +676,98 @@ function concluirEtapaCapitulo5(nomeEtapa) {
   atualizarProgressoCapitulo();
 }
 
+function configurarDesafioDuplo() {
+  const botoesOpcao = document.querySelectorAll(".duplo-opcao");
+  const btnResolver = document.getElementById("btnResolverDuplo");
+  const feedback = document.getElementById("duploFeedback");
+  const desafio = document.getElementById("duploDesafio");
+
+  if (!botoesOpcao.length || !btnResolver) return;
+
+  botoesOpcao.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const cenario = botao.dataset.cenario;
+      const resposta = botao.dataset.resposta;
+
+      if (!cenario || !resposta) return;
+
+      respostasDuplo[cenario] = resposta;
+
+      document
+        .querySelectorAll(`.duplo-opcao[data-cenario="${cenario}"]`)
+        .forEach((opcao) => {
+          opcao.classList.remove("ativo");
+        });
+
+      botao.classList.add("ativo");
+
+      const totalRespondidas = Object.keys(respostasDuplo).length;
+      const totalCenarios = Object.keys(RESPOSTAS_DUPLO).length;
+
+      if (feedback) {
+        feedback.textContent = `Memórias analisadas: ${totalRespondidas}/${totalCenarios}.`;
+        feedback.className = "duplo-feedback";
+      }
+    });
+  });
+
+  btnResolver.addEventListener("click", () => {
+    const cenarios = Object.keys(RESPOSTAS_DUPLO);
+    const respondeuTudo = cenarios.every((cenario) => respostasDuplo[cenario]);
+
+    if (!respondeuTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "O Duplo ainda se multiplica. Analise todas as memórias antes de usar o Medalhão.";
+        feedback.className = "duplo-feedback erro";
+      }
+
+      return;
+    }
+
+    const acertouTudo = cenarios.every(
+      (cenario) => respostasDuplo[cenario] === RESPOSTAS_DUPLO[cenario],
+    );
+
+    if (!acertouTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "A maldição resiste. Algumas escolhas ainda reforçam o Anti-Time. Revise as atitudes do Scrum Master.";
+        feedback.className = "duplo-feedback erro";
+      }
+
+      return;
+    }
+
+    if (feedback) {
+      feedback.textContent =
+        "O Medalhão brilha. O Duplo perde sua forma sombria e se revela como um Dev Lendário perdido.";
+      feedback.className = "duplo-feedback sucesso";
+    }
+
+    if (desafio) {
+      desafio.classList.add("resolvido");
+    }
+
+    botoesOpcao.forEach((botao) => {
+      botao.disabled = true;
+
+      const cenario = botao.dataset.cenario;
+      const respostaCorreta = RESPOSTAS_DUPLO[cenario];
+
+      if (botao.dataset.resposta === respostaCorreta) {
+        botao.classList.add("correta");
+      }
+    });
+
+    btnResolver.disabled = true;
+    btnResolver.classList.add("concluida");
+    btnResolver.textContent = "Dev Lendário libertado";
+
+    concluirEtapaCapitulo5("duplo");
+  });
+}
+
 function configurarConclusaoDasEtapas() {
   document.querySelectorAll("[data-complete-step]").forEach((botao) => {
     botao.addEventListener("click", () => {
@@ -705,6 +805,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   configurarRevealNoScroll();
   configurarProgressoVisual();
   configurarInteracoesSimples();
+  configurarDesafioDuplo();
   configurarMiniGameImpedimentos();
   configurarConclusaoDasEtapas();
   configurarConclusaoHistoria();
