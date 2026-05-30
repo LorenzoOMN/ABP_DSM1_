@@ -94,8 +94,11 @@ function renderizarCards(questoes) {
         <span class="questao-id">#${q.id_questao}</span>
         <span class="questao-modulo">Módulo ${q.id_modulo}</span>
       </div>
-      <div class="dificuldade-badge dificuldade-${q.dificuldade}">
-        ${q.dificuldade}
+            <div class="dificuldade-badge dificuldade-${q.dificuldade}">
+        ${q.dificuldade === 'fácil' ? '<span class="stars">★<span class="star-empty">☆☆</span></span>' : 
+          q.dificuldade === 'média' ? '<span class="stars">★★<span class="star-empty">☆</span></span>' : 
+          '<span class="stars">★★★</span>'}
+        <span class="diff-text">${q.dificuldade.toUpperCase()}</span>
       </div>
       <div class="questao-enunciado">
         ${q.enunciado || 'Sem enunciado'}
