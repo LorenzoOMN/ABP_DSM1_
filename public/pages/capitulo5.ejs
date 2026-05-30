@@ -140,34 +140,138 @@
     </p>
   </article>
 
-  <div class="anti-time-grid">
-    <article class="anti-card">
-      <h3>PO Caótico</h3>
-      <p>Tudo muda sem critério e o time perde direção.</p>
-    </article>
-
-    <article class="anti-card">
-      <h3>Time Silencioso</h3>
-      <p>Impedimentos aparecem, mas ninguém fala sobre eles.</p>
-    </article>
-
-    <article class="anti-card">
-      <h3>Falso Scrum Master</h3>
-      <p>Centraliza decisões e tenta comandar em vez de facilitar.</p>
-    </article>
-  </div>
-
-  <article class="capitulo5-info">
-    <h3>Artefato usado</h3>
+ <div class="duplo-desafio" id="duploDesafio">
+  <article class="duplo-cenario">
+    <p class="duplo-etiqueta">Memória 1</p>
+    <h3>PO Caótico</h3>
     <p>
-      <strong>Medalhão dos Papéis.</strong> Ao colocá-lo no Duplo, a maldição se
-      desfaz e ele se revela como um Dev Lendário perdido.
+      O Product Owner muda prioridades a cada conversa, aceita pedidos soltos e
+      o time nunca sabe o que realmente precisa entregar.
     </p>
+
+    <div class="duplo-opcoes">
+      <button
+        class="duplo-opcao"
+        data-cenario="po-caotico"
+        data-resposta="aceitar-tudo"
+        type="button"
+      >
+        Aceitar todos os pedidos para evitar conflito
+      </button>
+
+      <button
+        class="duplo-opcao"
+        data-cenario="po-caotico"
+        data-resposta="priorizar-backlog"
+        type="button"
+      >
+        Organizar os pedidos no Product Backlog e priorizar com clareza
+      </button>
+
+      <button
+        class="duplo-opcao"
+        data-cenario="po-caotico"
+        data-resposta="ignorar-stakeholders"
+        type="button"
+      >
+        Ignorar stakeholders até a entrega final
+      </button>
+    </div>
   </article>
 
-  <button class="btn-primary" data-complete-step="duplo" type="button">
-    Usar Medalhão dos Papéis
-  </button>
+  <article class="duplo-cenario">
+    <p class="duplo-etiqueta">Memória 2</p>
+    <h3>Time Silencioso</h3>
+    <p>
+      O time encontra impedimentos, mas ninguém fala nada. As tarefas travam em
+      silêncio e o progresso parece normal por fora.
+    </p>
+
+    <div class="duplo-opcoes">
+      <button
+        class="duplo-opcao"
+        data-cenario="time-silencioso"
+        data-resposta="expor-impedimentos"
+        type="button"
+      >
+        Tornar impedimentos visíveis e conversar sobre eles na Daily
+      </button>
+
+      <button
+        class="duplo-opcao"
+        data-cenario="time-silencioso"
+        data-resposta="esperar-sozinho"
+        type="button"
+      >
+        Esperar que cada pessoa resolva sozinha
+      </button>
+
+      <button
+        class="duplo-opcao"
+        data-cenario="time-silencioso"
+        data-resposta="cobrar-mais"
+        type="button"
+      >
+        Cobrar mais velocidade sem investigar o bloqueio
+      </button>
+    </div>
+  </article>
+
+  <article class="duplo-cenario">
+    <p class="duplo-etiqueta">Memória 3</p>
+    <h3>Falso Scrum Master</h3>
+    <p>
+      Uma pessoa tenta controlar todas as decisões, distribui ordens e impede o
+      time de aprender a se organizar.
+    </p>
+
+    <div class="duplo-opcoes">
+      <button
+        class="duplo-opcao"
+        data-cenario="falso-scrum-master"
+        data-resposta="facilitar-autonomia"
+        type="button"
+      >
+        Facilitar a autonomia do time sem centralizar decisões
+      </button>
+
+      <button
+        class="duplo-opcao"
+        data-cenario="falso-scrum-master"
+        data-resposta="mandar-mais"
+        type="button"
+      >
+        Mandar mais para garantir que tudo saia do jeito certo
+      </button>
+
+      <button
+        class="duplo-opcao"
+        data-cenario="falso-scrum-master"
+        data-resposta="remover-time"
+        type="button"
+      >
+        Remover o time das decisões para ganhar tempo
+      </button>
+    </div>
+  </article>
+</div>
+
+<p class="duplo-feedback" id="duploFeedback">
+  Escolha a melhor atitude para cada memória do Anti-Time.
+</p>
+
+<article class="capitulo5-info" id="duploResultado">
+  <h3>Artefato usado</h3>
+  <p>
+    <strong>Medalhão dos Papéis.</strong> Quando as responsabilidades ficam
+    claras, o Duplo enfraquece. Ao colocar o medalhão nele, a maldição se desfaz
+    e a criatura se revela como um Dev Lendário perdido.
+  </p>
+</article>
+
+<button class="btn-primary" id="btnResolverDuplo" type="button">
+  Colocar o Medalhão no Duplo
+</button>
 </section>
 
 <section
