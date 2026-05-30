@@ -311,19 +311,177 @@
     </p>
   </article>
 
-  <div class="simple-choice-grid">
-    <button class="choice-card" type="button">
-      Ouvir o feedback antes de reagir
-    </button>
+ <div class="stakeholder-desafio" id="stakeholderDesafio">
+  <article class="stakeholder-cenario">
+    <p class="stakeholder-etiqueta">Caminho 1</p>
+    <h3>Pedido em forma de grito</h3>
+    <p>
+      O Stakeholder Selvagem exige: “Quero essa nova funcionalidade agora!”.
+      O pedido parece importante, mas ainda não está claro o problema que ele
+      resolve.
+    </p>
 
-    <button class="choice-card" type="button">
-      Registrar decisões no backlog
-    </button>
+    <div class="stakeholder-opcoes">
+      <button
+        class="stakeholder-opcao"
+        data-cenario="pedido-confuso"
+        data-resposta="entender-necessidade"
+        type="button"
+      >
+        Fazer perguntas para entender a necessidade antes de assumir a solução
+      </button>
 
-    <button class="choice-card" type="button">
-      Priorizar com base em valor
-    </button>
-  </div>
+      <button
+        class="stakeholder-opcao"
+        data-cenario="pedido-confuso"
+        data-resposta="prometer-entrega"
+        type="button"
+      >
+        Prometer a entrega imediatamente para acalmar o stakeholder
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="pedido-confuso"
+        data-resposta="recusar-sem-ouvir"
+        type="button"
+      >
+        Recusar o pedido sem investigar o valor
+      </button>
+    </div>
+  </article>
+
+  <article class="stakeholder-cenario">
+    <p class="stakeholder-etiqueta">Caminho 2</p>
+    <h3>Mudança no meio da Sprint</h3>
+    <p>
+      Uma mudança urgente aparece enquanto o time já está executando a Sprint.
+      O risco é abandonar tudo sem avaliar impacto.
+    </p>
+
+    <div class="stakeholder-opcoes">
+      <button
+        class="stakeholder-opcao"
+        data-cenario="mudanca-sprint"
+        data-resposta="avaliar-impacto"
+        type="button"
+      >
+        Avaliar impacto, conversar com o PO e decidir com transparência
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="mudanca-sprint"
+        data-resposta="trocar-tudo"
+        type="button"
+      >
+        Trocar todo o plano da Sprint sem avisar o time
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="mudanca-sprint"
+        data-resposta="ignorar-mudanca"
+        type="button"
+      >
+        Ignorar completamente a mudança até o final do projeto
+      </button>
+    </div>
+  </article>
+
+  <article class="stakeholder-cenario">
+    <p class="stakeholder-etiqueta">Caminho 3</p>
+    <h3>Feedback desconfortável</h3>
+    <p>
+      Após ver o incremento, o stakeholder diz que esperava outro resultado.
+      A tensão aumenta e o time fica defensivo.
+    </p>
+
+    <div class="stakeholder-opcoes">
+      <button
+        class="stakeholder-opcao"
+        data-cenario="feedback"
+        data-resposta="adaptar-backlog"
+        type="button"
+      >
+        Escutar o feedback, registrar aprendizados e adaptar o backlog
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="feedback"
+        data-resposta="culpar-stakeholder"
+        type="button"
+      >
+        Culpar o stakeholder por não ter explicado melhor antes
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="feedback"
+        data-resposta="esconder-problema"
+        type="button"
+      >
+        Esconder o problema para evitar retrabalho
+      </button>
+    </div>
+  </article>
+
+  <article class="stakeholder-cenario">
+    <p class="stakeholder-etiqueta">Caminho 4</p>
+    <h3>Acordo final</h3>
+    <p>
+      Depois do alinhamento, todos entendem qual entrega gera mais valor agora.
+      Falta transformar a conversa em compromisso visível.
+    </p>
+
+    <div class="stakeholder-opcoes">
+      <button
+        class="stakeholder-opcao"
+        data-cenario="acordo"
+        data-resposta="formalizar-aval"
+        type="button"
+      >
+        Registrar o acordo e obter o Aval de Aprovação
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="acordo"
+        data-resposta="seguir-sem-registro"
+        type="button"
+      >
+        Seguir sem registrar nada, confiando apenas na memória do grupo
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="acordo"
+        data-resposta="aumentar-escopo"
+        type="button"
+      >
+        Aproveitar o acordo para adicionar mais escopo sem priorização
+      </button>
+    </div>
+  </article>
+</div>
+
+<p class="stakeholder-feedback" id="stakeholderFeedback">
+  Escolha o melhor caminho para transformar ruído em alinhamento.
+</p>
+
+<article class="capitulo5-info" id="stakeholderResultado">
+  <h3>Recompensa</h3>
+  <p>
+    Quando o Product Backlog organiza as vozes da escuridão, o Stakeholder
+    Selvagem se acalma. Ele deixa de atacar o time e entrega o
+    <strong>Aval de Aprovação</strong>.
+  </p>
+</article>
+
+<button class="btn-primary" id="btnResolverStakeholder" type="button">
+  Entregar Backlog Organizado
+</button>
 
   <article class="capitulo5-info">
     <h3>Artefato usado</h3>
@@ -333,9 +491,7 @@
     </p>
   </article>
 
-  <button class="btn-primary" data-complete-step="stakeholder" type="button">
-    Organizar o Backlog
-  </button>
+ 
 </section>
 
 <section

@@ -8,6 +8,7 @@ const ETAPAS_CAPITULO_5 = [
   "forja-mvp",
 ];
 
+
 const etapasConcluidas = new Set();
 
 const RESPOSTAS_DUPLO = {
@@ -17,6 +18,15 @@ const RESPOSTAS_DUPLO = {
 };
 
 const respostasDuplo = {};
+
+const RESPOSTAS_STAKEHOLDER = {
+  "pedido-confuso": "entender-necessidade",
+  "mudanca-sprint": "avaliar-impacto",
+  feedback: "adaptar-backlog",
+  acordo: "formalizar-aval",
+};
+
+const respostasStakeholder = {};
 
 const IMPEDIMENTOS = {
   duplo: {
@@ -768,6 +778,101 @@ function configurarDesafioDuplo() {
   });
 }
 
+function configurarDesafioStakeholder() {
+  const botoesOpcao = document.querySelectorAll(".stakeholder-opcao");
+  const btnResolver = document.getElementById("btnResolverStakeholder");
+  const feedback = document.getElementById("stakeholderFeedback");
+  const desafio = document.getElementById("stakeholderDesafio");
+
+  if (!botoesOpcao.length || !btnResolver) return;
+
+  botoesOpcao.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const cenario = botao.dataset.cenario;
+      const resposta = botao.dataset.resposta;
+
+      if (!cenario || !resposta) return;
+
+      respostasStakeholder[cenario] = resposta;
+
+      document
+        .querySelectorAll(`.stakeholder-opcao[data-cenario="${cenario}"]`)
+        .forEach((opcao) => {
+          opcao.classList.remove("ativo");
+        });
+
+      botao.classList.add("ativo");
+
+      const totalRespondidas = Object.keys(respostasStakeholder).length;
+      const totalCenarios = Object.keys(RESPOSTAS_STAKEHOLDER).length;
+
+      if (feedback) {
+        feedback.textContent = `Caminhos alinhados: ${totalRespondidas}/${totalCenarios}.`;
+        feedback.className = "stakeholder-feedback";
+      }
+    });
+  });
+
+  btnResolver.addEventListener("click", () => {
+    const cenarios = Object.keys(RESPOSTAS_STAKEHOLDER);
+    const respondeuTudo = cenarios.every(
+      (cenario) => respostasStakeholder[cenario],
+    );
+
+    if (!respondeuTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "As vozes ainda estão confusas. Percorra todos os caminhos antes de entregar o Backlog.";
+        feedback.className = "stakeholder-feedback erro";
+      }
+
+      return;
+    }
+
+    const acertouTudo = cenarios.every(
+      (cenario) =>
+        respostasStakeholder[cenario] === RESPOSTAS_STAKEHOLDER[cenario],
+    );
+
+    if (!acertouTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "O Stakeholder Selvagem ainda resiste. Algumas escolhas criam mais ruído do que alinhamento.";
+        feedback.className = "stakeholder-feedback erro";
+      }
+
+      return;
+    }
+
+    if (feedback) {
+      feedback.textContent =
+        "O Backlog brilha. As vozes se organizam, o Stakeholder se acalma e entrega o Aval de Aprovação.";
+      feedback.className = "stakeholder-feedback sucesso";
+    }
+
+    if (desafio) {
+      desafio.classList.add("resolvido");
+    }
+
+    botoesOpcao.forEach((botao) => {
+      botao.disabled = true;
+
+      const cenario = botao.dataset.cenario;
+      const respostaCorreta = RESPOSTAS_STAKEHOLDER[cenario];
+
+      if (botao.dataset.resposta === respostaCorreta) {
+        botao.classList.add("correta");
+      }
+    });
+
+    btnResolver.disabled = true;
+    btnResolver.classList.add("concluida");
+    btnResolver.textContent = "Aval de Aprovação obtido";
+
+    concluirEtapaCapitulo5("stakeholder");
+  });
+}
+
 function configurarConclusaoDasEtapas() {
   document.querySelectorAll("[data-complete-step]").forEach((botao) => {
     botao.addEventListener("click", () => {
@@ -806,6 +911,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   configurarProgressoVisual();
   configurarInteracoesSimples();
   configurarDesafioDuplo();
+  configurarDesafioStakeholder();
   configurarMiniGameImpedimentos();
   configurarConclusaoDasEtapas();
   configurarConclusaoHistoria();
