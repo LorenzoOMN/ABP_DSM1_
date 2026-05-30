@@ -113,7 +113,7 @@ async function createUsuario(nome, email, cpf, senha) {
 async function findUsuarioById(idUsuario) {
   const result = await pool.query(
     `
-    SELECT id_usuario, nome, email, cpf, is_admin
+    SELECT id_usuario, nome, email, cpf, is_admin, musica_ativa, efeitos_ativos
     FROM usuarios
     WHERE id_usuario = $1
     `,
@@ -267,6 +267,26 @@ async function updateUsuario(idUsuario, dados) {
   return result.rows[0] || null;
 }
 
+async function updateConfiguracoesAudio(
+  idUsuario,
+  musicaAtiva,
+  efeitosAtivos
+) {
+
+  const result = await pool.query(
+      `
+      UPDATE usuarios
+      SET
+          musica_ativa = $2,
+          efeitos_ativos = $3
+      WHERE id_usuario = $1
+      RETURNING musica_ativa, efeitos_ativos
+      `,
+      [idUsuario, musicaAtiva, efeitosAtivos]
+  );
+
+  return result.rows[0] || null;
+}
 
 // exportando a respectiva função para outros arquivos.
 module.exports = {
@@ -276,5 +296,6 @@ module.exports = {
   insertProgressoDesafioInicial,
   verificarBarraDesbloqueada,
   desbloquearBarraNavegacao,
-  updateUsuario
+  updateUsuario,
+  updateConfiguracoesAudio
 };
