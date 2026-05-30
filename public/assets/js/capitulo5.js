@@ -1,12 +1,11 @@
 const ID_MODULO = 5;
 
 const ETAPAS_CAPITULO_5 = [
-  "artefatos",
-  "impedimentos",
-  "user-stories",
-  "valor",
-  "caminhos",
-  "anti-time",
+  "duplo",
+  "stakeholder",
+  "necrobranch",
+  "bug-infernal",
+  "forja-mvp",
 ];
 
 const etapasConcluidas = new Set();
@@ -639,8 +638,8 @@ function atualizarProgressoCapitulo() {
     portaBloqueada.classList.toggle("liberada", todasConcluidas);
 
     portaBloqueada.textContent = todasConcluidas
-      ? "As 6 etapas foram concluídas. A porta reconhece seu domínio do fluxo."
-      : `A porta ainda observa sua jornada. Complete as 6 etapas para atravessá-la. Progresso: ${totalConcluidas}/${totalEtapas}.`;
+  ? "O MVP foi forjado. A porta reconhece que o time está pronto para o desafio final."
+  : `A porta ainda observa sua jornada. Resolva os obstáculos e forje o MVP. Progresso: ${totalConcluidas}/${totalEtapas}.`;
   }
 
   if (btnConcluir) {
