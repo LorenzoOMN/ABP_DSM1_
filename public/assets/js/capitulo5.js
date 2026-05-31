@@ -28,21 +28,24 @@ const ENCONTROS_CAPITULO_5 = {
   necrobranch: {
     stageId: "encounter-necrobranch",
     titulo: "Necrobranch Commitada",
-    descricao: "Uma branch instável retorna das sombras e ameaça a Main Funcional.",
+    descricao:
+      "Uma branch instável retorna das sombras e ameaça a Main Funcional.",
     artefato: "Ampulheta da Sprint",
     imagem: "/assets/img/capitulo_5/necrobranch-icon-simples.png",
   },
   "bug-infernal": {
     stageId: "encounter-bug",
     titulo: "Bug Infernal",
-    descricao: "Uma falha viva distorce a entrega e exige investigação antes da correção.",
+    descricao:
+      "Uma falha viva distorce a entrega e exige investigação antes da correção.",
     artefato: "Baú da Melhoria",
     imagem: "/assets/img/capitulo_5/bug-infernal-icon.png",
   },
   "forja-mvp": {
     stageId: "encounter-forja",
     titulo: "A Forja do MVP",
-    descricao: "Os artefatos conquistados precisam se unir para formar a entrega final.",
+    descricao:
+      "Os artefatos conquistados precisam se unir para formar a entrega final.",
     artefato: "MVP",
     imagem: "/assets/img/capitulo_5/base-artefato-bau.png",
   },
@@ -105,7 +108,6 @@ const respostasForja = {};
 const impedimentosResolvidos = new Set();
 const respostasImpedimentos = {};
 
-
 function obterToken() {
   const token = localStorage.getItem("token");
 
@@ -134,7 +136,6 @@ function configurarRevealNoScroll() {
 
   elementos.forEach((el) => observer.observe(el));
 }
-
 
 async function concluirHistoria() {
   const token = obterToken();
@@ -789,7 +790,6 @@ function inserirIndicadorProgresso() {
   indicador.textContent = `0 / ${ETAPAS_CAPITULO_5.length}`;
 }
 
-
 function obterIndiceEtapa(step) {
   if (step === "porta-final") return ETAPAS_CAPITULO_5.length;
   return ETAPAS_CAPITULO_5.indexOf(step);
@@ -898,11 +898,11 @@ function selecionarEtapaCapitulo5(step, abrirStage = false) {
 
 function configurarNavegacaoCapitulo5() {
   document.querySelectorAll("[data-open-stage]").forEach((botao) => {
-   botao.addEventListener("click", () => {
-  const step = botao.dataset.step;
-  if (!step) return;
-  selecionarEtapaCapitulo5(step, true);
-});
+    botao.addEventListener("click", () => {
+      const step = botao.dataset.step;
+      if (!step) return;
+      selecionarEtapaCapitulo5(step, true);
+    });
   });
 
   const btnAbrirDesafioAtual = document.getElementById("btnAbrirDesafioAtual");
@@ -930,7 +930,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await carregarEstadoHistoria();
 
- configurarRevealNoScroll();
+  configurarRevealNoScroll();
   configurarNavegacaoCapitulo5();
 
   configurarDesafioDuplo();
