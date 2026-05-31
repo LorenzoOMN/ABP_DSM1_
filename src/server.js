@@ -9,7 +9,7 @@ const pool = require("./shared/database/db");
 // inicializa o express
 const app = require("./app");
 
-// importa a porta do arquivo de configuração de ambiente
+// importa a porta do arquivo de configuracao de ambiente
 const PORT = env.PORT;
 
 // Função que roda UMA VEZ ao iniciar o servidor
