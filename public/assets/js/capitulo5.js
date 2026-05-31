@@ -28,6 +28,34 @@ const RESPOSTAS_STAKEHOLDER = {
 
 const respostasStakeholder = {};
 
+const RESPOSTAS_NECROBRANCH = {
+  "branch-desconhecida": "inspecionar-estado",
+  "quadro-valor": "priorizar-impacto",
+  "main-risco": "proteger-main",
+  "integracao-final": "testar-integrar",
+};
+
+const respostasNecrobranch = {};
+
+const RESPOSTAS_BUG = {
+  "comportamento-esperado": "definir-esperado",
+  "comportamento-atual": "registrar-atual",
+  reproducao: "definir-passos",
+  validacao: "validar-correcao",
+};
+
+const respostasBug = {};
+
+const RESPOSTAS_FORJA = {
+  "time-alinhado": "medalhao-papeis",
+  "valor-validado": "aval-aprovacao",
+  "incremento-funcionando": "main-funcional",
+  "ciclo-encerrado": "ampulheta-quebrada",
+  "produto-testado": "escudo-magico",
+};
+
+const respostasForja = {};
+
 const IMPEDIMENTOS = {
   duplo: {
     titulo: "O Duplo",
@@ -873,6 +901,285 @@ function configurarDesafioStakeholder() {
   });
 }
 
+function configurarDesafioNecrobranch() {
+  const botoesOpcao = document.querySelectorAll(".necrobranch-opcao");
+  const btnResolver = document.getElementById("btnResolverNecrobranch");
+  const feedback = document.getElementById("necrobranchFeedback");
+  const desafio = document.getElementById("necrobranchDesafio");
+
+  if (!botoesOpcao.length || !btnResolver) return;
+
+  botoesOpcao.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const cenario = botao.dataset.cenario;
+      const resposta = botao.dataset.resposta;
+
+      if (!cenario || !resposta) return;
+
+      respostasNecrobranch[cenario] = resposta;
+
+      document
+        .querySelectorAll(`.necrobranch-opcao[data-cenario="${cenario}"]`)
+        .forEach((opcao) => {
+          opcao.classList.remove("ativo");
+        });
+
+      botao.classList.add("ativo");
+
+      const totalRespondidas = Object.keys(respostasNecrobranch).length;
+      const totalCenarios = Object.keys(RESPOSTAS_NECROBRANCH).length;
+
+      if (feedback) {
+        feedback.textContent = `Raízes estabilizadas: ${totalRespondidas}/${totalCenarios}.`;
+        feedback.className = "necrobranch-feedback";
+      }
+    });
+  });
+
+  btnResolver.addEventListener("click", () => {
+    const cenarios = Object.keys(RESPOSTAS_NECROBRANCH);
+    const respondeuTudo = cenarios.every(
+      (cenario) => respostasNecrobranch[cenario],
+    );
+
+    if (!respondeuTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "A Necrobranch ainda está instável. Analise todas as raízes antes de girar a Ampulheta.";
+        feedback.className = "necrobranch-feedback erro";
+      }
+
+      return;
+    }
+
+    const acertouTudo = cenarios.every(
+      (cenario) =>
+        respostasNecrobranch[cenario] === RESPOSTAS_NECROBRANCH[cenario],
+    );
+
+    if (!acertouTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "A Necrobranch reage violentamente. Algumas escolhas aumentam risco, retrabalho ou instabilidade.";
+        feedback.className = "necrobranch-feedback erro";
+      }
+
+      return;
+    }
+
+    if (feedback) {
+      feedback.textContent =
+        "A Ampulheta gira. O tempo da Sprint se dobra por um instante, a Main Funcional é recuperada e o Dev Lendário segura a Necrobranch até desaparecer na luz.";
+      feedback.className = "necrobranch-feedback sucesso";
+    }
+
+    if (desafio) {
+      desafio.classList.add("resolvido");
+    }
+
+    botoesOpcao.forEach((botao) => {
+      botao.disabled = true;
+
+      const cenario = botao.dataset.cenario;
+      const respostaCorreta = RESPOSTAS_NECROBRANCH[cenario];
+
+      if (botao.dataset.resposta === respostaCorreta) {
+        botao.classList.add("correta");
+      }
+    });
+
+    btnResolver.disabled = true;
+    btnResolver.classList.add("concluida");
+    btnResolver.textContent = "Main Funcional recuperada";
+
+    concluirEtapaCapitulo5("necrobranch");
+  });
+}
+
+function configurarDesafioBugInfernal() {
+  const botoesOpcao = document.querySelectorAll(".bug-opcao");
+  const btnResolver = document.getElementById("btnResolverBug");
+  const feedback = document.getElementById("bugFeedback");
+  const desafio = document.getElementById("bugDesafio");
+
+  if (!botoesOpcao.length || !btnResolver) return;
+
+  botoesOpcao.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const cenario = botao.dataset.cenario;
+      const resposta = botao.dataset.resposta;
+
+      if (!cenario || !resposta) return;
+
+      respostasBug[cenario] = resposta;
+
+      document
+        .querySelectorAll(`.bug-opcao[data-cenario="${cenario}"]`)
+        .forEach((opcao) => {
+          opcao.classList.remove("ativo");
+        });
+
+      botao.classList.add("ativo");
+
+      const totalRespondidas = Object.keys(respostasBug).length;
+      const totalCenarios = Object.keys(RESPOSTAS_BUG).length;
+
+      if (feedback) {
+        feedback.textContent = `Rastros investigados: ${totalRespondidas}/${totalCenarios}.`;
+        feedback.className = "bug-feedback";
+      }
+    });
+  });
+
+  btnResolver.addEventListener("click", () => {
+    const cenarios = Object.keys(RESPOSTAS_BUG);
+    const respondeuTudo = cenarios.every((cenario) => respostasBug[cenario]);
+
+    if (!respondeuTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "O Bug Infernal ainda escapa. Investigue todos os rastros antes de usar o Baú.";
+        feedback.className = "bug-feedback erro";
+      }
+
+      return;
+    }
+
+    const acertouTudo = cenarios.every(
+      (cenario) => respostasBug[cenario] === RESPOSTAS_BUG[cenario],
+    );
+
+    if (!acertouTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "O Bug Infernal se fortalece. Algumas escolhas pulam investigação, teste ou validação.";
+        feedback.className = "bug-feedback erro";
+      }
+
+      return;
+    }
+
+    if (feedback) {
+      feedback.textContent =
+        "O Baú da Melhoria se abre. O bug é isolado, validado e aprisionado. O baú se transforma em um Escudo Mágico.";
+      feedback.className = "bug-feedback sucesso";
+    }
+
+    if (desafio) {
+      desafio.classList.add("resolvido");
+    }
+
+    botoesOpcao.forEach((botao) => {
+      botao.disabled = true;
+
+      const cenario = botao.dataset.cenario;
+      const respostaCorreta = RESPOSTAS_BUG[cenario];
+
+      if (botao.dataset.resposta === respostaCorreta) {
+        botao.classList.add("correta");
+      }
+    });
+
+    btnResolver.disabled = true;
+    btnResolver.classList.add("concluida");
+    btnResolver.textContent = "Escudo Mágico obtido";
+
+    concluirEtapaCapitulo5("bug-infernal");
+  });
+}
+
+function configurarForjaMvp() {
+  const botoesOpcao = document.querySelectorAll(".forja-opcao");
+  const btnForjar = document.getElementById("btnForjarMvp");
+  const feedback = document.getElementById("forjaFeedback");
+  const desafio = document.getElementById("forjaDesafio");
+
+  if (!botoesOpcao.length || !btnForjar) return;
+
+  botoesOpcao.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const cenario = botao.dataset.cenario;
+      const resposta = botao.dataset.resposta;
+
+      if (!cenario || !resposta) return;
+
+      respostasForja[cenario] = resposta;
+
+      document
+        .querySelectorAll(`.forja-opcao[data-cenario="${cenario}"]`)
+        .forEach((opcao) => {
+          opcao.classList.remove("ativo");
+        });
+
+      botao.classList.add("ativo");
+
+      const totalRespondidas = Object.keys(respostasForja).length;
+      const totalCenarios = Object.keys(RESPOSTAS_FORJA).length;
+
+      if (feedback) {
+        feedback.textContent = `Artefatos posicionados: ${totalRespondidas}/${totalCenarios}.`;
+        feedback.className = "forja-feedback";
+      }
+    });
+  });
+
+  btnForjar.addEventListener("click", () => {
+    const cenarios = Object.keys(RESPOSTAS_FORJA);
+    const respondeuTudo = cenarios.every((cenario) => respostasForja[cenario]);
+
+    if (!respondeuTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "A forja ainda não responde. Posicione todos os artefatos antes de tentar criar o MVP.";
+        feedback.className = "forja-feedback erro";
+      }
+
+      return;
+    }
+
+    const acertouTudo = cenarios.every(
+      (cenario) => respostasForja[cenario] === RESPOSTAS_FORJA[cenario],
+    );
+
+    if (!acertouTudo) {
+      if (feedback) {
+        feedback.textContent =
+          "Os artefatos vibram fora de ordem. Revise o que cada item representa para uma entrega ágil.";
+        feedback.className = "forja-feedback erro";
+      }
+
+      return;
+    }
+
+    if (feedback) {
+      feedback.textContent =
+        "A forja desperta. Os artefatos se unem e formam o MVP, uma entrega mínima, funcional, validada e testada.";
+      feedback.className = "forja-feedback sucesso";
+    }
+
+    if (desafio) {
+      desafio.classList.add("resolvido");
+    }
+
+    botoesOpcao.forEach((botao) => {
+      botao.disabled = true;
+
+      const cenario = botao.dataset.cenario;
+      const respostaCorreta = RESPOSTAS_FORJA[cenario];
+
+      if (botao.dataset.resposta === respostaCorreta) {
+        botao.classList.add("correta");
+      }
+    });
+
+    btnForjar.disabled = true;
+    btnForjar.classList.add("concluida");
+    btnForjar.textContent = "MVP Forjado";
+
+    concluirEtapaCapitulo5("forja-mvp");
+  });
+}
+
 function configurarConclusaoDasEtapas() {
   document.querySelectorAll("[data-complete-step]").forEach((botao) => {
     botao.addEventListener("click", () => {
@@ -912,6 +1219,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   configurarInteracoesSimples();
   configurarDesafioDuplo();
   configurarDesafioStakeholder();
+  configurarDesafioNecrobranch();
+  configurarDesafioBugInfernal();
+  configurarForjaMvp();
   configurarMiniGameImpedimentos();
   configurarConclusaoDasEtapas();
   configurarConclusaoHistoria();
