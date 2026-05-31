@@ -11,7 +11,7 @@
   </head>
 
   <body class="pagina-questionario">
-    <%- include('partials/header') %>
+    <%- include('partials/header') %> 
     <%- include('./partials/botao_voltar') %>
     <%- include('partials/alert') %>
 
@@ -29,9 +29,7 @@
                   <div id="boss-hp-fill" class="boss-hp-fill"></div>
                 </div>
 
-                <span id="boss-hp-texto" class="boss-hp-texto">
-                  100%
-                </span>
+                <span id="boss-hp-texto" class="boss-hp-texto"> 100% </span>
               </div>
             </div>
 
@@ -42,6 +40,8 @@
                 class="boss-imagem"
                 id="bossImagem"
               />
+
+              <div id="damage-float"></div>
             </div>
           </div>
 
@@ -81,9 +81,7 @@
 
           <div class="linha"></div>
 
-          <p id="enunciado-questao" class="questao">
-            Carregando pergunta...
-          </p>
+          <p id="enunciado-questao" class="questao">Carregando pergunta...</p>
 
           <div
             id="imagem-questao-container"
@@ -128,31 +126,18 @@
         </section>
 
         <section class="botoesdenavegacao">
-          <button
-            type="button"
-            class="botaonavegacao"
-            id="botao-voltar"
-          >
-            Voltar
-          </button>
 
-          <button type="button" class="confirmar">
-            Confirmar Resposta
-          </button>
+          <button type="button" class="confirmar">Confirmar Resposta</button>
 
-          <button
-            type="button"
-            class="botaonavegacao"
-            id="botao-pular"
-          >
+          <button type="button" class="botaonavegacao" id="botao-pular">
             Pular
           </button>
         </section>
       </section>
     </main>
 
-    <%- include('partials/navegacao_inferior') %>
-    <%- include('partials/footer') %>
+    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
+    %>
 
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/questionario1.js"></script>

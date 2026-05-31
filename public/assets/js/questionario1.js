@@ -4,7 +4,7 @@
   // ============================================================================
 
   const DURACAO_TIMER_SEGUNDOS = 20 * 60;
-  const RESPOSTA_PULADA = "pulada";
+  const RESPOSTA_PULADA = "x";
 
   // ============================================================================
   // ELEMENTOS DO DOM
@@ -15,7 +15,7 @@
   const bossImagem = document.getElementById("bossImagem");
 
   const botoesResposta = Array.from(
-    document.querySelectorAll(".botaoresposta")
+    document.querySelectorAll(".botaoresposta"),
   );
 
   const barra = document.getElementById("progresso-dinamico");
@@ -25,12 +25,9 @@
   const textoDificuldade = document.getElementById("texto-dificuldade");
   const enunciadoQuestao = document.getElementById("enunciado-questao");
 
-  const imagemContainer = document.getElementById(
-    "imagem-questao-container"
-  );
+  const imagemContainer = document.getElementById("imagem-questao-container");
 
   const botaoConfirmar = document.querySelector(".confirmar");
-  const botaoVoltar = document.getElementById("botao-voltar");
   const botaoPular = document.getElementById("botao-pular");
 
   const timerEl = document.getElementById("timer-questao");
@@ -44,6 +41,7 @@
 
   let respostas = {};
   let confirmadas = {};
+  let acertos = {};
 
   let timerInterval = null;
   let segundosRestantes = DURACAO_TIMER_SEGUNDOS;
@@ -72,16 +70,25 @@
   function atualizarVidaBoss() {
     if (!fila.length) return;
 
-    const respondidas = Object.values(confirmadas).filter(Boolean).length;
+    const totalAcertos = Object.values(acertos).filter(Boolean).length;
 
-    const porcentagem = Math.max(
-      0,
-      100 - (respondidas / fila.length) * 100
-    );
+    const porcentagem = Math.max(0, 100 - (totalAcertos / fila.length) * 100);
 
     if (bossHPFill) {
       bossHPFill.style.width = `${porcentagem}%`;
     }
+
+    bossHPFill.animate(
+      [
+        { transform: "translateX(0)" },
+        { transform: "translateX(-2px)" },
+        { transform: "translateX(2px)" },
+        { transform: "translateX(0)" },
+      ],
+      {
+        duration: 180,
+      },
+    );
 
     if (bossHPTexto) {
       bossHPTexto.textContent = `${Math.round(porcentagem)}%`;
@@ -101,9 +108,7 @@
       .toString()
       .padStart(2, "0");
 
-    const s = (segundos % 60)
-      .toString()
-      .padStart(2, "0");
+    const s = (segundos % 60).toString().padStart(2, "0");
 
     return `${m}:${s}`;
   }
@@ -127,10 +132,7 @@
 
     if (!chave) return;
 
-    localStorage.setItem(
-      chave,
-      String(Date.now() + segundosRestantes * 1000)
-    );
+    localStorage.setItem(chave, String(Date.now() + segundosRestantes * 1000));
   }
 
   function carregarTimerLocal() {
@@ -193,10 +195,7 @@
 
     desabilitarTudo();
 
-    mostrarAlerta(
-      "Tempo esgotado! Enviando respostas pendentes...",
-      "info"
-    );
+    mostrarAlerta("Tempo esgotado! Enviando respostas pendentes...", "info");
 
     await enviarPendentesComoX();
 
@@ -216,14 +215,10 @@
   }
 
   function atualizarBotoesNavegacao() {
-    if (botaoVoltar) {
-      botaoVoltar.disabled = indiceAtual === 0;
-    }
-
-    if (botaoPular) {
-      botaoPular.disabled = false;
-    }
+  if (botaoPular) {
+    botaoPular.disabled = false;
   }
+}
 
   // ============================================================================
   // BARRA DE PROGRESSO
@@ -254,10 +249,7 @@
     }
 
     if (barraContainer) {
-      barraContainer.setAttribute(
-        "aria-valuenow",
-        String(percentual)
-      );
+      barraContainer.setAttribute("aria-valuenow", String(percentual));
     }
   }
 
@@ -267,7 +259,7 @@
 
   function preencherAlternativa(letra, texto) {
     const botao = document.querySelector(
-      `.botaoresposta[data-alternativa="${letra}"]`
+      `.botaoresposta[data-alternativa="${letra}"]`,
     );
 
     const span = botao?.querySelector(".resposta");
@@ -284,9 +276,7 @@
 
     if (!questao.imagem) return;
 
-    const nome = String(questao.imagem)
-      .split("/")
-      .pop();
+    const nome = String(questao.imagem).split("/").pop();
 
     imagemContainer.innerHTML = `
       <img
@@ -322,8 +312,7 @@
     if (!q) return;
 
     if (textoProgresso) {
-      textoProgresso.textContent =
-        `Questão ${indiceAtual + 1} de ${totalQuestoes()}`;
+      textoProgresso.textContent = `Questão ${indiceAtual + 1} de ${totalQuestoes()}`;
     }
 
     if (textoDificuldade) {
@@ -331,8 +320,7 @@
     }
 
     if (enunciadoQuestao) {
-      enunciadoQuestao.textContent =
-        q.enunciado || "Pergunta indisponível";
+      enunciadoQuestao.textContent = q.enunciado || "Pergunta indisponível";
     }
 
     renderizarImagem(q);
@@ -347,20 +335,10 @@
     atualizarPercentual();
     atualizarBotoesNavegacao();
 
-    if (confirmadas[q.id_questao]) {
-      desabilitarRespostas();
-
-      if (botaoConfirmar) {
-        botaoConfirmar.textContent = "Já respondida";
-        botaoConfirmar.disabled = true;
-      }
-    } else {
-      habilitarRespostas();
-
-      if (botaoConfirmar) {
-        botaoConfirmar.textContent = "Confirmar Resposta";
-        botaoConfirmar.disabled = false;
-      }
+    habilitarRespostas();
+    if (botaoConfirmar) {
+      botaoConfirmar.textContent = "Confirmar Resposta";
+      botaoConfirmar.disabled = false;
     }
   }
 
@@ -371,9 +349,7 @@
   function selecionarAlternativa(botaoSelecionado) {
     const q = questaoAtual();
 
-    if (!q || confirmadas[q.id_questao]) {
-      return;
-    }
+    if (!q) return;
 
     respostas[q.id_questao] = botaoSelecionado.dataset.alternativa;
 
@@ -382,10 +358,7 @@
 
       botao.classList.toggle("is-selected", marcado);
 
-      botao.setAttribute(
-        "aria-pressed",
-        marcado ? "true" : "false"
-      );
+      botao.setAttribute("aria-pressed", marcado ? "true" : "false");
     });
   }
 
@@ -408,13 +381,47 @@
       botaoConfirmar.disabled = true;
     }
 
-    if (botaoVoltar) {
-      botaoVoltar.disabled = true;
-    }
-
     if (botaoPular) {
       botaoPular.disabled = true;
     }
+  }
+
+  // ============================================================================
+  // FEEDBACK DE DANO
+  // ============================================================================
+
+  function mostrarDano(valor) {
+    const area = document.getElementById("damage-float");
+
+    if (!area) return;
+
+    const el = document.createElement("div");
+
+    el.className = "damage-number";
+    el.textContent = `-${valor}`;
+
+    area.appendChild(el);
+
+    setTimeout(() => {
+      el.remove();
+    }, 800);
+  }
+
+  function mostrarMiss() {
+    const area = document.getElementById("damage-float");
+
+    if (!area) return;
+
+    const el = document.createElement("div");
+
+    el.className = "damage-number miss";
+    el.textContent = "MISS";
+
+    area.appendChild(el);
+
+    setTimeout(() => {
+      el.remove();
+    }, 800);
   }
 
   // ============================================================================
@@ -444,61 +451,79 @@
         }),
       });
 
-      if (res.ok || res.status === 409) {
+      if (res.ok) {
+        const data = await res.json();
+
         confirmadas[idQuestao] = true;
 
-        atualizarVidaBoss();
+        if (data.correta) {
+          acertos[idQuestao] = true;
 
-        if (bossImagem) {
-          bossImagem.animate(
-            [
-              {
-                transform: "scale(1)",
-                filter:
-                  "drop-shadow(0 0 20px rgba(255,132,0,.22))",
-              },
+          atualizarVidaBoss();
 
-              {
-                transform: "scale(1.06)",
-                filter:
-                  "drop-shadow(0 0 34px rgba(255,120,0,.75))",
-              },
+          mostrarDano(10);
 
+          if (bossImagem) {
+            bossImagem.animate(
+              [
+                {
+                  transform: "translateX(0) scale(1)",
+                  filter: "brightness(1)",
+                },
+                {
+                  transform: "translateX(-10px) scale(1.08)",
+                  filter: "brightness(1.8)",
+                },
+                {
+                  transform: "translateX(10px) scale(0.95)",
+                  filter: "brightness(0.6)",
+                },
+                {
+                  transform: "translateX(-8px) scale(1.05)",
+                },
+                {
+                  transform: "translateX(0) scale(1)",
+                },
+              ],
               {
-                transform: "scale(0.97)",
-                filter:
-                  "drop-shadow(0 0 12px rgba(255,80,0,.18))",
+                duration: 350,
+                easing: "ease-out",
               },
+            );
+          }
+        } else {
+          mostrarMiss();
 
+          if (bossImagem) {
+            bossImagem.animate(
+              [
+                { transform: "translateX(0)" },
+                { transform: "translateX(-4px)" },
+                { transform: "translateX(4px)" },
+                { transform: "translateX(0)" },
+              ],
               {
-                transform: "scale(1)",
-                filter:
-                  "drop-shadow(0 0 20px rgba(255,132,0,.22))",
+                duration: 180,
               },
-            ],
-            {
-              duration: 420,
-              easing: "ease-out",
-            }
-          );
+            );
+          }
         }
 
         return true;
       }
 
+      if (res.status === 409) {
+        confirmadas[idQuestao] = true;
+        return true;
+      }
+
       const data = await res.json();
 
-      mostrarAlerta(
-        data.message || "Erro ao enviar resposta",
-        "erro"
-      );
+      mostrarAlerta(data.message || "Erro ao enviar resposta", "erro");
 
       return false;
     } catch {
-      mostrarAlerta(
-        "Erro de conexão ao enviar resposta",
-        "erro"
-      );
+      mostrarAlerta("Erro de conexão ao enviar resposta", "erro");
 
       return false;
     }
@@ -507,11 +532,7 @@
   async function enviarPendentesComoX() {
     for (const q of fila) {
       if (!confirmadas[q.id_questao]) {
-        await enviarResposta(
-          q.id_exame,
-          q.id_questao,
-          RESPOSTA_PULADA
-        );
+        await enviarResposta(q.id_exame, q.id_questao, RESPOSTA_PULADA);
       }
     }
   }
@@ -528,21 +549,14 @@
     const resposta = respostas[q.id_questao];
 
     if (!resposta || resposta === RESPOSTA_PULADA) {
-      mostrarAlerta(
-        "Escolha uma alternativa antes de confirmar.",
-        "erro"
-      );
+      mostrarAlerta("Escolha uma alternativa antes de confirmar.", "erro");
 
       return;
     }
 
     desabilitarTudo();
 
-    const ok = await enviarResposta(
-      q.id_exame,
-      q.id_questao,
-      resposta
-    );
+    const ok = await enviarResposta(q.id_exame, q.id_questao, resposta);
 
     if (!ok) {
       habilitarRespostas();
@@ -564,13 +578,6 @@
     }
   }
 
-  function aoVoltar() {
-    if (indiceAtual === 0) return;
-
-    indiceAtual--;
-    renderizarQuestao();
-  }
-
   async function aoPular() {
     const q = questaoAtual();
 
@@ -587,7 +594,9 @@
     }
 
     const primeiraSemResposta = fila.findIndex(
-      (x) => !confirmadas[x.id_questao]
+      (x) =>
+        !confirmadas[x.id_questao] &&
+        respostas[x.id_questao] !== RESPOSTA_PULADA,
     );
 
     if (primeiraSemResposta !== -1) {
@@ -595,10 +604,7 @@
 
       renderizarQuestao();
 
-      mostrarAlerta(
-        "Você ainda tem questões sem resposta.",
-        "info"
-      );
+      mostrarAlerta("Você ainda tem questões sem resposta.", "info");
     } else {
       await finalizarQuestionario();
     }
@@ -612,17 +618,11 @@
     await enviarPendentesComoX();
 
     if (exameId) {
-      localStorage.setItem(
-        `exame_finalizado_${exameId}`,
-        "1"
-      );
+      localStorage.setItem(`exame_finalizado_${exameId}`, "1");
     }
 
     if (exameId) {
-      sessionStorage.setItem(
-        "ultimo_id_exame",
-        String(exameId)
-      );
+      sessionStorage.setItem("ultimo_id_exame", String(exameId));
     }
 
     window.location.href = "/resultado";
@@ -654,10 +654,7 @@
       }
 
       if (!res.ok) {
-        mostrarAlerta(
-          data.message || "Erro ao carregar questões",
-          "erro"
-        );
+        mostrarAlerta(data.message || "Erro ao carregar questões", "erro");
 
         window.location.href = "/mapa";
 
@@ -673,15 +670,14 @@
           .filter(
             (k) =>
               k.startsWith("exame_finalizado_") &&
-              k !== `exame_finalizado_${exameId}`
+              k !== `exame_finalizado_${exameId}`,
           )
           .forEach((k) => localStorage.removeItem(k));
 
         Object.keys(localStorage)
           .filter(
             (k) =>
-              k.startsWith("timer_exame_") &&
-              k !== `timer_exame_${exameId}`
+              k.startsWith("timer_exame_") && k !== `timer_exame_${exameId}`,
           )
           .forEach((k) => localStorage.removeItem(k));
       }
@@ -693,13 +689,10 @@
         }
       });
 
-      const primeiraAberta = fila.findIndex(
-        (q) => !confirmadas[q.id_questao]
-      );
+      const primeiraAberta = fila.findIndex((q) => !confirmadas[q.id_questao]);
 
       const jaFinalizado =
-        exameId &&
-        localStorage.getItem(`exame_finalizado_${exameId}`);
+        exameId && localStorage.getItem(`exame_finalizado_${exameId}`);
 
       if (primeiraAberta === -1 || jaFinalizado) {
         window.location.href = "/resultado";
@@ -714,10 +707,7 @@
     } catch (err) {
       console.error(err);
 
-      mostrarAlerta(
-        "Erro de conexão ao carregar questões",
-        "erro"
-      );
+      mostrarAlerta("Erro de conexão ao carregar questões", "erro");
     }
   }
 
@@ -735,10 +725,6 @@
 
   if (botaoConfirmar) {
     botaoConfirmar.addEventListener("click", aoConfirmar);
-  }
-
-  if (botaoVoltar) {
-    botaoVoltar.addEventListener("click", aoVoltar);
   }
 
   if (botaoPular) {
