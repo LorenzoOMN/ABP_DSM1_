@@ -311,19 +311,177 @@
     </p>
   </article>
 
-  <div class="simple-choice-grid">
-    <button class="choice-card" type="button">
-      Ouvir o feedback antes de reagir
-    </button>
+ <div class="stakeholder-desafio" id="stakeholderDesafio">
+  <article class="stakeholder-cenario">
+    <p class="stakeholder-etiqueta">Caminho 1</p>
+    <h3>Pedido em forma de grito</h3>
+    <p>
+      O Stakeholder Selvagem exige: “Quero essa nova funcionalidade agora!”.
+      O pedido parece importante, mas ainda não está claro o problema que ele
+      resolve.
+    </p>
 
-    <button class="choice-card" type="button">
-      Registrar decisões no backlog
-    </button>
+    <div class="stakeholder-opcoes">
+      <button
+        class="stakeholder-opcao"
+        data-cenario="pedido-confuso"
+        data-resposta="entender-necessidade"
+        type="button"
+      >
+        Fazer perguntas para entender a necessidade antes de assumir a solução
+      </button>
 
-    <button class="choice-card" type="button">
-      Priorizar com base em valor
-    </button>
-  </div>
+      <button
+        class="stakeholder-opcao"
+        data-cenario="pedido-confuso"
+        data-resposta="prometer-entrega"
+        type="button"
+      >
+        Prometer a entrega imediatamente para acalmar o stakeholder
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="pedido-confuso"
+        data-resposta="recusar-sem-ouvir"
+        type="button"
+      >
+        Recusar o pedido sem investigar o valor
+      </button>
+    </div>
+  </article>
+
+  <article class="stakeholder-cenario">
+    <p class="stakeholder-etiqueta">Caminho 2</p>
+    <h3>Mudança no meio da Sprint</h3>
+    <p>
+      Uma mudança urgente aparece enquanto o time já está executando a Sprint.
+      O risco é abandonar tudo sem avaliar impacto.
+    </p>
+
+    <div class="stakeholder-opcoes">
+      <button
+        class="stakeholder-opcao"
+        data-cenario="mudanca-sprint"
+        data-resposta="avaliar-impacto"
+        type="button"
+      >
+        Avaliar impacto, conversar com o PO e decidir com transparência
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="mudanca-sprint"
+        data-resposta="trocar-tudo"
+        type="button"
+      >
+        Trocar todo o plano da Sprint sem avisar o time
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="mudanca-sprint"
+        data-resposta="ignorar-mudanca"
+        type="button"
+      >
+        Ignorar completamente a mudança até o final do projeto
+      </button>
+    </div>
+  </article>
+
+  <article class="stakeholder-cenario">
+    <p class="stakeholder-etiqueta">Caminho 3</p>
+    <h3>Feedback desconfortável</h3>
+    <p>
+      Após ver o incremento, o stakeholder diz que esperava outro resultado.
+      A tensão aumenta e o time fica defensivo.
+    </p>
+
+    <div class="stakeholder-opcoes">
+      <button
+        class="stakeholder-opcao"
+        data-cenario="feedback"
+        data-resposta="adaptar-backlog"
+        type="button"
+      >
+        Escutar o feedback, registrar aprendizados e adaptar o backlog
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="feedback"
+        data-resposta="culpar-stakeholder"
+        type="button"
+      >
+        Culpar o stakeholder por não ter explicado melhor antes
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="feedback"
+        data-resposta="esconder-problema"
+        type="button"
+      >
+        Esconder o problema para evitar retrabalho
+      </button>
+    </div>
+  </article>
+
+  <article class="stakeholder-cenario">
+    <p class="stakeholder-etiqueta">Caminho 4</p>
+    <h3>Acordo final</h3>
+    <p>
+      Depois do alinhamento, todos entendem qual entrega gera mais valor agora.
+      Falta transformar a conversa em compromisso visível.
+    </p>
+
+    <div class="stakeholder-opcoes">
+      <button
+        class="stakeholder-opcao"
+        data-cenario="acordo"
+        data-resposta="formalizar-aval"
+        type="button"
+      >
+        Registrar o acordo e obter o Aval de Aprovação
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="acordo"
+        data-resposta="seguir-sem-registro"
+        type="button"
+      >
+        Seguir sem registrar nada, confiando apenas na memória do grupo
+      </button>
+
+      <button
+        class="stakeholder-opcao"
+        data-cenario="acordo"
+        data-resposta="aumentar-escopo"
+        type="button"
+      >
+        Aproveitar o acordo para adicionar mais escopo sem priorização
+      </button>
+    </div>
+  </article>
+</div>
+
+<p class="stakeholder-feedback" id="stakeholderFeedback">
+  Escolha o melhor caminho para transformar ruído em alinhamento.
+</p>
+
+<article class="capitulo5-info" id="stakeholderResultado">
+  <h3>Recompensa</h3>
+  <p>
+    Quando o Product Backlog organiza as vozes da escuridão, o Stakeholder
+    Selvagem se acalma. Ele deixa de atacar o time e entrega o
+    <strong>Aval de Aprovação</strong>.
+  </p>
+</article>
+
+<button class="btn-primary" id="btnResolverStakeholder" type="button">
+  Entregar Backlog Organizado
+</button>
 
   <article class="capitulo5-info">
     <h3>Artefato usado</h3>
@@ -333,9 +491,7 @@
     </p>
   </article>
 
-  <button class="btn-primary" data-complete-step="stakeholder" type="button">
-    Organizar o Backlog
-  </button>
+ 
 </section>
 
 <section
@@ -376,19 +532,177 @@
     </p>
   </article>
 
-  <div class="simple-choice-grid">
-    <button class="choice-card" type="button">
-      Recuperar o que desbloqueia o time
-    </button>
+  <div class="necrobranch-desafio" id="necrobranchDesafio">
+  <article class="necrobranch-cenario">
+    <p class="necrobranch-etiqueta">Raiz 1</p>
+    <h3>Branch desconhecida</h3>
+    <p>
+      A Necrobranch desperta cheia de commits antigos. Ninguém sabe exatamente
+      o que foi alterado, o que ainda funciona ou onde o conflito começou.
+    </p>
 
-    <button class="choice-card" type="button">
-      Proteger a versão funcional
-    </button>
+    <div class="necrobranch-opcoes">
+      <button
+        class="necrobranch-opcao"
+        data-cenario="branch-desconhecida"
+        data-resposta="inspecionar-estado"
+        type="button"
+      >
+        Inspecionar o estado atual antes de alterar qualquer coisa
+      </button>
 
-    <button class="choice-card" type="button">
-      Testar antes de integrar
-    </button>
-  </div>
+      <button
+        class="necrobranch-opcao"
+        data-cenario="branch-desconhecida"
+        data-resposta="apagar-branch"
+        type="button"
+      >
+        Apagar a branch imediatamente sem entender o impacto
+      </button>
+
+      <button
+        class="necrobranch-opcao"
+        data-cenario="branch-desconhecida"
+        data-resposta="integrar-direto"
+        type="button"
+      >
+        Integrar tudo direto na Main para ganhar tempo
+      </button>
+    </div>
+  </article>
+
+  <article class="necrobranch-cenario">
+    <p class="necrobranch-etiqueta">Raiz 2</p>
+    <h3>Quadro de Valor</h3>
+    <p>
+      O time encontra várias tarefas presas na branch: correção crítica,
+      melhoria visual, refatoração interna e uma funcionalidade incompleta.
+      Nem tudo pode ser salvo ao mesmo tempo.
+    </p>
+
+    <div class="necrobranch-opcoes">
+      <button
+        class="necrobranch-opcao"
+        data-cenario="quadro-valor"
+        data-resposta="priorizar-impacto"
+        type="button"
+      >
+        Priorizar o que desbloqueia a entrega e reduz maior risco
+      </button>
+
+      <button
+        class="necrobranch-opcao"
+        data-cenario="quadro-valor"
+        data-resposta="escolher-bonito"
+        type="button"
+      >
+        Começar pela melhoria visual porque parece mais rápida
+      </button>
+
+      <button
+        class="necrobranch-opcao"
+        data-cenario="quadro-valor"
+        data-resposta="fazer-tudo"
+        type="button"
+      >
+        Tentar recuperar tudo de uma vez, sem ordem de prioridade
+      </button>
+    </div>
+  </article>
+
+  <article class="necrobranch-cenario">
+    <p class="necrobranch-etiqueta">Raiz 3</p>
+    <h3>Main em risco</h3>
+    <p>
+      A Main Funcional ainda existe, mas está vulnerável. Um merge apressado
+      pode quebrar a única versão estável que o grupo possui.
+    </p>
+
+    <div class="necrobranch-opcoes">
+      <button
+        class="necrobranch-opcao"
+        data-cenario="main-risco"
+        data-resposta="proteger-main"
+        type="button"
+      >
+        Proteger a Main Funcional e recuperar mudanças com segurança
+      </button>
+
+      <button
+        class="necrobranch-opcao"
+        data-cenario="main-risco"
+        data-resposta="quebrar-main"
+        type="button"
+      >
+        Substituir a Main pela Necrobranch sem validação
+      </button>
+
+      <button
+        class="necrobranch-opcao"
+        data-cenario="main-risco"
+        data-resposta="ignorar-versao"
+        type="button"
+      >
+        Ignorar versionamento e copiar arquivos manualmente
+      </button>
+    </div>
+  </article>
+
+  <article class="necrobranch-cenario">
+    <p class="necrobranch-etiqueta">Raiz 4</p>
+    <h3>Integração final</h3>
+    <p>
+      A branch parece controlada, mas o time ainda precisa confirmar se o
+      incremento recuperado realmente funciona antes de seguir.
+    </p>
+
+    <div class="necrobranch-opcoes">
+      <button
+        class="necrobranch-opcao"
+        data-cenario="integracao-final"
+        data-resposta="testar-integrar"
+        type="button"
+      >
+        Testar, validar e só então integrar a recuperação
+      </button>
+
+      <button
+        class="necrobranch-opcao"
+        data-cenario="integracao-final"
+        data-resposta="pular-testes"
+        type="button"
+      >
+        Pular os testes porque a Sprint está acabando
+      </button>
+
+      <button
+        class="necrobranch-opcao"
+        data-cenario="integracao-final"
+        data-resposta="culpar-branch"
+        type="button"
+      >
+        Culpar a branch antiga e abandonar a recuperação
+      </button>
+    </div>
+  </article>
+</div>
+
+<p class="necrobranch-feedback" id="necrobranchFeedback">
+  Escolha a melhor estratégia para recuperar a Main Funcional.
+</p>
+
+<article class="capitulo5-info" id="necrobranchResultado">
+  <h3>Recompensa</h3>
+  <p>
+    Ao girar a <strong>Ampulheta da Sprint</strong>, o time recupera a
+    <strong>Main Funcional</strong>. Mas o Dev Lendário se sacrifica para conter
+    a instabilidade da Necrobranch, deixando para trás o Medalhão dos Papéis.
+  </p>
+</article>
+
+<button class="btn-primary" id="btnResolverNecrobranch" type="button">
+  Girar a Ampulheta da Sprint
+</button>
 
   <article class="capitulo5-info">
     <h3>Artefato usado</h3>
@@ -399,9 +713,7 @@
     </p>
   </article>
 
-  <button class="btn-primary" data-complete-step="necrobranch" type="button">
-    Girar a Ampulheta
-  </button>
+  
 </section>
 
 <section
@@ -441,11 +753,176 @@
     </p>
   </article>
 
-  <div class="story-formula">
-    <span>Comportamento esperado</span>
-    <span>Comportamento atual</span>
-    <span>Critério para validar a correção</span>
-  </div>
+  <div class="bug-desafio" id="bugDesafio">
+  <article class="bug-cenario">
+    <p class="bug-etiqueta">Rastro 1</p>
+    <h3>Comportamento esperado</h3>
+    <p>
+      O Bug Infernal distorce a entrega porque ninguém sabe dizer com clareza
+      como a funcionalidade deveria funcionar.
+    </p>
+
+    <div class="bug-opcoes">
+      <button
+        class="bug-opcao"
+        data-cenario="comportamento-esperado"
+        data-resposta="definir-esperado"
+        type="button"
+      >
+        Descrever qual resultado o usuário deveria receber
+      </button>
+
+      <button
+        class="bug-opcao"
+        data-cenario="comportamento-esperado"
+        data-resposta="corrigir-sem-entender"
+        type="button"
+      >
+        Corrigir direto no código sem entender o fluxo esperado
+      </button>
+
+      <button
+        class="bug-opcao"
+        data-cenario="comportamento-esperado"
+        data-resposta="ignorar-usuario"
+        type="button"
+      >
+        Ignorar a experiência do usuário e focar só na tela quebrada
+      </button>
+    </div>
+  </article>
+
+  <article class="bug-cenario">
+    <p class="bug-etiqueta">Rastro 2</p>
+    <h3>Comportamento atual</h3>
+    <p>
+      O time percebe que a funcionalidade falha, mas ainda não registrou o que
+      realmente acontece quando o erro aparece.
+    </p>
+
+    <div class="bug-opcoes">
+      <button
+        class="bug-opcao"
+        data-cenario="comportamento-atual"
+        data-resposta="registrar-atual"
+        type="button"
+      >
+        Registrar o que acontece agora e comparar com o esperado
+      </button>
+
+      <button
+        class="bug-opcao"
+        data-cenario="comportamento-atual"
+        data-resposta="chutar-causa"
+        type="button"
+      >
+        Chutar a causa mais provável e começar a alterar arquivos
+      </button>
+
+      <button
+        class="bug-opcao"
+        data-cenario="comportamento-atual"
+        data-resposta="culpar-usuario"
+        type="button"
+      >
+        Assumir que o usuário usou errado sem investigar
+      </button>
+    </div>
+  </article>
+
+  <article class="bug-cenario">
+    <p class="bug-etiqueta">Rastro 3</p>
+    <h3>Passos para reproduzir</h3>
+    <p>
+      O Bug Infernal aparece e desaparece como uma sombra. Sem reprodução, o
+      time não consegue confirmar se realmente corrigiu o problema.
+    </p>
+
+    <div class="bug-opcoes">
+      <button
+        class="bug-opcao"
+        data-cenario="reproducao"
+        data-resposta="definir-passos"
+        type="button"
+      >
+        Listar os passos que fazem o erro acontecer novamente
+      </button>
+
+      <button
+        class="bug-opcao"
+        data-cenario="reproducao"
+        data-resposta="testar-aleatorio"
+        type="button"
+      >
+        Testar telas aleatórias até o bug aparecer por sorte
+      </button>
+
+      <button
+        class="bug-opcao"
+        data-cenario="reproducao"
+        data-resposta="seguir-sem-reproduzir"
+        type="button"
+      >
+        Seguir sem reproduzir, confiando que a correção resolveu
+      </button>
+    </div>
+  </article>
+
+  <article class="bug-cenario">
+    <p class="bug-etiqueta">Rastro 4</p>
+    <h3>Critério de validação</h3>
+    <p>
+      O bug foi isolado. Agora o time precisa saber qual evidência prova que a
+      correção funcionou e que o incremento pode seguir.
+    </p>
+
+    <div class="bug-opcoes">
+      <button
+        class="bug-opcao"
+        data-cenario="validacao"
+        data-resposta="validar-correcao"
+        type="button"
+      >
+        Definir um critério claro para validar a correção
+      </button>
+
+      <button
+        class="bug-opcao"
+        data-cenario="validacao"
+        data-resposta="aprovar-sem-teste"
+        type="button"
+      >
+        Aprovar sem testar porque o código parece certo
+      </button>
+
+      <button
+        class="bug-opcao"
+        data-cenario="validacao"
+        data-resposta="guardar-erro"
+        type="button"
+      >
+        Guardar o erro para resolver em outro momento sem registrar nada
+      </button>
+    </div>
+  </article>
+</div>
+
+<p class="bug-feedback" id="bugFeedback">
+  Investigue os quatro rastros antes de aprisionar o Bug Infernal.
+</p>
+
+<article class="capitulo5-info" id="bugResultado">
+  <h3>Recompensa</h3>
+  <p>
+    Com o problema descrito, reproduzido e validado, o
+    <strong>Baú da Melhoria</strong> aprisiona o Bug Infernal. O baú se transforma
+    em um <strong>Escudo Mágico</strong>, símbolo de um produto testado.
+  </p>
+</article>
+
+<button class="btn-primary" id="btnResolverBug" type="button">
+  Aprisionar o Bug no Baú
+</button>
 
   <article class="capitulo5-info">
     <h3>Artefato usado</h3>
@@ -455,9 +932,7 @@
     </p>
   </article>
 
-  <button class="btn-primary" data-complete-step="bug-infernal" type="button">
-    Aprisionar o Bug no Baú
-  </button>
+ 
 </section>
 
 <section
@@ -474,13 +949,7 @@
     conquistado representa uma parte essencial de uma entrega ágil.
   </p>
 
-  <ul class="forja-lista">
-    <li><strong>Medalhão dos Papéis:</strong> o time entende suas responsabilidades.</li>
-    <li><strong>Aval de Aprovação:</strong> o stakeholder validou o caminho.</li>
-    <li><strong>Main Funcional:</strong> existe uma versão funcionando.</li>
-    <li><strong>Ampulheta Quebrada:</strong> a Sprint chegou ao fim.</li>
-    <li><strong>Escudo Mágico:</strong> o produto foi testado.</li>
-  </ul>
+
 
   <article class="capitulo5-info">
     <h3>Resultado</h3>
@@ -489,11 +958,216 @@
       funcional, validada e com valor suficiente para atravessar a porta final.
     </p>
   </article>
+<div class="forja-desafio" id="forjaDesafio">
+  <article class="forja-cenario">
+    <p class="forja-etiqueta">Ingrediente 1</p>
+    <h3>Time alinhado</h3>
+    <p>
+      Antes de entregar valor, o grupo precisa entender quem facilita, quem
+      prioriza e quem constrói.
+    </p>
 
-  <button class="btn-primary" data-complete-step="forja-mvp" type="button">
-    Forjar o MVP
-  </button>
-</section>
+    <div class="forja-opcoes">
+      <button
+        class="forja-opcao"
+        data-cenario="time-alinhado"
+        data-resposta="medalhao-papeis"
+        type="button"
+      >
+        Medalhão dos Papéis
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="time-alinhado"
+        data-resposta="escudo-magico"
+        type="button"
+      >
+        Escudo Mágico
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="time-alinhado"
+        data-resposta="main-funcional"
+        type="button"
+      >
+        Main Funcional
+      </button>
+    </div>
+  </article>
+
+  <article class="forja-cenario">
+    <p class="forja-etiqueta">Ingrediente 2</p>
+    <h3>Valor validado</h3>
+    <p>
+      O produto precisa fazer sentido para quem recebe a entrega. Sem validação,
+      o time pode construir algo funcional, mas sem valor.
+    </p>
+
+    <div class="forja-opcoes">
+      <button
+        class="forja-opcao"
+        data-cenario="valor-validado"
+        data-resposta="aval-aprovacao"
+        type="button"
+      >
+        Aval de Aprovação
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="valor-validado"
+        data-resposta="ampulheta-quebrada"
+        type="button"
+      >
+        Ampulheta Quebrada
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="valor-validado"
+        data-resposta="medalhao-papeis"
+        type="button"
+      >
+        Medalhão dos Papéis
+      </button>
+    </div>
+  </article>
+
+  <article class="forja-cenario">
+    <p class="forja-etiqueta">Ingrediente 3</p>
+    <h3>Incremento funcionando</h3>
+    <p>
+      O MVP precisa existir como algo utilizável. Ideias, promessas e tarefas
+      soltas ainda não são uma entrega.
+    </p>
+
+    <div class="forja-opcoes">
+      <button
+        class="forja-opcao"
+        data-cenario="incremento-funcionando"
+        data-resposta="main-funcional"
+        type="button"
+      >
+        Main Funcional
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="incremento-funcionando"
+        data-resposta="aval-aprovacao"
+        type="button"
+      >
+        Aval de Aprovação
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="incremento-funcionando"
+        data-resposta="escudo-magico"
+        type="button"
+      >
+        Escudo Mágico
+      </button>
+    </div>
+  </article>
+
+  <article class="forja-cenario">
+    <p class="forja-etiqueta">Ingrediente 4</p>
+    <h3>Ciclo encerrado</h3>
+    <p>
+      A Sprint tem duração fixa. Quando o tempo termina, o time inspeciona o que
+      foi possível entregar e aprende com o ciclo.
+    </p>
+
+    <div class="forja-opcoes">
+      <button
+        class="forja-opcao"
+        data-cenario="ciclo-encerrado"
+        data-resposta="ampulheta-quebrada"
+        type="button"
+      >
+        Ampulheta Quebrada
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="ciclo-encerrado"
+        data-resposta="main-funcional"
+        type="button"
+      >
+        Main Funcional
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="ciclo-encerrado"
+        data-resposta="aval-aprovacao"
+        type="button"
+      >
+        Aval de Aprovação
+      </button>
+    </div>
+  </article>
+
+  <article class="forja-cenario">
+    <p class="forja-etiqueta">Ingrediente 5</p>
+    <h3>Produto testado</h3>
+    <p>
+      Para atravessar a porta final, o incremento precisa ter sido verificado. O
+      time precisa confiar que a entrega funciona.
+    </p>
+
+    <div class="forja-opcoes">
+      <button
+        class="forja-opcao"
+        data-cenario="produto-testado"
+        data-resposta="escudo-magico"
+        type="button"
+      >
+        Escudo Mágico
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="produto-testado"
+        data-resposta="medalhao-papeis"
+        type="button"
+      >
+        Medalhão dos Papéis
+      </button>
+
+      <button
+        class="forja-opcao"
+        data-cenario="produto-testado"
+        data-resposta="ampulheta-quebrada"
+        type="button"
+      >
+        Ampulheta Quebrada
+      </button>
+    </div>
+  </article>
+</div>
+
+<p class="forja-feedback" id="forjaFeedback">
+  Escolha qual artefato representa cada parte essencial do MVP.
+</p>
+
+<article class="capitulo5-info" id="forjaResultado">
+  <h3>Resultado</h3>
+  <p>
+    Quando os artefatos se unem corretamente, surge o <strong>MVP</strong>: uma
+    entrega mínima, funcional, validada, testada e com valor suficiente para
+    atravessar a porta final.
+  </p>
+</article>
+
+<button class="btn-primary" id="btnForjarMvp" type="button">
+  Forjar o MVP
+</button>
+
+ </section>
         <span class="section-number">Final</span>
         <h2>A Porta Final</h2>
 
