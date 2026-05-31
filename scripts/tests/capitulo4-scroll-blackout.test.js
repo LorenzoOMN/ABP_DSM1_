@@ -3,6 +3,7 @@
 const assert = require("assert");
 const {
   calcularEstadoIntroNarrativa,
+  calcularLimiaresLinhasIntro,
   calcularProgressoBlackoutHero,
 } = require("../../public/assets/js/capitulo4.js");
 
@@ -13,6 +14,15 @@ assert.strictEqual(calcularProgressoBlackoutHero(900, 0, 600), 1);
 assert.strictEqual(calcularProgressoBlackoutHero(-100, 0, 600), 0);
 assert.strictEqual(calcularProgressoBlackoutHero(100, 100, 0), 0);
 assert.strictEqual(calcularProgressoBlackoutHero(101, 100, 0), 1);
+
+const lineThresholds = calcularLimiaresLinhasIntro();
+assert.strictEqual(lineThresholds.length, 5);
+lineThresholds.slice(1).forEach((threshold, index) => {
+  const previousGap = lineThresholds[index] - (index === 0 ? 0 : lineThresholds[index - 1]);
+  const currentGap = threshold - lineThresholds[index];
+
+  assert.ok(Math.abs(currentGap - previousGap) < Number.EPSILON);
+});
 
 assert.strictEqual(calcularEstadoIntroNarrativa(0).phase, "hidden");
 assert.strictEqual(calcularEstadoIntroNarrativa(0.3).phase, "prelude");

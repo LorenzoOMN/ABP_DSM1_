@@ -99,74 +99,200 @@
         <span class="section-number">Cena 01</span>
         <h2>A Ampulheta Parada</h2>
         <p class="scene-impact">
-          A areia permanece presa entre dois instantes.
+          A Sprint existe, mas a areia não cai.
         </p>
         <p>
-          A Sprint começou, mas nada se move. O grupo tem um ciclo, tem urgência
-          e tem uma missão. Ainda assim, o tempo parece recusar qualquer avanço.
+          Depois da terceira porta, o grupo ainda está no pântano nebuloso. A Ampulheta da Sprint
+          flutua no centro do caminho, imóvel, como se o próprio tempo recusasse avançar.
         </p>
         <p>
-          O Corvo entende o sinal: não basta iniciar tarefas. O fluxo precisa ser visto,
-          cuidado e levado até uma entrega real.
+          O Product Backlog e o Sprint Backlog se abrem no chão. As tarefas brilham como marcas de luz:
+          algumas avançam, outras piscam, outras ficam presas no mesmo ponto.
         </p>
-        <button class="btn-primary hourglass-relic" id="btnExaminarAmpulheta" type="button">
-          Examinar a ampulheta
-        </button>
-        <p class="scene-status" id="ampulhetaEstado" aria-live="polite">
-          A relíquia vibra em silêncio, como se esperasse clareza antes de voltar a respirar.
+        <p>
+          O Bardo tenta começar tudo de uma vez, mas o Corvo interrompe: uma Sprint é um ciclo de trabalho,
+          e um ciclo saudável precisa de foco, fluxo e entrega de valor.
+        </p>
+        <p>
+          Trabalho iniciado não é trabalho concluído. A Sprint só respira quando o trabalho flui.
         </p>
       </div>
 
       <div class="story-art">
-        <img src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png" alt="Ampulheta travada do capítulo 4">
+        <figure
+          class="hourglass-hover"
+          tabindex="0"
+          data-corvo-hover="Trabalho iniciado não é trabalho concluído."
+          aria-label="Ampulheta travada. Trabalho iniciado não é trabalho concluído."
+        >
+          <img src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png" alt="Ampulheta travada do capítulo 4">
+        </figure>
       </div>
     </section>
 
-    <section class="story-block reveal" id="cena-kanban">
+    <section class="story-block kanban-scene reveal" id="cena-kanban">
       <div class="story-side-icon" aria-hidden="true">
         <span>02</span>
       </div>
 
-      <div class="story-text">
-        <span class="section-number">Cena 02</span>
-        <h2>Corredor dos Cartões Presos</h2>
-        <p>
-          O caminho abaixo da capa agora tem corpo suficiente para o scroll continuar.
-          Aqui podemos testar se o preto total acontece exatamente no fim da hero.
-        </p>
-        <blockquote>
-          Trabalho iniciado não é trabalho concluído.
-        </blockquote>
-      </div>
+      <div class="kanban-layout">
+        <div class="story-text kanban-copy">
+          <span class="section-number">Cena 02</span>
+          <h2>O Quadro das Tarefas Presas</h2>
+          <p class="scene-impact">
+            A névoa se abre e revela uma parede dividida em colunas.
+          </p>
+          <p>
+            O Bardo aponta para as inscrições: A Fazer, Em Desenvolvimento, Teste e Concluído.
+            "Isto é um quadro Kanban. Ele mostra o caminho do trabalho."
+          </p>
+          <p>
+            Os cartões se acumulam em Em Desenvolvimento. A coluna de Teste quase não se move.
+            O Corvo corta a discussão antes que o grupo confunda movimento com avanço.
+          </p>
+          <p>
+            O Kanban enfatiza fluxo contínuo. Quando uma etapa acumula mais itens que as demais,
+            o problema tem nome: gargalo.
+          </p>
+          <p class="crow-note">
+            "Não confundam muitas tarefas iniciadas com progresso."
+          </p>
+          <blockquote>Começar menos pode ser o caminho para terminar mais.</blockquote>
+        </div>
 
-      <div class="story-art">
-        <img src="/assets/img/capitulo_4/kanban-corredor-pixel.png" alt="Corredor kanban do capítulo 4">
+        <div class="story-art kanban-art">
+          <div class="kanban-panel">
+            <div class="kanban-panel-header">
+              <span>Fluxo do time</span>
+              <strong>WIP revela o gargalo</strong>
+            </div>
+            <p class="kanban-wip-note">
+              WIP é o limite de trabalho em andamento. Ele impede que o time comece mais tarefas do que consegue terminar.
+            </p>
+
+            <div class="kanban-board" aria-label="Quadro Kanban interativo com limite WIP">
+              <div class="kanban-column" data-column="todo">
+                <div class="kanban-column-header">
+                  <h3>A Fazer</h3>
+                  <span>Fila</span>
+                </div>
+                <button class="kanban-card" type="button" data-kanban-card>
+                  Refinar história
+                </button>
+                <button class="kanban-card" type="button" data-kanban-card>
+                  Preparar critério
+                </button>
+              </div>
+
+              <div class="kanban-column" data-column="doing" data-wip-limit="2">
+                <div class="kanban-column-header">
+                  <h3>Em Desenvolvimento</h3>
+                  <span data-wip-counter>WIP 3/2</span>
+                </div>
+                <button class="kanban-card" type="button" data-kanban-card>
+                  API de progresso
+                </button>
+                <button class="kanban-card" type="button" data-kanban-card>
+                  Tela do desafio
+                </button>
+                <button class="kanban-card kanban-card--blocked" type="button" data-kanban-card>
+                  Bug de escopo
+                </button>
+              </div>
+
+              <div class="kanban-column" data-column="test">
+                <div class="kanban-column-header">
+                  <h3>Teste</h3>
+                  <span>Parado</span>
+                </div>
+              </div>
+
+              <div class="kanban-column" data-column="done">
+                <div class="kanban-column-header">
+                  <h3>Concluído</h3>
+                  <span>Entrega</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="kanban-status kanban-status--warning" id="kanbanStatus" aria-live="polite">
+              Em Desenvolvimento está acima do WIP. Leve cartões para Teste antes de iniciar mais trabalho.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="story-block reveal" id="cena-forja">
+    <section class="story-block reveal" id="cena-forja" data-locked-by="kanban" aria-describedby="lock-cena-forja">
       <div class="story-side-icon" aria-hidden="true">
         <span>03</span>
       </div>
 
       <div class="story-text">
         <span class="section-number">Cena 03</span>
-        <h2>A Forja do Quase Pronto</h2>
-        <p>
-          Copiei a ideia dos blocos do capítulo 1 para manter um padrão conhecido,
-          mas com conteúdo e imagens do capítulo 4.
+        <h2>A Porta da DoD</h2>
+        <p class="scene-impact">
+          Somente incrementos prontos atravessam.
         </p>
         <p>
-          Assim você consegue rolar com conforto e avaliar a transição de escurecimento sem depender da página final.
+          Quando o fluxo melhora, uma porta de ferro aparece dentro da forja. O guerreiro tenta empurrar
+          uma tarefa quase finalizada, mas as marcas gravadas na porta permanecem apagadas.
         </p>
+        <p>
+          O Bardo lê a inscrição: Definition of Done. A DoD é o acordo que define quando
+          um incremento pode ser considerado realmente pronto.
+        </p>
+        <p>
+          Ela protege a qualidade do incremento, cria consistência entre entregas e lembra
+          que qualidade é responsabilidade compartilhada pelo time.
+        </p>
+        <blockquote>Pronto é um acordo visível, não uma sensação.</blockquote>
       </div>
 
-      <div class="story-art">
-        <img src="/assets/img/capitulo_4/forja-dod-pixel.png" alt="Forja da definition of done do capítulo 4">
+      <div class="story-art dod-art">
+        <div class="dod-forge" aria-live="polite">
+          <div class="dod-door" aria-label="Porta da Definition of Done">
+            <div class="dod-checklist" aria-label="Checklist gravado na porta">
+              <label class="dod-criterion" data-dod-criterion="codigo">
+                <input type="checkbox" data-dod-check="codigo">
+                <span>Código integrado</span>
+              </label>
+              <label class="dod-criterion" data-dod-criterion="testes">
+                <input type="checkbox" data-dod-check="testes">
+                <span>Testes executados</span>
+              </label>
+              <label class="dod-criterion" data-dod-criterion="criterios">
+                <input type="checkbox" data-dod-check="criterios">
+                <span>Critérios de aceitação atendidos</span>
+              </label>
+              <label class="dod-criterion" data-dod-criterion="revisao">
+                <input type="checkbox" data-dod-check="revisao">
+                <span>Revisão realizada</span>
+              </label>
+              <label class="dod-criterion" data-dod-criterion="defeitos">
+                <input type="checkbox" data-dod-check="defeitos">
+                <span>Sem defeitos críticos conhecidos</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn-primary dod-button" id="btnValidarDod" type="button">
+            Abrir a porta
+          </button>
+          <p class="dod-status">
+            Quase pronto ainda não é pronto.
+          </p>
+        </div>
+      </div>
+
+      <div class="scene-lock" id="lock-cena-forja" role="status" aria-live="polite">
+        <span class="scene-lock__icon" aria-hidden="true"></span>
+        <strong>Bloqueado</strong>
+        <p>Conclua o Kanban para liberar a Porta da DoD.</p>
       </div>
     </section>
 
-    <section class="story-block reveal final-block" id="cena-ponte">
+    <section class="story-block reveal final-block" id="cena-ponte" data-locked-by="dod" aria-describedby="lock-cena-ponte">
       <div class="story-side-icon" aria-hidden="true">
         <span>04</span>
       </div>
@@ -184,6 +310,12 @@
 
       <div class="story-art">
         <img src="/assets/img/capitulo_4/ponte-cicd-pixel.png" alt="Ponte CI CD do capítulo 4">
+      </div>
+
+      <div class="scene-lock" id="lock-cena-ponte" role="status" aria-live="polite">
+        <span class="scene-lock__icon" aria-hidden="true"></span>
+        <strong>Bloqueado</strong>
+        <p>Conclua a Porta da DoD para liberar o próximo trecho.</p>
       </div>
     </section>
   </main>

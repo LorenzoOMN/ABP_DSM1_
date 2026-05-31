@@ -4,6 +4,7 @@ const SCROLL_OFFSET = 88;
 const kanbanFlow = ["todo", "doing", "test", "done"];
 const pipelineFlow = ["integrar", "testar", "entregar"];
 const completedPipelineSteps = new Set();
+const completedMinigames = new Set();
 let retrospectiveUnlocked = false;
 
 if (typeof document !== "undefined") {
@@ -50,6 +51,10 @@ function calcularProgressoBlackoutHero(scrollY, heroTop, heroHeight) {
   return clamp((scrollY - heroTop) / heroHeight, 0, 1);
 }
 
+function calcularLimiaresLinhasIntro(totalLines = 5, firstThreshold = 0.15) {
+  return Array.from({ length: totalLines }, (_, index) => firstThreshold * (index + 1));
+}
+
 function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0) {
   const progress = clamp(blackoutProgress, 0, 1);
   const intro = clamp(introProgress, 0, 1);
@@ -57,7 +62,7 @@ function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0) {
   const preludeOpacity = clamp((progress - preludeStart) / (1 - preludeStart), 0, 1);
   const outroStart = 0.86;
   const outro = clamp((intro - outroStart) / (1 - outroStart), 0, 1);
-  const lineThresholds = [0.14, 0.3, 0.46, 0.62, 0.76];
+  const lineThresholds = calcularLimiaresLinhasIntro();
   const showPrelude = preludeOpacity > 0 && outro < 1;
   const showHourglass = progress >= 1 && outro < 1;
   const visibleLines = showHourglass
@@ -106,10 +111,65 @@ function rolarParaElemento(selector, offset = SCROLL_OFFSET) {
   window.scrollTo({ top, behavior: "smooth" });
 }
 
+function atualizarBloqueiosHistoria() {
+  document.querySelectorAll("[data-locked-by]").forEach((section) => {
+    const lockedBy = section.dataset.lockedBy;
+    const locked = !completedMinigames.has(lockedBy);
+
+    section.classList.toggle("is-locked", locked);
+    section.setAttribute("aria-disabled", String(locked));
+  });
+
+  document.querySelectorAll(".progress-item[data-scroll-to]").forEach((button) => {
+    const target = document.querySelector(button.dataset.scrollTo);
+    const locked = Boolean(target?.classList.contains("is-locked"));
+
+    button.classList.toggle("progress-item--locked", locked);
+    button.setAttribute("aria-disabled", String(locked));
+
+    if (locked) {
+      button.title = "Cadeado: conclua o desafio anterior para liberar este trecho.";
+    } else {
+      button.removeAttribute("title");
+    }
+  });
+}
+
+function concluirMinigame(minigame, options = {}) {
+  if (completedMinigames.has(minigame)) return;
+
+  const sectionsToUnlock = Array.from(document.querySelectorAll(`[data-locked-by="${minigame}"]`));
+  sectionsToUnlock.forEach((section) => section.classList.add("is-unlocking"));
+
+  completedMinigames.add(minigame);
+  atualizarBloqueiosHistoria();
+
+  if (options.scrollTo) {
+    setTimeout(() => rolarParaElemento(options.scrollTo), 180);
+  }
+
+  setTimeout(() => {
+    sectionsToUnlock.forEach((section) => section.classList.remove("is-unlocking"));
+  }, 1200);
+}
+
+function configurarBloqueiosHistoria() {
+  atualizarBloqueiosHistoria();
+}
+
 function configurarScrollGuiado() {
   document.querySelectorAll("[data-scroll-to]").forEach((button) => {
     button.addEventListener("click", () => {
       rolarParaElemento(button.dataset.scrollTo);
+
+      const target = document.querySelector(button.dataset.scrollTo);
+      const lock = target?.querySelector(".scene-lock");
+
+      if (target?.classList.contains("is-locked") && lock) {
+        lock.classList.remove("scene-lock--pulse");
+        void lock.offsetWidth;
+        lock.classList.add("scene-lock--pulse");
+      }
     });
   });
 }
@@ -234,20 +294,6 @@ function configurarProgressoDeCena() {
   scenes.forEach((scene) => observer.observe(scene));
 }
 
-function configurarAmpulheta() {
-  const button = document.getElementById("btnExaminarAmpulheta");
-  const status = document.getElementById("ampulhetaEstado");
-
-  if (!button || !status) return;
-
-  button.addEventListener("click", () => {
-    status.textContent =
-      "A ampulheta reage: a Sprint não precisa de mais pressa, precisa de fluxo visível até Concluído.";
-    button.classList.add("hourglass-relic--awake");
-
-  });
-}
-
 function obterColunaDoCartao(card) {
   return card.closest(".kanban-column");
 }
@@ -269,7 +315,37 @@ function colunaPodeReceberCartao(column) {
   return column.querySelectorAll(".kanban-card").length < limit;
 }
 
+function atualizarStatusKanban(message, variant = "info") {
+  const status = document.getElementById("kanbanStatus");
+
+  if (!status) return;
+
+  status.textContent = message;
+  status.classList.remove("kanban-status--info", "kanban-status--warning", "kanban-status--success");
+  status.classList.add(`kanban-status--${variant}`);
+}
+
+function limparDestaqueProximaColuna() {
+  document.querySelectorAll(".kanban-column--next").forEach((column) => {
+    column.classList.remove("kanban-column--next");
+  });
+}
+
+function destacarProximaColuna(card) {
+  limparDestaqueProximaColuna();
+
+  if (card.classList.contains("kanban-card--blocked")) return;
+
+  const nextColumn = obterProximaColuna(obterColunaDoCartao(card));
+
+  if (nextColumn && colunaPodeReceberCartao(nextColumn)) {
+    nextColumn.classList.add("kanban-column--next");
+  }
+}
+
 function atualizarKanban() {
+  let overloadedColumn = null;
+
   document.querySelectorAll("[data-wip-limit]").forEach((column) => {
     const limit = Number(column.dataset.wipLimit);
     const total = column.querySelectorAll(".kanban-card").length;
@@ -280,7 +356,18 @@ function atualizarKanban() {
     }
 
     column.classList.toggle("kanban-column--over-limit", total > limit);
+
+    if (total > limit) {
+      overloadedColumn = { total, limit };
+    }
   });
+
+  if (overloadedColumn) {
+    atualizarStatusKanban(
+      `Gargalo detectado: Em Desenvolvimento está acima do WIP ${overloadedColumn.total}/${overloadedColumn.limit}. Mova um cartão para Teste antes de puxar mais trabalho.`,
+      "warning",
+    );
+  }
 }
 
 function moverCartao(card) {
@@ -288,21 +375,33 @@ function moverCartao(card) {
   const nextColumn = obterProximaColuna(column);
 
   if (card.classList.contains("kanban-card--blocked")) {
+    card.classList.add("kanban-card--blocked-pulse");
+    atualizarStatusKanban("Este cartão está bloqueado. Resolva o impedimento antes de mover.", "warning");
+    setTimeout(() => card.classList.remove("kanban-card--blocked-pulse"), 420);
     return;
   }
 
   if (!nextColumn) {
+    atualizarStatusKanban("Este item já chegou em Concluído.", "success");
     return;
   }
 
   if (!colunaPodeReceberCartao(nextColumn)) {
+    nextColumn.classList.add("kanban-column--next");
+    atualizarStatusKanban("Limite WIP atingido. Termine algo antes de iniciar mais trabalho.", "warning");
     return;
   }
 
+  limparDestaqueProximaColuna();
   nextColumn.appendChild(card);
   card.classList.toggle("kanban-card--done", nextColumn.dataset.column === "done");
   card.classList.add("kanban-card--moved");
   atualizarKanban();
+
+  if (!document.querySelector(".kanban-column--over-limit")) {
+    atualizarStatusKanban("Fluxo saudável. O gargalo diminuiu porque o time terminou antes de puxar mais trabalho.", "success");
+    concluirMinigame("kanban");
+  }
 
   setTimeout(() => card.classList.remove("kanban-card--moved"), 420);
 
@@ -313,27 +412,124 @@ function configurarKanban() {
 
   document.querySelectorAll(".kanban-card").forEach((card) => {
     card.addEventListener("click", () => moverCartao(card));
+    card.addEventListener("mouseenter", () => destacarProximaColuna(card));
+    card.addEventListener("focus", () => destacarProximaColuna(card));
+    card.addEventListener("mouseleave", limparDestaqueProximaColuna);
+    card.addEventListener("blur", limparDestaqueProximaColuna);
   });
 }
 
 function configurarDod() {
   const button = document.getElementById("btnValidarDod");
   const panel = document.querySelector(".dod-forge");
+  const door = document.querySelector(".dod-door");
+  const checks = Array.from(document.querySelectorAll("[data-dod-check]"));
+  const status = panel?.querySelector(".dod-status");
 
-  if (!button || !panel) return;
+  if (!button || !panel || checks.length === 0) return;
+
+  atualizarCriteriosDod();
+  atualizarBotaoDod(button, checks);
+
+  checks.forEach((check) => {
+    check.addEventListener("change", () => {
+      atualizarCriteriosDod();
+      atualizarBotaoDod(button, checks);
+
+      if (status && !panel.classList.contains("dod-forge--complete")) {
+        const checked = checks.filter((item) => item.checked).length;
+        status.textContent = checked === checks.length
+          ? "Tudo pronto. A porta reconhece o acordo do time."
+          : `${checked}/${checks.length} critérios acesos. A porta ainda não abre.`;
+      }
+    });
+  });
 
   button.addEventListener("click", () => {
-    const checks = Array.from(document.querySelectorAll("[data-dod-check]"));
     const checked = checks.filter((check) => check.checked).length;
 
     if (checked < checks.length) {
       panel.classList.remove("dod-forge--complete");
       panel.classList.add("stakeholder-request--wrong");
-      setTimeout(() => panel.classList.remove("stakeholder-request--wrong"), 420);
+      destacarCriteriosDodFaltantes(checks);
+      button.textContent = "Revise os critérios apagados";
+      if (status) {
+        status.textContent = `Ainda faltam ${checks.length - checked} critérios. Marque as placas apagadas antes de abrir a porta.`;
+      }
+      setTimeout(() => {
+        panel.classList.remove("stakeholder-request--wrong");
+        atualizarBotaoDod(button, checks);
+      }, 760);
       return;
     }
 
-    panel.classList.add("dod-forge--complete");
+    button.classList.remove("dod-button--ready");
+    button.classList.add("dod-button--unlocking");
+    button.disabled = true;
+    button.textContent = "Liberando próximo trecho...";
+
+    if (status) {
+      status.textContent = "DoD completa. O próximo trecho está sendo liberado.";
+    }
+
+    setTimeout(() => {
+      panel.classList.add("dod-forge--complete");
+      button.classList.remove("dod-button--unlocking");
+      button.textContent = "Trecho liberado";
+
+      if (status) {
+        status.textContent = "A porta reconheceu o incremento pronto. Continue para a próxima cena.";
+      }
+
+      concluirMinigame("dod", { scrollTo: "#cena-ponte" });
+    }, 520);
+  });
+}
+
+function atualizarCriteriosDod() {
+  document.querySelectorAll("[data-dod-check]").forEach((check) => {
+    const criterion = document.querySelector(`[data-dod-criterion="${check.dataset.dodCheck}"]`);
+
+    if (criterion) {
+      criterion.classList.toggle("dod-criterion--lit", check.checked);
+      if (check.checked) {
+        criterion.classList.remove("dod-criterion--missing");
+      }
+    }
+  });
+}
+
+function atualizarBotaoDod(button, checks) {
+  const checked = checks.filter((check) => check.checked).length;
+  const missing = checks.length - checked;
+  const ready = missing === 0;
+
+  button.classList.toggle("dod-button--ready", ready);
+  button.setAttribute("aria-label", ready
+    ? "Abrir a porta da Definition of Done"
+    : `Faltam ${missing} critérios para abrir a porta`);
+
+  if (button.disabled) return;
+
+  if (ready) {
+    button.textContent = "Abrir a porta";
+    return;
+  }
+
+  button.textContent = missing === 1
+    ? "Falta 1 critério"
+    : `Faltam ${missing} critérios`;
+}
+
+function destacarCriteriosDodFaltantes(checks) {
+  checks.forEach((check) => {
+    const criterion = document.querySelector(`[data-dod-criterion="${check.dataset.dodCheck}"]`);
+
+    if (!criterion || check.checked) return;
+
+    criterion.classList.remove("dod-criterion--missing");
+    void criterion.offsetWidth;
+    criterion.classList.add("dod-criterion--missing");
   });
 }
 
@@ -379,6 +575,10 @@ function configurarPipeline() {
         status.textContent = messages[step];
       }
 
+      if (step === pipelineFlow[pipelineFlow.length - 1]) {
+        concluirMinigame("pipeline");
+      }
+
     });
   });
 }
@@ -393,6 +593,7 @@ function configurarDividaTecnica() {
     panel.classList.add("debt-panel--refactored");
     button.disabled = true;
     button.textContent = "Divida reduzida";
+    concluirMinigame("divida-tecnica");
 
   });
 }
@@ -428,6 +629,10 @@ function atualizarStakeholders() {
       resolved === total
         ? "Todos os pedidos foram tratados sem quebrar o foco da Sprint."
         : `${resolved}/${total} pedidos tratados com decisao consciente.`;
+  }
+
+  if (total > 0 && resolved === total) {
+    concluirMinigame("stakeholders");
   }
 }
 
@@ -490,6 +695,7 @@ function configurarRetrospectiva() {
     button.disabled = true;
     button.textContent = "Bau aberto";
     retrospectiveUnlocked = true;
+    concluirMinigame("retrospectiva");
 
     if (panel) {
       panel.classList.add("retro-panel--open");
@@ -679,7 +885,7 @@ if (typeof document !== "undefined") {
     ajustarScrollPorHashInicial();
     configurarRevealNoScroll();
     configurarProgressoDeCena();
-    configurarAmpulheta();
+    configurarBloqueiosHistoria();
     configurarKanban();
     configurarDod();
     configurarPipeline();
@@ -699,6 +905,7 @@ if (typeof document !== "undefined") {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     calcularEstadoIntroNarrativa,
+    calcularLimiaresLinhasIntro,
     calcularProgressoBlackoutHero,
   };
 }
