@@ -52,14 +52,20 @@ function configurarAcoesDesafio() {
   const btnIniciar = document.getElementById("btnIniciarDesafio");
   const btnVoltarMapa = document.getElementById("btnVoltarMapa");
 
-  if (btnIniciar) {
-    btnIniciar.addEventListener("click", () => {
-      sessionStorage.setItem("desafio1_iniciado", "true");
-      sessionStorage.setItem("desafio1_inicio", String(Date.now()));
+  btnIniciar.addEventListener("click", () => {
+    sessionStorage.setItem("battle_transition", "1");
 
-      window.location.href = "/questionario1";
-    });
-  }
+    btnIniciar.disabled = true;
+
+    // TRANSIÇÃO LIMPA (SEM OVERLAY)
+    document.body.style.transition = "opacity 0.45s ease, transform 0.45s ease";
+    document.body.style.opacity = "0";
+    document.body.style.transform = "scale(1.02)";
+
+    setTimeout(() => {
+      window.location.replace("/questionario1");
+    }, 450);
+  });
 
   if (btnVoltarMapa) {
     btnVoltarMapa.addEventListener("click", () => {
@@ -93,21 +99,14 @@ async function carregarVidasDesafio() {
 
   try {
     const response = await fetch("/api/progresso/mapa", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await response.json();
 
-    if (!response.ok) {
-      return;
-    }
+    if (!response.ok) return;
 
-    const moduloAtual = data.modulos.find(function (modulo) {
-      return modulo.desafio_atual;
-    });
-
+    const moduloAtual = data.modulos.find(m => m.desafio_atual);
     if (!moduloAtual) return;
 
     const container = document.getElementById("vidasDesafio");
