@@ -2,6 +2,7 @@
   background: #090908;
   color: #f4efe2;
   padding-bottom: 120px;
+  overflow-x: hidden;
 }
 
 .capitulo-hero {
@@ -1014,8 +1015,36 @@ strong{
 /* =========================================================
    MOBILE (SEM HOVER, SEM ZONA FIXA)
 ========================================================= */
-@media (max-width: 520px){
+@media (max-width: 680px){
+  html,
+  body,
   .capitulo-page {
+    background-color: #090908;
+    overflow-x: hidden;
+  }
+
+html {
+  scrollbar-color: rgba(214, 173, 53, 0.55) #090908;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #090908;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: rgba(214, 173, 53, 0.55);
+  border: 2px solid #090908;
+  border-radius: 999px;
+}
+
+.capitulo-page {
     padding-bottom: 96px;
   }
 
@@ -1037,6 +1066,7 @@ strong{
     gap: 1.25rem;
     margin: 2.5rem auto;
     padding: 5.75rem 1rem 1.25rem;
+    overflow: hidden;
   }
 
   .story-side-icon {
@@ -1118,9 +1148,15 @@ strong{
   .bussola img,
   .mesa-art img,
   .incremento img,
-  .uniao img,
+  .uniao img {
+    width: min(280px, 100%);
+    max-width: 100%;
+    height: auto;
+  }
+
   .portal {
-    max-width: 280px;
+    width: min(280px, 100%);
+    max-width: 100%;
   }
 
   .mesa-art,
@@ -1128,8 +1164,18 @@ strong{
     padding: 0;
   }
 
+  .mesa-hotspots {
+    width: min(280px, 100%);
+    margin: 0 auto;
+  }
+
   .daily-book {
     width: min(320px, 100%);
+    overflow: hidden;
+  }
+
+  .daily-book img {
+    padding-left: 0;
   }
 
   .retrospectiva-scroll {
@@ -1140,6 +1186,11 @@ strong{
   .uniao img:hover,
   .portal {
     transform: none;
+  }
+
+  .ampulheta-link {
+    padding: 0;
+    box-sizing: border-box;
   }
 
   .portal:hover .portal-img {
@@ -1188,9 +1239,19 @@ strong{
   .bussola img,
   .mesa-art img,
   .incremento img,
-  .uniao img,
+  .uniao img {
+    width: min(240px, 100%);
+    max-width: 100%;
+    height: auto;
+  }
+
   .portal {
-    max-width: 240px;
+    width: min(240px, 100%);
+    max-width: 100%;
+  }
+
+  .mesa-hotspots {
+    width: min(240px, 100%);
   }
 
   .daily-book,
