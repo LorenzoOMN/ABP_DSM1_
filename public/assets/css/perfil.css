@@ -1,0 +1,187 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+    background-image: url("/assets/img/parede_de_tijolos.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.perfil-container {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px;
+
+    box-sizing: border-box;
+}
+
+.perfil-card {
+
+    width: 100%;
+    max-width: 600px;
+
+    background: #E2CFA2;
+
+    border: 8px solid #8b5a2b;
+
+    border-radius: 16px;
+
+    padding: 32px;
+
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.perfil-titulo {
+
+    text-align: center;
+
+    margin-bottom: 50px;
+
+    color: #0f0f0f;
+}
+
+.perfil-info {
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.label {
+    font-weight: bold;
+    color: #0f0f0f;
+    font-size: 1.5rem;
+}
+
+.perfil-topo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.avatar-teste {
+    width: 100px;
+    height: 100px;
+
+    background-color: white;
+
+    border: 3px solid #8b5a2b;
+
+    border-radius: 8px;
+
+    flex-shrink: 0;
+}
+
+.usuario-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nome-usuario {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: hsl(0, 0%, 6%);
+}
+
+.email-usuario {
+    color: #292929;
+    font-size: 1rem;
+}
+
+.toggle-audio {
+
+    width: 28px;
+    height: 28px;
+
+    border: 2px solid #d6a75f;
+
+    background: #462817;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+
+    color: red;
+
+    user-select: none;
+}
+
+.toggle-audio.desativado::after {
+
+    content: "X";
+
+    color: red;
+
+    font-size: 18px;
+}
+
+.configuracao-audio {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.dev-container {
+    margin-top: 25px;
+
+    display: flex;
+    justify-content: flex-start;
+}
+
+.botao-dev {
+
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+
+    border: 3px solid #8b5a2b;
+
+    background-color: #462817;
+
+    color: #E2CFA2;
+
+    font-weight: bold;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.botao-dev:hover {
+
+    background-color: #5a321d;
+
+    transform: scale(1.05);
+}
+
+.botao-dev:active {
+
+    transform: scale(0.95);
+}

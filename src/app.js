@@ -9,14 +9,15 @@ const cors = require("cors");
 const authMiddleware = require("./shared/middlewares/auth.middleware");
 
 // Importando módulos (suas rotas agora estão aqui)
-const authModule = require("./modules/auth");
-const certificadosModule = require("./modules/certificado");
-const usuariosModule = require("./modules/usuarios");
-const questoesModule = require("./modules/questoes");
-const progressoModule = require("./modules/progresso");
-const navbarModule = require("./modules/navbar");
-const artefatosModule = require("./modules/artefatos");
-const adminModule = require("./modules/admin");
+const authModule = require('./modules/auth');
+const certificadosModule = require('./modules/certificado');
+const usuariosModule = require('./modules/usuarios');
+const questoesModule = require('./modules/questoes');
+const progressoModule = require('./modules/progresso');
+const navbarModule = require('./modules/navbar');
+const artefatosModule = require('./modules/artefatos');
+const adminModule = require('./modules/admin');
+const perfilModule = require('./modules/perfil');
 
 // Inicializa o express
 const app = express();
@@ -126,7 +127,7 @@ app.get("/artefatos", function (_req, res) {
 });
 
 app.get("/perfil", function (_req, res) {
-  res.render("not-found");
+    res.render("perfil");
 });
 
 // Rota para certificado
@@ -153,7 +154,8 @@ app.use("/api/questoes", authMiddleware, questoesModule);
 app.use("/api/progresso", authMiddleware, progressoModule);
 app.use("/api/navbar", authMiddleware, navbarModule);
 app.use("/api/artefatos", authMiddleware, artefatosModule);
-app.use("/api/admin", authMiddleware, adminModule); // Rotas de admin (algumas podem ter authMiddleware, outras não, dependendo da necessidade)
+app.use('/api/admin', authMiddleware, adminModule); // Rotas de admin (algumas podem ter authMiddleware, outras não, dependendo da necessidade)
+app.use('/api/perfil', authMiddleware, perfilModule);
 
 // ==========================================
 // ROTA 404 (SEMPRE POR ÚLTIMO)
