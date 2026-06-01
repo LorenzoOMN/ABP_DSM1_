@@ -97,11 +97,11 @@ body {
 .nome-usuario {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #0f0f0f;
+    color: hsl(0, 0%, 6%);
 }
 
 .email-usuario {
-    color: #ffffff;
+    color: #292929;
     font-size: 1rem;
 }
 
@@ -112,7 +112,7 @@ body {
 
     border: 2px solid #d6a75f;
 
-    background: #000;
+    background: #462817;
 
     cursor: pointer;
 
@@ -144,4 +144,44 @@ body {
     padding: 12px 0;
 
     border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.dev-container {
+    margin-top: 25px;
+
+    display: flex;
+    justify-content: flex-start;
+}
+
+.botao-dev {
+
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+
+    border: 3px solid #8b5a2b;
+
+    background-color: #462817;
+
+    color: #E2CFA2;
+
+    font-weight: bold;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.botao-dev:hover {
+
+    background-color: #5a321d;
+
+    transform: scale(1.05);
+}
+
+.botao-dev:active {
+
+    transform: scale(0.95);
 }
