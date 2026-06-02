@@ -405,6 +405,24 @@
     filter 0.22s ease;
 }
 
+.guardiao-personagem::before {
+  content: "";
+  position: absolute;
+  inset: 8% 2% -4%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 62%, rgba(244, 211, 94, 0.46), transparent 46%),
+    radial-gradient(circle at 50% 78%, rgba(214, 173, 53, 0.32), transparent 58%);
+  opacity: 0;
+  filter: blur(18px);
+  transform: scale(0.82);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+  pointer-events: none;
+}
+
 .guardiao-personagem img {
   display: block;
   width: 100%;
@@ -423,7 +441,14 @@
 .guardiao-personagem:hover,
 .guardiao-personagem:focus-visible {
   transform: translateY(-8px) scale(1.04);
+  filter: drop-shadow(0 0 18px rgba(244, 211, 94, 0.45));
   outline: none;
+}
+
+.guardiao-personagem:hover::before,
+.guardiao-personagem:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .guardiao-personagem:hover img,
