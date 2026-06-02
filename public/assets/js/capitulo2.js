@@ -38,6 +38,79 @@ const papeisData = {
   },
 };
 
+const guardioesDetalhesData = {
+  bardo: {
+    titulo: "O Bardo da Compreens&atilde;o",
+    papel: "Product Owner",
+    banner: "/assets/img/capitulo_2/banners/bardo-banner.png",
+    alt: "Bardo Product Owner em sua sala",
+    conteudo: `
+      <p>
+        O bardo sorri enquanto toca um ala&uacute;de cheio de marca&ccedil;&otilde;es.
+        Ele aponta para o Product Backlog em sua mochila, como se reconhecesse a pr&oacute;pria assinatura.
+      </p>
+
+      <blockquote>
+        &ldquo;Uma lista sem ordem &eacute; apenas confus&atilde;o. Meu papel &eacute; ouvir,
+        organizar e priorizar aquilo que entrega mais valor.&rdquo;
+      </blockquote>
+
+      <p>
+        O Product Owner maximiza o valor do produto, mant&eacute;m o Product Backlog claro e ordenado
+        e ajuda o time a entender o que deve vir primeiro.
+      </p>
+    `,
+  },
+  corvo: {
+    titulo: "O Corvo e a Cadeira Vazia",
+    papel: "Scrum Master",
+    banner: "/assets/img/capitulo_2/banners/corvo-banner.png",
+    alt: "Corvo diante da cadeira vazia do Scrum Master",
+    conteudo: `
+      <p>
+        O corvo observa a cadeira vazia. A ampulheta brilha fraca,
+        como se o tempo estivesse escapando pelas frestas da dungeon.
+      </p>
+
+      <blockquote>
+        "N&atilde;o... n&atilde;o est&aacute; certo. O Mago do Fluxo desapareceu..."
+      </blockquote>
+
+      <p>
+        O Scrum Master garante que o Scrum seja compreendido e aplicado.
+        Ele facilita o trabalho do time, remove impedimentos, ajuda o time a melhorar seu fluxo
+        e apoia a auto-organiza&ccedil;&atilde;o.
+      </p>
+
+      <p>
+        Sem ele, todos ainda podem lutar... mas ningu&eacute;m percebe o que bloqueia a jornada.
+      </p>
+    `,
+  },
+  equipe: {
+    titulo: "A Equipe",
+    papel: "Developers",
+    banner: "/assets/img/capitulo_2/banners/equipe-banner.jpeg",
+    alt: "Equipe de aventureiros na escurid&atilde;o",
+    conteudo: `
+      <p>
+        Um grupo de guerreiros, magos e arqueiros permanece em sil&ecirc;ncio.
+        O aventureiro central d&aacute; um passo &agrave; frente.
+      </p>
+
+      <blockquote>
+        &ldquo;Transformamos ideias em realidade, cada um com sua especialidade,
+        mas juntos temos o poder da multidisciplinaridade.&rdquo;
+      </blockquote>
+
+      <p>
+        Os Developers planejam, constroem e entregam o Incremento. S&atilde;o um time multifuncional
+        e compartilham a responsabilidade pela qualidade do que entregam.
+      </p>
+    `,
+  },
+};
+
 function obterTokenCapitulo2() {
   const token = localStorage.getItem("token");
 
@@ -141,34 +214,32 @@ function configurarProgressoCapitulo2() {
 
 function configurarGuardioes() {
   const card = document.getElementById("guardiaoInfo");
+  const botoes = document.querySelectorAll(".guardiao-personagem");
 
-  document.querySelectorAll(".guardiao-personagem").forEach((botao) => {
+  botoes.forEach((botao) => {
     botao.addEventListener("click", () => {
-      const guardiao = guardioesData[botao.dataset.guardiao];
+      const guardiao = guardioesDetalhesData[botao.dataset.guardiao];
 
       if (!guardiao || !card) return;
 
-      card.innerHTML = `
-        <h3>${guardiao.titulo}</h3>
-        <p>${guardiao.texto}</p>
-      `;
-    });
-  });
-}
-
-function configurarCardsDePapeis() {
-  const card = document.getElementById("papelInfo");
-
-  document.querySelectorAll(".papel-card").forEach((papelCard) => {
-    papelCard.addEventListener("click", () => {
-      const papel = papeisData[papelCard.dataset.papel];
-
-      if (!papel || !card) return;
+      botoes.forEach((botaoGuardiao) => {
+        botaoGuardiao.classList.toggle("is-selected", botaoGuardiao === botao);
+      });
 
       card.innerHTML = `
-        <h3>${papel.titulo}</h3>
-        <p>${papel.texto}</p>
+        <div class="personagem-banner guardiao-banner">
+          <img src="${guardiao.banner}" alt="${guardiao.alt}">
+        </div>
+
+        <div class="story-text personagem-texto guardiao-texto">
+          <h2>${guardiao.titulo}</h2>
+          <p class="papel-kicker">${guardiao.papel}</p>
+          ${guardiao.conteudo}
+        </div>
       `;
+
+      card.classList.add("guardiao-info-aberto");
+      rolarParaElementoCapitulo2("#guardiaoInfo", 110);
     });
   });
 }
@@ -297,7 +368,6 @@ document.addEventListener("DOMContentLoaded", () => {
   configurarRevealCapitulo2();
   configurarProgressoCapitulo2();
   configurarGuardioes();
-  configurarCardsDePapeis();
   configurarConclusaoCapitulo2();
   configurarDesbloqueioNavbarCapitulo2();
   ajustarHashInicialCapitulo2();
