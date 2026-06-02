@@ -271,7 +271,10 @@ function voltarPagina() {
 window.addEventListener("load", () => {
   atualizarAlturaFooter();
   atualizarAlturaHeader();
-  marcarItemAtivoDaNavegacaoInferior();
+
+  if (typeof marcarItemAtivoDaNavegacaoInferior === "function") {
+    marcarItemAtivoDaNavegacaoInferior();
+  }
 });
 
 // Quando a tela é redimensionada
@@ -356,14 +359,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await controlarVisibilidadeNavbar();
 
-  // ✅ CHAMA SEMPRE, independente se está visível ou não
-  controlarSobreposicaoNavbarFooter();
+  if (typeof controlarSobreposicaoNavbarFooter === "function") {
+    controlarSobreposicaoNavbarFooter();
+  }
 
-  marcarItemAtivoDaNavegacaoInferior();
+  if (typeof marcarItemAtivoDaNavegacaoInferior === "function") {
+    marcarItemAtivoDaNavegacaoInferior();
+  }
 
   const botaoLogout = document.getElementById("botao-logout");
+
   if (botaoLogout && localStorage.getItem("token")) {
-    botaoLogout.hidden = false;
+    botaoLogout.removeAttribute("hidden");
     botaoLogout.addEventListener("click", logout);
   }
 });
