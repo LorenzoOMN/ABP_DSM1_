@@ -6,6 +6,30 @@
   const DURACAO_TIMER_SEGUNDOS = 20 * 60;
   const RESPOSTA_PULADA = "x";
 
+  // Mapeamento dos bosses por número do questionário
+  const BOSSES = {
+    1: {
+      nome: "Documentação Confusa",
+      imagem: "/assets/img/boss_questionario1.png",
+    },
+    2: {
+      nome: "Golem da Confusão de Papéis",
+      imagem: "/assets/img/capitulo_2/inimigos/boss_questionario2.png",
+    },
+    3: {
+      nome: "Névoa da Improvisação",
+      imagem: "/assets/img/capitulo_3/inimigos/boss_questionario3.png",
+    },
+    4: {
+      nome: "Colosso do Escopo Selvagem",
+      imagem: "/assets/img/capitulo_4/inimigos/boss_questionario4.png",
+    },
+    5: {
+      nome: "Guardião do Fluxo Perpétuo",
+      imagem: "/assets/img/capitulo_5/inimigos/boss_questionario5.png",
+    },
+  };
+
   // ============================================================================
   // ELEMENTOS DO DOM
   // ============================================================================
@@ -13,6 +37,8 @@
   const bossHPFill = document.getElementById("boss-hp-fill");
   const bossHPTexto = document.getElementById("boss-hp-texto");
   const bossImagem = document.getElementById("bossImagem");
+  const bossNomeEl = document.getElementById("boss-nome");
+  const pageTitleEl = document.getElementById("page-title");
 
   const botoesResposta = Array.from(
     document.querySelectorAll(".botaoresposta"),
@@ -46,8 +72,54 @@
   let segundosRestantes = DURACAO_TIMER_SEGUNDOS;
 
   let exameId = null;
+  let questionarioNumero = 1;
 
   let questionarioEncerrado = false;
+
+  // ============================================================================
+  // DETECÇÃO DO QUESTIONÁRIO
+  // ============================================================================
+
+  function detectarNumeroQuestionario() {
+    // Método 1: Verificar query param 'modulo' (ex: ?modulo=2)
+    const urlParams = new URLSearchParams(window.location.search);
+    const moduloParam = urlParams.get("modulo");
+    if (moduloParam) {
+      return parseInt(moduloParam, 10);
+    }
+
+    // Método 2: Verificar query param 'q' (ex: ?q=2)
+    const qParam = urlParams.get("q");
+    if (qParam) {
+      return parseInt(qParam, 10);
+    }
+
+    // Método 3: Verificar data attribute no body
+    const bodyNumero = document.body.dataset.questionarioNumero;
+    if (bodyNumero) {
+      return parseInt(bodyNumero, 10);
+    }
+
+    // Método 4: Verificar URL path (ex: /questionario/2, /questionario2)
+    const path = window.location.pathname;
+    const match = path.match(/questionario[-_]?(\d+)/i);
+    if (match && match[1]) {
+      return parseInt(match[1], 10);
+    }
+
+    // Método 5: Verificar pelo nome do script carregado
+    const scripts = document.getElementsByTagName("script");
+    for (let script of scripts) {
+      const src = script.src || "";
+      const match = src.match(/questionario[-_]?(\d+)\.js/i);
+      if (match && match[1]) {
+        return parseInt(match[1], 10);
+      }
+    }
+
+    // Padrão: questionário 1
+    return 1;
+  }
 
   // ============================================================================
   // TOKEN
@@ -385,6 +457,7 @@
       botaoConfirmar.disabled = true;
     }
   }
+
   // ============================================================================
   // FEEDBACK DE DANO
   // ============================================================================
@@ -709,6 +782,38 @@
   }
 
   // ============================================================================
+  // ATUALIZAÇÃO DA INTERFACE DO QUESTIONÁRIO
+  // ============================================================================
+
+  function atualizarInterfaceQuestionario() {
+    questionarioNumero = detectarNumeroQuestionario();
+    const boss = BOSSES[questionarioNumero] || BOSSES[1];
+
+    // Atualizar título da página
+    if (pageTitleEl) {
+      pageTitleEl.textContent = `Questionário ${questionarioNumero} | Scrum Dungeon`;
+    }
+
+    // Atualizar nome do boss
+    if (bossNomeEl) {
+      bossNomeEl.textContent = boss.nome;
+    }
+
+    // Atualizar imagem do boss
+    if (bossImagem) {
+      bossImagem.src = boss.imagem;
+      bossImagem.alt = `Boss ${boss.nome}`;
+      bossImagem.dataset.bossSrc = boss.imagem;
+
+      // Tratamento de erro caso a imagem não exista
+      bossImagem.onerror = function () {
+        console.warn(`Imagem do boss não encontrada: ${boss.imagem}`);
+        this.style.opacity = "0.5";
+      };
+    }
+  }
+
+  // ============================================================================
   // EVENT LISTENERS
   // ============================================================================
 
@@ -728,5 +833,9 @@
   // INIT
   // ============================================================================
 
+  // IMPORTANTE: Atualizar interface do questionário (boss, título, etc)
+  atualizarInterfaceQuestionario();
+
+  // Carregar questões
   carregarTodasQuestoes();
 })();
