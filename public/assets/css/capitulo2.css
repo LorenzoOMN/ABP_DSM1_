@@ -1,126 +1,176 @@
 /*
-  Capítulo 2 usa as classes-base do capitulo1.css:
-  .capitulo-page, .capitulo-hero, .hero-overlay, .hero-content,
-  .chapter-progress, .story-block, .story-text, .story-art,
-  .story-side-icon, .info-card, .btn-primary, .btn-secondary,
-  .reveal, .visible, .hidden e .status-historia.
+  Capítulo 2 reaproveita o visual do Capítulo 1.
+  Este arquivo só sobrescreve/adiciona o que é específico do capítulo 2.
 */
 
 .capitulo2-page {
+  background:
+    linear-gradient(
+      to top,
+      #140024 0%,
+      #000 3%,
+      rgba(0, 0, 0, 0.9) 40%,
+      rgb(0, 0, 0) 70%,
+      rgba(255, 0, 0, 0.5) 100%
+    ),
+    url("/assets/img/capitulo_2/fundo.webp");
+
+  background-size: cover;
+  background-position: center;
+  /* 
   background:
     linear-gradient(180deg, rgba(4, 4, 4, 0.9), rgba(4, 4, 4, 0.97)),
     url("/assets/img/parede_de_tijolos.png");
   background-size: cover;
   background-attachment: fixed;
-  background-position: center top;
+  color: #f4efe2;
+   */
 }
 
 /* ============================================================
-   ABERTURA: FRASES + CORREDOR
+   INTRO ESTILO MANGÁ DIGITAL
 ============================================================ */
 
-.capitulo2-sinais {
+.manga-intro {
   position: relative;
-  min-height: clamp(680px, 92vh, 940px);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 2rem 1rem 0;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 88%, rgba(199, 124, 32, 0.12), transparent 32%),
-    #020202;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.5);
+  min-height: 430vh;
+  background: #000;
+  border-bottom: 0;
 }
 
-.sinais-vozes {
+.manga-intro::after {
+  content: "";
   position: absolute;
-  inset: 0;
-  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  z-index: 3;
+  height: clamp(72px, 12vw, 150px);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), #020202 78%);
   pointer-events: none;
 }
 
-.voz-frase {
+.manga-stage {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  display: block;
+  background:
+    radial-gradient(circle at 50% 78%, rgba(212, 175, 55, 0.07), transparent 22%),
+    #000;
+}
+
+.manga-frase {
   position: absolute;
-  max-width: min(360px, 84vw);
+  max-width: min(520px, 82vw);
   margin: 0;
-  color: #f5f1e8;
+  color: #f2f2f2;
   font-family: "Cinzel", serif;
-  font-size: clamp(1.15rem, 2.2vw, 2rem);
-  line-height: 1.25;
-  letter-spacing: 0.03em;
+  font-size: clamp(1.25rem, 2.4vw, 2.3rem);
+  line-height: 1.28;
+  letter-spacing: 0.08em;
+  text-transform: none;
   text-shadow:
-    0 0 10px rgba(255, 255, 255, 0.12),
-    0 0 22px rgba(255, 255, 255, 0.08);
+    0 0 10px rgba(255, 255, 255, 0.24),
+    0 0 28px rgba(255, 255, 255, 0.08);
   opacity: 0;
-  animation: vozAparece 0.85s ease forwards;
+  transform: translateY(40px) scale(0.98);
+  filter: blur(4px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease,
+    filter 0.55s ease;
 }
 
-.voz-frase-1 {
-  top: 8%;
+.manga-frase.is-active {
+  opacity: 0.92;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.manga-frase.is-past {
+  opacity: 0.25;
+  transform: translateY(-12px) scale(0.98);
+  filter: blur(1px);
+}
+
+.manga-frase-1 {
+  top: 13%;
   left: 8%;
-  animation-delay: 0.15s;
 }
 
-.voz-frase-2 {
-  top: 22%;
-  right: 10%;
+.manga-frase-2 {
+  top: 27%;
+  right: 9%;
   text-align: center;
-  animation-delay: 0.45s;
 }
 
-.voz-frase-3 {
-  top: 39%;
+.manga-frase-3 {
+  top: 44%;
   left: 12%;
-  animation-delay: 0.75s;
 }
 
-.voz-frase-4 {
-  top: 54%;
+.manga-frase-4 {
+  top: 58%;
   right: 17%;
-  animation-delay: 1.05s;
 }
 
-.voz-frase-5 {
-  top: 67%;
+.manga-frase-5 {
+  top: 74%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, 40px) scale(0.98);
   text-align: center;
-  animation-delay: 1.35s;
 }
 
-.sinais-corredor {
+.manga-frase-5.is-active {
+  transform: translate(-50%, 0) scale(1);
+}
+
+.manga-frase-5.is-past {
+  transform: translate(-50%, -12px) scale(0.98);
+}
+
+.corredor-wide {
   position: relative;
-  z-index: 1;
-  width: min(760px, 100%);
-  margin: 0 auto;
+  width: 100%;
+  min-height: clamp(280px, 38vw, 540px);
+  margin: 0 0 2rem;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-bottom: 0;
+  background: #020202;
 }
 
-.sinais-corredor::before {
+.corredor-wide::before {
   content: "";
   position: absolute;
-  inset: -80px -120px 0;
-  background: radial-gradient(circle at center, rgba(255, 156, 46, 0.14), transparent 58%);
-  filter: blur(2px);
+  inset: 0 0 auto;
+  z-index: 2;
+  height: clamp(84px, 14vw, 180px);
+  background: linear-gradient(180deg, #020202, rgba(2, 2, 2, 0));
+  pointer-events: none;
 }
 
-.sinais-corredor img {
-  position: relative;
-  display: block;
+.corredor-wide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.55), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.55)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.25), transparent 38%, rgba(0, 0, 0, 0.78));
+  pointer-events: none;
+}
+
+.corredor-wide img {
   width: 100%;
-  filter: drop-shadow(0 -18px 70px rgba(0, 0, 0, 0.9));
-}
-
-@keyframes vozAparece {
-  from {
-    opacity: 0;
-    filter: blur(4px);
-  }
-
-  to {
-    opacity: 0.92;
-    filter: blur(0);
-  }
+  height: 100%;
+  min-height: clamp(280px, 38vw, 540px);
+  object-fit: cover;
+  object-position: center 48%;
+  display: block;
 }
 
 /* ============================================================
@@ -129,13 +179,19 @@
 
 .capitulo2-progress-wrap {
   margin-top: 0;
-  background: rgba(3, 3, 3, 0.78);
-  backdrop-filter: blur(10px);
+  background: transparent;
+  backdrop-filter: none;
 }
 
 .capitulo2-progress-wrap .chapter-progress {
-  border-color: rgba(212, 175, 55, 0.55);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55);
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 5, 0.65),
+    rgba(5, 5, 5, 0.35)
+  );
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .capitulo2-progress-wrap .progress-item img {
@@ -154,14 +210,16 @@
   margin: 2rem auto;
   border: 1px solid rgba(212, 175, 55, 0.45);
   border-radius: 18px;
-  background-image: url("/assets/img/capitulo_2/hero-guardioes.png");
+  background-image: url("/assets/img/capitulo_2/sala-guardioes-bg.webp");
+  background-size: cover;
+  background-position: center;
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
 
 .capitulo2-hero .hero-overlay {
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.82)),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.82)),
     radial-gradient(circle at 28% 55%, rgba(255, 161, 53, 0.16), transparent 30%);
 }
 
@@ -176,7 +234,7 @@
 
 .capitulo2-page .story-block {
   width: min(1120px, calc(100% - 2rem));
-  margin: 0 auto 2rem;
+  margin: 4rem auto;
 }
 
 .capitulo2-page .story-text h2 {
@@ -185,6 +243,26 @@
 
 .capitulo2-page .story-art img {
   border-radius: 12px;
+}
+
+.capitulo2-page #corredor {
+  grid-template-columns: minmax(0, 0.85fr) minmax(360px, 1.25fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.capitulo2-page #corredor .story-art {
+  width: 100%;
+}
+
+.capitulo2-page #corredor .story-art img {
+  width: 100%;
+  max-height: none;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: center;
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.22),
+    0 24px 44px rgba(0, 0, 0, 0.58);
 }
 
 .papel-kicker {
@@ -197,6 +275,7 @@
 
 .card-conceito {
   margin-top: 1rem;
+  grid-column: 1 / -1;
 }
 
 .lista-conceitos ul {
@@ -207,12 +286,13 @@
 }
 
 /* ============================================================
-   SALA DOS GUARDIÕES
+   SALA DOS GUARDIÕES COM PERSONAGENS SEPARADOS
 ============================================================ */
 
 .guardioes-block {
   display: block;
   padding: clamp(1.5rem, 3vw, 2.5rem);
+  padding-left: clamp(5.5rem, 9vw, 7.5rem);
 }
 
 .guardioes-block .story-side-icon {
@@ -222,7 +302,6 @@
 .guardioes-intro {
   max-width: 920px;
   margin: 0 auto 1.5rem;
-  padding-left: clamp(4.8rem, 8vw, 6rem);
   text-align: center;
 }
 
@@ -245,6 +324,7 @@
 .guardioes-scene {
   position: relative;
   width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border: 1px solid rgba(212, 175, 55, 0.34);
   border-radius: 16px;
@@ -255,74 +335,127 @@
 .guardioes-bg {
   display: block;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7) contrast(1.08);
 }
 
-.guardiao-hotspot {
+.guardiao-personagem {
   position: absolute;
-  border: 1px solid transparent;
-  border-radius: 16px;
+  z-index: 2;
+  display: grid;
+  place-items: end center;
+  padding: 0;
+  border: 0;
   background: transparent;
   cursor: pointer;
+  transform-origin: center bottom;
   transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    transform 0.22s ease,
+    filter 0.22s ease;
 }
 
-.guardiao-hotspot:hover,
-.guardiao-hotspot:focus-visible {
-  border-color: rgba(244, 211, 94, 0.7);
-  background: rgba(244, 211, 94, 0.08);
-  box-shadow: 0 0 28px rgba(244, 211, 94, 0.18);
+.guardiao-personagem img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+  filter:
+    brightness(0.78)
+    drop-shadow(0 18px 18px rgba(0, 0, 0, 0.72));
+  transition:
+    filter 0.22s ease,
+    transform 0.22s ease;
+}
+
+.guardiao-personagem:hover,
+.guardiao-personagem:focus-visible {
+  transform: translateY(-8px) scale(1.04);
   outline: none;
-  transform: translateY(-2px);
 }
 
-.guardiao-hotspot-bardo {
-  left: 3%;
-  bottom: 8%;
-  width: 22%;
-  height: 45%;
+.guardiao-personagem:hover img,
+.guardiao-personagem:focus-visible img {
+  filter:
+    brightness(1.1)
+    saturate(1.08)
+    drop-shadow(0 0 28px rgba(244, 211, 94, 0.28))
+    drop-shadow(0 20px 22px rgba(0, 0, 0, 0.72));
 }
 
-.guardiao-hotspot-equipe {
-  left: 27%;
-  bottom: 8%;
-  width: 46%;
-  height: 62%;
+.guardiao-bardo {
+  left: 1.8%;
+  bottom: 5%;
+  width: 28%;
+  height: 58%;
 }
 
-.guardiao-hotspot-corvo {
-  right: 4%;
-  bottom: 8%;
-  width: 21%;
-  height: 45%;
+.guardiao-equipe {
+  left: 22%;
+  bottom: 7%;
+  width: 56%;
+  height: 70%;
+}
+
+.guardiao-corvo {
+  right: 1.5%;
+  bottom: 4%;
+  width: 29%;
+  height: 65%;
 }
 
 .guardiao-info {
-  margin-top: 1rem;
-}
-
-.personagem-block {
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
-}
-
-.personagem-art img {
-  max-height: 430px;
+  margin: 1rem auto 0;
+  width: min(860px, 100%);
 }
 
 /* ============================================================
-   FLUXO, PAPÉIS E ARTEFATOS
+   PERSONAGENS EM BANNER HORIZONTAL
 ============================================================ */
 
-.fluxo-block,
-.artefatos-block {
-  grid-template-columns: 1fr;
+.personagem-horizontal {
+  display: block;
+  padding-left: clamp(5.5rem, 9vw, 7.5rem);
 }
+
+.personagem-horizontal .story-side-icon {
+  z-index: 2;
+}
+
+.personagem-banner {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  border-radius: 16px;
+  background: #050505;
+  box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.48);
+}
+
+.personagem-banner img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9.5;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.78) contrast(1.08);
+}
+
+.personagem-texto {
+  max-width: 900px;
+  margin: 1.5rem auto 0;
+  padding-left: 0;
+}
+
+/* ============================================================
+   FLUXO / PAPÉIS / ARTEFATOS
+============================================================ */
 
 .story-text-full {
   grid-column: 1 / -1;
+  max-width: 850px;
+  margin: 0 auto;
   padding-left: 0;
   text-align: center;
 }
@@ -330,8 +463,9 @@
 .papeis-grid,
 .artefatos-grid {
   grid-column: 1 / -1;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
@@ -342,39 +476,41 @@
   border: 1px solid rgba(212, 175, 55, 0.38);
   border-radius: 16px;
   background:
-    radial-gradient(circle at center top, rgba(214, 173, 53, 0.08), transparent 46%),
-    rgba(8, 8, 7, 0.82);
+    radial-gradient(circle at center top, rgba(214, 173, 53, 0.1), transparent 45%),
+    rgba(7, 7, 6, 0.82);
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.38);
+  cursor: pointer;
   transition:
-    transform 0.22s ease,
-    border-color 0.22s ease,
-    box-shadow 0.22s ease;
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .papel-card:hover,
 .artefato-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(244, 211, 94, 0.65);
-  box-shadow: 0 0 22px rgba(244, 211, 94, 0.12);
+  transform: translateY(-3px);
+  border-color: rgba(244, 211, 94, 0.75);
+  box-shadow: 0 0 22px rgba(214, 173, 53, 0.18);
 }
 
-.papel-card img {
-  width: 56px;
-  height: 56px;
+.papel-card img,
+.artefato-card img {
+  width: 72px;
+  height: 72px;
   object-fit: contain;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 0 14px rgba(214, 173, 53, 0.2));
 }
 
 .artefato-card img {
-  width: min(170px, 80%);
-  height: 130px;
-  object-fit: contain;
-  margin-bottom: 0.75rem;
+  width: 130px;
+  height: 110px;
 }
 
 .papel-card h3,
 .artefato-card h3 {
-  margin: 0 0 0.4rem;
-  color: #f7e6aa;
+  margin: 0 0 0.45rem;
+  color: #f5e6b0;
   font-family: "Cinzel", serif;
   text-transform: uppercase;
 }
@@ -398,73 +534,115 @@
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.85fr);
 }
 
-.dod-block .story-art img,
-.porta2-art img {
+.dod-block .story-art img {
   max-height: 360px;
+  object-fit: contain;
 }
 
 /* ============================================================
-   PORTA FINAL DO CAPÍTULO 2
+   PORTA FINAL DO CAPÍTULO 2 — ANIMAÇÃO DE ABERTURA
 ============================================================ */
 
 .porta2-interativa {
   position: relative;
-  display: inline-grid;
-  place-items: center;
+  display: block;
+  width: min(440px, 100%);
+  aspect-ratio: 1 / 1.18;
+  margin: 0 auto;
   padding: 0;
-  border: 0;
-  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.38);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #030303;
   cursor: pointer;
+  perspective: 900px;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.52);
 }
 
-.porta2-interativa img {
-  position: relative;
-  z-index: 2;
-  transition:
-    transform 0.25s ease,
-    filter 0.25s ease;
-}
-
-.porta2-glow {
+.porta2-cena {
   position: absolute;
-  inset: 18% 22%;
+  inset: 0;
   z-index: 1;
+  background-image: url("/assets/img/capitulo_2/portas/porta-capitulo2-aberta-sem-parede-v5.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: scale(1.04);
+  filter: brightness(0.82) contrast(1.08) saturate(1.08);
+}
+
+.porta2-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  width: 50%;
+  background-image: url("/assets/img/capitulo_2/portas/porta-capitulo2-fechada-sem-parede-v7.png");
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  transition:
+    transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.4s ease;
+  filter: brightness(0.95);
+}
+
+.porta2-door-left {
+  left: 0;
+  background-position: left center;
+  transform-origin: left center;
+}
+
+.porta2-door-right {
+  right: 0;
+  background-position: right center;
+  transform-origin: right center;
+}
+
+.porta2-brilho {
+  position: absolute;
+  inset: 16% 18%;
+  z-index: 2;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 98, 30, 0.35), transparent 68%);
-  opacity: 0.25;
-  filter: blur(14px);
-  transition: opacity 0.25s ease;
+  background: radial-gradient(circle, rgba(255, 72, 25, 0.42), transparent 68%);
+  opacity: 0.28;
+  filter: blur(18px);
+  transition: opacity 0.35s ease;
 }
 
-.porta2-interativa.porta-liberada img,
-.porta2-interativa:hover img,
-.porta2-interativa:focus-visible img {
-  transform: translateY(-4px) scale(1.03);
-  filter:
-    drop-shadow(0 16px 24px rgba(0, 0, 0, 0.55))
-    drop-shadow(0 0 26px rgba(255, 126, 40, 0.28));
+.porta2-interativa:hover .porta2-door-left,
+.porta2-interativa:focus-visible .porta2-door-left,
+.porta2-interativa.porta-liberada .porta2-door-left {
+  transform: rotateY(-72deg) translateX(-8%);
+  filter: brightness(0.65);
 }
 
-.porta2-interativa.porta-liberada .porta2-glow,
-.porta2-interativa:hover .porta2-glow,
-.porta2-interativa:focus-visible .porta2-glow {
+.porta2-interativa:hover .porta2-door-right,
+.porta2-interativa:focus-visible .porta2-door-right,
+.porta2-interativa.porta-liberada .porta2-door-right {
+  transform: rotateY(72deg) translateX(8%);
+  filter: brightness(0.65);
+}
+
+.porta2-interativa:hover .porta2-brilho,
+.porta2-interativa:focus-visible .porta2-brilho,
+.porta2-interativa.porta-liberada .porta2-brilho {
   opacity: 1;
 }
 
 .porta2-tooltip {
   position: absolute;
   left: 50%;
-  bottom: -3rem;
-  z-index: 4;
+  bottom: 1rem;
+  z-index: 5;
   width: max-content;
-  max-width: min(320px, 80vw);
-  transform: translateX(-50%) translateY(6px);
+  max-width: min(320px, 82%);
+  transform: translateX(-50%) translateY(8px);
   padding: 0.7rem 0.9rem;
   color: #f7e6aa;
   font-family: "Cinzel", serif;
   font-size: 0.85rem;
   text-align: center;
-  background: rgba(8, 8, 8, 0.92);
+  background: rgba(8, 8, 8, 0.9);
   border: 1px solid rgba(212, 175, 55, 0.55);
   border-radius: 10px;
   opacity: 0;
@@ -486,33 +664,40 @@
 ============================================================ */
 
 @media (max-width: 900px) {
-  .capitulo2-sinais {
-    min-height: 620px;
+  .manga-intro {
+    min-height: 380vh;
   }
 
-  .voz-frase {
+  .manga-frase {
     font-size: 1.15rem;
   }
 
-  .voz-frase-2,
-  .voz-frase-4 {
+  .manga-frase-2,
+  .manga-frase-4 {
     right: 6%;
-  }
-
-  .voz-frase-5 {
-    left: 48%;
   }
 
   .capitulo2-hero .hero-content {
     margin: 0 auto;
   }
 
+  .capitulo2-page #corredor {
+    grid-template-columns: 1fr;
+  }
+
+  .guardioes-block,
+  .personagem-horizontal {
+    padding-left: 1.25rem;
+  }
+
   .guardioes-intro {
-    padding-left: 0;
     padding-top: 4.5rem;
   }
 
-  .personagem-block,
+  .personagem-banner img {
+    aspect-ratio: 4 / 3;
+  }
+
   .dod-block {
     grid-template-columns: 1fr;
   }
@@ -523,41 +708,253 @@
   }
 }
 
-@media (max-width: 640px) {
-  .capitulo2-sinais {
-    min-height: 560px;
+@media (max-width: 620px) {
+  .manga-intro {
+    min-height: 340vh;
   }
 
-  .sinais-corredor {
-    width: 105%;
+  .manga-frase-1,
+  .manga-frase-3 {
+    left: 5%;
   }
 
-  .voz-frase-1,
-  .voz-frase-3 {
-    left: 6%;
-  }
-
-  .voz-frase-2,
-  .voz-frase-4 {
+  .manga-frase-2,
+  .manga-frase-4 {
     right: 5%;
   }
 
-  .voz-frase-5 {
+  .manga-frase-5 {
     left: 50%;
-    top: 66%;
+    top: 70%;
   }
 
-  .guardioes-block {
-    padding: 1.25rem;
+  .capitulo2-hero h1 {
+    white-space: normal;
   }
 
-  .guardiao-hotspot-bardo,
-  .guardiao-hotspot-corvo {
-    width: 26%;
+  .guardioes-scene {
+    aspect-ratio: 1 / 1.15;
   }
 
-  .guardiao-hotspot-equipe {
-    left: 25%;
-    width: 50%;
+  .guardioes-bg {
+    object-position: center;
+  }
+
+  .guardiao-bardo {
+    left: -2%;
+    width: 34%;
+    height: 50%;
+  }
+
+  .guardiao-equipe {
+    left: 16%;
+    width: 68%;
+    height: 58%;
+  }
+
+  .guardiao-corvo {
+    right: -5%;
+    width: 38%;
+    height: 56%;
+  }
+}
+
+/* ============================================================
+   AJUSTE FINAL — PORTA DUPLA MÍSTICA DOS GUARDIÕES
+   Substitui apenas a apresentação da porta final.
+============================================================ */
+
+.porta2-block {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+
+.porta2-block .story-text {
+  width: min(780px, 100%);
+  padding-left: 0;
+}
+
+.porta2-block .story-side-icon {
+  left: 2rem;
+}
+
+.guardioes-juramento {
+  position: relative;
+  width: min(680px, 100%);
+  margin: 1.4rem auto 1.6rem;
+  padding: 1.25rem clamp(1.1rem, 3vw, 1.8rem);
+  overflow: hidden;
+  color: #f8e9b7;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1rem, 1.8vw, 1.18rem);
+  line-height: 1.75;
+  text-align: center;
+  border: 1px solid rgba(212, 175, 55, 0.48);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(128, 70, 190, 0.22), transparent 58%),
+    linear-gradient(135deg, rgba(12, 10, 15, 0.92), rgba(5, 5, 6, 0.76));
+  box-shadow:
+    inset 0 0 32px rgba(120, 65, 180, 0.12),
+    0 16px 38px rgba(0, 0, 0, 0.32);
+  animation: guardioesJuramentoPulso 3.8s ease-in-out infinite;
+}
+
+.guardioes-juramento::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(244, 211, 94, 0.14), transparent);
+  opacity: 0;
+  transform: translateX(-70%);
+  animation: guardioesJuramentoLuz 5.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.guardioes-juramento span {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.guardioes-juramento span + span {
+  margin-top: 0.45rem;
+}
+
+.porta2-art {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.porta2-interativa {
+  position: relative;
+  display: block;
+  width: min(720px, 96vw);
+  aspect-ratio: 16 / 10;
+  margin: 1.5rem auto 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+  box-shadow: none;
+}
+
+.porta2-cena {
+  background-image: url("/assets/img/capitulo_2/portas/porta-capitulo2-aberta-sem-parede-v5.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.04);
+  filter: brightness(0.9) contrast(1.12) saturate(1.12);
+  transition:
+    opacity 0.55s ease,
+    transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.55s ease;
+}
+
+.porta2-door {
+  inset: 0;
+  width: 100%;
+  background-image: url("/assets/img/capitulo_2/portas/porta-capitulo2-fechada-sem-parede-v7.png");
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.96) contrast(1.08) saturate(1.08);
+  transition:
+    opacity 0.52s ease,
+    transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.52s ease;
+}
+
+.porta2-door-left {
+  left: 0;
+  transform-origin: center;
+}
+
+.porta2-door-right {
+  display: none;
+}
+
+.porta2-brilho {
+  inset: 7% 8%;
+  background: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.45s ease,
+    transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.porta2-interativa:hover .porta2-cena,
+.porta2-interativa:focus-visible .porta2-cena,
+.porta2-interativa.porta-liberada .porta2-cena {
+  opacity: 1;
+  transform: scale(1);
+  filter: brightness(1) contrast(1.12) saturate(1.16);
+}
+
+.porta2-interativa:hover .porta2-brilho,
+.porta2-interativa:focus-visible .porta2-brilho,
+.porta2-interativa.porta-liberada .porta2-brilho {
+  opacity: 0;
+}
+
+.porta2-interativa:hover .porta2-door-left,
+.porta2-interativa:focus-visible .porta2-door-left,
+.porta2-interativa.porta-liberada .porta2-door-left {
+  opacity: 0;
+  transform: scale(1.08);
+  filter: brightness(1.18) contrast(1.12) saturate(1.15) blur(1px);
+}
+
+.porta2-interativa:hover .porta2-door-right,
+.porta2-interativa:focus-visible .porta2-door-right,
+.porta2-interativa.porta-liberada .porta2-door-right {
+  opacity: 0;
+}
+
+.porta2-tooltip {
+  bottom: 1.15rem;
+  max-width: min(390px, 86%);
+  padding: 0.75rem 1rem;
+  background: rgba(7, 6, 10, 0.92);
+  border-color: rgba(212, 175, 55, 0.65);
+  box-shadow: 0 0 28px rgba(118, 61, 184, 0.16);
+}
+
+@keyframes guardioesJuramentoPulso {
+  0%,
+  100% {
+    border-color: rgba(212, 175, 55, 0.42);
+    box-shadow:
+      inset 0 0 30px rgba(120, 65, 180, 0.1),
+      0 16px 38px rgba(0, 0, 0, 0.32);
+  }
+
+  50% {
+    border-color: rgba(244, 211, 94, 0.7);
+    box-shadow:
+      inset 0 0 42px rgba(120, 65, 180, 0.2),
+      0 0 30px rgba(128, 70, 190, 0.14),
+      0 16px 38px rgba(0, 0, 0, 0.34);
+  }
+}
+
+@keyframes guardioesJuramentoLuz {
+  0%,
+  32% {
+    opacity: 0;
+    transform: translateX(-70%);
+  }
+
+  48% {
+    opacity: 1;
+  }
+
+  68%,
+  100% {
+    opacity: 0;
+    transform: translateX(70%);
   }
 }
