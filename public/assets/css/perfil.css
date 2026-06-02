@@ -241,45 +241,40 @@ body {
 }
 
 /* ================================= */
-/* BOTÃO DEV */
+/* BOTÃO ADM */
 /* ================================= */
 
 .botao-dev {
 
     position: absolute;
 
-    bottom: 20%;
-    left: 16%;
+    bottom: 12%;
+    left: 11%;
 
-    width: clamp(20px, 5vw, 70px);
-    height: clamp(20px, 5vw, 70px);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: clamp(15px, 15vw, 250px);
+    height: clamp(15px, 15vw, 250px);
 
     padding: 0;
 
-    font-size: clamp(5px, 1vw, 14px);
-
-    border-radius: 50%;
-
-    border: 3px solid #8b5a2b;
-
-    background: #462817;
-
-    color: #E2CFA2;
-
-    font-weight: bold;
+    border: none;
+    background: transparent;
 
     cursor: pointer;
 
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease;
+}
+
+.botao-dev-img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
 }
 
 .botao-dev:hover {
-
-    background-color: #5a321d;
 
     transform: scale(1.05);
 }
