@@ -139,7 +139,7 @@
   overflow: hidden;
   display: grid;
   place-items: center;
-  border-bottom: 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.55);
   background: #020202;
 }
 
