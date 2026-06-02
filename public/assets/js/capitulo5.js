@@ -12,20 +12,20 @@ const etapasConcluidas = new Set();
 
 const ENCONTROS_CAPITULO_5 = {
   duplo: {
-  stageId: "encounter-duplo",
-  titulo: "O Duplo",
-  descricao:
-  "Vocês começam a andar sobre a ponte e, de repente, tudo parece ficar mais escuro. Sombras surgem por toda parte. A distância da porta aumenta. Algo impede o caminho.",
-  artefato: "Medalhão dos Papéis",
-  imagem: "/assets/img/capitulo_5/encontro-duplo.png",
-  imagemAlt: "Encontro com o Duplo na ponte",
-},
+    stageId: "encounter-duplo",
+    titulo: "O Duplo",
+    descricao:
+      "Vocês começam a andar sobre a ponte e, de repente, tudo parece ficar mais escuro. Sombras surgem por toda parte. A distância da porta aumenta. Algo impede o caminho.",
+    artefato: "Medalhão dos Papéis",
+    imagem: "/assets/img/capitulo_5/encontro-duplo.png",
+    imagemAlt: "Encontro com o Duplo na ponte",
+  },
 
   stakeholder: {
     stageId: "encounter-stakeholder",
     titulo: "Stakeholder Selvagem",
     descricao:
-  "A travessia continua, mas vozes começam a ecoar da escuridão. Exigências, mudanças e pedidos impossíveis se acumulam no ar. O caminho à frente se contorce com o ruído.",
+      "A travessia continua, mas vozes começam a ecoar da escuridão. Exigências, mudanças e pedidos impossíveis se acumulam no ar. O caminho à frente se contorce com o ruído.",
     artefato: "Product Backlog",
     imagem: "/assets/img/capitulo_5/carta_stakeholder-selvagem.png",
     imagemAlt: "Carta do encontro Stakeholder Selvagem",
@@ -35,7 +35,7 @@ const ENCONTROS_CAPITULO_5 = {
     stageId: "encounter-necrobranch",
     titulo: "Necrobranch Commitada",
     descricao:
-  "Mais adiante, a ponte range sob os pés do grupo. Estruturas antigas surgem entre as pedras, como se algo esquecido tentasse voltar e tomar o caminho para si.",
+      "Mais adiante, a ponte range sob os pés do grupo. Estruturas antigas surgem entre as pedras, como se algo esquecido tentasse voltar e tomar o caminho para si.",
     artefato: "Ampulheta da Sprint",
     imagem: "/assets/img/capitulo_5/carta-necrobranch-commitada.png",
     imagemAlt: "Carta do encontro Necrobranch Commitada",
@@ -45,7 +45,7 @@ const ENCONTROS_CAPITULO_5 = {
     stageId: "encounter-bug",
     titulo: "Bug Infernal",
     descricao:
-  "Um zumbido incômodo cresce na escuridão. A travessia vacila, falhas se acumulam ao redor e cada passo parece acionar um novo erro no caminho.",
+      "Um zumbido incômodo cresce na escuridão. A travessia vacila, falhas se acumulam ao redor e cada passo parece acionar um novo erro no caminho.",
     artefato: "Baú da Melhoria",
     imagem: "/assets/img/capitulo_5/carta-bug-infernal.png",
     imagemAlt: "Carta do encontro Bug Infernal",
@@ -54,8 +54,8 @@ const ENCONTROS_CAPITULO_5 = {
   "forja-mvp": {
     stageId: "encounter-forja",
     titulo: "A Forja do MVP",
-   descricao:
-  "Depois dos impedimentos, a travessia leva o grupo a um ponto de decisão. Tudo o que foi conquistado precisa agora ser unido com clareza para que a jornada faça sentido.",
+    descricao:
+      "Depois dos impedimentos, a travessia leva o grupo a um ponto de decisão. Tudo o que foi conquistado precisa agora ser unido com clareza para que a jornada faça sentido.",
     artefato: "MVP",
     imagem: "/assets/img/capitulo_5/base-artefato-bau.png",
     imagemAlt: "Forja do MVP",
@@ -118,6 +118,14 @@ const RESPOSTAS_FORJA = {
 };
 
 const respostasForja = {};
+
+const MAPA_RESPOSTA_ARTEFATO = {
+  "medalhao-papeis": "medalhao",
+  "aval-aprovacao": "backlog",
+  "main-funcional": "ampulheta",
+  "ampulheta-quebrada": "ampulheta",
+  "escudo-magico": "bau",
+};
 
 const impedimentosResolvidos = new Set();
 const respostasImpedimentos = {};
@@ -317,6 +325,7 @@ function concluirEtapaCapitulo5(step) {
 
   atualizarProgressoCapitulo();
   atualizarMochila();
+  atualizarMapaPonte();
 }
 
 function configurarDesafioDuplo() {
@@ -404,21 +413,21 @@ function configurarDesafioDuplo() {
     });
 
     btnResolver.disabled = true;
-btnResolver.classList.add("concluida");
-btnResolver.textContent = "Duplo enfraquecido";
+    btnResolver.classList.add("concluida");
+    btnResolver.textContent = "Duplo enfraquecido";
 
-const duploCena = document.getElementById("duploCena");
-const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
+    const duploCena = document.getElementById("duploCena");
+    const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
 
-if (duploCena) {
-  duploCena.src = "/assets/img/capitulo_5/batalha-duplo.png";
-  duploCena.alt = "O Duplo enfraquecido após a batalha";
-}
+    if (duploCena) {
+      duploCena.src = "/assets/img/capitulo_5/batalha-duplo.png";
+      duploCena.alt = "O Duplo enfraquecido após a batalha";
+    }
 
-if (btnMedalhaoDuplo) {
-  btnMedalhaoDuplo.classList.remove("hidden");
-}
-atualizarMochila();
+    if (btnMedalhaoDuplo) {
+      btnMedalhaoDuplo.classList.remove("hidden");
+    }
+    atualizarMochila();
   });
 }
 
@@ -436,13 +445,17 @@ function configurarTransformacaoDuplo() {
     btnMedalhaoDuplo.classList.add("concluida");
     btnMedalhaoDuplo.textContent = "Paladina libertada";
 
-    const itemDuplo = document.querySelector('.progress-item[data-step="duplo"] img');
+    const itemDuplo = document.querySelector(
+      '.progress-item[data-step="duplo"] img',
+    );
     if (itemDuplo) {
       itemDuplo.src = "/assets/img/capitulo_5/paladina-icon.png";
       itemDuplo.alt = "Paladina Lendária";
     }
 
-    const ponteNodeDuplo = document.querySelector('.ponte-node[data-step="duplo"] img');
+    const ponteNodeDuplo = document.querySelector(
+      '.ponte-node[data-step="duplo"] img',
+    );
     if (ponteNodeDuplo) {
       ponteNodeDuplo.src = "/assets/img/capitulo_5/paladina-icon.png";
       ponteNodeDuplo.alt = "Paladina Lendária";
@@ -762,6 +775,9 @@ function configurarForjaMvp() {
 
       if (!cenario || !resposta) return;
 
+      const artefatoRelacionado = MAPA_RESPOSTA_ARTEFATO[resposta];
+      destacarArtefatoTemporariamente(artefatoRelacionado);
+
       respostasForja[cenario] = resposta;
 
       document
@@ -880,7 +896,7 @@ function atualizarCardEncontroAtual(step) {
   if (encontroArte) {
     encontroArte.classList.toggle(
       "encontro-arte--card",
-      Boolean(encontro.imagem && encontro.imagem.includes("carta"))
+      Boolean(encontro.imagem && encontro.imagem.includes("carta")),
     );
   }
 }
@@ -948,6 +964,7 @@ function selecionarEtapaCapitulo5(step, abrirStage = false) {
   atualizarCardEncontroAtual(step);
   atualizarNavegacaoCapitulo5();
   atualizarMochila();
+  atualizarMapaPonte();
 
   if (abrirStage) {
     abrirStageCapitulo5(step);
@@ -955,9 +972,7 @@ function selecionarEtapaCapitulo5(step, abrirStage = false) {
 }
 
 function configurarNavegacaoCapitulo5() {
- document
-  .querySelectorAll(".progress-item, .ponte-node")
-  .forEach((botao) => {
+  document.querySelectorAll(".progress-item, .ponte-node").forEach((botao) => {
     botao.addEventListener("click", () => {
       const step = botao.dataset.step;
       if (!step) return;
@@ -972,30 +987,30 @@ function configurarNavegacaoCapitulo5() {
     });
   }
 
- const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
-if (btnEntrarNaPonte) {
-  btnEntrarNaPonte.addEventListener("click", () => {
-    const capitulo5Page = document.getElementById("capitulo5Page");
-    const mapa = document.getElementById("mapaPonte");
+  const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
+  if (btnEntrarNaPonte) {
+    btnEntrarNaPonte.addEventListener("click", () => {
+      const capitulo5Page = document.getElementById("capitulo5Page");
+      const mapa = document.getElementById("mapaPonte");
 
-    if (capitulo5Page) {
-      capitulo5Page.classList.remove("capitulo5-page--locked");
-      capitulo5Page.classList.add("capitulo5-page--entered");
-    }
-
-    btnEntrarNaPonte.disabled = true;
-    btnEntrarNaPonte.classList.add("concluida");
-    btnEntrarNaPonte.classList.add("ativando");
-    setTimeout(() => {
-      if (mapa) {
-        mapa.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      if (capitulo5Page) {
+        capitulo5Page.classList.remove("capitulo5-page--locked");
+        capitulo5Page.classList.add("capitulo5-page--entered");
       }
-    }, 220);
-  });
-}
+
+      btnEntrarNaPonte.disabled = true;
+      btnEntrarNaPonte.classList.add("concluida");
+      btnEntrarNaPonte.classList.add("ativando");
+      setTimeout(() => {
+        if (mapa) {
+          mapa.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }, 220);
+    });
+  }
 }
 
 function configurarMochila() {
@@ -1012,7 +1027,6 @@ function configurarMochila() {
   });
 }
 
-
 function atualizarMochila() {
   const backlog = document.querySelector('[data-artefato="backlog"]');
   const medalhao = document.querySelector('[data-artefato="medalhao"]');
@@ -1021,80 +1035,159 @@ function atualizarMochila() {
 
   const todos = [backlog, medalhao, ampulheta, bau].filter(Boolean);
 
- todos.forEach((item) => {
-  item.classList.remove("ativo", "destacado", "convocado");
-});
+  const btnMochila = document.getElementById("btnMochila");
+  const mochilaPainel = document.getElementById("mochilaPainel");
 
+  todos.forEach((item) => {
+    item.classList.remove("ativo", "destacado", "convocado", "flash-artefato");
+    item.classList.remove("hidden");
+  });
+
+  if (btnMochila) {
+    btnMochila.classList.remove("destacada-forja");
+  }
+
+  if (mochilaPainel && etapaAtualCapitulo5 !== "forja-mvp") {
+    mochilaPainel.classList.add("hidden");
+    if (btnMochila) btnMochila.setAttribute("aria-expanded", "false");
+  }
+
+  // Estado base
   if (backlog) {
     const img = backlog.querySelector("img");
+    const tooltip = backlog.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/artefatos/product-backlog-icon.png";
       img.alt = "Product Backlog";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Product Backlog — organiza prioridades e orienta o que gera mais valor.";
+    }
+    backlog.classList.add("ativo");
   }
 
   if (medalhao) {
     const img = medalhao.querySelector("img");
+    const tooltip = medalhao.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/artefatos/medalhao-icon.png";
       img.alt = "Medalhão dos Papéis";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Medalhão dos Papéis — revela e organiza responsabilidades do time.";
+    }
+    medalhao.classList.add("ativo");
   }
 
   if (ampulheta) {
     const img = ampulheta.querySelector("img");
+    const tooltip = ampulheta.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/artefatos/ampulheta-icon.png";
       img.alt = "Ampulheta da Sprint";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Ampulheta da Sprint — representa ciclos curtos, foco e adaptação.";
+    }
+    ampulheta.classList.add("ativo");
   }
 
   if (bau) {
     const img = bau.querySelector("img");
+    const tooltip = bau.querySelector(".mochila-item-tooltip");
     if (img) {
-      img.src = "/assets/img/artefatos/bau-iteracao-icon.png";
-      img.alt = "Baú da Melhoria";
+      img.src = "/assets/img/artefatos/bau-da-iteracao-icon.png";
+      img.alt = "Baú da Iteração";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Baú da Iteração — guarda aprendizados e reforça a evolução contínua.";
+    }
+    bau.classList.add("ativo");
   }
 
-  if (backlog) backlog.classList.add("ativo");
-  if (medalhao) medalhao.classList.add("ativo");
-  if (ampulheta) ampulheta.classList.add("ativo");
-  if (bau) bau.classList.add("ativo");
-
-  if (etapasConcluidas.has("duplo") && medalhao) {
-    const img = medalhao.querySelector("img");
-    if (img) {
-      img.src = "/assets/img/capitulo_5/paladina-icon.png";
-      img.alt = "Paladina Lendária";
-    }
+  // Duplo concluído -> medalhão vira paladina
+  if (
+    etapasConcluidas.has("duplo") &&
+    !etapasConcluidas.has("necrobranch") &&
+    medalhao
+  ) {
+    medalhao.classList.add("hidden");
   }
 
+  // Stakeholder concluído -> backlog vira stakeholder amigável
   if (etapasConcluidas.has("stakeholder") && backlog) {
     const img = backlog.querySelector("img");
+    const tooltip = backlog.querySelector(".mochila-item-tooltip");
     if (img) {
-      img.src = "/assets/img/capitulo_5/aval-icon.png";
-      img.alt = "Aval de Aprovação";
+      img.src = "/assets/img/capitulo_5/aval-aprovacao-icon.png";
+      img.alt = "Documentação assinada";
+    }
+    if (tooltip) {
+      tooltip.textContent =
+        "Stakeholder — agora alinhado com o time e com as prioridades assinou o documento autorizando a produção do produto, apresente-o na forja.";
     }
   }
 
-  if (etapasConcluidas.has("necrobranch") && ampulheta) {
-    const img = ampulheta.querySelector("img");
-    if (img) {
-      img.src = "/assets/img/capitulo_5/main-funcional-icon.png";
-      img.alt = "Main Funcional";
+  // Necrobranch concluído -> paladina some e medalhão volta; ampulheta se quebra; surge orb main funcional
+  if (etapasConcluidas.has("necrobranch")) {
+    if (medalhao) {
+      const img = medalhao.querySelector("img");
+      const tooltip = medalhao.querySelector(".mochila-item-tooltip");
+      if (img) {
+        img.src = "/assets/img/artefatos/medalhao-icon.png";
+        img.alt = "Medalhão dos Papéis";
+      }
+      if (tooltip) {
+        tooltip.textContent =
+          "Medalhão dos Papéis — retornou à mochila após o sacrifício da Dev Lendária.";
+      }
+    }
+
+    if (ampulheta) {
+      const img = ampulheta.querySelector("img");
+      const tooltip = ampulheta.querySelector(".mochila-item-tooltip");
+      if (img) {
+        img.src = "/assets/img/capitulo_5/orb-main-funcional-icon.png";
+        img.alt = "Orb Main Funcional";
+      }
+      if (tooltip) {
+        tooltip.textContent =
+          "Orb Main Funcional — representa a recuperação do fluxo e da versão estável.";
+      }
     }
   }
 
+  // Bug concluído -> baú vira escudo mágico
   if (etapasConcluidas.has("bug-infernal") && bau) {
     const img = bau.querySelector("img");
+    const tooltip = bau.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/capitulo_5/escudo-magico-icon.png";
       img.alt = "Escudo Mágico";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Escudo Mágico — símbolo de um incremento testado e protegido.";
+    }
   }
 
-  if (etapaAtualCapitulo5 === "duplo" && medalhao) {
+  // Destaques por etapa
+  const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
+
+  if (
+    etapaAtualCapitulo5 === "duplo" &&
+    btnMedalhaoDuplo &&
+    !btnMedalhaoDuplo.classList.contains("hidden") &&
+    medalhao &&
+    !etapasConcluidas.has("duplo")
+  ) {
+    medalhao.classList.remove("destacado");
+    medalhao.classList.add("convocado");
+  } else if (etapaAtualCapitulo5 === "duplo" && medalhao) {
     medalhao.classList.add("destacado");
   }
 
@@ -1110,22 +1203,167 @@ function atualizarMochila() {
     bau.classList.add("destacado");
   }
 
-  const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
+  // Forja -> só ficam 4 artefatos finais
+  if (etapaAtualCapitulo5 === "forja-mvp") {
+    if (btnMochila) {
+      btnMochila.classList.add("destacada-forja");
+      btnMochila.setAttribute("aria-expanded", "true");
+    }
 
-if (
-  etapaAtualCapitulo5 === "duplo" &&
-  btnMedalhaoDuplo &&
-  !btnMedalhaoDuplo.classList.contains("hidden") &&
-  medalhao &&
-  !etapasConcluidas.has("duplo")
-) {
-  medalhao.classList.remove("destacado");
-  medalhao.classList.add("convocado");
+    if (mochilaPainel) {
+      mochilaPainel.classList.remove("hidden");
+    }
+
+    // backlog vira aval
+    if (backlog) {
+      const img = backlog.querySelector("img");
+      const tooltip = backlog.querySelector(".mochila-item-tooltip");
+      if (img) {
+        img.src = "/assets/img/capitulo_5/aval-icon.png";
+        img.alt = "Aval de Aprovação";
+      }
+      if (tooltip) {
+        tooltip.textContent =
+          "Aval de Aprovação — valida que a entrega faz sentido para quem recebe valor.";
+      }
+      backlog.classList.add("destacado");
+    }
+
+    // medalhão permanece
+    if (medalhao) {
+      const tooltip = medalhao.querySelector(".mochila-item-tooltip");
+      if (tooltip) {
+        tooltip.textContent =
+          "Medalhão dos Papéis — mantém clareza de papéis e responsabilidades.";
+      }
+      medalhao.classList.add("destacado");
+    }
+
+    // ampulheta sai de cena quebrada -> slot mostra orb main funcional
+    if (ampulheta) {
+      const img = ampulheta.querySelector("img");
+      const tooltip = ampulheta.querySelector(".mochila-item-tooltip");
+      if (img) {
+        img.src = "/assets/img/capitulo_5/orb-main-funcional-icon.png";
+        img.alt = "Orb Main Funcional";
+      }
+      if (tooltip) {
+        tooltip.textContent =
+          "Orb Main Funcional — representa um incremento utilizável e estável.";
+      }
+      ampulheta.classList.add("destacado");
+    }
+
+    // baú vira escudo
+    if (bau) {
+      const img = bau.querySelector("img");
+      const tooltip = bau.querySelector(".mochila-item-tooltip");
+      if (img) {
+        img.src = "/assets/img/capitulo_5/escudo-magico-icon.png";
+        img.alt = "Escudo Mágico";
+      }
+      if (tooltip) {
+        tooltip.textContent =
+          "Escudo Mágico — garante confiança e qualidade no que será entregue.";
+      }
+      bau.classList.add("destacado");
+    }
+  }
+
+  // Após concluir a Forja -> só resta o MVP
+  if (etapasConcluidas.has("forja-mvp")) {
+    if (backlog) backlog.classList.add("hidden");
+    if (medalhao) medalhao.classList.add("hidden");
+    if (ampulheta) ampulheta.classList.add("hidden");
+
+    if (bau) {
+      bau.classList.remove("hidden", "ativo", "destacado", "convocado");
+      bau.classList.add("destacado");
+
+      const img = bau.querySelector("img");
+      const tooltip = bau.querySelector(".mochila-item-tooltip");
+
+      if (img) {
+        img.src = "/assets/img/capitulo_5/mvp-icon.png";
+        img.alt = "MVP";
+      }
+
+      if (tooltip) {
+        tooltip.textContent =
+          "MVP — a menor versão funcional de uma entrega que já gera valor real e pode ser validada.";
+      }
+    }
+
+    if (btnMochila) {
+      btnMochila.classList.add("destacada-forja");
+      btnMochila.setAttribute("aria-expanded", "true");
+    }
+
+    if (mochilaPainel) {
+      mochilaPainel.classList.remove("hidden");
+    }
+  }
 }
 
-  if (etapaAtualCapitulo5 === "forja-mvp") {
-    todos.forEach((item) => item.classList.add("destacado"));
+function atualizarMapaPonte() {
+  const ponteImg = document.querySelector(".ponte-mapa-img");
+  const nodeDuplo = document.querySelector(
+    '.ponte-node[data-step="duplo"] img',
+  );
+  const nodeStakeholder = document.querySelector(
+    '.ponte-node[data-step="stakeholder"] img',
+  );
+  const nodeForja = document.querySelector(
+    '.ponte-node[data-step="forja-mvp"] img',
+  );
+
+  if (ponteImg) {
+    const necrobranchAtivo =
+      etapaAtualCapitulo5 === "necrobranch" &&
+      !etapasConcluidas.has("necrobranch");
+
+    ponteImg.src = necrobranchAtivo
+      ? "/assets/img/capitulo_5/ponte-mapa-quebrada.png"
+      : "/assets/img/capitulo_5/ponte-mapa.png";
   }
+
+  if (nodeDuplo) {
+    if (etapasConcluidas.has("duplo") && !etapasConcluidas.has("necrobranch")) {
+      nodeDuplo.src = "/assets/img/capitulo_5/paladina-icon.png";
+      nodeDuplo.alt = "Dev Lendária";
+    } else if (etapasConcluidas.has("necrobranch")) {
+      nodeDuplo.classList.add("sumido");
+      nodeDuplo.alt = "";
+    } else {
+      nodeDuplo.src = "/assets/img/capitulo_5/duplo-icon.png";
+      nodeDuplo.alt = "Duplo";
+      nodeDuplo.classList.remove("sumido");
+    }
+  }
+
+  if (nodeStakeholder) {
+    if (etapasConcluidas.has("stakeholder")) {
+      nodeStakeholder.src =
+        "/assets/img/capitulo_5/stakeholder-amigavel-icon.png";
+      nodeStakeholder.alt = "Stakeholder Amigável";
+    } else {
+      nodeStakeholder.src =
+        "/assets/img/capitulo_5/stake-holder-selvagem-icon.png";
+      nodeStakeholder.alt = "Stakeholder Selvagem";
+    }
+  }
+
+  if (nodeForja) {
+    if (etapasConcluidas.has("forja-mvp")) {
+      nodeForja.src = "/assets/img/capitulo_5/mvp-icon.png";
+      nodeForja.alt = "MVP";
+    } else {
+      nodeForja.src = "/assets/img/capitulo_5/forja-icon.png";
+      nodeForja.alt = "Forja do MVP";
+    }
+  }
+
+  atualizarPosicaoJogador();
 }
 
 function configurarCliqueArtefatosMochila() {
@@ -1152,10 +1390,150 @@ function configurarCliqueArtefatosMochila() {
   });
 }
 
+function destacarArtefatoTemporariamente(nomeArtefato) {
+  if (!nomeArtefato) return;
+
+  const item = document.querySelector(`[data-artefato="${nomeArtefato}"]`);
+  if (!item) return;
+
+  item.classList.remove("flash-artefato");
+  void item.offsetWidth;
+  item.classList.add("flash-artefato");
+}
+
+function atualizarPosicaoJogador() {
+  const pontePlayer = document.getElementById("pontePlayer");
+  if (!pontePlayer) return;
+
+  pontePlayer.className = "ponte-player";
+
+  const necrobranchQuebrada =
+    etapaAtualCapitulo5 === "necrobranch" &&
+    !etapasConcluidas.has("necrobranch");
+
+  if (necrobranchQuebrada) {
+    pontePlayer.classList.add("ponte-player--necrobranch-quebrada");
+    return;
+  }
+
+  const mapaClasse = {
+    duplo: "ponte-player--duplo",
+    stakeholder: "ponte-player--stakeholder",
+    necrobranch: "ponte-player--necrobranch",
+    "bug-infernal": "ponte-player--bug-infernal",
+    "forja-mvp": "ponte-player--forja-mvp",
+    "porta-final": "ponte-player--porta-final",
+  };
+
+  const classeAtual = mapaClasse[etapaAtualCapitulo5] || "ponte-player--duplo";
+  pontePlayer.classList.add(classeAtual);
+}
+
+const duploRolesData = {
+  po: {
+    titulo: "Product Owner",
+    texto:
+      "Na presença do Duplo, o Product Owner muda prioridades a cada conversa, aceita pedidos soltos e o time nunca sabe o que realmente precisa entregar. O que fazer?",
+    opcoes: [
+      {
+        texto:
+          "Organizar e priorizar o backlog com clareza, alinhando o que realmente gera valor.",
+        correta: true,
+      },
+      {
+        texto:
+          "Aceitar todas as mudanças imediatamente para mostrar flexibilidade.",
+        correta: false,
+      },
+      {
+        texto:
+          "Deixar cada desenvolvedor decidir sozinho o que é prioridade.",
+        correta: false,
+      },
+    ],
+  },
+
+  sm: {
+    titulo: "Scrum Master",
+    texto:
+      "Diante do Duplo, o Scrum Master deixa os conflitos crescerem, não esclarece o processo e o time começa a se confundir ainda mais sobre como trabalhar junto. O que fazer?",
+    opcoes: [
+      {
+        texto:
+          "Facilitar o alinhamento do time, reforçar papéis e ajudar o grupo a remover a confusão.",
+        correta: true,
+      },
+      {
+        texto:
+          "Assumir todas as decisões sozinho para ganhar velocidade.",
+        correta: false,
+      },
+      {
+        texto:
+          "Ignorar a confusão porque o time deve se resolver sem apoio.",
+        correta: false,
+      },
+    ],
+  },
+
+  dev: {
+    titulo: "Dev Team",
+    texto:
+      "Sob a influência do Duplo, o Dev Team começa a misturar responsabilidades, duplicar esforço e trabalhar sem coordenação. Ninguém sabe exatamente quem faz o quê. O que fazer?",
+    opcoes: [
+      {
+        texto:
+          "Distribuir responsabilidades com clareza e colaborar com foco em um objetivo comum.",
+        correta: true,
+      },
+      {
+        texto:
+          "Cada pessoa escolhe qualquer tarefa, mesmo sem alinhamento com o restante do time.",
+        correta: false,
+      },
+      {
+        texto:
+          "Esperar o Product Owner resolver sozinho toda a organização interna do desenvolvimento.",
+        correta: false,
+      },
+    ],
+  },
+};
+
+function renderizarRoleDuplo(roleKey, duploRoleTitulo, duploRoleTexto, duploRoleOpcoes) {
+  const role = duploRolesData[roleKey];
+  if (!role || !duploRoleTitulo || !duploRoleTexto || !duploRoleOpcoes) return;
+
+  duploRoleTitulo.textContent = role.titulo;
+  duploRoleTexto.textContent = role.texto;
+  duploRoleOpcoes.innerHTML = "";
+
+  role.opcoes.forEach((opcao) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "duplo-opcao-btn";
+    btn.textContent = opcao.texto;
+    btn.dataset.correct = opcao.correta ? "true" : "false";
+
+    btn.addEventListener("click", () => {
+      duploRoleOpcoes.querySelectorAll(".duplo-opcao-btn").forEach((b) => {
+        b.classList.remove("correta", "errada");
+      });
+
+      if (btn.dataset.correct === "true") {
+        btn.classList.add("correta");
+      } else {
+        btn.classList.add("errada");
+      }
+    });
+
+    duploRoleOpcoes.appendChild(btn);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
 
- 
   await carregarEstadoHistoria();
 
   configurarRevealNoScroll();
@@ -1171,10 +1549,54 @@ document.addEventListener("DOMContentLoaded", async () => {
   atualizarMochila();
   configurarCliqueArtefatosMochila();
 
+  const btnMostrarDesafioDuplo = document.getElementById("btnMostrarDesafioDuplo");
+const duploDesafioWrap = document.getElementById("duploDesafioWrap");
+const duploRoleCards = document.querySelectorAll(".duplo-role-card");
+const duploRoleTitulo = document.getElementById("duploRoleTitulo");
+const duploRoleTexto = document.getElementById("duploRoleTexto");
+const duploRoleOpcoes = document.getElementById("duploRoleOpcoes");
+
+if (btnMostrarDesafioDuplo && duploDesafioWrap) {
+  btnMostrarDesafioDuplo.addEventListener("click", () => {
+    duploDesafioWrap.classList.remove("hidden");
+    duploDesafioWrap.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+}
+
+if (duploRoleCards.length) {
+  duploRoleCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      duploRoleCards.forEach((item) => item.classList.remove("active"));
+      card.classList.add("active");
+
+      const roleKey = card.dataset.role;
+      renderizarRoleDuplo(
+        roleKey,
+        duploRoleTitulo,
+        duploRoleTexto,
+        duploRoleOpcoes
+      );
+    });
+  });
+
+  renderizarRoleDuplo(
+    "po",
+    duploRoleTitulo,
+    duploRoleTexto,
+    duploRoleOpcoes
+  );
+}
 
   configurarConclusaoHistoria();
   configurarEntradaDesafio();
 
   atualizarCardEncontroAtual(etapaAtualCapitulo5);
   atualizarProgressoCapitulo();
+  atualizarMapaPonte();
+  abrirStageCapitulo5(etapaAtualCapitulo5);
+
+  
 });

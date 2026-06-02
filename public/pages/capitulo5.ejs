@@ -36,68 +36,80 @@
         <div class="hero-bottom-fade"></div>
       </section>
 
-     <div class="capitulo5-transition-lock" id="transitionLock" aria-hidden="true"></div>
+      <div
+        class="capitulo5-transition-lock"
+        id="transitionLock"
+        aria-hidden="true"
+      ></div>
 
-<aside class="mochila-flutuante" id="mochilaFlutuante">
-  <button
-    class="mochila-toggle"
-    id="btnMochila"
-    type="button"
-    aria-expanded="false"
-    aria-label="Abrir mochila"
-  >
-    <span class="mochila-toggle__icon">🎒</span>
-  </button>
+      <aside class="mochila-flutuante" id="mochilaFlutuante">
+        <button
+          class="mochila-toggle"
+          id="btnMochila"
+          type="button"
+          aria-expanded="false"
+          aria-label="Abrir mochila"
+        >
+          <span class="mochila-toggle__icon">🎒</span>
+        </button>
 
-  <div class="mochila-painel hidden" id="mochilaPainel">
-    <p class="mochila-titulo">Artefatos da Jornada</p>
+        <div class="mochila-painel hidden" id="mochilaPainel">
+          <p class="mochila-titulo">Artefatos da Jornada</p>
 
-    <div class="mochila-grid">
-      <button class="mochila-item" type="button" data-artefato="backlog">
-        <img
-          src="/assets/img/artefatos/product-backlog-icon.png"
-          alt="Product Backlog"
-        />
-        <span class="mochila-item-tooltip">
-          Product Backlog — organiza prioridades e orienta o que gera mais valor.
-        </span>
-      </button>
+          <div class="mochila-grid">
+            <button class="mochila-item" type="button" data-artefato="backlog">
+              <img
+                src="/assets/img/artefatos/product-backlog-icon.png"
+                alt="Product Backlog"
+              />
+              <span class="mochila-item-tooltip">
+                Product Backlog — organiza prioridades e orienta o que gera mais
+                valor.
+              </span>
+            </button>
 
-      <button class="mochila-item" type="button" data-artefato="medalhao">
-        <img
-          src="/assets/img/artefatos/medalhao-icon.png"
-          alt="Medalhão dos Papéis"
-        />
-        <span class="mochila-item-tooltip">
-          Medalhão dos Papéis — revela e organiza responsabilidades do time.
-        </span>
-      </button>
+            <button class="mochila-item" type="button" data-artefato="medalhao">
+              <img
+                src="/assets/img/artefatos/medalhao-icon.png"
+                alt="Medalhão dos Papéis"
+              />
+              <span class="mochila-item-tooltip">
+                Medalhão dos Papéis — revela e organiza responsabilidades do
+                time.
+              </span>
+            </button>
 
-      <button class="mochila-item" type="button" data-artefato="ampulheta">
-        <img
-          src="/assets/img/artefatos/ampulheta-icon.png"
-          alt="Ampulheta da Sprint"
-        />
-        <span class="mochila-item-tooltip">
-          Ampulheta da Sprint — representa ciclos curtos, foco e adaptação.
-        </span>
-      </button>
+            <button
+              class="mochila-item"
+              type="button"
+              data-artefato="ampulheta"
+            >
+              <img
+                src="/assets/img/artefatos/ampulheta-icon.png"
+                alt="Ampulheta da Sprint"
+              />
+              <span class="mochila-item-tooltip">
+                Ampulheta da Sprint — representa ciclos curtos, foco e
+                adaptação.
+              </span>
+            </button>
 
-      <button class="mochila-item" type="button" data-artefato="bau">
-        <img
-          src="/assets/img/artefatos/bau-da-iteracao-icon.png"
-          alt="Baú da iteração"
-        />
-        <span class="mochila-item-tooltip">
-          Baú da Iteração — guarda aprendizados e reforça a evolução contínua.
-        </span>
-      </button>
-    </div>
-  </div>
-</aside>
+            <button class="mochila-item" type="button" data-artefato="bau">
+              <img
+                src="/assets/img/artefatos/bau-iteracao-icon.png"
+                alt="Baú da iteração"
+              />
+              <span class="mochila-item-tooltip">
+                Baú da Iteração — guarda aprendizados e reforça a evolução
+                contínua.
+              </span>
+            </button>
+          </div>
+        </div>
+      </aside>
 
-<section class="capitulo5-conteudo" id="conteudoCapitulo5">
-  <section class="ponte-layout" id="mapaPonte">
+      <section class="capitulo5-conteudo" id="conteudoCapitulo5">
+        <section class="ponte-layout" id="mapaPonte">
           <section class="mapa-ponte-card">
             <header class="mapa-ponte-header">
               <p class="chapter-kicker">Mapa da Ponte</p>
@@ -110,25 +122,33 @@
             </header>
 
             <div class="ponte-visual ponte-visual--mapa">
-              <img
-                class="ponte-mapa-img"
-                src="/assets/img/capitulo_5/ponte-mapa.png"
-                alt="Mapa da ponte com o caminho até a porta final"
-              />
+             <img
+  class="ponte-mapa-img"
+  src="/assets/img/capitulo_5/ponte-mapa.png"
+  alt="Mapa da ponte com o caminho até a porta final"
+/>
 
-              <button
-                class="ponte-node ponte-node--1 active"
-                data-step="duplo"
-                type="button"
-                aria-label="Duplo"
-              >
-                <img
-                  class="ponte-node-icon"
-                  src="/assets/img/capitulo_5/duplo-icon.png"
-                  alt="Duplo"
-                />
-                <span class="ponte-node-tooltip">Alguém perdido</span>
-              </button>
+<div
+  class="ponte-player ponte-player--duplo"
+  id="pontePlayer"
+  aria-hidden="true"
+>
+  <img src="/assets/img/capitulo_5/equipe-icon.png" alt="" />
+</div>
+
+<button
+  class="ponte-node ponte-node--1 active"
+  data-step="duplo"
+  type="button"
+  aria-label="Duplo"
+>
+  <img
+    class="ponte-node-icon"
+    src="/assets/img/capitulo_5/duplo-icon.png"
+    alt="Duplo"
+  />
+  <span class="ponte-node-tooltip">Alguém perdido</span>
+</button>
 
               <button
                 class="ponte-node ponte-node--2 locked"
@@ -155,7 +175,9 @@
                   src="/assets/img/capitulo_5/necrobranch-icon-simples.png"
                   alt="Necrobranch Commitada"
                 />
-                <span class="ponte-node-tooltip">O caminho parece obstruído</span>
+                <span class="ponte-node-tooltip"
+                  >O caminho parece obstruído</span
+                >
               </button>
 
               <button
@@ -197,7 +219,9 @@
                   src="/assets/img/capitulo_1/icones/porta.png"
                   alt="Porta Final"
                 />
-                <span class="ponte-node-tooltip">Porta Final, falta tão pouco</span>
+                <span class="ponte-node-tooltip"
+                  >Porta Final, falta tão pouco</span
+                >
               </button>
             </div>
 
@@ -209,35 +233,7 @@
               <div class="bridge-view" data-bridge-view="5"></div>
             </div>
           </section>
-          <aside
-            class="encontro-atual-card encontro-intro-card"
-            id="encontroAtualCard"
-          >
-            <p class="encontro-label">A Travessia Começa</p>
-            <h3 id="encontroTitulo">O Duplo</h3>
-
-            <div class="encontro-arte encontro-arte--cinematica">
-              <img
-                id="encontroImagem"
-                src="/assets/img/capitulo_5/encontro-duplo.png"
-                alt="O Duplo surge na ponte"
-              />
-
-              <button
-                class="btn-iniciar-hover"
-                id="btnAbrirDesafioAtual"
-                type="button"
-              >
-                Iniciar desafio
-              </button>
-            </div>
-
-            <p id="encontroDescricao">
-              Vocês começam a andar sobre a ponte e, de repente, tudo parece
-              ficar mais escuro. Sombras surgem por toda parte, a distância da
-              porta parece aumentar… algo impede o seu caminho.
-            </p>
-          </aside>
+        
         </section>
 
         <section
@@ -245,184 +241,107 @@
           id="encounter-duplo"
           data-step="duplo"
         >
-          <span class="section-number">01</span>
-          <p class="chapter-kicker">Obstáculo 1</p>
-          <h2>O Duplo</h2>
+          <div class="duplo-intro-card">
+  <div class="duplo-intro-scene">
+    <img
+      class="duplo-intro-image"
+      src="/assets/img/capitulo_5/encontro-duplo.png"
+      alt="O Duplo surge no caminho da ponte"
+    />
 
-          <div class="obstaculo-layout obstaculo-layout--visual">
-            <div class="obstaculo-copy">
-              <p>
-                Uma sombra surge na ponte e começa a imitar os passos do grupo.
-                Quanto mais confusos os papéis, mais forte ela se torna.
-              </p>
+    <div class="duplo-intro-overlay">
+      <div class="duplo-intro-text">
+        <span class="section-number">01</span>
+        <p class="section-kicker">OBSTÁCULO 1</p>
+        <h2>O DUPLO</h2>
 
-              <p>
-                Para vencer o Duplo, o time precisa reorganizar seus movimentos
-                e reconhecer com clareza as responsabilidades de cada
-                integrante.
-              </p>
-            </div>
+        <p class="duplo-texto-base">
+          Uma sombra surge na ponte e começa a imitar os passos do grupo.
+          Quanto mais confusos os papéis, mais forte ela se torna.
+        </p>
 
-            <div class="obstaculo-media obstaculo-media--duplo">
-              <img
-                id="duploCena"
-                class="obstaculo-img obstaculo-img--frame"
-                src="/assets/img/capitulo_5/encontro-duplo.png"
-                alt="O encontro inicial com o Duplo"
-              />
+        <p class="duplo-texto-hover">
+          Para vencer o Duplo, o time precisa reorganizar seus movimentos
+          e reconhecer com clareza as responsabilidades de cada integrante.
+        </p>
+      </div>
 
-              <button
-                id="btnMedalhaoDuplo"
-                class="btn-primary btn-medalhao hidden"
-                type="button"
-              >
-                Colocar medalhão na criatura
-              </button>
-            </div>
-          </div>
-          <article class="capitulo5-info">
-            <h3>Conceito Scrum</h3>
-            <p>
-              Um time saudável precisa de papéis claros, responsabilidades
-              visíveis e colaboração real. O Scrum Master facilita essa clareza
-              sem mandar no time.
-            </p>
-          </article>
+      <button
+        type="button"
+        class="btn-duplo-iniciar"
+        id="btnMostrarDesafioDuplo"
+      >
+        Iniciar desafio
+      </button>
+    </div>
+  </div>
+</div>
 
-          <div class="duplo-desafio" id="duploDesafio">
-            <article class="duplo-cenario">
-              <p class="duplo-etiqueta">Memória 1</p>
-              <h3>PO Caótico</h3>
-              <p>
-                O Product Owner muda prioridades a cada conversa, aceita pedidos
-                soltos e o time nunca sabe o que realmente precisa entregar.
-              </p>
+<div class="duplo-desafio-wrap hidden" id="duploDesafioWrap">
+  <div class="duplo-roles-header">
+    <p class="section-kicker">REORGANIZE O TIME</p>
+    <h3>Escolha um integrante para analisar o problema</h3>
+    <p>
+      Cada papel sofre o efeito do Duplo de uma forma diferente.
+      Clique em um integrante para entender a situação e decidir o que fazer.
+    </p>
+  </div>
 
-              <div class="duplo-opcoes">
-                <button
-                  class="duplo-opcao"
-                  data-cenario="po-caotico"
-                  data-resposta="aceitar-tudo"
-                  type="button"
-                >
-                  Aceitar todos os pedidos para evitar conflito
-                </button>
+  <div class="duplo-roles-grid">
+    <button
+      type="button"
+      class="duplo-role-card active"
+      data-role="po"
+    >
+      <img src="/assets/img/capitulo_5/po-icon.png" alt="Product Owner" />
+      <span>Product Owner</span>
+    </button>
 
-                <button
-                  class="duplo-opcao"
-                  data-cenario="po-caotico"
-                  data-resposta="priorizar-backlog"
-                  type="button"
-                >
-                  Organizar os pedidos no Product Backlog e priorizar com
-                  clareza
-                </button>
+    <button
+      type="button"
+      class="duplo-role-card"
+      data-role="sm"
+    >
+      <img src="/assets/img/capitulo_5/scrum-master-icon.png" alt="Scrum Master" />
+      <span>Scrum Master</span>
+    </button>
 
-                <button
-                  class="duplo-opcao"
-                  data-cenario="po-caotico"
-                  data-resposta="ignorar-stakeholders"
-                  type="button"
-                >
-                  Ignorar stakeholders até a entrega final
-                </button>
-              </div>
-            </article>
+    <button
+      type="button"
+      class="duplo-role-card"
+      data-role="dev"
+    >
+      <img src="/assets/img/capitulo_5/dev-team-icon.png" alt="Dev Team" />
+      <span>Dev Team</span>
+    </button>
+  </div>
 
-            <article class="duplo-cenario">
-              <p class="duplo-etiqueta">Memória 2</p>
-              <h3>Time Silencioso</h3>
-              <p>
-                O time encontra impedimentos, mas ninguém fala nada. As tarefas
-                travam em silêncio e o progresso parece normal por fora.
-              </p>
+  <div class="duplo-role-panel" id="duploRolePanel">
+    <div class="duplo-role-problema">
+      <p class="duplo-role-label">Situação-problema</p>
+      <h4 id="duploRoleTitulo">Product Owner</h4>
+      <p id="duploRoleTexto">
+        Na presença do Duplo, o Product Owner muda prioridades a cada conversa,
+        aceita pedidos soltos e o time nunca sabe o que realmente precisa entregar.
+        O que fazer?
+      </p>
+    </div>
 
-              <div class="duplo-opcoes">
-                <button
-                  class="duplo-opcao"
-                  data-cenario="time-silencioso"
-                  data-resposta="expor-impedimentos"
-                  type="button"
-                >
-                  Tornar impedimentos visíveis e conversar sobre eles na Daily
-                </button>
+    <div class="duplo-role-opcoes" id="duploRoleOpcoes">
+      <button type="button" class="duplo-opcao-btn" data-correct="true">
+        Organizar e priorizar o backlog com clareza, alinhando o que realmente gera valor.
+      </button>
 
-                <button
-                  class="duplo-opcao"
-                  data-cenario="time-silencioso"
-                  data-resposta="esperar-sozinho"
-                  type="button"
-                >
-                  Esperar que cada pessoa resolva sozinha
-                </button>
+      <button type="button" class="duplo-opcao-btn" data-correct="false">
+        Aceitar todas as mudanças imediatamente para mostrar flexibilidade.
+      </button>
 
-                <button
-                  class="duplo-opcao"
-                  data-cenario="time-silencioso"
-                  data-resposta="cobrar-mais"
-                  type="button"
-                >
-                  Cobrar mais velocidade sem investigar o bloqueio
-                </button>
-              </div>
-            </article>
-
-            <article class="duplo-cenario">
-              <p class="duplo-etiqueta">Memória 3</p>
-              <h3>Falso Scrum Master</h3>
-              <p>
-                Uma pessoa tenta controlar todas as decisões, distribui ordens e
-                impede o time de aprender a se organizar.
-              </p>
-
-              <div class="duplo-opcoes">
-                <button
-                  class="duplo-opcao"
-                  data-cenario="falso-scrum-master"
-                  data-resposta="facilitar-autonomia"
-                  type="button"
-                >
-                  Facilitar a autonomia do time sem centralizar decisões
-                </button>
-
-                <button
-                  class="duplo-opcao"
-                  data-cenario="falso-scrum-master"
-                  data-resposta="mandar-mais"
-                  type="button"
-                >
-                  Mandar mais para garantir que tudo saia do jeito certo
-                </button>
-
-                <button
-                  class="duplo-opcao"
-                  data-cenario="falso-scrum-master"
-                  data-resposta="remover-time"
-                  type="button"
-                >
-                  Remover o time das decisões para ganhar tempo
-                </button>
-              </div>
-            </article>
-          </div>
-
-          <p class="duplo-feedback" id="duploFeedback">
-            Escolha a melhor atitude para cada memória do Anti-Time.
-          </p>
-
-          <article class="capitulo5-info" id="duploResultado">
-            <h3>Artefato usado</h3>
-            <p>
-              <strong>Medalhão dos Papéis.</strong> Quando as responsabilidades
-              ficam claras, o Duplo enfraquece. Ao colocar o medalhão nele, a
-              maldição se desfaz e a criatura se revela como um Dev Lendário
-              perdido.
-            </p>
-          </article>
-
-          <button class="btn-primary" id="btnResolverDuplo" type="button">
-            Enfraquecer o Duplo
-          </button>
+      <button type="button" class="duplo-opcao-btn" data-correct="false">
+        Deixar cada desenvolvedor decidir sozinho o que é prioridade.
+      </button>
+    </div>
+  </div>
+</div>
         </section>
 
         <section
@@ -1133,6 +1052,15 @@
               Os artefatos se unem e formam o <strong>MVP</strong>: uma entrega
               mínima, funcional, validada e com valor suficiente para atravessar
               a porta final.
+            </p>
+          </article>
+          <article class="forja-chamada">
+            <p class="forja-chamada__kicker">Artefatos reunidos</p>
+            <h3>A mochila responde à forja</h3>
+            <p>
+              Os artefatos conquistados começam a vibrar. Observe a mochila e
+              use cada item para representar a parte correta de uma entrega
+              ágil.
             </p>
           </article>
           <div class="forja-desafio" id="forjaDesafio">

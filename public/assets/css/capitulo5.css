@@ -402,12 +402,9 @@
 /* 4. LAYOUT PRINCIPAL */
 
 .ponte-layout {
-  width: min(1200px, calc(100% - 2rem));
+  width: min(1240px, calc(100% - 2rem));
   margin: 2rem auto 0;
-  display: grid;
-  grid-template-columns: 1.5fr 0.9fr;
-  gap: 1.5rem;
-  align-items: stretch;
+  display: block;
 }
 
 .mapa-ponte-card,
@@ -427,7 +424,10 @@
 
 /* 5. MAPA DA PONTE */
 
-.mapa-ponte-card { padding: 1.5rem; }
+.mapa-ponte-card {
+  padding: 2rem;
+  min-height: 640px;
+}
 
 .mapa-ponte-header h2 {
   margin: 0.35rem 0 0.65rem;
@@ -443,16 +443,19 @@
 }
 
 .mapa-ponte-header {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.8rem;
 }
 
 .mapa-ponte-header h2 {
-  max-width: 12ch;
+  max-width: none;
   line-height: 1.02;
+  font-size: clamp(2.1rem, 4vw, 3rem);
 }
 
 .mapa-ponte-header p {
-  max-width: 92%;
+  max-width: 980px;
+  font-size: 1.02rem;
+  line-height: 1.75;
 }
 
 .ponte-visual {
@@ -462,11 +465,11 @@
 
 .ponte-visual--mapa {
   position: relative;
-  min-height: auto;
-  padding: 0;
+  min-height: 420px;
+  padding: 1.5rem 1rem 0.5rem;
   display: block;
   border: 0;
-  border-radius: 0;
+  border-radius: 22px;
   overflow: visible;
   background:
     radial-gradient(circle at 18% 72%, rgba(255, 192, 92, 0.16), transparent 18%),
@@ -475,8 +478,10 @@
     radial-gradient(circle at 60% 54%, rgba(255, 192, 92, 0.10), transparent 16%),
     radial-gradient(circle at 75% 48%, rgba(255, 192, 92, 0.10), transparent 16%),
     radial-gradient(circle at 90% 30%, rgba(120, 220, 255, 0.16), transparent 20%),
-    linear-gradient(180deg, rgba(8, 10, 18, 0.08), rgba(5, 7, 14, 0.02));
-  box-shadow: none;
+    linear-gradient(180deg, rgba(8, 10, 18, 0.12), rgba(5, 7, 14, 0.04));
+  box-shadow:
+    inset 0 0 0 1px rgba(212, 175, 55, 0.08),
+    0 18px 40px rgba(0, 0, 0, 0.22);
 }
 
 .ponte-visual--mapa::after {
@@ -498,13 +503,15 @@
 .ponte-mapa-img {
   display: block;
   width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
   height: auto;
   filter:
-    brightness(1.18)
+    brightness(1.16)
     contrast(1.08)
     saturate(1.10)
-    drop-shadow(0 0 18px rgba(255, 180, 80, 0.16))
-    drop-shadow(0 0 34px rgba(255, 220, 120, 0.10));
+    drop-shadow(0 0 20px rgba(255, 180, 80, 0.18))
+    drop-shadow(0 0 40px rgba(255, 220, 120, 0.10));
 }
 
 .ponte-node {
@@ -572,13 +579,24 @@
 }
 
 .ponte-node.concluido .ponte-node-icon {
-  transform: scale(1.03);
-  filter:
-    brightness(1.12)
-    drop-shadow(0 0 12px rgba(110, 255, 150, 0.55))
-    drop-shadow(0 0 24px rgba(70, 220, 110, 0.72))
-    drop-shadow(0 0 42px rgba(20, 150, 70, 0.56))
-    drop-shadow(0 10px 16px rgba(0, 0, 0, 0.44));
+  opacity: 0;
+  transform: scale(0.82);
+  filter: none;
+  pointer-events: none;
+  
+}
+
+.ponte-node.concluido::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(120, 255, 160, 0.34), rgba(20, 150, 70, 0.08) 58%, transparent 72%);
+  box-shadow:
+    0 0 12px rgba(120, 255, 160, 0.35),
+    0 0 24px rgba(20, 150, 70, 0.22);
+  pointer-events: none;
 }
 
 .ponte-node.active:hover .ponte-node-icon {
@@ -606,6 +624,43 @@
 .ponte-node--5 { top: 54%; left: 71%; }
 .ponte-node--final { top: 35%; left: 90.5%; }
 
+.ponte-player {
+  position: absolute;
+  z-index: 4;
+  width: 110px;
+  height: 110px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition:
+    top 0.45s ease,
+    left 0.45s ease,
+    transform 0.25s ease,
+    filter 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.ponte-player img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 10px rgba(255, 220, 120, 0.16));
+}
+
+.ponte-player--duplo { top: 54%; left: 7%; }
+.ponte-player--stakeholder { top: 57%; left: 20%; }
+.ponte-player--necrobranch { top: 56%; left: 30%; }
+.ponte-player--bug-infernal { top: 56%; left: 47%; }
+.ponte-player--forja-mvp { top: 55%; left: 60%; }
+.ponte-player--porta-final { top: 38%; left: 80%; }
+
+.ponte-player--necrobranch-quebrada {
+  top: 51%;
+  left: 29.5%;
+}
+
 .ponte-node-tooltip {
   position: absolute;
   left: 50%;
@@ -630,6 +685,12 @@
 .ponte-node:hover .ponte-node-tooltip {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+.ponte-node-icon.sumido {
+  opacity: 0 !important;
+  transform: scale(0.78);
+  filter: none !important;
 }
 
 .ponte-legendas { margin-top: 0.85rem; }
@@ -688,24 +749,7 @@
 
 /* 6. ENCONTRO ATUAL */
 
-.encontro-atual-card {
-  padding: 1.5rem;
-  position: sticky;
-  top: 110px;
-}
 
-.encontro-intro-card {
-  overflow: hidden;
-  justify-content: flex-start;
-}
-
-.encontro-label {
-  margin: 0;
-  color: #6df0d7;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.82rem;
-}
 
 .encontro-atual-card h3 {
   margin: 0.45rem 0 1rem;
@@ -713,24 +757,6 @@
   font-size: 2.2rem;
   line-height: 1;
   color: #f4efe2;
-}
-
-.encontro-arte {
-  position: relative;
-  display: block;
-  padding: 0;
-  min-height: 320px;
-  border-radius: 18px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at center, rgba(110, 57, 158, 0.22), transparent 60%),
-    rgba(12, 12, 12, 0.92);
-  border: 1px solid rgba(212, 175, 55, 0.18);
-}
-
-.encontro-arte--cinematica {
-  min-height: 360px;
-  flex: 1;
 }
 
 .encontro-arte img {
@@ -757,37 +783,7 @@
     drop-shadow(0 12px 22px rgba(0, 0, 0, 0.42));
 }
 
-.btn-iniciar-hover {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  bottom: auto;
-  transform: translate(-50%, -50%) scale(0.96);
-  opacity: 0;
-  pointer-events: none;
-  padding: 1rem 1.4rem;
-  min-width: 230px;
-  border: 1px solid rgba(181, 122, 255, 0.62);
-  border-radius: 16px;
-  background:
-    linear-gradient(180deg, rgba(46, 22, 78, 0.94), rgba(20, 10, 38, 0.98));
-  color: #f5ecff;
-  font-family: "Cinzel", serif;
-  font-size: 0.98rem;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  box-shadow:
-    0 10px 22px rgba(0, 0, 0, 0.42),
-    0 0 18px rgba(160, 90, 255, 0.24),
-    0 0 34px rgba(120, 60, 255, 0.20);
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease,
-    filter 0.25s ease;
-  animation: pulseDesafio 1.8s ease-in-out infinite;
-}
+
 
 .encontro-arte:hover .btn-iniciar-hover {
   opacity: 1;
@@ -827,21 +823,6 @@
   }
 }
 
-.encontro-arte:hover .btn-iniciar-hover {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-}
-
-.btn-iniciar-hover:hover {
-  border-color: rgba(205, 165, 255, 0.92);
-  box-shadow:
-    0 12px 24px rgba(0, 0, 0, 0.46),
-    0 0 22px rgba(172, 107, 255, 0.34),
-    0 0 42px rgba(123, 59, 255, 0.28);
-  filter: brightness(1.08);
-}
-
 #encontroDescricao {
   margin: 1rem 0 0;
   color: #ddd0bb;
@@ -870,14 +851,21 @@
 .section-number {
   color: #d9a536;
   font-family: "Cinzel", serif;
-  font-size: 1.8rem;
+  font-size: 2.4rem;
+  line-height: 1;
+  display: inline-block;
+  margin-bottom: 0.35rem;
 }
 
 .capitulo5-step h2 {
-  margin: 0.25rem 0 0.75rem;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin: 0.3rem 0 1rem;
+  font-size: clamp(2.4rem, 4.5vw, 4rem);
+  line-height: 0.98;
   font-family: "Cinzel", serif;
   color: #f5d27a;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.22),
+    0 12px 24px rgba(0, 0, 0, 0.24);
 }
 
 .capitulo5-step p {
@@ -920,42 +908,51 @@
 
 .obstaculo-layout--visual {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 0.95fr 1.05fr;
   gap: 2rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .obstaculo-copy {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: center;
+  gap: 1.15rem;
+  padding: 0.5rem 0;
 }
 
 .obstaculo-copy p {
   margin: 0;
-  line-height: 1.7;
+  line-height: 1.85;
+  font-size: 1.04rem;
   color: #e8dcc0;
 }
 
 .obstaculo-media {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  align-items: center;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .obstaculo-media--duplo { align-items: center; }
 
 .obstaculo-img--frame {
   width: 100%;
-  max-width: 430px;
-  border-radius: 16px;
-  border: 1px solid rgba(214, 177, 92, 0.28);
+  max-width: 100%;
+  min-height: 520px;
+  border-radius: 20px;
+  border: 1px solid rgba(214, 177, 92, 0.24);
   box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.38),
-    0 0 0 4px rgba(214, 177, 92, 0.06);
-  background: rgba(10, 12, 20, 0.82);
-  object-fit: contain;
+    0 22px 52px rgba(0, 0, 0, 0.42),
+    0 0 0 4px rgba(214, 177, 92, 0.05),
+    0 0 34px rgba(132, 76, 255, 0.08);
+  background:
+    radial-gradient(circle at center, rgba(110, 57, 158, 0.10), transparent 60%),
+    rgba(10, 12, 20, 0.9);
+  object-fit: cover;
 }
 
 .stakeholder-media { align-items: center; }
@@ -1074,6 +1071,257 @@
   background: rgba(120, 255, 142, 0.1);
 }
 
+.duplo-intro-card {
+  margin-top: 1.5rem;
+}
+
+.duplo-intro-scene {
+  position: relative;
+  min-height: 680px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(214, 177, 92, 0.22);
+  background: rgba(8, 10, 18, 0.88);
+  box-shadow:
+    0 28px 60px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 219, 120, 0.04) inset;
+}
+
+.duplo-intro-image {
+  width: 100%;
+  height: 100%;
+  min-height: 680px;
+  object-fit: cover;
+  display: block;
+  filter:
+    brightness(0.72)
+    contrast(1.05)
+    saturate(1.02);
+}
+
+.duplo-intro-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.2rem;
+  background:
+    linear-gradient(180deg, rgba(5, 5, 10, 0.68) 0%, rgba(5, 5, 10, 0.25) 36%, rgba(5, 5, 10, 0.76) 100%);
+}
+
+.duplo-intro-text {
+  max-width: 760px;
+}
+
+.duplo-intro-text h2 {
+  margin: 0.4rem 0 1rem;
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
+  line-height: 0.96;
+  color: #f5d27a;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.25),
+    0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.duplo-texto-base,
+.duplo-texto-hover {
+  max-width: 700px;
+  font-size: 1.08rem;
+  line-height: 1.85;
+  color: #f2e8d5;
+  margin: 0;
+}
+
+.duplo-texto-hover {
+  margin-top: 1rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  color: #f0d8ff;
+}
+
+.duplo-intro-scene:hover .duplo-texto-hover {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-duplo-iniciar {
+  align-self: center;
+  margin-bottom: 0.5rem;
+  padding: 1rem 1.6rem;
+  min-width: 260px;
+  border: 1px solid rgba(173, 122, 255, 0.52);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(92, 42, 150, 0.96), rgba(34, 14, 58, 0.98));
+  color: #fff2d8;
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow:
+    0 0 16px rgba(158, 85, 255, 0.34),
+    0 0 34px rgba(118, 52, 255, 0.22),
+    0 16px 30px rgba(0, 0, 0, 0.34);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-duplo-iniciar:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 0 20px rgba(180, 110, 255, 0.42),
+    0 0 44px rgba(130, 60, 255, 0.28),
+    0 18px 34px rgba(0, 0, 0, 0.38);
+}
+
+.duplo-desafio-wrap {
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 24px;
+  border: 1px solid rgba(214, 177, 92, 0.14);
+  background:
+    linear-gradient(180deg, rgba(8, 10, 18, 0.96), rgba(5, 7, 14, 0.98));
+  box-shadow:
+    0 22px 46px rgba(0, 0, 0, 0.24);
+}
+
+.duplo-desafio-wrap.hidden {
+  display: none;
+}
+
+.duplo-roles-header {
+  margin-bottom: 1.8rem;
+}
+
+.duplo-roles-header h3 {
+  margin: 0.4rem 0 0.8rem;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  color: #f3d284;
+  font-family: "Cinzel", serif;
+}
+
+.duplo-roles-header p {
+  margin: 0;
+  max-width: 760px;
+  line-height: 1.75;
+  color: #e7dcc6;
+}
+
+.duplo-roles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+}
+
+.duplo-role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  min-height: 180px;
+  padding: 1.2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(214, 177, 92, 0.18);
+  background:
+    linear-gradient(180deg, rgba(10, 12, 20, 0.92), rgba(7, 8, 16, 0.98));
+  color: #f1e6d3;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.duplo-role-card img {
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+  display: block;
+}
+
+.duplo-role-card span {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.duplo-role-card:hover,
+.duplo-role-card.active {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(173, 122, 255, 0.42);
+  box-shadow:
+    0 0 16px rgba(150, 88, 255, 0.18),
+    0 0 30px rgba(118, 52, 255, 0.12),
+    0 16px 28px rgba(0, 0, 0, 0.28);
+}
+
+.duplo-role-panel {
+  padding: 1.6rem;
+  border-radius: 20px;
+  border: 1px solid rgba(214, 177, 92, 0.14);
+  background:
+    linear-gradient(180deg, rgba(12, 13, 22, 0.96), rgba(8, 9, 18, 0.98));
+}
+
+.duplo-role-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #cda95a;
+}
+
+.duplo-role-panel h4 {
+  margin: 0 0 0.85rem;
+  font-size: 1.6rem;
+  font-family: "Cinzel", serif;
+  color: #f5d27a;
+}
+
+.duplo-role-panel p {
+  margin: 0;
+  line-height: 1.8;
+  color: #ece1cd;
+}
+
+.duplo-role-opcoes {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.4rem;
+}
+
+.duplo-opcao-btn {
+  width: 100%;
+  padding: 1rem 1.1rem;
+  text-align: left;
+  border-radius: 16px;
+  border: 1px solid rgba(214, 177, 92, 0.16);
+  background:
+    linear-gradient(180deg, rgba(14, 15, 24, 0.96), rgba(9, 10, 18, 0.98));
+  color: #f0e7d7;
+  cursor: pointer;
+  line-height: 1.6;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.duplo-opcao-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(173, 122, 255, 0.35);
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.24),
+    0 0 16px rgba(145, 76, 255, 0.10);
+}
+
+.duplo-opcao-btn.correta {
+  border-color: rgba(88, 210, 120, 0.46);
+  box-shadow: 0 0 18px rgba(88, 210, 120, 0.16);
+}
+
+.duplo-opcao-btn.errada {
+  border-color: rgba(220, 80, 90, 0.42);
+  box-shadow: 0 0 18px rgba(220, 80, 90, 0.12);
+}
+
 .btn-medalhao {
   animation: pulseMedalhao 1.6s ease-in-out infinite;
   box-shadow:
@@ -1102,6 +1350,66 @@
       0 0 0 0 rgba(214, 177, 92, 0),
       0 8px 24px rgba(0, 0, 0, 0.28);
   }
+}
+
+.obstaculo-media--duplo {
+  position: relative;
+}
+
+.obstaculo-media--duplo .btn-medalhao {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  min-width: 260px;
+  padding: 0.95rem 1.3rem;
+  border-radius: 16px;
+  border: 1px solid rgba(214, 177, 92, 0.48);
+  background:
+    linear-gradient(180deg, rgba(84, 41, 128, 0.96), rgba(34, 15, 58, 0.98));
+  color: #fff1d0;
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.03em;
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.38),
+    0 0 18px rgba(168, 109, 255, 0.24),
+    0 0 36px rgba(120, 60, 255, 0.18);
+}
+
+.obstaculo-media--duplo .btn-medalhao.hidden {
+  display: none !important;
+}
+
+.forja-chamada {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  background:
+    linear-gradient(180deg, rgba(28, 21, 10, 0.88), rgba(16, 12, 8, 0.92));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+.forja-chamada__kicker {
+  margin: 0 0 0.35rem;
+  color: #d9a536;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+}
+
+.forja-chamada h3 {
+  margin: 0 0 0.55rem;
+  font-family: "Cinzel", serif;
+  color: #f4efe2;
+  font-size: 1.35rem;
+}
+
+.forja-chamada p {
+  margin: 0;
+  color: #e7dac2;
+  line-height: 1.7;
 }
 
 /* 10. PORTA FINAL */
@@ -1145,6 +1453,9 @@
     grid-template-columns: 1fr;
   }
 
+  .obstaculo-img--frame {
+  min-height: 360px;
+}
   .obstaculo-img {
     max-width: 140px;
   }
@@ -1199,6 +1510,16 @@
     width: 88px;
     height: 88px;
   }
+
+  .obstaculo-img--frame {
+  min-height: 300px;
+}
+
+.obstaculo-media--duplo .btn-medalhao {
+  min-width: 220px;
+  padding: 0.85rem 1rem;
+  font-size: 0.92rem;
+}
 }
 
 @media (max-width: 640px) {
@@ -1439,4 +1760,53 @@
 .mochila-item:hover .mochila-item-tooltip {
   opacity: 1;
   transform: translateY(-50%) translateX(0);
+}
+
+.mochila-toggle.destacada-forja {
+  border-color: rgba(245, 207, 120, 0.7);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(245, 207, 120, 0.2),
+    0 0 38px rgba(168, 109, 255, 0.18);
+  animation: pulseForjaMochila 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseForjaMochila {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+.mochila-item.flash-artefato {
+  animation: flashArtefato 0.9s ease;
+}
+
+.mochila-item.flash-artefato img {
+  opacity: 1;
+  filter:
+    grayscale(0)
+    brightness(1.16)
+    drop-shadow(0 0 16px rgba(255, 221, 120, 0.48))
+    drop-shadow(0 0 30px rgba(168, 109, 255, 0.28))
+    drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+}
+
+@keyframes flashArtefato {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 221, 120, 0);
+  }
+
+  40% {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 0 1px rgba(255, 221, 120, 0.18) inset,
+      0 0 20px rgba(255, 221, 120, 0.28),
+      0 0 40px rgba(168, 109, 255, 0.22);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 221, 120, 0);
+  }
 }
