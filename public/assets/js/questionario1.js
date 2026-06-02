@@ -28,7 +28,6 @@
   const imagemContainer = document.getElementById("imagem-questao-container");
 
   const botaoConfirmar = document.querySelector(".confirmar");
-  const botaoPular = document.getElementById("botao-pular");
 
   const timerEl = document.getElementById("timer-questao");
 
@@ -47,6 +46,8 @@
   let segundosRestantes = DURACAO_TIMER_SEGUNDOS;
 
   let exameId = null;
+
+  let questionarioEncerrado = false;
 
   // ============================================================================
   // TOKEN
@@ -76,19 +77,19 @@
 
     if (bossHPFill) {
       bossHPFill.style.width = `${porcentagem}%`;
-    }
 
-    bossHPFill.animate(
-      [
-        { transform: "translateX(0)" },
-        { transform: "translateX(-2px)" },
-        { transform: "translateX(2px)" },
-        { transform: "translateX(0)" },
-      ],
-      {
-        duration: 180,
-      },
-    );
+      bossHPFill.animate(
+        [
+          { transform: "translateX(0)" },
+          { transform: "translateX(-2px)" },
+          { transform: "translateX(2px)" },
+          { transform: "translateX(0)" },
+        ],
+        {
+          duration: 180,
+        },
+      );
+    }
 
     if (bossHPTexto) {
       bossHPTexto.textContent = `${Math.round(porcentagem)}%`;
@@ -154,7 +155,12 @@
   }
 
   function iniciarTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+
     carregarTimerLocal();
+    salvarTimerLocal();
     atualizarTimerDOM();
 
     if (segundosRestantes <= 0) {
@@ -163,12 +169,12 @@
     }
 
     timerInterval = setInterval(function () {
-      segundosRestantes--;
+      segundosRestantes = Math.max(0, segundosRestantes - 1);
 
       salvarTimerLocal();
       atualizarTimerDOM();
 
-      if (segundosRestantes <= 0) {
+      if (segundosRestantes === 0) {
         clearInterval(timerInterval);
         encerrarPorTimer();
       }
@@ -176,7 +182,10 @@
   }
 
   function pararTimer() {
-    if (timerInterval) clearInterval(timerInterval);
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
 
     const chave = chaveTimer();
 
@@ -186,6 +195,10 @@
   }
 
   async function encerrarPorTimer() {
+    if (questionarioEncerrado) return;
+
+    questionarioEncerrado = true;
+
     pararTimer();
 
     if (timerEl) {
@@ -214,12 +227,6 @@
     return fila.length;
   }
 
-  function atualizarBotoesNavegacao() {
-  if (botaoPular) {
-    botaoPular.disabled = false;
-  }
-}
-
   // ============================================================================
   // BARRA DE PROGRESSO
   // ============================================================================
@@ -230,16 +237,14 @@
 
     let percentual;
 
-    if (n > total) {
+    if (total <= 1) {
+      percentual = 90;
+    } else if (n > total) {
       percentual = 100;
     } else if (n === total) {
       percentual = 90;
     } else {
       percentual = Math.round(((n - 1) / (total - 1)) * 90);
-
-      if (n === 1) {
-        percentual = 0;
-      }
     }
 
     percentual = Math.max(0, Math.min(100, percentual || 0));
@@ -333,7 +338,6 @@
     restaurarSelecao(q.id_questao);
 
     atualizarPercentual();
-    atualizarBotoesNavegacao();
 
     habilitarRespostas();
     if (botaoConfirmar) {
@@ -380,12 +384,7 @@
     if (botaoConfirmar) {
       botaoConfirmar.disabled = true;
     }
-
-    if (botaoPular) {
-      botaoPular.disabled = true;
-    }
   }
-
   // ============================================================================
   // FEEDBACK DE DANO
   // ============================================================================
@@ -428,6 +427,24 @@
   // ENVIO
   // ============================================================================
 
+  async function encerrarPorToken() {
+    if (questionarioEncerrado) return;
+
+    questionarioEncerrado = true;
+
+    pararTimer();
+
+    desabilitarTudo();
+
+    localStorage.removeItem("token");
+
+    mostrarAlerta("Sua sessão expirou. Faça login novamente.", "erro");
+
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1500);
+  }
+
   async function enviarResposta(idExame, idQuestao, resposta) {
     const token = obterToken();
 
@@ -450,6 +467,11 @@
           resposta,
         }),
       });
+
+      if (res.status === 401) {
+        await encerrarPorToken();
+        return false;
+      }
 
       if (res.ok) {
         const data = await res.json();
@@ -565,52 +587,22 @@
         botaoConfirmar.disabled = false;
       }
 
-      atualizarBotoesNavegacao();
-
       return;
     }
 
     if (indiceAtual < fila.length - 1) {
       indiceAtual++;
       renderizarQuestao();
-    } else {
-      await finalizarQuestionario();
-    }
-  }
-
-  async function aoPular() {
-    const q = questaoAtual();
-
-    if (!q) return;
-
-    if (!confirmadas[q.id_questao]) {
-      respostas[q.id_questao] = RESPOSTA_PULADA;
-    }
-
-    if (indiceAtual < fila.length - 1) {
-      indiceAtual++;
-      renderizarQuestao();
-      return;
-    }
-
-    const primeiraSemResposta = fila.findIndex(
-      (x) =>
-        !confirmadas[x.id_questao] &&
-        respostas[x.id_questao] !== RESPOSTA_PULADA,
-    );
-
-    if (primeiraSemResposta !== -1) {
-      indiceAtual = primeiraSemResposta;
-
-      renderizarQuestao();
-
-      mostrarAlerta("Você ainda tem questões sem resposta.", "info");
     } else {
       await finalizarQuestionario();
     }
   }
 
   async function finalizarQuestionario() {
+    if (questionarioEncerrado) return;
+
+    questionarioEncerrado = true;
+
     desabilitarTudo();
 
     pararTimer();
@@ -645,6 +637,11 @@
           Authorization: `Bearer ${token}`,
         },
       });
+
+      if (res.status === 401) {
+        await encerrarPorToken();
+        return;
+      }
 
       const data = await res.json();
 
@@ -725,10 +722,6 @@
 
   if (botaoConfirmar) {
     botaoConfirmar.addEventListener("click", aoConfirmar);
-  }
-
-  if (botaoPular) {
-    botaoPular.addEventListener("click", aoPular);
   }
 
   // ============================================================================

@@ -1,34 +1,59 @@
 const { verifyToken } = require("../utils/jwt");
-const { findUsuarioById } = require("../../modules/usuarios/usuarios.repository");
+const {
+  findUsuarioById,
+} = require("../../modules/usuarios/usuarios.repository");
 
 async function authMiddleware(req, res, next) {
-    const authorization = req.headers.authorization;
-    
-    if ( !authorization ){
-        return res.status(401).json({ message: "token não informado"});
+  const authorization = req.headers.authorization;
+
+  if (!authorization) {
+    return res.status(401).json({ message: "token não informado" });
+  }
+
+  const [type, token] = authorization.split(" ");
+
+  if (type !== "Bearer" || !token) {
+    return res.status(401).json({ message: "token inválido" });
+  }
+
+  try {
+    const payload = verifyToken(token);
+
+    const usuario = await findUsuarioById(payload.id_usuario);
+    if (!usuario) {
+      return res.status(401).json({ message: "usuário não identificado" });
     }
 
-    const [type, token] = authorization.split(" ");
+    req.usuario = usuario;
 
-    if ( type !== "Bearer" || !token ){
-        return res.status(401).json({ message: "token inválido"});
-    }
+    return next();
+    //return res.json({ usuario });
+  } catch (e) {
+  console.error("[AUTH ERROR]", {
+    name: e.name,
+    message: e.message,
+    stack: e.stack,
+  });
 
-    try{
-        const payload = verifyToken(token);
+  if (
+    e.name === "TokenExpiredError" ||
+    e.name === "JsonWebTokenError"
+  ) {
+    return res.status(401).json({
+      message: "token inválido ou expirado",
+    });
+  }
 
-        const usuario = await findUsuarioById(payload.id_usuario);
-        if ( !usuario ){
-            return res.status(401).json({ message: "usuário não identificado"});
-        }
-
-        req.usuario = usuario;
-
-        return next();
-        //return res.json({ usuario });
-    } catch(e) {
-        return res.status(401).json({ message: "token inválido ou expirado"});
-    }
+  return res.status(500).json({
+    message: "erro interno do servidor",
+  });
 }
+
+    console.error(e);
+
+    return res.status(500).json({
+      message: "erro interno do servidor",
+    });
+  }
 
 module.exports = authMiddleware;
