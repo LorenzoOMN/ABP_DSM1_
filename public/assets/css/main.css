@@ -266,40 +266,69 @@ footer {
 }
 
 /* ================= NAVEGAÇÃO INFERIOR ================= */
+/* ================= NAVEGAÇÃO INFERIOR ================= */
 
-/* =========================================================
-   ZONA DE HOVER FIXA (sem movimento, evita flicker)
-========================================================= */
-.navbar-hover-zone {
+/* Container geral que fixa a barra na tela sem bloquear cliques de fundo */
+.navbar-container-fixo {
     position: fixed !important;
-    /* bottom: clamp(0rem, 14vh, 0rem) !important; */
-    bottom: 0px !important;
+    bottom: 20px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     z-index: 1000 !important;
     width: clamp(340px, 85vw, 720px) !important;
     max-width: 95vw !important;
-    height: 90px !important;
-
-    /* ✅ SEMPRE ativo para detectar hover, mesmo com navbar escondida */
-    pointer-events: auto !important;
-}
-
-/* A zona ativa só existe quando navbar está visível */
-.navbar-hover-zone:has(.navegacao-inferior.navbar-visivel) {
-    pointer-events: auto !important;
+    pointer-events: none !important;
 }
 
 /* =========================================================
-   NAVBAR REAL (se move para cima/baixo)
+   BOTÃO TOGGLE (Canto Direito Absoluto da Tela)
+========================================================= */
+.navbar-toggle-btn {
+    position: fixed !important; 
+    bottom: 30px !important;    
+    right: 30px !important;     /* Fixa na extrema direita da tela */
+    width: 75px !important;
+    height: 75px !important;
+    background: rgba(25, 18, 10, 0.95) !important;
+    border: 2px solid rgba(153, 107, 15, 0.7) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.2rem !important;
+    z-index: 1002 !important;
+    pointer-events: auto !important;
+    transition: transform 0.2s ease, border-color 0.3s ease, background-color 0.3s ease !important;
+}
+
+.navbar-toggle-btn:hover {
+    border-color: rgba(255, 180, 40, 1) !important;
+    transform: scale(1.05) !important;
+}
+
+/* Altera o botão para o X vermelho quando a navbar abrir */
+.navbar-container-fixo:has(.navegacao-inferior.navbar-aberta) ~ #btnToggleNavbar,
+body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar {
+    border-color: rgba(230, 50, 50, 0.8) !important;
+    background: rgba(35, 10, 10, 0.95) !important;
+}
+
+.navbar-container-fixo:has(.navegacao-inferior.navbar-aberta) ~ #btnToggleNavbar .toggle-icon,
+body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar .toggle-icon {
+    transform: rotate(0deg) !important;
+    display: inline-block !important;
+}
+
+/* =========================================================
+   NAVBAR REAL (Se move exclusivamente por clique)
 ========================================================= */
 .navegacao-inferior {
     position: absolute !important;
-    /* Dentro do container fixo */
     bottom: 0 !important;
-    /* Alinhada na base da zona */
     left: 0 !important;
-    width: 100% !important;
+    width: 100% !important; 
     max-width: 100% !important;
     background: rgba(15, 10, 5, 0.94) !important;
     backdrop-filter: blur(10px) !important;
@@ -310,35 +339,24 @@ footer {
     padding: 0.7rem 1rem !important;
     overflow: visible !important;
 
-    /* Estado inicial: escondida (deslocada para baixo) */
-    transform: translateY(calc(100% - 4px)) !important;
-
-    /* Transição com DELAY para evitar flicker */
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.1s !important;
-
-    display: none !important;
+    /* Estado inicial: Escondida (deslocada para baixo) */
     opacity: 0 !important;
     visibility: hidden !important;
+    transform: translateY(calc(100% - 4px)) !important;
+
+    /* Transição suave ao abrir/fechar */
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, visibility 0.35s !important;
     pointer-events: none !important;
 }
 
-/* Quando visível via JS */
-.navegacao-inferior.navbar-visivel {
+/* Exibida quando a classe é alternada pelo JS do botão */
+.navegacao-inferior.navbar-aberta {
     display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    /* Mantém escondida até hover */
-    transform: translateY(calc(100% - 4px)) !important;
-}
-
-/* HOVER NA ZONA FIXA (não na navbar em si) */
-.navbar-hover-zone:hover .navegacao-inferior.navbar-visivel {
     transform: translateY(0) !important;
-    /* Remove delay ao subir para ser instantâneo */
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0s !important;
 }
-
 /* =========================================================
    BARRA DE GATILHO (AGORA NO TOPO)
 ========================================================= */
@@ -557,6 +575,81 @@ footer {
 .navegacao-inferior.bloqueada {
     display: none !important;
 }
+
+/* =========================================================
+   MENSAGEM MINIMALISTA (TOOLTIP) DO BOTÃO
+========================================================= */
+
+/* Elemento base configurado para gerar o balão */
+.navbar-toggle-btn[data-tooltip] {
+    position: fixed !important; /* Mantém a referência correta junto com o botão fixed */
+}
+
+/* Cria o balão de texto */
+.navbar-toggle-btn[data-tooltip]::before {
+    content: attr(data-tooltip); /* Puxa o texto "Menu" automaticamente do HTML */
+    position: absolute;
+    bottom: 60px; /* Joga a mensagem para cima do botão */
+    right: 50%;
+    transform: translateX(50%) scale(0.9); /* Centraliza e começa levemente menor */
+    padding: 5px 10px;
+    background: rgba(15, 10, 5, 0.98); /* Fundo escuro igual a sua navbar */
+    border: 1px solid rgba(153, 107, 15, 0.6); /* Bordinha dourada medieval */
+    color: #fff4e0;
+    font-size: 0.75rem;
+    font-family: inherit;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: 6px;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    
+    /* Estado Inicial: Escondido */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+/* Cria a setinha apontando para baixo */
+.navbar-toggle-btn[data-tooltip]::after {
+    content: "";
+    position: absolute;
+    bottom: 54px; /* Alinha logo abaixo do balão */
+    right: 50%;
+    transform: translateX(50%);
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: rgba(153, 107, 15, 0.6) transparent transparent; /* Cor da bordinha */
+    
+    /* Estado Inicial: Escondido */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s;
+}
+
+/* =========================================================
+   GATILHO: EXIBIR AO PASSAR O MOUSE (HOVER)
+========================================================= */
+.navbar-toggle-btn[data-tooltip]:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(50%) scale(1); /* Animação suave subindo de tamanho */
+}
+
+.navbar-toggle-btn[data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Se você quiser sumir com a mensagem quando o menu já estiver aberto */
+body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar::before,
+body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar::after {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
 
 /* ================= FIM DA NAVEGAÇÃO INFERIOR ================= */
 
