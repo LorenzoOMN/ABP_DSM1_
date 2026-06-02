@@ -101,8 +101,20 @@ app.get("/desafio1", function (_req, res) {
   res.render("desafio1");
 });
 
+app.get("/desafio2", function (_req, res) {
+  res.render("desafio1");
+});
+
 app.get("/desafio3", function (_req, res) {
-  res.render("desafio3");
+  res.render("desafio1");
+});
+
+app.get("/desafio4", function (_req, res) {
+  res.render("desafio1");
+});
+
+app.get("/desafio5", function (_req, res) {
+  res.render("desafio1");
 });
 
 // Rota para questionário 1

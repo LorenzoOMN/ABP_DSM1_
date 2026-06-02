@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/questionario1.css" />
 
-    <title>Questionário 1 | Scrum Dungeon</title>
+    <!-- Título será atualizado via JS -->
+    <title id="page-title">Questionário | Scrum Dungeon</title>
   </head>
 
-  <body class="pagina-questionario">
-    <%- include('partials/header') %> <%- include('./partials/botao_voltar') %>
+  <body class="pagina-questionario" data-questionario-numero="1">
+    <%- include('partials/header') %> 
+    <%- include('partials/botao_voltar') %>
     <%- include('partials/alert') %>
 
     <main class="corpo-questionario">
@@ -21,7 +23,8 @@
             <div class="boss-info">
               <span class="boss-label">BOSS</span>
 
-              <h1 class="boss-nome">Documentação Confusa</h1>
+              <!-- ID para atualizar via JS -->
+              <h1 class="boss-nome" id="boss-nome">Carregando...</h1>
 
               <div class="boss-hp-area">
                 <div class="boss-hp-barra">
@@ -33,11 +36,13 @@
             </div>
 
             <div class="boss-imagem-area">
+              <!-- ID para atualizar via JS -->
               <img
-                src="/assets/img/boss_questionario1.png"
+                src=""
                 alt="Boss do Questionário"
                 class="boss-imagem"
                 id="bossImagem"
+                data-boss-src=""
               />
 
               <div id="damage-float"></div>
@@ -130,8 +135,8 @@
       </section>
     </main>
 
-    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
-    %>
+    <%- include('partials/navegacao_inferior') %> 
+    <%- include('partials/footer') %>
 
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/questionario1.js"></script>
