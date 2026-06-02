@@ -1,173 +1,276 @@
 body {
+
     margin: 0;
     padding: 0;
+
     overflow: hidden;
 
-    background-image: url("/assets/img/parede_de_tijolos.png");
+    background-image: url("/assets/img/fundo_perfil.png");
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
 
-    color: white;
-    font-family: Arial, sans-serif;
+    font-family: "Cinzel", serif;
 }
 
 .perfil-container {
-    min-height: 100vh;
+
+    width: 100vw;
+    height: 100vh;
 
     display: flex;
+
     justify-content: center;
     align-items: center;
-
-    padding: 40px;
-
-    box-sizing: border-box;
 }
 
-.perfil-card {
+.livro-perfil {
+
+    position: relative;
+
+    aspect-ratio: 1200 / 750;
+
+    font-size: clamp(0.8rem, 2.2vw, 2.2rem);
+}
+
+.livro-fundo {
 
     width: 100%;
-    max-width: 600px;
+    height: 100%;
 
-    background: #E2CFA2;
+    object-fit: contain;
 
-    border: 8px solid #8b5a2b;
-
-    border-radius: 16px;
-
-    padding: 32px;
-
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    display: block;
 }
+
+/* ================================= */
+/* TÍTULO */
+/* ================================= */
 
 .perfil-titulo {
 
-    text-align: center;
+    position: absolute;
 
-    margin-bottom: 50px;
+    top: 16.7%;
+    left: 16.25%;
 
-    color: #0f0f0f;
+    color: #2b1708;
+
+    margin: 0;
+
+    font-size: clamp(0.8rem, 2.2vw, 2.2rem);
 }
 
-.perfil-info {
+/* ================================= */
+/* AVATAR */
+/* ================================= */
 
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.avatar-teste {
 
-    padding: 12px 0;
+    position: absolute;
 
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    top: 29.3%;
+    left: 15.8%;
+
+    width: 8.3%;
+    aspect-ratio: 1/1;
+
+    background: white;
+
+    border-radius: 40%;
+
+    border: 3px solid #8b5a2b;
+}
+
+/* ================================= */
+/* NOME */
+/* ================================= */
+
+.nome-usuario {
+
+    position: absolute;
+
+    top: 34.7%;
+    left: 25%;
+
+    color: #2b1708;
+
+    font-size: clamp(0.5rem, 1.3vw, 1.3rem);
+
+    font-weight: bold;
+}
+
+/* ================================= */
+/* EMAIL */
+/* ================================= */
+
+.email-usuario {
+
+    position: absolute;
+
+    top: 39.3%;
+    left: 25%;
+
+    font-size: clamp(0.5rem, 1.2vw, 1rem);
+
+    color: #2b1708;
+}
+
+/* ================================= */
+/* MODULO */
+/* ================================= */
+
+.modulo-container {
+
+    position: absolute;
+
+    top: 50.7%;
+    left: 15.8%;
+
+    color: #2b1708;
+
+    font-size: clamp(0.8rem, 1.5vw, 1.8rem);
+}
+
+#capituloAtual {
+
+    font-weight: 700;
 }
 
 .label {
     font-weight: bold;
-    color: #0f0f0f;
-    font-size: 1.5rem;
 }
 
-.perfil-topo {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+/* ================================= */
+/* CONFIGURAÇÕES */
+/* ================================= */
 
-    margin-bottom: 30px;
+.config-titulo {
+
+    position: absolute;
+
+    top: 16.7%;
+    left: 55%;
+
+    color: #2b1708;
+
+    margin: 0;
+
+    font-size: clamp(1rem, 2.2vw, 2.5rem);
 }
 
-.avatar-teste {
-    width: 100px;
-    height: 100px;
+/* ================================= */
+/* MÚSICA */
+/* ================================= */
 
-    background-color: white;
+.texto-musica {
 
-    border: 3px solid #8b5a2b;
+    position: absolute;
 
-    border-radius: 8px;
+    top: 37.3%;
+    left: 54.2%;
 
-    flex-shrink: 0;
-}
+    color: #2b1708;
 
-.usuario-info {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+    font-size: clamp(0.8rem, 1.4vw, 1.6rem);
 
-.nome-usuario {
-    font-size: 1.5rem;
     font-weight: bold;
-    color: hsl(0, 0%, 6%);
 }
 
-.email-usuario {
-    color: #292929;
-    font-size: 1rem;
+#toggleMusica {
+
+    position: absolute;
+
+    top: 36%;
+    left: 81.7%;
 }
+
+/* ================================= */
+/* EFEITOS */
+/* ================================= */
+
+.texto-efeitos {
+
+    position: absolute;
+
+    top: 48%;
+    left: 54.2%;
+
+    color: #2b1708;
+
+    font-size: clamp(0.8rem, 1.4vw, 1.6rem);
+
+    font-weight: bold;
+}
+
+#toggleEfeitos {
+
+    position: absolute;
+
+    top: 46.7%;
+    left: 81.7%;
+}
+
+/* ================================= */
+/* TOGGLES */
+/* ================================= */
 
 .toggle-audio {
 
-    width: 28px;
-    height: 28px;
+    width: clamp(18px, 2.5vw, 35px);
+    height: clamp(18px, 2.5vw, 35px);
 
-    border: 2px solid #d6a75f;
+    cursor: pointer;
+
+    background: #2ECC71;
+    border: 2px solid #168042;
+
+    border-radius: 40%;
+
+    transition: all 0.2s ease;
+}
+
+/* DESATIVADO */
+
+.toggle-audio.desativado {
 
     background: #462817;
 
-    cursor: pointer;
+    border: 2px solid #996B0F;
+}
+
+/* ================================= */
+/* BOTÃO DEV */
+/* ================================= */
+
+.botao-dev {
+
+    position: absolute;
+
+    bottom: 20%;
+    left: 16%;
+
+    width: clamp(20px, 5vw, 70px);
+    height: clamp(20px, 5vw, 70px);
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    font-weight: bold;
+    padding: 0;
 
-    color: red;
-
-    user-select: none;
-}
-
-.toggle-audio.desativado::after {
-
-    content: "X";
-
-    color: red;
-
-    font-size: 18px;
-}
-
-.configuracao-audio {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 12px 0;
-
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.dev-container {
-    margin-top: 25px;
-
-    display: flex;
-    justify-content: flex-start;
-}
-
-.botao-dev {
-
-    width: 60px;
-    height: 60px;
+    font-size: clamp(5px, 1vw, 14px);
 
     border-radius: 50%;
 
     border: 3px solid #8b5a2b;
 
-    background-color: #462817;
+    background: #462817;
 
     color: #E2CFA2;
 
     font-weight: bold;
-    font-size: 0.9rem;
 
     cursor: pointer;
 
