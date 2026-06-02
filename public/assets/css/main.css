@@ -267,295 +267,198 @@ footer {
 
 /* ================= NAVEGAÇÃO INFERIOR ================= */
 
-/* =========================================================
-   ZONA DE HOVER FIXA (sem movimento, evita flicker)
-========================================================= */
-.navbar-hover-zone {
+
+.navbar-container-fixo {
     position: fixed !important;
-    /* bottom: clamp(0rem, 14vh, 0rem) !important; */
-    bottom: 0px !important;
+    bottom: 20px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     z-index: 1000 !important;
     width: clamp(340px, 85vw, 720px) !important;
     max-width: 95vw !important;
-    height: 90px !important;
-
-    /* ✅ SEMPRE ativo para detectar hover, mesmo com navbar escondida */
-    pointer-events: auto !important;
-}
-
-/* A zona ativa só existe quando navbar está visível */
-.navbar-hover-zone:has(.navegacao-inferior.navbar-visivel) {
-    pointer-events: auto !important;
-}
-
-/* =========================================================
-   NAVBAR REAL (se move para cima/baixo)
-========================================================= */
-.navegacao-inferior {
-    position: absolute !important;
-    /* Dentro do container fixo */
-    bottom: 0 !important;
-    /* Alinhada na base da zona */
-    left: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    background: rgba(15, 10, 5, 0.94) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    border: 2px solid rgba(153, 107, 15, 0.4) !important;
-    border-radius: 18px !important;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(153, 107, 15, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.03) !important;
-    padding: 0.7rem 1rem !important;
-    overflow: visible !important;
-
-    /* Estado inicial: escondida (deslocada para baixo) */
-    transform: translateY(calc(100% - 4px)) !important;
-
-    /* Transição com DELAY para evitar flicker */
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.1s !important;
-
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
     pointer-events: none !important;
 }
 
-/* Quando visível via JS */
-.navegacao-inferior.navbar-visivel {
+/* =========================================================
+   BOTÃO TOGGLE 
+========================================================= */
+.navbar-toggle-btn {
+    position: fixed !important; 
+    bottom: 30px !important;    
+    right: 30px !important;
+    width: 75px !important;
+    height: 75px !important;
+    background: rgba(25, 18, 10, 0.95) !important;
+    border: 2px solid rgba(153, 107, 15, 0.7) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    cursor: pointer !important;
     display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.2rem !important;
+    z-index: 1002 !important;
+    pointer-events: auto !important;
+    transition: transform 0.2s ease, border-color 0.3s ease, background-color 0.3s ease !important;
+}
+
+.navbar-toggle-btn:hover {
+    border-color: rgba(255, 180, 40, 1) !important;
+    transform: scale(1.05) !important;
+}
+
+/* Tooltip minimalista */
+.navbar-toggle-btn[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 60px;
+    right: 50%;
+    transform: translateX(50%) scale(0.9);
+    padding: 5px 10px;
+    background: rgba(15, 10, 5, 0.98);
+    border: 1px solid rgba(153, 107, 15, 0.6);
+    color: #fff4e0;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.navbar-toggle-btn[data-tooltip]::after {
+    content: "";
+    position: absolute;
+    bottom: 54px;
+    right: 50%;
+    transform: translateX(50%);
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: rgba(153, 107, 15, 0.6) transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s;
+}
+
+.navbar-toggle-btn[data-tooltip]:hover::before,
+.navbar-toggle-btn[data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.navbar-toggle-btn[data-tooltip]:hover::before {
+    transform: translateX(50%) scale(1);
+}
+
+body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar::before,
+body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar::after {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* =========================================================
+   ESTRUTURA DO MENU 
+========================================================= */
+.navegacao-inferior {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important; 
+    max-width: 100% !important;
+    background: rgba(15, 10, 5, 0.96) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 2px solid rgba(153, 107, 15, 0.5) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(153, 107, 15, 0.15) !important;
+    padding: 0.7rem 1rem !important;
+    display: flex !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(20px) scale(0.98) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, visibility 0.3s !important;
+    pointer-events: none !important;
+}
+
+.navegacao-inferior.navbar-aberta {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    /* Mantém escondida até hover */
-    transform: translateY(calc(100% - 4px)) !important;
+    transform: translateY(0) scale(1) !important;
 }
 
-/* HOVER NA ZONA FIXA (não na navbar em si) */
-.navbar-hover-zone:hover .navegacao-inferior.navbar-visivel {
-    transform: translateY(0) !important;
-    /* Remove delay ao subir para ser instantâneo */
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0s !important;
-}
-
-/* =========================================================
-   BARRA DE GATILHO (AGORA NO TOPO)
-========================================================= */
-.trigger-barra {
-    position: absolute !important;
-    top: -6px !important;
-    /* Acima da navbar */
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 40px !important;
-    height: 4px !important;
-    background: rgba(244, 208, 63, 0.5) !important;
-    /* Dourado */
-    border-radius: 2px 2px 0 0 !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    z-index: 1001 !important;
-    box-shadow: 0 -2px 8px rgba(244, 208, 63, 0.3) !important;
-}
-
-/* Expande ao hover */
-.navbar-hover-zone:hover .trigger-barra {
-    width: 80px !important;
-    background: rgba(244, 208, 63, 0.9) !important;
-    box-shadow: 0 -4px 12px rgba(244, 208, 63, 0.6) !important;
-}
-
-/* =========================================================
-   CONTEÚDO DA NAVEGAÇÃO
-========================================================= */
 .navegacao-inferior__nav {
     display: flex !important;
-    justify-content: center !important;
+    justify-content: space-around !important;
     align-items: center !important;
-    gap: clamp(0.75rem, 2vw, 1.5rem) !important;
-    padding: 0 !important;
-    margin: 0 !important;
     width: 100% !important;
 }
 
-.navegacao-inferior__item {
+.navegacao-inferior__item, 
+.navegacao-inferior__item:visited {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: center !important;
-    gap: 0.45rem !important;
-    color: #8C7347 !important;
     text-decoration: none !important;
-    font-family: 'Source Serif 4', serif !important;
-    font-size: 0.7rem !important;
-    font-weight: 600 !important;
-    opacity: 0.6 !important;
-    filter: grayscale(1) !important;
-    transition: all 0.3s ease !important;
-    flex: 1 1 0% !important;
-    max-width: 92px !important;
-    min-width: 68px !important;
-    padding: 0.55rem 0.3rem !important;
-    border-radius: 10px !important;
-    position: relative !important;
-    text-align: center !important;
-    overflow: visible !important;
+    font-size: 0.8rem !important;
+    gap: 4px !important;
+    padding: 6px 10px !important;
 }
 
-.navegacao-inferior__item:hover:not(.ativo) {
-    opacity: 1 !important;
-    filter: grayscale(0.2) !important;
-    transform: translateY(-3px) !important;
-    color: #b89d5a !important;
-    background: rgba(153, 107, 15, 0.1) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-}
-
-.navegacao-inferior__icone {
-    width: 30px !important;
-    height: 30px !important;
-    object-fit: contain !important;
-    transition: transform 0.25s ease, filter 0.25s ease !important;
-}
-
-.navegacao-inferior__item:hover:not(.ativo) .navegacao-inferior__icone {
-    transform: scale(1.1) !important;
-}
-
-.navegacao-inferior__item span {
-    white-space: nowrap !important;
-}
-
-.navegacao-inferior__item.ativo {
-    color: #f4d03f !important;
-    opacity: 1 !important;
-    filter: grayscale(0) !important;
-    background: rgba(244, 208, 63, 0.08) !important;
-    border: 1px solid rgba(244, 208, 63, 0.35) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(244, 208, 63, 0.25), 0 0 18px rgba(244, 208, 63, 0.2) !important;
-}
-
-.navegacao-inferior__item.ativo .navegacao-inferior__icone {
-    transform: scale(1.12) !important;
-    filter: drop-shadow(0 0 8px rgba(244, 208, 63, 0.6)) !important;
-    animation: pulseSuave 2.5s ease-in-out infinite !important;
-}
-
-@keyframes pulseSuave {
-
-    0%,
-    100% {
-        filter: drop-shadow(0 0 8px rgba(244, 208, 63, 0.6)) !important;
-    }
-
-    50% {
-        filter: drop-shadow(0 0 14px rgba(244, 208, 63, 0.9)) !important;
-    }
-}
-
-.navegacao-inferior__item.ativo::after {
-    content: '' !important;
-    position: absolute !important;
-    bottom: -2px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 24px !important;
-    height: 2px !important;
-    background: #f4d03f !important;
-    border-radius: 2px !important;
-    box-shadow: 0 0 8px rgba(244, 208, 63, 0.8) !important;
+.navegacao-inferior__item span,
+.navegacao-inferior__item:visited span,
+.navegacao-inferior__item:active span {
+    color: #fff4e0 !important;
 }
 
 /* =========================================================
-   MOBILE (SEM HOVER, SEM ZONA FIXA)
+   RESOLUÇÃO DE CORES E HOVER 
 ========================================================= */
-@media (max-width: 520px) {
-    .navbar-hover-zone {
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        transform: none !important;
-    }
 
+.navegacao-inferior__icone {
+    width: 28px !important;
+    height: 28px !important;
+    object-fit: contain !important;
+    filter: grayscale(100%) opacity(0.5) !important;
+    transition: filter 0.2s ease !important;
+}
+
+.navegacao-inferior__item:hover .navegacao-inferior__icone {
+    filter: grayscale(0%) opacity(1) !important;
+}
+
+a.navegacao-inferior__item.item-ativo {
+    background: rgba(255, 255, 255, 0.05) !important; 
+    border-radius: 12px !important;
+}
+
+a.navegacao-inferior__item.item-ativo .navegacao-inferior__icone {
+    filter: grayscale(0%) opacity(1) !important; 
+}
+
+a.navegacao-inferior__item.item-ativo span {
+    color: #e6a12c !important; 
+}
+
+/* =========================================================
+   REGRAS MOBILE 
+========================================================= */
+@media (max-width: 768px) {
+    .navbar-toggle-btn {
+        display: none !important;
+    }
+    
     .navegacao-inferior {
-        position: fixed !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 16px 16px 0 0 !important;
-        border-left: none !important;
-        border-right: none !important;
-        border-bottom: none !important;
-        border-top: 2px solid rgba(153, 107, 15, 0.4) !important;
-        padding: 0.5rem 0.4rem 0.7rem !important;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(153, 107, 15, 0.15) !important;
-
-        /* Mobile: SEMPRE visível quando desbloqueada, sem transform */
-        transform: none !important;
-        transition: none !important;
-        display: none !important;
-    }
-
-    .navegacao-inferior.navbar-visivel {
         display: flex !important;
-        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(0) scale(1) !important;
+        position: relative !important; 
     }
-
-    .navbar-hover-zone:hover .navegacao-inferior.navbar-visivel {
-        transform: none !important;
-    }
-
-    .trigger-barra {
-        display: none !important;
-        /* Esconde barra no mobile */
-    }
-
-    .navegacao-inferior__nav {
-        gap: 0.35rem !important;
-        justify-content: space-between !important;
-        width: 100% !important;
-    }
-
-    .navegacao-inferior__item {
-        flex: 1 !important;
-        max-width: none !important;
-        min-width: auto !important;
-        padding: 0.45rem 0.2rem !important;
-        font-size: 0.6rem !important;
-    }
-
-    .navegacao-inferior__icone {
-        width: 26px !important;
-        height: 26px !important;
-    }
-}
-
-@media (max-width: 360px) {
-    .navegacao-inferior__item {
-        font-size: 0.55rem !important;
-        gap: 0.25rem !important;
-    }
-
-    .navegacao-inferior__icone {
-        width: 24px !important;
-        height: 24px !important;
-    }
-}
-
-.navegacao-inferior__item:focus-visible {
-    outline: 2px solid #f4d03f !important;
-    outline-offset: 3px !important;
-}
-
-.navegacao-inferior.bloqueada {
-    display: none !important;
 }
 
 /* ================= FIM DA NAVEGAÇÃO INFERIOR ================= */
