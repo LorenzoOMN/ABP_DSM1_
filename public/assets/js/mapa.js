@@ -28,12 +28,31 @@ async function carregarMapa() {
       return;
     }
 
+    bloquearMapaAntesDoDesafio1(data.modulos);
+
     renderizarMapa(data.modulos);
     atualizarAtalhos(data.modulos);
   } catch (error) {
     console.error(error);
     mostrarAlerta("Erro de conexão ao carregar mapa", "erro");
   }
+}
+//função para bloquear o acesso ao mapa antes de concluir o desafio 1, garantindo que os usuários sigam a ordem correta da jornada. Se o usuário estiver no módulo 1 e ainda não tiver concluído a história, ele será redirecionado para a página do capítulo 1. Se já tiver concluído a história, será redirecionado para o desafio 1. Caso contrário, o mapa permanecerá bloqueado.
+function bloquearMapaAntesDoDesafio1(modulos) {
+  const moduloAtual = modulos.find((modulo) => modulo.desafio_atual);
+
+  if (!moduloAtual) return;
+
+  const estaNoModulo1 = Number(moduloAtual.id_modulo) === 1;
+
+  if (!estaNoModulo1) return;
+
+  if (moduloAtual.historia_concluida) {
+    window.location.href = "/desafio1";
+    return;
+  }
+
+  window.location.href = "/capitulo1";
 }
 
 function renderizarMapa(modulos) {
@@ -115,7 +134,9 @@ function atualizarAtalhos(modulos) {
     btnArtefatos.classList.remove("bloqueado");
   }
 
-  const certificadoLiberado = modulos.some((modulo) => modulo.certificado_liberado);
+  const certificadoLiberado = modulos.some(
+    (modulo) => modulo.certificado_liberado,
+  );
 
   if (btnCertificado) {
     btnCertificado.disabled = !certificadoLiberado;
