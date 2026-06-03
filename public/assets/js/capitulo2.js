@@ -47,7 +47,7 @@ const guardioesDetalhesData = {
     conteudo: `
       <p>
         O bardo sorri enquanto toca um ala&uacute;de cheio de marca&ccedil;&otilde;es.
-        Ele aponta para o Product Backlog em sua mochila, como se reconhecesse a pr&oacute;pria assinatura.
+        Ele aponta para o <button class="texto-azul texto-link" data-scroll-to="#artefatos" type="button">Product Backlog</button> em sua mochila, como se reconhecesse a pr&oacute;pria assinatura.
       </p>
 
       <blockquote>
@@ -136,10 +136,12 @@ function rolarParaElementoCapitulo2(seletor, offset = SCROLL_OFFSET_CAPITULO2) {
 }
 
 function configurarScrollCapitulo2() {
-  document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
-    botao.addEventListener("click", () => {
-      rolarParaElementoCapitulo2(botao.dataset.scrollTo);
-    });
+  document.addEventListener("click", (event) => {
+    const botao = event.target.closest("[data-scroll-to]");
+
+    if (!botao) return;
+
+    rolarParaElementoCapitulo2(botao.dataset.scrollTo);
   });
 }
 

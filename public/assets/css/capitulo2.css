@@ -265,6 +265,14 @@
     radial-gradient(circle at 28% 55%, rgba(255, 161, 53, 0.16), transparent 30%);
 }
 
+.capitulo2-hero .hero-overlay img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
 .capitulo2-hero .hero-content {
   max-width: 640px;
   margin-left: auto;
@@ -404,8 +412,8 @@
   z-index: -1;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 50% 44%, rgba(244, 211, 94, 0.10), transparent 46%),
-    radial-gradient(circle at 50% 58%, rgba(214, 173, 53, 0.32), transparent 58%);
+    radial-gradient(circle at 50% 44%, rgba(244, 211, 94, 0.1), transparent 50%),
+    radial-gradient(circle at 50% 58%, rgba(214, 173, 53, 0.1), transparent 58%);
   opacity: 0;
   filter: blur(18px);
   transform: scale(0.82);
@@ -470,7 +478,7 @@
   inset: 8% -12% -4%;
   background:
     radial-gradient(ellipse at 50% 44%, rgba(244, 211, 94, 0.10), transparent 50%),
-    radial-gradient(ellipse at 50% 58%, rgba(214, 173, 53, 0.32), transparent 64%);
+    radial-gradient(ellipse at 50% 58%, rgba(214, 173, 53, 0.1), transparent 64%);
 }
 
 .guardiao-corvo {
@@ -483,6 +491,34 @@
 .guardiao-info {
   margin: 1rem auto 0;
   width: min(860px, 100%);
+}
+
+.guardiao-info:not(.guardiao-info-aberto) {
+  width: min(680px, 100%);
+  padding: clamp(1.45rem, 3vw, 1.9rem);
+  text-align: center;
+  background:
+    radial-gradient(ellipse at center, rgba(80, 38, 95, 0.22), transparent 68%),
+    linear-gradient(135deg, rgba(11, 6, 16, 0.94), rgba(28, 21, 20, 0.92));
+  border-color: rgba(212, 175, 55, 0.72);
+  border-radius: 14px;
+  box-shadow:
+    0 0 34px rgba(212, 175, 55, 0.08),
+    inset 0 0 28px rgba(244, 211, 94, 0.04);
+}
+
+.guardiao-info:not(.guardiao-info-aberto) p {
+  margin: 0;
+  color: #f4e4b7;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.05rem, 1.8vw, 1.32rem);
+  font-weight: 700;
+  line-height: 1.55;
+  text-transform: uppercase;
+}
+
+.guardiao-info:not(.guardiao-info-aberto) p + p {
+  margin-top: 0.35rem;
 }
 
 .guardiao-personagem.is-selected img {
@@ -1079,4 +1115,22 @@
     opacity: 0;
     transform: translateX(70%);
   }
+}
+
+.texto-azul {
+  color: rgb(80, 80, 255);
+}
+
+.texto-link {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.texto-link:hover,
+.texto-link:focus-visible {
+  text-decoration: underline;
 }
