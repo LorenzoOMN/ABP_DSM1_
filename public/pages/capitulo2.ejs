@@ -61,6 +61,11 @@
           <span>Artefatos</span>
         </button>
 
+        <button class="progress-item" data-step="dod" data-scroll-to="#definition-of-done" type="button">
+          <img src="/assets/img/capitulo_2/icones/Definition of Done.png" alt="" />
+          <span>DoD</span>
+        </button>
+
         <button class="progress-item" data-step="porta2" data-scroll-to="#porta2" type="button">
           <img src="/assets/img/capitulo_2/icones/desafio-icone.png" alt="" />
           <span>Desafio</span>
@@ -197,7 +202,7 @@
       </div>
     </section>
 
-    <section class="story-block dod-block reveal" id="definition-of-done" data-step="fluxo">
+    <section class="story-block dod-block reveal" id="definition-of-done" data-step="dod">
       <div class="story-side-icon">
         <img src="/assets/img/capitulo_2/icones/Definition of Done.png" alt="">
       </div>
@@ -238,44 +243,62 @@
         <img src="/assets/img/capitulo_2/icones/desafio-icone.png" alt="">
       </div>
 
-      <div class="story-text">  
-        <h2>O Teste dos Guardiões</h2>
+      <div class="story-text porta2-ritual-text">
+        <p class="porta2-kicker">A Segunda Porta desperta</p>
+        <h2>O Teste dos Guardioes</h2>
 
         <p>
-          A sala escurece. Uma porta dupla surge no centro da câmara, coberta por runas antigas.
-          Do outro lado, não está a mesma sala: há um espaço místico, marcado por círculos mágicos,
-          névoa e três guardiões esperando em silêncio.
+          A sala escurece. Na madeira antiga, tres selos brilham como se reconhecessem
+          tudo o que voce aprendeu diante dos guardioes.
         </p>
 
-        <p>
-          Apenas quem compreende valor, fluxo e entrega pode atravessar esse teste.
-        </p>
+        <div class="porta2-selos" aria-label="Selos necessarios para atravessar a Segunda Porta">
+          <article class="porta2-selo">
+            <span class="porta2-selo-runa">I</span>
+            <strong>Valor</strong>
+            <p>Priorizar o que mais importa.</p>
+          </article>
 
-        <blockquote class="guardioes-juramento" aria-label="Juramento dos Guardiões do Fluxo">
-          <span>“Nós somos a voz do fluxo.</span>
-          <span>Muitos aprendem os nomes. Poucos compreendem o fluxo. Chegou a hora de provar a diferença."</span>
-          <span> </span>
+          <article class="porta2-selo">
+            <span class="porta2-selo-runa">II</span>
+            <strong>Fluxo</strong>
+            <p>Remover bloqueios e manter o time em movimento.</p>
+          </article>
+
+          <article class="porta2-selo">
+            <span class="porta2-selo-runa">III</span>
+            <strong>Entrega</strong>
+            <p>Transformar trabalho pronto em incremento real.</p>
+          </article>
+        </div>
+
+        <blockquote class="guardioes-juramento" aria-label="Juramento dos Guardioes do Fluxo">
+          <span>"Nos somos a voz do fluxo.</span>
+          <span>Muitos aprendem os nomes. Poucos compreendem o fluxo. Chegou a hora de provar a diferenca."</span>
         </blockquote>
-
-        <button class="btn-primary" id="btnConcluirHistoriaCapitulo2" type="button">
-          Concluir história e encarar a segunda porta
-        </button>
-
-        <button class="btn-secondary hidden" id="btnIrDesafioCapitulo2" type="button">
-          Entrar no desafio
-        </button>
-
-        <p class="status-historia" id="statusHistoriaCapitulo2"></p>
       </div>
 
       <div class="story-art porta2-art">
-        <button class="porta2-interativa" id="porta2Scene" type="button" aria-label="Teste dos Guardiões do Fluxo">
+        <button class="porta2-interativa" id="porta2Scene" type="button" aria-label="Teste dos Guardioes do Fluxo">
+          <span class="porta2-aura"></span>
           <span class="porta2-cena"></span>
           <span class="porta2-door porta2-door-left"></span>
           <span class="porta2-door porta2-door-right"></span>
           <span class="porta2-brilho"></span>
-          <span class="porta2-tooltip">Os guardiões aguardam sua resposta...</span>
+          <span class="porta2-tooltip">Os guardioes aguardam sua resposta...</span>
         </button>
+      </div>
+
+      <div class="porta2-actions">
+        <button class="btn-primary" id="btnConcluirHistoriaCapitulo2" type="button">
+          Abrir a Segunda Porta
+        </button>
+
+        <button class="btn-secondary hidden" id="btnIrDesafioCapitulo2" type="button">
+          Atravessar para o desafio
+        </button>
+
+        <p class="status-historia" id="statusHistoriaCapitulo2"></p>
       </div>
     </section>
 

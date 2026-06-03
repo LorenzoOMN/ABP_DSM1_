@@ -708,7 +708,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background-image: url("/assets/img/capitulo_2/portas/porta-capitulo2-aberta-sem-parede-v5.png");
+  background-image: url("/assets/img/capitulo_2/portas/porta-capitulo2-aberta-sem-parede-v3.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -851,6 +851,14 @@
   .artefatos-grid {
     grid-template-columns: 1fr;
   }
+
+  .porta2-selos {
+    grid-template-columns: 1fr;
+  }
+
+  .porta2-selo {
+    min-height: auto;
+  }
 }
 
 @media (max-width: 620px) {
@@ -923,18 +931,129 @@
 ============================================================ */
 
 .porta2-block {
+  position: relative;
   grid-template-columns: 1fr;
   justify-items: center;
   text-align: center;
+  overflow: hidden;
+  padding-top: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+  background:
+    radial-gradient(circle at 50% 68%, rgba(102, 43, 154, 0.18), transparent 38%),
+    radial-gradient(circle at 50% 24%, rgba(212, 175, 55, 0.09), transparent 34%),
+    linear-gradient(180deg, rgba(10, 8, 12, 0.96), rgba(2, 2, 3, 0.86));
 }
 
 .porta2-block .story-text {
-  width: min(780px, 100%);
+  width: min(840px, 100%);
   padding-left: 0;
 }
 
 .porta2-block .story-side-icon {
   left: 2rem;
+}
+
+.porta2-block::before,
+.porta2-block::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.porta2-block::before {
+  top: 46%;
+  width: min(760px, 88vw);
+  aspect-ratio: 1;
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 42px rgba(128, 70, 190, 0.16),
+    inset 0 0 54px rgba(212, 175, 55, 0.06);
+}
+
+.porta2-block::after {
+  bottom: -6rem;
+  width: min(900px, 96vw);
+  height: 14rem;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(96, 36, 146, 0.32), transparent 70%);
+  filter: blur(6px);
+}
+
+.porta2-ritual-text,
+.porta2-art,
+.porta2-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.porta2-kicker {
+  margin: 0 0 0.55rem;
+  color: #d6ad35;
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.82rem, 1.3vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.porta2-selos {
+  width: min(820px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 1.35rem auto 1.4rem;
+}
+
+.porta2-selo {
+  min-height: 156px;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  place-items: center;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid rgba(212, 175, 55, 0.36);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(212, 175, 55, 0.14), transparent 42%),
+    linear-gradient(180deg, rgba(15, 12, 19, 0.92), rgba(5, 5, 7, 0.82));
+  box-shadow:
+    inset 0 0 24px rgba(111, 55, 162, 0.12),
+    0 14px 28px rgba(0, 0, 0, 0.22);
+}
+
+.porta2-selo-runa {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: #fff1b8;
+  font-family: "Cinzel", serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  border: 1px solid rgba(244, 211, 94, 0.54);
+  border-radius: 50%;
+  background: rgba(12, 8, 18, 0.9);
+  box-shadow:
+    0 0 18px rgba(212, 175, 55, 0.18),
+    inset 0 0 16px rgba(116, 57, 172, 0.2);
+}
+
+.porta2-selo strong {
+  color: #f5e6b0;
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.porta2-selo p {
+  margin: 0;
+  color: #d7c9aa;
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
 
 .guardioes-juramento {
@@ -986,6 +1105,20 @@
   place-items: center;
 }
 
+.porta2-aura {
+  position: absolute;
+  inset: 12% 10% 0;
+  z-index: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(151, 61, 230, 0.22), transparent 48%),
+    radial-gradient(circle at 50% 70%, rgba(212, 175, 55, 0.18), transparent 54%);
+  filter: blur(20px);
+  opacity: 0.72;
+  transform: scale(0.92);
+  animation: porta2AuraPulso 4.8s ease-in-out infinite;
+}
+
 .porta2-interativa {
   position: relative;
   display: block;
@@ -1000,7 +1133,7 @@
 }
 
 .porta2-cena {
-  background-image: url("/assets/img/capitulo_2/portas/porta-capitulo2-aberta-sem-parede-v5.png");
+  background-image: url("/assets/img/capitulo_2/portas/porta-capitulo2-aberta-sem-parede-v3.png");
   background-size: cover;
   background-position: center;
   opacity: 0;
@@ -1079,6 +1212,38 @@
   background: rgba(7, 6, 10, 0.92);
   border-color: rgba(212, 175, 55, 0.65);
   box-shadow: 0 0 28px rgba(118, 61, 184, 0.16);
+}
+
+.porta2-actions {
+  width: min(560px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  margin-top: 1.1rem;
+}
+
+.porta2-actions .btn-primary,
+.porta2-actions .btn-secondary {
+  min-width: min(360px, 100%);
+}
+
+.porta2-actions .status-historia {
+  min-height: 1.5em;
+  margin: 0;
+  color: #f4e4b7;
+}
+
+@keyframes porta2AuraPulso {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
 }
 
 @keyframes guardioesJuramentoPulso {

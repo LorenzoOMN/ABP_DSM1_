@@ -283,7 +283,7 @@ async function concluirHistoriaCapitulo2() {
     localStorage.setItem("moduloAtual", String(ID_MODULO));
 
     if (status) {
-      status.textContent = "História concluída. A segunda porta foi liberada.";
+      status.textContent = "Os tres selos responderam. A Segunda Porta esta aberta.";
     }
 
     if (btnConcluir) {
@@ -299,7 +299,7 @@ async function concluirHistoriaCapitulo2() {
     }
 
     if (tooltip) {
-      tooltip.textContent = "A porta se abriu... os guardiões chamam pelo seu teste.";
+      tooltip.textContent = "Atravesse. O Julgamento dos Guardioes comeca do outro lado.";
     }
   } catch (error) {
     console.error(error);
