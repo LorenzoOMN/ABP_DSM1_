@@ -125,6 +125,9 @@
           musicaAtiva = usuario.musica_ativa ?? true;
           efeitosAtivos = usuario.efeitos_ativos ?? true;
 
+          localStorage.setItem("musicaAtiva", musicaAtiva);
+          localStorage.setItem("efeitosAtivos", efeitosAtivos);
+
           atualizarToggles();
         } catch (error) {
           console.error(error);
@@ -168,6 +171,8 @@
         .addEventListener("click", async () => {
           musicaAtiva = !musicaAtiva;
 
+          localStorage.setItem("musicaAtiva", musicaAtiva);
+
           atualizarToggles();
 
           await salvarConfiguracoes();
@@ -177,6 +182,8 @@
         .getElementById("toggleEfeitos")
         .addEventListener("click", async () => {
           efeitosAtivos = !efeitosAtivos;
+
+          localStorage.setItem("efeitosAtivos", efeitosAtivos);
 
           atualizarToggles();
 

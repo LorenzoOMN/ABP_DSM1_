@@ -591,6 +591,37 @@ async function glossario() {
 
 }
 
+// Efeitos Sonoros
+const somClickGlobal = new Audio("/assets/audio/click.mp3");
+
+function efeitosSonorosAtivos() {
+  return localStorage.getItem("efeitosAtivos") !== "false";
+}
+
+function tocarSomClick() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  somClickGlobal.volume = 0.15;
+  somClickGlobal.currentTime = 0;
+
+  somClickGlobal.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+document.addEventListener("click", (event) => {
+
+  const botao = event.target.closest("button");
+
+  if (!botao) {
+    return;
+  }
+
+  tocarSomClick();
+});
+
 glossario();
 
 // Torna funções disponíveis globalmente para outras páginas

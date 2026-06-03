@@ -10,17 +10,6 @@ const formCadastro = document.getElementById("formCadastro");
 const botaoCadastreseAqui = document.getElementById("cadastreseaqui");
 const botaoRealizeoLogin = document.getElementById("realizeologin");
 
-const somClick = new Audio("/assets/audio/click.mp3");
-
-function tocarSomClick() {
-  somClick.volume = 0.25;
-  somClick.currentTime = 0;
-
-  somClick.play().catch((erro) => {
-    console.error("Erro ao tocar áudio:", erro);
-  });
-}
-
 // Ajustado para 180ms para bater com a animação CSS de mobile (0.18s)
 const TEMPO_FECHAMENTO_MS = 180; 
 
@@ -109,14 +98,12 @@ function finalizarFechamento() {
 
 if (botaoCadastro) {
     botaoCadastro.addEventListener("click", function () {
-        tocarSomClick();
         abrirPainel("login");
     });
 }
 
 if (botaoLogin) {
     botaoLogin.addEventListener("click", function () {
-        tocarSomClick();
         abrirPainel("cadastro");
     });
 }
@@ -124,18 +111,15 @@ if (botaoLogin) {
 if (botaoFechar) {
     botaoFechar.addEventListener("click", fecharPainel);
     botaoFechar.addEventListener("touchstart", fecharPainel, { passive: false });
-    tocarSomClick();
 }
 
 if (overlayEscuro) {
     overlayEscuro.addEventListener("click", fecharPainel);
     overlayEscuro.addEventListener("touchstart", fecharPainel, { passive: false });
-    tocarSomClick();
 }
 
 if (botaoCadastreseAqui) {
     botaoCadastreseAqui.addEventListener("click", function (event) {
-        tocarSomClick();
         event.preventDefault();
         abrirPainel("cadastro");
     });
@@ -143,7 +127,6 @@ if (botaoCadastreseAqui) {
 
 if (botaoRealizeoLogin) {
     botaoRealizeoLogin.addEventListener("click", function (event) {
-        tocarSomClick();
         event.preventDefault();
         abrirPainel("login");
     });

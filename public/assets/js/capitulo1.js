@@ -105,9 +105,14 @@ const principiosData = {
 const somPilar = new Audio("/assets/audio/pilar.mp3");
 
 function tocarSomPilar(botao) {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
   // Cria uma nova instância para permitir cliques rápidos e sobreposição do sino
   const som = new Audio("/assets/audio/pilar.mp3");
-  som.volume = 0.25;
+  som.volume = 0.15;
 
   // Desativa a trava de tom do navegador
   som.preservesPitch = false;
