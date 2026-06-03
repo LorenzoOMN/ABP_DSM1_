@@ -742,7 +742,8 @@ async function findTodasQuestoesDoExame(idUsuario) {
       q.alternativa_c,
       q.alternativa_d,
       q.imagem,
-      r.resposta AS resposta_salva
+      r.resposta AS resposta_salva,
+      r.nota AS nota_salva
     FROM exame_atual e
     INNER JOIN questoes q
       ON q.id_modulo = e.id_modulo

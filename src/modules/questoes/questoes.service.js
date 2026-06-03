@@ -315,6 +315,7 @@ async function getTodasQuestoesService(idUsuario) {
         imagem: q.imagem ? `/assets/img/questoes/${q.imagem}` : null,
         // 'x' é resposta de questão pulada — não expõe como selecionada
         resposta_salva: q.resposta_salva === 'x' ? 'pulada' : (q.resposta_salva || null),
+        resposta_correta_salva: q.resposta_salva ? Number(q.nota_salva) > 0 : false,
     }));
 }
 

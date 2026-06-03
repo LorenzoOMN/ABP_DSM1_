@@ -47,10 +47,7 @@ function bloquearMapaAntesDoDesafio1(modulos) {
 
   if (!estaNoModulo1) return;
 
-  if (moduloAtual.historia_concluida) {
-    window.location.href = "/desafio1";
-    return;
-  }
+  if (moduloAtual.historia_concluida) return;
 
   window.location.href = "/capitulo1";
 }
