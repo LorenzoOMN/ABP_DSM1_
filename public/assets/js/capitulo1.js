@@ -104,10 +104,25 @@ const principiosData = {
 
 const somPilar = new Audio("/assets/audio/pilar.mp3");
 
-function tocarSomPilar() {
-  somPilar.volume = 0.25
-  somPilar.currentTime = 0;
-  somPilar.play().catch((erro) => {
+function tocarSomPilar(botao) {
+  // Cria uma nova instância para permitir cliques rápidos e sobreposição do sino
+  const som = new Audio("/assets/audio/pilar.mp3");
+  som.volume = 0.25;
+
+  // Desativa a trava de tom do navegador
+  som.preservesPitch = false;
+  if ('webkitPreservesPitch' in som) som.webkitPreservesPitch = false;
+
+  // Pegamos todos os botões para descobrir qual é a posição (index) deste botão clicado
+  const botoes = Array.from(document.querySelectorAll(".pilar-btn"));
+  const indice = botoes.indexOf(botao);
+
+  // Define os tons baseados na posição: [Pilar 1 (Normal), Pilar 2 (Médio), Pilar 3 (Agudo)]
+  // Se achar a diferença muito sutil, aumente para [1.0, 1.3, 1.6]
+  const tons = [1.0, 1.2, 1.4]; 
+  som.playbackRate = tons[indice] || 1.0;
+
+  som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
   });
 }
@@ -206,7 +221,10 @@ function configurarPilares() {
 
   document.querySelectorAll(".pilar-btn").forEach((botao) => {
     botao.addEventListener("click", () => {
-      tocarSomPilar();
+      
+      // PASSO CRUCIAL: Passamos o elemento 'botao' para a função de som saber quem ela é
+      tocarSomPilar(botao); 
+      
       const pilar = pilaresData[botao.dataset.pilar];
       if (!pilar || !card) return;
 
