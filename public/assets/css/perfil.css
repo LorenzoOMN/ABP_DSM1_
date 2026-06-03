@@ -29,19 +29,17 @@ body {
 
     position: relative;
 
+    width: 80vw;
+
     aspect-ratio: 1200 / 750;
 
     font-size: clamp(0.8rem, 2.2vw, 2.2rem);
-}
 
-.livro-fundo {
+    background-image: url("/assets/img/openbook.png");
 
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-
-    display: block;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* ================================= */
@@ -248,8 +246,8 @@ body {
 
     position: absolute;
 
-    bottom: 12%;
-    left: 11%;
+    bottom: 13%;
+    left: 12%;
 
     width: clamp(15px, 15vw, 250px);
     height: clamp(15px, 15vw, 250px);
