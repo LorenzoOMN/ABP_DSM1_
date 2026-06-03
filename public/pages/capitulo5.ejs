@@ -50,9 +50,12 @@
           aria-expanded="false"
           aria-label="Abrir mochila"
         >
-          <span class="mochila-toggle__icon">🎒</span>
+          <img
+            class="mochila-toggle__img"
+            src="/assets/img/capitulo_5/mochila-icon.png"
+            alt="Mochila"
+          />
         </button>
-
         <div class="mochila-painel hidden" id="mochilaPainel">
           <p class="mochila-titulo">Artefatos da Jornada</p>
 
@@ -122,33 +125,33 @@
             </header>
 
             <div class="ponte-visual ponte-visual--mapa">
-             <img
-  class="ponte-mapa-img"
-  src="/assets/img/capitulo_5/ponte-mapa.png"
-  alt="Mapa da ponte com o caminho até a porta final"
-/>
+              <img
+                class="ponte-mapa-img"
+                src="/assets/img/capitulo_5/ponte-mapa.png"
+                alt="Mapa da ponte com o caminho até a porta final"
+              />
 
-<div
-  class="ponte-player ponte-player--duplo"
-  id="pontePlayer"
-  aria-hidden="true"
->
-  <img src="/assets/img/capitulo_5/equipe-icon.png" alt="" />
-</div>
+              <div
+                class="ponte-player ponte-player--duplo"
+                id="pontePlayer"
+                aria-hidden="true"
+              >
+                <img src="/assets/img/capitulo_5/equipe-icon.png" alt="" />
+              </div>
 
-<button
-  class="ponte-node ponte-node--1 active"
-  data-step="duplo"
-  type="button"
-  aria-label="Duplo"
->
-  <img
-    class="ponte-node-icon"
-    src="/assets/img/capitulo_5/duplo-icon.png"
-    alt="Duplo"
-  />
-  <span class="ponte-node-tooltip">Alguém perdido</span>
-</button>
+              <button
+                class="ponte-node ponte-node--1 active"
+                data-step="duplo"
+                type="button"
+                aria-label="Duplo"
+              >
+                <img
+                  class="ponte-node-icon"
+                  src="/assets/img/capitulo_5/duplo-icon.png"
+                  alt="Duplo"
+                />
+                <span class="ponte-node-tooltip">Alguém perdido</span>
+              </button>
 
               <button
                 class="ponte-node ponte-node--2 locked"
@@ -233,7 +236,6 @@
               <div class="bridge-view" data-bridge-view="5"></div>
             </div>
           </section>
-        
         </section>
 
         <section
@@ -241,109 +243,191 @@
           id="encounter-duplo"
           data-step="duplo"
         >
-          <div class="duplo-intro-card">
-  <div class="duplo-intro-scene">
-    <img
-      class="duplo-intro-image"
-      src="/assets/img/capitulo_5/encontro-duplo.png"
-      alt="O Duplo surge no caminho da ponte"
-    />
+          <div class="duplo-flow">
+            <!-- 1) INTRO CINEMATOGRÁFICA -->
+            <div class="duplo-intro-card" id="duploIntroCard">
+              <div class="duplo-intro-scene">
+                <img
+                  class="duplo-intro-image"
+                  src="/assets/img/capitulo_5/encontro-duplo.png"
+                  alt="O Duplo surge no caminho da ponte"
+                />
 
-    <div class="duplo-intro-overlay">
-      <div class="duplo-intro-text">
-        <span class="section-number">01</span>
-        <p class="section-kicker">OBSTÁCULO 1</p>
-        <h2>O DUPLO</h2>
+                <div class="duplo-intro-overlay">
+                  <div class="duplo-intro-text">
+                    <span class="section-number">01</span>
+                    <p class="section-kicker">OBSTÁCULO 1</p>
+                    <h2>O DUPLO</h2>
 
-        <p class="duplo-texto-base">
-          Uma sombra surge na ponte e começa a imitar os passos do grupo.
-          Quanto mais confusos os papéis, mais forte ela se torna.
-        </p>
+                    <p class="duplo-texto-base">
+                      Uma sombra surge na ponte e começa a imitar os passos do
+                      grupo. Quanto mais confusos os papéis, mais forte ela se
+                      torna.
+                    </p>
 
-        <p class="duplo-texto-hover">
-          Para vencer o Duplo, o time precisa reorganizar seus movimentos
-          e reconhecer com clareza as responsabilidades de cada integrante.
-        </p>
-      </div>
+                    <p class="duplo-texto-hover">
+                      Para vencer o Duplo, o time precisa reorganizar seus
+                      movimentos e reconhecer com clareza as responsabilidades
+                      de cada integrante.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn-duplo-iniciar"
+                    id="btnMostrarDesafioDuplo"
+                  >
+                    Iniciar desafio
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2) DESAFIO DOS PAPÉIS -->
+            <div class="duplo-desafio-wrap hidden" id="duploDesafioWrap">
+              <div class="duplo-roles-header">
+                <p class="section-kicker">REORGANIZE O TIME</p>
+                <h3>Escolha um integrante para analisar o problema</h3>
+                <p>
+                  Cada papel sofre o efeito do Duplo de uma forma diferente.
+                  Clique em um integrante para entender a situação e decidir o
+                  que fazer.
+                </p>
+              </div>
+
+              <div class="duplo-roles-grid">
+                <button
+                  type="button"
+                  class="duplo-role-card active"
+                  data-role="po"
+                >
+                  <img
+                    src="/assets/img/capitulo_5/product-owner-caotico.png"
+                    alt="Product Owner Caótico"
+                  />
+                  <span>Product Owner Caótico</span>
+                  <small class="duplo-role-status" id="status-po"
+                    >Pendente</small
+                  >
+                </button>
+
+                <button type="button" class="duplo-role-card" data-role="sm">
+                  <img
+                    src="/assets/img/capitulo_5/falso-scrum-master.png"
+                    alt="Falso Scrum Master"
+                  />
+                  <span>Falso Scrum Master</span>
+                  <small class="duplo-role-status" id="status-sm"
+                    >Pendente</small
+                  >
+                </button>
+
+                <button type="button" class="duplo-role-card" data-role="dev">
+                  <img
+                    src="/assets/img/capitulo_5/dev-team-silencioso.png"
+                    alt="Time Silencioso"
+                  />
+                  <span>Time Silencioso</span>
+                  <small class="duplo-role-status" id="status-dev"
+                    >Pendente</small
+                  >
+                </button>
+              </div>
+
+              <div class="duplo-role-panel" id="duploRolePanel">
+                <div class="duplo-role-problema">
+                  <p class="duplo-role-label">Situação-problema</p>
+                  <h4 id="duploRoleTitulo">Product Owner Caótico</h4>
+                  <p id="duploRoleTexto">
+                    Na presença do Duplo, o Product Owner muda prioridades a
+                    cada conversa, aceita pedidos soltos e o time nunca sabe o
+                    que realmente precisa entregar. O que fazer?
+                  </p>
+                </div>
+
+                <div class="duplo-role-opcoes" id="duploRoleOpcoes"></div>
+              </div>
+            </div>
+
+            <!-- 3) ETAPA DO MEDALHÃO -->
+            <div class="duplo-medalhao-stage hidden" id="duploMedalhaoStage">
+              <div class="duplo-medalhao-text">
+                <p class="section-kicker">O ARTEFATO DESPERTA</p>
+                <h3>O medalhão começa a reagir</h3>
+                <p>
+                  Conforme o time se reorganiza, o Duplo enfraquece. Um dos
+                  artefatos da mochila começa a vibrar: o Medalhão dos Papéis.
+                  Talvez ele seja a chave para quebrar a maldição.
+                </p>
+              </div>
+
+              <div class="duplo-drop-scene">
+                <img
+                  src="/assets/img/capitulo_5/batalha-duplo.png"
+                  alt="O Duplo enfraquecido diante do grupo"
+                  class="duplo-drop-bg"
+                />
+
+                <div
+                  class="duplo-medalhao-silhueta"
+                  id="duploMedalhaoDropzone"
+                  data-dropzone="medalhao"
+                >
+                  <img
+                    src="/assets/img/capitulo_5/medalhao-silhueta.png"
+                    alt="Silhueta do medalhão"
+                  />
+                  <span class="duplo-medalhao-hint"
+                    >algo brilha na mochila</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- 4) REVELAÇÃO DA PALADINA -->
+           <section id="duploRevelacaoStage" class="duplo-revelacao-stage hidden">
+  <div class="duplo-reveal-cinematic" id="duploRevealCinematic">
+    <div class="duplo-reveal-media">
+      <img
+        class="duplo-reveal-base"
+        src="/assets/img/capitulo_5/batalha-duplo.png"
+        alt="A criatura enfraquecida diante do medalhão"
+      />
+
+      <img
+        class="duplo-reveal-paladina"
+        id="duploRevealPaladina"
+        src="/assets/img/capitulo_5/paladina-lendaria.png"
+        alt="A desenvolvedora lendária revelada"
+      />
+
+      <div class="duplo-reveal-vinheta"></div>
+    </div>
+
+    <div class="duplo-reveal-copy" id="duploRevealCopy">
+      <span class="duplo-reveal-tag">Maldição desfeita</span>
+
+      <h3 class="duplo-reveal-title">
+        O Duplo revela sua verdadeira forma
+      </h3>
+
+      <p class="duplo-reveal-text">
+        Quando o medalhão toca a criatura, a maldição se rompe. A forma instável
+        se desfaz, e diante de vocês surge uma desenvolvedora lendária — uma
+        paladina perdida no tempo. Reconhecendo a causa do time, ela jura sua
+        espada à jornada e decide seguir com vocês pela travessia final.
+      </p>
 
       <button
         type="button"
-        class="btn-duplo-iniciar"
-        id="btnMostrarDesafioDuplo"
+        class="btn-prosseguir-epico hidden"
+        id="btnConcluirDuploNarrativa"
       >
-        Iniciar desafio
+        Prosseguir com a paladina
       </button>
     </div>
   </div>
-</div>
-
-<div class="duplo-desafio-wrap hidden" id="duploDesafioWrap">
-  <div class="duplo-roles-header">
-    <p class="section-kicker">REORGANIZE O TIME</p>
-    <h3>Escolha um integrante para analisar o problema</h3>
-    <p>
-      Cada papel sofre o efeito do Duplo de uma forma diferente.
-      Clique em um integrante para entender a situação e decidir o que fazer.
-    </p>
-  </div>
-
-  <div class="duplo-roles-grid">
-    <button
-      type="button"
-      class="duplo-role-card active"
-      data-role="po"
-    >
-      <img src="/assets/img/capitulo_5/po-icon.png" alt="Product Owner" />
-      <span>Product Owner</span>
-    </button>
-
-    <button
-      type="button"
-      class="duplo-role-card"
-      data-role="sm"
-    >
-      <img src="/assets/img/capitulo_5/scrum-master-icon.png" alt="Scrum Master" />
-      <span>Scrum Master</span>
-    </button>
-
-    <button
-      type="button"
-      class="duplo-role-card"
-      data-role="dev"
-    >
-      <img src="/assets/img/capitulo_5/dev-team-icon.png" alt="Dev Team" />
-      <span>Dev Team</span>
-    </button>
-  </div>
-
-  <div class="duplo-role-panel" id="duploRolePanel">
-    <div class="duplo-role-problema">
-      <p class="duplo-role-label">Situação-problema</p>
-      <h4 id="duploRoleTitulo">Product Owner</h4>
-      <p id="duploRoleTexto">
-        Na presença do Duplo, o Product Owner muda prioridades a cada conversa,
-        aceita pedidos soltos e o time nunca sabe o que realmente precisa entregar.
-        O que fazer?
-      </p>
-    </div>
-
-    <div class="duplo-role-opcoes" id="duploRoleOpcoes">
-      <button type="button" class="duplo-opcao-btn" data-correct="true">
-        Organizar e priorizar o backlog com clareza, alinhando o que realmente gera valor.
-      </button>
-
-      <button type="button" class="duplo-opcao-btn" data-correct="false">
-        Aceitar todas as mudanças imediatamente para mostrar flexibilidade.
-      </button>
-
-      <button type="button" class="duplo-opcao-btn" data-correct="false">
-        Deixar cada desenvolvedor decidir sozinho o que é prioridade.
-      </button>
-    </div>
-  </div>
-</div>
-        </section>
-
+</section>
         <section
           class="capitulo5-step reveal obstaculo-step encounter-stage hidden"
           id="encounter-stakeholder"

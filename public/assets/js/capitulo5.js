@@ -1,3 +1,7 @@
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
 const ID_MODULO = 5;
 
 const ETAPAS_CAPITULO_5 = [
@@ -129,6 +133,8 @@ const MAPA_RESPOSTA_ARTEFATO = {
 
 const impedimentosResolvidos = new Set();
 const respostasImpedimentos = {};
+
+
 
 function obterToken() {
   const token = localStorage.getItem("token");
@@ -329,154 +335,181 @@ function concluirEtapaCapitulo5(step) {
 }
 
 function configurarDesafioDuplo() {
-  const botoesOpcao = document.querySelectorAll(".duplo-opcao");
-  const btnResolver = document.getElementById("btnResolverDuplo");
-  const feedback = document.getElementById("duploFeedback");
-  const desafio = document.getElementById("duploDesafio");
+  const btnMostrarDesafioDuplo = document.getElementById("btnMostrarDesafioDuplo");
+  const duploDesafioWrap = document.getElementById("duploDesafioWrap");
+  const duploRoleCards = document.querySelectorAll(".duplo-role-card");
+  const duploRoleTitulo = document.getElementById("duploRoleTitulo");
+  const duploRoleTexto = document.getElementById("duploRoleTexto");
+  const duploRoleOpcoes = document.getElementById("duploRoleOpcoes");
 
-  if (!botoesOpcao.length || !btnResolver) return;
+  const duploMedalhaoStage = document.getElementById("duploMedalhaoStage");
+  const duploRevelacaoStage = document.getElementById("duploRevelacaoStage");
+  const btnConcluirDuploNarrativa = document.getElementById("btnConcluirDuploNarrativa");
 
-  botoesOpcao.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const cenario = botao.dataset.cenario;
-      const resposta = botao.dataset.resposta;
+  function marcarRoleResolvida(roleKey) {
+    if (duploRoleProgress[roleKey]) return;
 
-      if (!cenario || !resposta) return;
+    duploRoleProgress[roleKey] = true;
 
-      respostasDuplo[cenario] = resposta;
+    const card = document.querySelector(`.duplo-role-card[data-role="${roleKey}"]`);
+    const status = document.getElementById(`status-${roleKey}`);
 
-      document
-        .querySelectorAll(`.duplo-opcao[data-cenario="${cenario}"]`)
-        .forEach((opcao) => {
-          opcao.classList.remove("ativo");
+    if (card) card.classList.add("resolvido");
+    if (status) status.textContent = "Resolvido";
+
+    const concluiuTudo = Object.values(duploRoleProgress).every(Boolean);
+
+    if (concluiuTudo && duploMedalhaoStage) {
+      duploMedalhaoStage.classList.remove("hidden");
+
+      document.body.classList.add("mochila-highlight-medalhao");
+
+      const medalhao = document.querySelector('[data-artefato="medalhao"]');
+      if (medalhao) {
+        medalhao.classList.add("destacado");
+        medalhao.setAttribute("draggable", "true");
+        medalhao.id = "artefatoMedalhao";
+      }
+
+      setTimeout(() => {
+        duploMedalhaoStage.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
         });
+      }, 250);
+    }
+  }
 
-      botao.classList.add("ativo");
-
-      const totalRespondidas = Object.keys(respostasDuplo).length;
-      const totalCenarios = Object.keys(RESPOSTAS_DUPLO).length;
-
-      if (feedback) {
-        feedback.textContent = `Memórias analisadas: ${totalRespondidas}/${totalCenarios}.`;
-        feedback.className = "duplo-feedback";
-      }
+  if (btnMostrarDesafioDuplo && duploDesafioWrap) {
+    btnMostrarDesafioDuplo.addEventListener("click", () => {
+      duploDesafioWrap.classList.remove("hidden");
+      duploDesafioWrap.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     });
-  });
+  }
 
-  btnResolver.addEventListener("click", () => {
-    const cenarios = Object.keys(RESPOSTAS_DUPLO);
-    const respondeuTudo = cenarios.every((cenario) => respostasDuplo[cenario]);
+  if (duploRoleCards.length) {
+    duploRoleCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        duploRoleCards.forEach((item) => item.classList.remove("active"));
+        card.classList.add("active");
 
-    if (!respondeuTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "O Duplo ainda se multiplica. Analise todas as memórias antes de usar o Medalhão.";
-        feedback.className = "duplo-feedback erro";
-      }
-
-      return;
-    }
-
-    const acertouTudo = cenarios.every(
-      (cenario) => respostasDuplo[cenario] === RESPOSTAS_DUPLO[cenario],
-    );
-
-    if (!acertouTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "A maldição resiste. Algumas escolhas ainda reforçam o Anti-Time. Revise as atitudes do Scrum Master.";
-        feedback.className = "duplo-feedback erro";
-      }
-
-      return;
-    }
-
-    if (feedback) {
-      feedback.textContent =
-        "O Medalhão brilha. O Duplo perde sua forma sombria e se revela como um Dev Lendário perdido.";
-      feedback.className = "duplo-feedback sucesso";
-    }
-
-    if (desafio) {
-      desafio.classList.add("resolvido");
-    }
-
-    botoesOpcao.forEach((botao) => {
-      botao.disabled = true;
-
-      const cenario = botao.dataset.cenario;
-      const respostaCorreta = RESPOSTAS_DUPLO[cenario];
-
-      if (botao.dataset.resposta === respostaCorreta) {
-        botao.classList.add("correta");
-      }
+        const roleKey = card.dataset.role;
+        renderizarRoleDuplo(
+          roleKey,
+          duploRoleTitulo,
+          duploRoleTexto,
+          duploRoleOpcoes,
+          marcarRoleResolvida
+        );
+      });
     });
 
-    btnResolver.disabled = true;
-    btnResolver.classList.add("concluida");
-    btnResolver.textContent = "Duplo enfraquecido";
+    renderizarRoleDuplo(
+      "po",
+      duploRoleTitulo,
+      duploRoleTexto,
+      duploRoleOpcoes,
+      marcarRoleResolvida
+    );
+  }
 
-    const duploCena = document.getElementById("duploCena");
-    const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
-
-    if (duploCena) {
-      duploCena.src = "/assets/img/capitulo_5/batalha-duplo.png";
-      duploCena.alt = "O Duplo enfraquecido após a batalha";
-    }
-
-    if (btnMedalhaoDuplo) {
-      btnMedalhaoDuplo.classList.remove("hidden");
-    }
-    atualizarMochila();
-  });
+  if (btnConcluirDuploNarrativa) {
+    btnConcluirDuploNarrativa.addEventListener("click", () => {
+      concluirEtapaCapitulo5("duplo");
+      atualizarMapaPonte();
+      atualizarMochila();
+      selecionarEtapaCapitulo5("stakeholder", true);
+    });
+  }
 }
 
-function configurarTransformacaoDuplo() {
-  const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
-  const duploCena = document.getElementById("duploCena");
+function configurarDropMedalhaoDuplo() {
+  const duploMedalhaoDropzone = document.getElementById("duploMedalhaoDropzone");
+  const duploRevelacaoStage = document.getElementById("duploRevelacaoStage");
 
-  if (!btnMedalhaoDuplo || !duploCena) return;
+  if (!duploMedalhaoDropzone) return;
 
-  btnMedalhaoDuplo.addEventListener("click", () => {
-    duploCena.src = "/assets/img/capitulo_5/paladina-lendaria.png";
-    duploCena.alt = "A Paladina Lendária libertada da maldição";
+  function obterMedalhaoAtual() {
+    return document.getElementById("artefatoMedalhao");
+  }
 
-    btnMedalhaoDuplo.disabled = true;
-    btnMedalhaoDuplo.classList.add("concluida");
-    btnMedalhaoDuplo.textContent = "Paladina libertada";
+  document.addEventListener("dragstart", (event) => {
+    const medalhao = obterMedalhaoAtual();
+    if (!medalhao) return;
+    if (event.target !== medalhao && !medalhao.contains(event.target)) return;
 
-    const itemDuplo = document.querySelector(
-      '.progress-item[data-step="duplo"] img',
-    );
-    if (itemDuplo) {
-      itemDuplo.src = "/assets/img/capitulo_5/paladina-icon.png";
-      itemDuplo.alt = "Paladina Lendária";
-    }
-
-    const ponteNodeDuplo = document.querySelector(
-      '.ponte-node[data-step="duplo"] img',
-    );
-    if (ponteNodeDuplo) {
-      ponteNodeDuplo.src = "/assets/img/capitulo_5/paladina-icon.png";
-      ponteNodeDuplo.alt = "Paladina Lendária";
-    }
-
-    const encontroImagem = document.getElementById("encontroImagem");
-    if (encontroImagem && etapaAtualCapitulo5 === "duplo") {
-      encontroImagem.src = "/assets/img/capitulo_5/paladina-lendaria.png";
-      encontroImagem.alt = "Paladina Lendária";
-    }
-
-    const feedback = document.getElementById("duploFeedback");
-    if (feedback) {
-      feedback.textContent =
-        "A maldição foi quebrada. O Duplo revela sua verdadeira forma: uma Paladina Lendária que agora jura sua espada à causa do time.";
-      feedback.className = "duplo-feedback sucesso";
-    }
-    atualizarMochila();
-    concluirEtapaCapitulo5("duplo");
+    event.dataTransfer.setData("text/plain", "medalhao");
   });
+
+  duploMedalhaoDropzone.addEventListener("dragenter", () => {
+  duploMedalhaoDropzone.classList.add("is-over");
+});
+duploMedalhaoDropzone.addEventListener("dragover", (event) => {
+  event.preventDefault();
+  duploMedalhaoDropzone.classList.add("is-over");
+});
+
+duploMedalhaoDropzone.addEventListener("dragleave", () => {
+  duploMedalhaoDropzone.classList.remove("is-over");
+});
+
+duploMedalhaoDropzone.addEventListener("drop", (event) => {
+  event.preventDefault();
+  duploMedalhaoDropzone.classList.remove("is-over");
+
+  const artefato = event.dataTransfer.getData("text/plain");
+  if (artefato !== "medalhao") return;
+
+  const medalhao = obterMedalhaoAtual();
+  if (medalhao) {
+    medalhao.classList.add("hidden");
+    medalhao.removeAttribute("draggable");
+    medalhao.removeAttribute("id");
+  }
+
+  document.body.classList.remove("mochila-highlight-medalhao");
+
+  const itemMedalhao = document.querySelector('[data-artefato="medalhao"]');
+if (itemMedalhao) {
+  itemMedalhao.classList.remove("destacado", "convocado");
 }
+
+ if (duploRevelacaoStage) {
+  const duploRevealCopy = document.getElementById("duploRevealCopy");
+  const btnConcluirDuploNarrativa = document.getElementById("btnConcluirDuploNarrativa");
+
+  duploRevelacaoStage.classList.remove("hidden");
+
+  setTimeout(() => {
+    duploRevelacaoStage.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, 180);
+
+  setTimeout(() => {
+    duploRevelacaoStage.classList.add("revealed");
+  }, 300);
+
+  setTimeout(() => {
+    if (duploRevealCopy) {
+      duploRevealCopy.classList.add("show");
+    }
+  }, 950);
+
+  setTimeout(() => {
+    if (btnConcluirDuploNarrativa) {
+      btnConcluirDuploNarrativa.classList.remove("hidden");
+    }
+  }, 1450);
+}
+});
+
+}
+
 
 function configurarDesafioStakeholder() {
   const botoesOpcao = document.querySelectorAll(".stakeholder-opcao");
@@ -1099,7 +1132,7 @@ function atualizarMochila() {
     const img = bau.querySelector("img");
     const tooltip = bau.querySelector(".mochila-item-tooltip");
     if (img) {
-      img.src = "/assets/img/artefatos/bau-da-iteracao-icon.png";
+      img.src = "/assets/img/artefatos/bau-iteracao-icon.png";
       img.alt = "Baú da Iteração";
     }
     if (tooltip) {
@@ -1176,33 +1209,17 @@ function atualizarMochila() {
   }
 
   // Destaques por etapa
-  const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
+const duploMedalhaoStage = document.getElementById("duploMedalhaoStage");
 
-  if (
-    etapaAtualCapitulo5 === "duplo" &&
-    btnMedalhaoDuplo &&
-    !btnMedalhaoDuplo.classList.contains("hidden") &&
-    medalhao &&
-    !etapasConcluidas.has("duplo")
-  ) {
-    medalhao.classList.remove("destacado");
-    medalhao.classList.add("convocado");
-  } else if (etapaAtualCapitulo5 === "duplo" && medalhao) {
-    medalhao.classList.add("destacado");
-  }
-
-  if (etapaAtualCapitulo5 === "stakeholder" && backlog) {
-    backlog.classList.add("destacado");
-  }
-
-  if (etapaAtualCapitulo5 === "necrobranch" && ampulheta) {
-    ampulheta.classList.add("destacado");
-  }
-
-  if (etapaAtualCapitulo5 === "bug-infernal" && bau) {
-    bau.classList.add("destacado");
-  }
-
+if (
+  etapaAtualCapitulo5 === "duplo" &&
+  duploMedalhaoStage &&
+  !duploMedalhaoStage.classList.contains("hidden") &&
+  medalhao &&
+  !etapasConcluidas.has("duplo")
+) {
+  medalhao.classList.add("convocado");
+}
   // Forja -> só ficam 4 artefatos finais
   if (etapaAtualCapitulo5 === "forja-mvp") {
     if (btnMochila) {
@@ -1429,9 +1446,10 @@ function atualizarPosicaoJogador() {
   pontePlayer.classList.add(classeAtual);
 }
 
+
 const duploRolesData = {
   po: {
-    titulo: "Product Owner",
+    titulo: "Product Owner Caótico",
     texto:
       "Na presença do Duplo, o Product Owner muda prioridades a cada conversa, aceita pedidos soltos e o time nunca sabe o que realmente precisa entregar. O que fazer?",
     opcoes: [
@@ -1442,65 +1460,77 @@ const duploRolesData = {
       },
       {
         texto:
-          "Aceitar todas as mudanças imediatamente para mostrar flexibilidade.",
+          "Aceitar todas as mudanças imediatamente para agradar todo mundo.",
         correta: false,
       },
       {
         texto:
-          "Deixar cada desenvolvedor decidir sozinho o que é prioridade.",
+          "Deixar o time decidir sozinho o que é prioridade sem alinhamento.",
         correta: false,
       },
     ],
   },
 
   sm: {
-    titulo: "Scrum Master",
+    titulo: "Falso Scrum Master",
     texto:
-      "Diante do Duplo, o Scrum Master deixa os conflitos crescerem, não esclarece o processo e o time começa a se confundir ainda mais sobre como trabalhar junto. O que fazer?",
+      "Diante do Duplo, o Scrum Master apenas observa a confusão crescer. Os papéis ficam nebulosos, os impedimentos não são tratados e o time perde o foco. O que fazer?",
     opcoes: [
       {
         texto:
-          "Facilitar o alinhamento do time, reforçar papéis e ajudar o grupo a remover a confusão.",
+          "Facilitar o alinhamento, reforçar os papéis e ajudar o time a remover a confusão.",
         correta: true,
       },
       {
         texto:
-          "Assumir todas as decisões sozinho para ganhar velocidade.",
+          "Tomar todas as decisões sozinho para acelerar o processo.",
         correta: false,
       },
       {
         texto:
-          "Ignorar a confusão porque o time deve se resolver sem apoio.",
+          "Ignorar a situação porque cada integrante deve se virar sozinho.",
         correta: false,
       },
     ],
   },
 
   dev: {
-    titulo: "Dev Team",
+    titulo: "Time Silencioso",
     texto:
-      "Sob a influência do Duplo, o Dev Team começa a misturar responsabilidades, duplicar esforço e trabalhar sem coordenação. Ninguém sabe exatamente quem faz o quê. O que fazer?",
+      "Sob o efeito do Duplo, o time de desenvolvimento trabalha em silêncio, sem coordenação e sem clareza sobre responsabilidades. Cada um anda para um lado. O que fazer?",
     opcoes: [
       {
         texto:
-          "Distribuir responsabilidades com clareza e colaborar com foco em um objetivo comum.",
+          "Distribuir responsabilidades com clareza e colaborar em torno de um objetivo comum.",
         correta: true,
       },
       {
         texto:
-          "Cada pessoa escolhe qualquer tarefa, mesmo sem alinhamento com o restante do time.",
+          "Cada pessoa pega qualquer tarefa, mesmo sem alinhamento com o restante do grupo.",
         correta: false,
       },
       {
         texto:
-          "Esperar o Product Owner resolver sozinho toda a organização interna do desenvolvimento.",
+          "Esperar que apenas o Product Owner resolva toda a organização do trabalho.",
         correta: false,
       },
     ],
   },
 };
 
-function renderizarRoleDuplo(roleKey, duploRoleTitulo, duploRoleTexto, duploRoleOpcoes) {
+const duploRoleProgress = {
+  po: false,
+  sm: false,
+  dev: false,
+};
+
+function renderizarRoleDuplo(
+  roleKey,
+  duploRoleTitulo,
+  duploRoleTexto,
+  duploRoleOpcoes,
+  onAcerto
+) {
   const role = duploRolesData[roleKey];
   if (!role || !duploRoleTitulo || !duploRoleTexto || !duploRoleOpcoes) return;
 
@@ -1513,15 +1543,17 @@ function renderizarRoleDuplo(roleKey, duploRoleTitulo, duploRoleTexto, duploRole
     btn.type = "button";
     btn.className = "duplo-opcao-btn";
     btn.textContent = opcao.texto;
-    btn.dataset.correct = opcao.correta ? "true" : "false";
 
     btn.addEventListener("click", () => {
       duploRoleOpcoes.querySelectorAll(".duplo-opcao-btn").forEach((b) => {
         b.classList.remove("correta", "errada");
       });
 
-      if (btn.dataset.correct === "true") {
+      if (opcao.correta) {
         btn.classList.add("correta");
+        if (typeof onAcerto === "function") {
+          onAcerto(roleKey);
+        }
       } else {
         btn.classList.add("errada");
       }
@@ -1534,69 +1566,46 @@ function renderizarRoleDuplo(roleKey, duploRoleTitulo, duploRoleTexto, duploRole
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
 
+  window.scrollTo({
+  top: 0,
+  left: 0,
+  behavior: "auto",
+});
+
   await carregarEstadoHistoria();
 
   configurarRevealNoScroll();
   configurarNavegacaoCapitulo5();
 
   configurarDesafioDuplo();
+  configurarDropMedalhaoDuplo();
   configurarDesafioStakeholder();
   configurarDesafioNecrobranch();
   configurarDesafioBugInfernal();
   configurarForjaMvp();
-  configurarTransformacaoDuplo();
   configurarMochila();
   atualizarMochila();
   configurarCliqueArtefatosMochila();
 
-  const btnMostrarDesafioDuplo = document.getElementById("btnMostrarDesafioDuplo");
-const duploDesafioWrap = document.getElementById("duploDesafioWrap");
-const duploRoleCards = document.querySelectorAll(".duplo-role-card");
-const duploRoleTitulo = document.getElementById("duploRoleTitulo");
-const duploRoleTexto = document.getElementById("duploRoleTexto");
-const duploRoleOpcoes = document.getElementById("duploRoleOpcoes");
-
-if (btnMostrarDesafioDuplo && duploDesafioWrap) {
-  btnMostrarDesafioDuplo.addEventListener("click", () => {
-    duploDesafioWrap.classList.remove("hidden");
-    duploDesafioWrap.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  });
-}
-
-if (duploRoleCards.length) {
-  duploRoleCards.forEach((card) => {
-    card.addEventListener("click", () => {
-      duploRoleCards.forEach((item) => item.classList.remove("active"));
-      card.classList.add("active");
-
-      const roleKey = card.dataset.role;
-      renderizarRoleDuplo(
-        roleKey,
-        duploRoleTitulo,
-        duploRoleTexto,
-        duploRoleOpcoes
-      );
-    });
-  });
-
-  renderizarRoleDuplo(
-    "po",
-    duploRoleTitulo,
-    duploRoleTexto,
-    duploRoleOpcoes
-  );
-}
+ 
 
   configurarConclusaoHistoria();
   configurarEntradaDesafio();
 
   atualizarCardEncontroAtual(etapaAtualCapitulo5);
-  atualizarProgressoCapitulo();
-  atualizarMapaPonte();
-  abrirStageCapitulo5(etapaAtualCapitulo5);
+atualizarProgressoCapitulo();
+atualizarMapaPonte();
 
+document.querySelectorAll(".encounter-stage").forEach((stage) => {
+  stage.classList.add("hidden");
+});
+
+const stageInicial = document.getElementById(
+  ENCONTROS_CAPITULO_5[etapaAtualCapitulo5]?.stageId
+);
+
+if (stageInicial) {
+  stageInicial.classList.remove("hidden");
+}
   
 });
