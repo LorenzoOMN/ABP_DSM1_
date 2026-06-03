@@ -51,7 +51,7 @@ body {
     position: absolute;
 
     top: 16.7%;
-    left: 16.25%;
+    left: 19%;
 
     color: #2b1708;
 
@@ -64,23 +64,6 @@ body {
 /* AVATAR */
 /* ================================= */
 
-.avatar-teste {
-
-    position: absolute;
-
-    top: 29.3%;
-    left: 15.8%;
-
-    width: 8.3%;
-    aspect-ratio: 1/1;
-
-    background: white;
-
-    border-radius: 40%;
-
-    border: 3px solid #8b5a2b;
-}
-
 /* ================================= */
 /* NOME */
 /* ================================= */
@@ -89,8 +72,8 @@ body {
 
     position: absolute;
 
-    top: 34.7%;
-    left: 25%;
+    top: 36.4%;
+    left: 26.5%;
 
     color: #2b1708;
 
@@ -108,7 +91,7 @@ body {
     position: absolute;
 
     top: 39.3%;
-    left: 25%;
+    left: 26.5%;
 
     font-size: clamp(0.5rem, 1.2vw, 1rem);
 
@@ -149,7 +132,7 @@ body {
     position: absolute;
 
     top: 16.7%;
-    left: 55%;
+    left: 58%;
 
     color: #2b1708;
 
@@ -270,6 +253,8 @@ body {
     object-fit: contain;
 
     display: block;
+        user-select: none;
+    -webkit-user-select: none;
 }
 
 .botao-dev:hover {
@@ -280,4 +265,51 @@ body {
 .botao-dev:active {
 
     transform: scale(0.95);
+}
+
+.avatar-container {
+
+    position: absolute;
+
+    top: 26.5%;
+    left: 14.8%;
+
+    width: 12%;
+
+    aspect-ratio: 1 / 1;
+}
+
+.avatar-imagem {
+
+    position: absolute;
+
+    top: 18%;
+    left: 18%;
+
+    width: 60%;
+    height: 60%;
+
+    background: #ffffff;
+
+    border-radius: 8%;
+}
+
+.avatar-moldura {
+
+    position: absolute;
+
+    inset: 0;
+      top: -40%;
+    left: -40%;
+
+    width: 180%;
+    height: 180%;
+
+    object-fit: contain;
+
+    image-rendering: pixelated;
+
+    pointer-events: none;
+        user-select: none;
+    -webkit-user-select: none;
 }
