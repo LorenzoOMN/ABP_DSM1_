@@ -102,6 +102,16 @@ const principiosData = {
   },
 };
 
+const somPilar = new Audio("/assets/audio/pilar.mp3");
+
+function tocarSomPilar() {
+  somPilar.volume = 0.25
+  somPilar.currentTime = 0;
+  somPilar.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function obterToken() {
   const token = localStorage.getItem("token");
 
@@ -196,6 +206,7 @@ function configurarPilares() {
 
   document.querySelectorAll(".pilar-btn").forEach((botao) => {
     botao.addEventListener("click", () => {
+      tocarSomPilar();
       const pilar = pilaresData[botao.dataset.pilar];
       if (!pilar || !card) return;
 
