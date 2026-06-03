@@ -2,8 +2,6 @@ const ID_MODULO = 4;
 const SCROLL_OFFSET = 88;
 
 const kanbanFlow = ["todo", "doing", "test", "done"];
-const pipelineFlow = ["integrar", "testar", "entregar"];
-const completedPipelineSteps = new Set();
 const completedMinigames = new Set();
 let retrospectiveUnlocked = false;
 
@@ -144,8 +142,10 @@ function concluirMinigame(minigame, options = {}) {
   completedMinigames.add(minigame);
   atualizarBloqueiosHistoria();
 
-  if (options.scrollTo) {
-    setTimeout(() => rolarParaElemento(options.scrollTo), 180);
+  const nextSectionSelector = options.scrollTo || (sectionsToUnlock[0] ? `#${sectionsToUnlock[0].id}` : "");
+
+  if (nextSectionSelector) {
+    setTimeout(() => rolarParaElemento(nextSectionSelector), 700);
   }
 
   setTimeout(() => {
@@ -334,8 +334,6 @@ function limparDestaqueProximaColuna() {
 function destacarProximaColuna(card) {
   limparDestaqueProximaColuna();
 
-  if (card.classList.contains("kanban-card--blocked")) return;
-
   const nextColumn = obterProximaColuna(obterColunaDoCartao(card));
 
   if (nextColumn && colunaPodeReceberCartao(nextColumn)) {
@@ -370,16 +368,15 @@ function atualizarKanban() {
   }
 }
 
+function todosCartoesKanbanConcluidos() {
+  const cards = Array.from(document.querySelectorAll("[data-kanban-card]"));
+
+  return cards.length > 0 && cards.every((card) => obterColunaDoCartao(card)?.dataset.column === "done");
+}
+
 function moverCartao(card) {
   const column = obterColunaDoCartao(card);
   const nextColumn = obterProximaColuna(column);
-
-  if (card.classList.contains("kanban-card--blocked")) {
-    card.classList.add("kanban-card--blocked-pulse");
-    atualizarStatusKanban("Este cartão está bloqueado. Resolva o impedimento antes de mover.", "warning");
-    setTimeout(() => card.classList.remove("kanban-card--blocked-pulse"), 420);
-    return;
-  }
 
   if (!nextColumn) {
     atualizarStatusKanban("Este item já chegou em Concluído.", "success");
@@ -398,9 +395,11 @@ function moverCartao(card) {
   card.classList.add("kanban-card--moved");
   atualizarKanban();
 
-  if (!document.querySelector(".kanban-column--over-limit")) {
-    atualizarStatusKanban("Fluxo saudável. O gargalo diminuiu porque o time terminou antes de puxar mais trabalho.", "success");
+  if (todosCartoesKanbanConcluidos()) {
+    atualizarStatusKanban("Todos os cartões chegaram em Concluído. O fluxo está saudável.", "success");
     concluirMinigame("kanban");
+  } else if (!document.querySelector(".kanban-column--over-limit")) {
+    atualizarStatusKanban("Gargalo reduzido. Continue movendo os cartões até Concluído.", "success");
   }
 
   setTimeout(() => card.classList.remove("kanban-card--moved"), 420);
@@ -533,90 +532,393 @@ function destacarCriteriosDodFaltantes(checks) {
   });
 }
 
-function proximaEtapaPipeline() {
-  return pipelineFlow[completedPipelineSteps.size];
-}
-
-function configurarPipeline() {
-  const status = document.getElementById("pipelineStatus");
-  const panel = document.querySelector(".pipeline-panel");
-
-  document.querySelectorAll("[data-pipeline-step]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const step = button.dataset.pipelineStep;
-
-      if (completedPipelineSteps.has(step)) {
-        return;
-      }
-
-      if (step !== proximaEtapaPipeline()) {
-        if (status) {
-          status.textContent = "A ponte tremeu: uma etapa obrigatoria foi pulada.";
-        }
-
-        if (panel) {
-          panel.classList.remove("pipeline-panel--shake");
-          void panel.offsetWidth;
-          panel.classList.add("pipeline-panel--shake");
-        }
-
-        return;
-      }
-
-      completedPipelineSteps.add(step);
-      button.classList.add("pipeline-step--complete");
-
-      if (status) {
-        const messages = {
-          integrar: "Codigo integrado. Agora a ponte exige testes automatizados.",
-          testar: "Testes executados. A entrega pode ser preparada com mais confianca.",
-          entregar: "Pipeline completo. A ponte esta estavel para a entrega.",
-        };
-        status.textContent = messages[step];
-      }
-
-      if (step === pipelineFlow[pipelineFlow.length - 1]) {
-        concluirMinigame("pipeline");
-      }
-
-    });
-  });
-}
-
 function configurarDividaTecnica() {
-  const button = document.getElementById("btnRefatorarDivida");
   const panel = document.querySelector(".debt-panel");
+  const status = document.getElementById("debtStatus");
+  const title = document.getElementById("debtTitle");
+  const description = document.getElementById("debtDescription");
+  const workbenchStep = document.getElementById("debtWorkbenchStep");
+  const workbenchTitle = document.getElementById("debtWorkbenchTitle");
+  const workbenchText = document.getElementById("debtWorkbenchText");
+  const weightBar = document.getElementById("debtWeightBar");
+  const beforeTitle = document.getElementById("debtBeforeTitle");
+  const beforeText = document.getElementById("debtBeforeText");
+  const afterTitle = document.getElementById("debtAfterTitle");
+  const afterText = document.getElementById("debtAfterText");
+  const transformStep = document.getElementById("debtTransformStep");
+  const button = document.getElementById("btnAplicarRefatoracao");
+  const station = document.querySelector(".debt-refactor-station");
+  let currentStep = 0;
+  const refactorings = [
+    {
+      before: "Duplicamos para terminar rápido.",
+      beforeText: "O código funciona, mas a mesma regra aparece em lugares diferentes.",
+      after: "Extrair função",
+      afterText: "Uma função central mantém o comportamento e reduz manutenção.",
+    },
+    {
+      before: "Pulamos testes.",
+      beforeText: "A entrega parece rápida, mas qualquer mudança pode quebrar algo sem aviso.",
+      after: "Cobrir comportamento",
+      afterText: "O teste protege o resultado esperado sem mudar a entrega.",
+    },
+    {
+      before: "Deixamos para arrumar depois.",
+      beforeText: "A pendência vira custo invisível para a próxima Sprint.",
+      after: "Resolver pendência",
+      afterText: "O ajuste entra agora e reduz retrabalho futuro.",
+    },
+    {
+      before: "Aceitamos código frágil.",
+      beforeText: "O usuário vê a mesma tela, mas a estrutura interna dificulta evolução.",
+      after: "Organizar estrutura",
+      afterText: "A estrutura fica mais clara sem alterar o comportamento externo.",
+    },
+  ];
 
-  if (!button || !panel) return;
+  if (!panel || !button || !station) return;
+
+  const renderRefactoring = () => {
+    const refactoring = refactorings[currentStep];
+    const weight = Math.max(0, 100 - currentStep * 25);
+
+    if (!refactoring) return;
+
+    if (beforeTitle) beforeTitle.textContent = refactoring.before;
+    if (beforeText) beforeText.textContent = refactoring.beforeText;
+    if (afterTitle) afterTitle.textContent = refactoring.after;
+    if (afterText) afterText.textContent = refactoring.afterText;
+    if (transformStep) transformStep.textContent = `${currentStep + 1}/${refactorings.length}`;
+    if (weightBar) weightBar.style.width = `${weight}%`;
+    if (workbenchStep) {
+      workbenchStep.textContent = currentStep === 0
+        ? "Peso técnico: alto"
+        : `Peso técnico: ${refactorings.length - currentStep} pontos`;
+    }
+  };
 
   button.addEventListener("click", () => {
-    panel.classList.add("debt-panel--refactored");
-    button.disabled = true;
-    button.textContent = "Divida reduzida";
-    concluirMinigame("divida-tecnica");
+    station.classList.remove("debt-refactor-station--applied");
+    void station.offsetWidth;
+    station.classList.add("debt-refactor-station--applied");
 
+    currentStep += 1;
+    const remaining = refactorings.length - currentStep;
+
+    if (weightBar) {
+      weightBar.style.width = `${Math.max(0, 100 - currentStep * 25)}%`;
+    }
+
+    if (status) {
+      status.textContent = remaining === 0
+        ? "Dívida reduzida. A estrutura melhorou sem mudar o comportamento externo."
+        : `Refatoração aplicada. Restam ${remaining} ajustes internos.`;
+    }
+
+    if (title) {
+      title.textContent = remaining === 0 ? "Caminho mais leve" : "Peso reduzido";
+    }
+
+    if (description) {
+      description.textContent = remaining === 0
+        ? "O comportamento continua igual, mas o time volta a avançar com menos retrabalho."
+        : "O usuário recebe o mesmo resultado. Por dentro, o sistema ficou mais simples.";
+    }
+
+    if (currentStep >= refactorings.length) {
+      panel.classList.add("debt-panel--refactored");
+      button.disabled = true;
+      button.textContent = "Dívida reduzida";
+      if (workbenchStep) workbenchStep.textContent = "Peso técnico: baixo";
+      if (workbenchTitle) workbenchTitle.textContent = "Refatoração concluída";
+      if (workbenchText) workbenchText.textContent = "Atalhos viraram melhorias internas. Menos retrabalho para a próxima entrega.";
+      concluirMinigame("divida-tecnica");
+      return;
+    }
+
+    window.setTimeout(renderRefactoring, 260);
   });
+
+  renderRefactoring();
+}
+
+function configurarPipelineDecisoes() {
+  const status = document.getElementById("pipelineStatus");
+  const panel = document.querySelector(".pipeline-panel");
+  const scene = document.querySelector(".pipeline-scene");
+  const stepLabel = document.getElementById("commitStep");
+  const title = document.getElementById("commitTitle");
+  const description = document.getElementById("commitDescription");
+  const actionButtons = Array.from(document.querySelectorAll("[data-pipeline-action]"));
+  let currentDecision = 0;
+  let pipelineBusy = false;
+  const decisions = [
+    {
+      id: "tela",
+      step: "Leia o commit. Escolha a ação.",
+      title: "Nova tela validada",
+      description: "Os critérios foram atendidos e o teste local passou. Este código pode entrar na Integração Contínua.",
+      action: "integrar-testar",
+      message: "Correto. A CI integrou o código e rodou testes antes da entrega.",
+    },
+    {
+      id: "atalho",
+      step: "Leia o commit. Escolha a ação.",
+      title: "Ajuste rápido sem teste",
+      description: "A mudança parece resolver o problema, mas não foi validada. Se atravessar agora, pode virar retrabalho.",
+      action: "corrigir",
+      message: "Correto. O defeito foi barrado antes de contaminar o fluxo.",
+    },
+    {
+      id: "build",
+      step: "Leia o commit. Escolha a ação.",
+      title: "Build verde",
+      description: "Integração e testes foram concluídos. O caminho está confiável para automatizar o deploy.",
+      action: "deploy",
+      message: "Correto. A CD automatizou o deploy com o caminho validado.",
+    },
+  ];
+
+  if (!status || !stepLabel || !title || !description || actionButtons.length === 0) return;
+
+  function setPipelineStatus(message, variant = "info") {
+    status.textContent = message;
+    status.classList.remove("pipeline-status--success", "pipeline-status--error");
+
+    if (variant !== "info") {
+      status.classList.add(`pipeline-status--${variant}`);
+    }
+  }
+
+  function setActionsDisabled(disabled) {
+    actionButtons.forEach((button) => {
+      button.disabled = disabled;
+    });
+  }
+
+  function clearPickedAction() {
+    actionButtons.forEach((button) => {
+      button.classList.remove("pipeline-action--picked");
+      button.classList.remove("pipeline-action--wrong");
+    });
+  }
+
+  function renderDecision() {
+    const decision = decisions[currentDecision];
+
+    if (!decision) return;
+
+    pipelineBusy = false;
+    setActionsDisabled(false);
+    clearPickedAction();
+    stepLabel.textContent = decision.step;
+    title.textContent = decision.title;
+    description.textContent = decision.description;
+  }
+
+  function shakeBridge(button) {
+    setPipelineStatus("Escolha novamente. Esta ação quebra o fluxo da ponte.", "error");
+
+    if (button) {
+      button.classList.remove("pipeline-action--wrong");
+      void button.offsetWidth;
+      button.classList.add("pipeline-action--wrong");
+    }
+
+    if (panel) {
+      panel.classList.remove("pipeline-panel--shake");
+      void panel.offsetWidth;
+      panel.classList.add("pipeline-panel--shake");
+    }
+  }
+
+  function completeBridge() {
+    if (panel) {
+      panel.classList.add("pipeline-panel--complete");
+    }
+
+    if (scene) {
+      scene.classList.add("pipeline-scene--complete");
+    }
+
+    actionButtons.forEach((button) => {
+      button.disabled = true;
+    });
+
+    setPipelineStatus("CI integrou e testou. CD automatizou a entrega. A ponte está estável.", "success");
+    concluirMinigame("pipeline", { scrollTo: "#cena-divida" });
+  }
+
+  actionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (pipelineBusy) return;
+
+      const decision = decisions[currentDecision];
+
+      if (!decision || button.dataset.pipelineAction !== decision.action) {
+        shakeBridge(button);
+        return;
+      }
+
+      pipelineBusy = true;
+      setActionsDisabled(true);
+      clearPickedAction();
+      button.classList.add("pipeline-action--picked");
+      setPipelineStatus(decision.message, "success");
+      currentDecision += 1;
+
+      if (currentDecision >= decisions.length) {
+        completeBridge();
+        return;
+      }
+
+      window.setTimeout(renderDecision, 340);
+    });
+  });
+
+  renderDecision();
 }
 
 function configurarMetricas() {
   const status = document.getElementById("metricStatus");
-  const buttons = document.querySelectorAll("[data-metric]");
+  const panel = document.querySelector(".oracle-panel");
+  const orbit = document.querySelector(".oracle-orbit");
+  const instruments = Array.from(document.querySelectorAll("[data-metric-focus]"));
+  const turnButtons = Array.from(document.querySelectorAll("[data-oracle-turn]"));
+  const calibrationButtons = Array.from(document.querySelectorAll("[data-oracle-calibration]"));
+  const step = document.getElementById("oracleStep");
+  const title = document.getElementById("oracleTitle");
+  const text = document.getElementById("oracleText");
+  let currentIndex = 0;
+  const seenMetrics = new Set();
+  const metricKeys = ["burndown", "burnup", "velocity", "lead-time", "cycle-time"];
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const metric = metrics[button.dataset.metric];
+  if (!panel || !orbit || instruments.length === 0) return;
 
-      if (!metric) return;
+  const metricCopy = {
+    burndown: {
+      title: "Burndown",
+      text: "Acompanha o trabalho restante ao longo do tempo.",
+    },
+    burnup: {
+      title: "Burnup",
+      text: "Mostra o progresso acumulado do trabalho concluído.",
+    },
+    velocity: {
+      title: "Velocity",
+      text: "Ajuda a própria equipe a prever capacidade futura. Não compara equipes.",
+    },
+    "lead-time": {
+      title: "Lead Time",
+      text: "Mede da solicitação até a entrega. Mostra a espera completa.",
+    },
+    "cycle-time": {
+      title: "Cycle Time",
+      text: "Mede do início do desenvolvimento até a conclusão.",
+    },
+  };
 
-      buttons.forEach((item) => item.classList.remove("active"));
-      button.classList.add("active");
+  function renderOracle() {
+    const metricKey = metricKeys[currentIndex];
+    const metric = metricCopy[metricKey];
 
-      if (status) {
-        status.textContent = metric.text;
-      }
+    if (!metric) return;
 
+    seenMetrics.add(metricKey);
+    orbit.style.setProperty("--oracle-rotation", `${currentIndex * -72}deg`);
+
+    instruments.forEach((instrument) => {
+      const active = instrument.dataset.metricFocus === metricKey;
+      instrument.classList.toggle("oracle-instrument--active", active);
+      instrument.setAttribute("aria-pressed", String(active));
+    });
+
+    if (step) {
+      step.textContent = `Instrumento ${currentIndex + 1}/5`;
+    }
+
+    if (title) {
+      title.textContent = metric.title;
+    }
+
+    if (text) {
+      text.textContent = metric.text;
+    }
+
+    if (status) {
+      status.textContent = seenMetrics.size < metricKeys.length
+        ? `Foco calibrado. ${seenMetrics.size}/5 instrumentos observados.`
+        : "Todos os instrumentos foram observados. Calibre a intenção do time.";
+    }
+
+    panel.classList.toggle("oracle-panel--ready", seenMetrics.size === metricKeys.length);
+  }
+
+  function moveFocus(direction) {
+    currentIndex = (currentIndex + direction + metricKeys.length) % metricKeys.length;
+    renderOracle();
+  }
+
+  instruments.forEach((instrument) => {
+    instrument.addEventListener("click", () => {
+      const index = metricKeys.indexOf(instrument.dataset.metricFocus);
+
+      if (index < 0) return;
+
+      currentIndex = index;
+      renderOracle();
     });
   });
+
+  turnButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      moveFocus(button.dataset.oracleTurn === "previous" ? -1 : 1);
+    });
+  });
+
+  calibrationButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      button.classList.remove("oracle-calibration--wrong", "oracle-calibration--right");
+      void button.offsetWidth;
+
+      if (seenMetrics.size < metricKeys.length) {
+        button.classList.add("oracle-calibration--wrong");
+
+        if (status) {
+          status.textContent = "Observe os cinco instrumentos antes de calibrar o Oráculo.";
+        }
+
+        return;
+      }
+
+      if (button.dataset.oracleCalibration !== "aprender") {
+        button.classList.add("oracle-calibration--wrong");
+        panel.classList.remove("oracle-panel--distorted");
+        void panel.offsetWidth;
+        panel.classList.add("oracle-panel--distorted");
+
+        if (status) {
+          status.textContent = "Errado. Métrica usada para punir distorce os dados e destrói confiança.";
+        }
+
+        return;
+      }
+
+      button.classList.add("oracle-calibration--right");
+      panel.classList.add("oracle-panel--complete");
+      calibrationButtons.forEach((item) => {
+        item.disabled = true;
+      });
+
+      if (status) {
+        status.textContent = "Correto. Métrica é bússola: gera transparência e melhoria contínua.";
+      }
+
+      concluirMinigame("metricas");
+    });
+  });
+
+  renderOracle();
 }
 
 function atualizarStakeholders() {
@@ -888,7 +1190,7 @@ if (typeof document !== "undefined") {
     configurarBloqueiosHistoria();
     configurarKanban();
     configurarDod();
-    configurarPipeline();
+    configurarPipelineDecisoes();
     configurarDividaTecnica();
     configurarMetricas();
     configurarStakeholders();

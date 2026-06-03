@@ -85,6 +85,14 @@
           <span>04</span>
           <small>Ponte</small>
         </button>
+        <button class="progress-item" data-scroll-to="#cena-divida" type="button">
+          <span>05</span>
+          <small>Dívida</small>
+        </button>
+        <button class="progress-item" data-scroll-to="#cena-metricas" type="button">
+          <span>06</span>
+          <small>Métricas</small>
+        </button>
       </nav>
     </section>
 
@@ -195,8 +203,8 @@
                 <button class="kanban-card" type="button" data-kanban-card>
                   Tela do desafio
                 </button>
-                <button class="kanban-card kanban-card--blocked" type="button" data-kanban-card>
-                  Bug de escopo
+                <button class="kanban-card" type="button" data-kanban-card>
+                  Ajuste de layout
                 </button>
               </div>
 
@@ -292,30 +300,236 @@
       </div>
     </section>
 
-    <section class="story-block reveal final-block" id="cena-ponte" data-locked-by="dod" aria-describedby="lock-cena-ponte">
+    <section class="story-block reveal pipeline-scene" id="cena-ponte" data-locked-by="dod" aria-describedby="lock-cena-ponte">
       <div class="story-side-icon" aria-hidden="true">
         <span>04</span>
       </div>
 
       <div class="story-text">
         <span class="section-number">Cena 04</span>
-        <h2>A Ponte das Runas</h2>
-        <p>
-          Este último bloco fecha a área de teste com uma distância de scroll suficiente para validar o comportamento visual.
+        <h2>A Ponte CI/CD</h2>
+        <p class="scene-impact">
+          Integrar sem testar espalha o erro mais depressa.
         </p>
-        <button class="btn-primary" type="button" data-scroll-to="#inicio-capitulo4">
-          Voltar ao topo
-        </button>
+        <p>
+          A porta da forja leva a uma ponte mecânica. No chão, duas runas acendem:
+          CI e CD.
+        </p>
+        <p>
+          CI significa Integração Contínua. O objetivo é integrar e testar
+          frequentemente o código produzido.
+        </p>
+        <p>
+          CD significa Entrega Contínua. Ela está associada à automação do deploy.
+          Nem todo código deve atravessar: um commit sem validação quebra o fluxo.
+        </p>
+        <blockquote>Decida o que integrar, o que corrigir e quando automatizar a entrega.</blockquote>
       </div>
 
-      <div class="story-art">
-        <img src="/assets/img/capitulo_4/ponte-cicd-pixel.png" alt="Ponte CI CD do capítulo 4">
+      <div class="story-art pipeline-art">
+        <div class="pipeline-panel" aria-label="Mesa de Integração CI CD interativa">
+          <div class="pipeline-runes" aria-label="Runas CI e CD">
+            <span><strong>CI</strong> integra e testa</span>
+            <span><strong>CD</strong> automatiza entrega</span>
+          </div>
+
+          <div class="commit-focus" aria-live="polite">
+            <img class="commit-focus-image" src="/assets/img/capitulo_4/ponte-cicd-pipeline-pixel.png" alt="Ponte mecânica CI CD do capítulo 4" aria-hidden="true">
+            <span id="commitStep">Analise o commit e escolha a ação</span>
+            <strong id="commitTitle">Nova tela validada</strong>
+            <p id="commitDescription">Critérios atendidos. Teste local passou. A ponte espera uma decisão de CI.</p>
+            <p class="decision-hint" id="decisionHint">Qual ação mantém a ponte segura?</p>
+          </div>
+
+          <div class="pipeline-actions" aria-label="Escolha a ação correta para o commit">
+            <button class="pipeline-action" type="button" data-pipeline-action="integrar-testar">
+              <strong>Integrar e testar</strong>
+              <span>Código validado</span>
+            </button>
+            <button class="pipeline-action" type="button" data-pipeline-action="corrigir">
+              <strong>Corrigir antes</strong>
+              <span>Sem validação</span>
+            </button>
+            <button class="pipeline-action" type="button" data-pipeline-action="deploy">
+              <strong>Automatizar deploy</strong>
+              <span>Build verde</span>
+            </button>
+          </div>
+
+          <p class="pipeline-status" id="pipelineStatus" aria-live="polite">
+            Para atravessar, escolha a ação que protege o fluxo. A decisão errada faz a ponte tremer.
+          </p>
+        </div>
       </div>
 
       <div class="scene-lock" id="lock-cena-ponte" role="status" aria-live="polite">
         <span class="scene-lock__icon" aria-hidden="true"></span>
         <strong>Bloqueado</strong>
         <p>Conclua a Porta da DoD para liberar o próximo trecho.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal debt-scene" id="cena-divida" data-locked-by="pipeline" aria-describedby="lock-cena-divida">
+      <div class="story-side-icon" aria-hidden="true">
+        <span>05</span>
+      </div>
+
+      <div class="story-text">
+        <span class="section-number">Cena 05</span>
+        <h2>As Correntes da Dívida Técnica</h2>
+        <p class="scene-impact">
+          Atalhos técnicos cobram juros.
+        </p>
+        <p>
+          Depois da ponte, o time anda mais devagar. Correntes surgem nos tornozelos
+          dos Developers.
+        </p>
+        <p>
+          Dívida técnica é o resultado de decisões técnicas ruins que facilitam o
+          presente, mas geram retrabalho futuro.
+        </p>
+        <p>
+          Refatorar é melhorar a estrutura interna do código sem alterar seu
+          comportamento externo.
+        </p>
+        <blockquote>Remendar parece rápido. Refatorar reduz o peso do caminho.</blockquote>
+      </div>
+
+      <div class="story-art debt-art">
+        <div class="debt-panel" aria-label="Bancada de refatoração contra dívida técnica">
+          <div class="debt-illustration">
+            <img src="/assets/img/capitulo_4/correntes-divida-tecnica-pixel.png" alt="Aventureiros diante da porta final presos por correntes nos pés">
+            <div class="debt-caption">
+              <span>Dívida técnica</span>
+              <strong id="debtTitle">Peso acumulado</strong>
+              <p id="debtDescription">O time ainda entrega, mas cada atalho torna a próxima mudança mais lenta.</p>
+            </div>
+          </div>
+
+          <div class="debt-workbench" aria-label="Bancada de refatoração">
+            <span id="debtWorkbenchStep">Peso técnico: alto</span>
+            <strong id="debtWorkbenchTitle">Refatore sem mudar o comportamento</strong>
+            <p id="debtWorkbenchText">Transforme atalhos em melhorias internas. O usuário recebe o mesmo comportamento, mas o time ganha velocidade.</p>
+          </div>
+
+          <div class="debt-progress" aria-hidden="true">
+            <span id="debtWeightBar"></span>
+          </div>
+
+          <div class="debt-refactor-station" aria-label="Transformação de dívida técnica em refatoração">
+            <div class="debt-before" aria-label="Atalho técnico atual">
+              <span>Atalho</span>
+              <strong id="debtBeforeTitle">Duplicamos para terminar rápido.</strong>
+              <p id="debtBeforeText">O código funciona, mas a mesma regra aparece em lugares diferentes.</p>
+            </div>
+            <div class="debt-transform" aria-hidden="true">
+              <span id="debtTransformStep">1/4</span>
+            </div>
+            <div class="debt-after" aria-label="Refatoração aplicada">
+              <span>Refatoração</span>
+              <strong id="debtAfterTitle">Extrair função</strong>
+              <p id="debtAfterText">Uma função central mantém o comportamento e reduz manutenção.</p>
+            </div>
+            <button class="debt-refactor-button" id="btnAplicarRefatoracao" type="button">
+              Aplicar refatoração
+            </button>
+          </div>
+
+          <p class="debt-status" id="debtStatus" aria-live="polite">
+            Aplique a refatoração indicada. O comportamento externo não muda.
+          </p>
+        </div>
+      </div>
+
+      <div class="scene-lock" id="lock-cena-divida" role="status" aria-live="polite">
+        <span class="scene-lock__icon" aria-hidden="true"></span>
+        <strong>Bloqueado</strong>
+        <p>Conclua a Ponte CI/CD para liberar as Correntes da Dívida Técnica.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal oracle-scene" id="cena-metricas" data-locked-by="divida-tecnica" aria-describedby="lock-cena-metricas">
+      <div class="story-side-icon" aria-hidden="true">
+        <span>06</span>
+      </div>
+
+      <div class="story-text">
+        <span class="section-number">Cena 06</span>
+        <h2>O Oráculo das Métricas</h2>
+        <p class="scene-impact">
+          Métrica é bússola, não chicote.
+        </p>
+        <p>
+          A sala seguinte é circular. Relógios, gráficos e ampulhetas flutuam no escuro.
+        </p>
+        <p>
+          O Oráculo apresenta cinco instrumentos: Burndown, Burnup, Velocity,
+          Lead Time e Cycle Time.
+        </p>
+        <p>
+          Eles servem para criar transparência e melhoria contínua. Quando viram punição,
+          os números se distorcem e a confiança morre.
+        </p>
+        <blockquote>Gire o foco. Leia o instrumento. Calibre a intenção.</blockquote>
+      </div>
+
+      <div class="story-art oracle-art">
+        <div class="oracle-panel" aria-label="Oráculo Vivo das métricas">
+          <div class="oracle-chamber">
+            <img src="/assets/img/capitulo_4/oraculo-metricas-pixel.png" alt="Sala circular do Oráculo das Métricas com relógios e gráficos">
+            <div class="oracle-orbit" aria-label="Instrumentos orbitais do Oráculo">
+              <button class="oracle-instrument" type="button" data-metric-focus="burndown">
+                <strong>Burndown</strong>
+                <span>Restante</span>
+              </button>
+              <button class="oracle-instrument" type="button" data-metric-focus="burnup">
+                <strong>Burnup</strong>
+                <span>Concluído</span>
+              </button>
+              <button class="oracle-instrument" type="button" data-metric-focus="velocity">
+                <strong>Velocity</strong>
+                <span>Previsão</span>
+              </button>
+              <button class="oracle-instrument" type="button" data-metric-focus="lead-time">
+                <strong>Lead Time</strong>
+                <span>Pedido</span>
+              </button>
+              <button class="oracle-instrument" type="button" data-metric-focus="cycle-time">
+                <strong>Cycle Time</strong>
+                <span>Execução</span>
+              </button>
+            </div>
+            <div class="oracle-core" aria-live="polite">
+              <span id="oracleStep">Instrumento 1/5</span>
+              <strong id="oracleTitle">Burndown</strong>
+              <p id="oracleText">Acompanha o trabalho restante ao longo do tempo.</p>
+            </div>
+          </div>
+
+          <div class="oracle-controls" aria-label="Girar foco das métricas">
+            <button class="oracle-turn" type="button" data-oracle-turn="previous">Anterior</button>
+            <button class="oracle-turn" type="button" data-oracle-turn="next">Próximo instrumento</button>
+          </div>
+
+          <div class="oracle-calibration" aria-label="Calibrar uso das métricas">
+            <span>Calibração final</span>
+            <strong>Como o time deve usar estes números?</strong>
+            <div class="oracle-calibration-actions">
+              <button type="button" data-oracle-calibration="punir">Punir pessoas</button>
+              <button type="button" data-oracle-calibration="aprender">Aprender e melhorar</button>
+            </div>
+          </div>
+
+          <p class="oracle-status" id="metricStatus" aria-live="polite">
+            Gire o foco pelos cinco instrumentos antes de calibrar o Oráculo.
+          </p>
+        </div>
+      </div>
+
+      <div class="scene-lock" id="lock-cena-metricas" role="status" aria-live="polite">
+        <span class="scene-lock__icon" aria-hidden="true"></span>
+        <strong>Bloqueado</strong>
+        <p>Reduza a Dívida Técnica para liberar o Oráculo das Métricas.</p>
       </div>
     </section>
   </main>
