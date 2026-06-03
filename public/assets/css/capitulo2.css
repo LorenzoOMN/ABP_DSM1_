@@ -17,14 +17,6 @@
 
   background-size: cover;
   background-position: center;
-  /* 
-  background:
-    linear-gradient(180deg, rgba(4, 4, 4, 0.9), rgba(4, 4, 4, 0.97)),
-    url("/assets/img/parede_de_tijolos.png");
-  background-size: cover;
-  background-attachment: fixed;
-  color: #f4efe2;
-   */
 }
 
 /* ============================================================
@@ -412,8 +404,8 @@
   z-index: -1;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 50% 62%, rgba(244, 211, 94, 0.46), transparent 46%),
-    radial-gradient(circle at 50% 78%, rgba(214, 173, 53, 0.32), transparent 58%);
+    radial-gradient(circle at 50% 44%, rgba(244, 211, 94, 0.10), transparent 46%),
+    radial-gradient(circle at 50% 58%, rgba(214, 173, 53, 0.32), transparent 58%);
   opacity: 0;
   filter: blur(18px);
   transform: scale(0.82);
@@ -472,6 +464,13 @@
   bottom: 7%;
   width: 56%;
   height: 70%;
+}
+
+.guardiao-equipe::before {
+  inset: 8% -12% -4%;
+  background:
+    radial-gradient(ellipse at 50% 44%, rgba(244, 211, 94, 0.10), transparent 50%),
+    radial-gradient(ellipse at 50% 58%, rgba(214, 173, 53, 0.32), transparent 64%);
 }
 
 .guardiao-corvo {
