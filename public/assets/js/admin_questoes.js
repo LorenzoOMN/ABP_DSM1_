@@ -28,7 +28,6 @@ async function carregarQuestoes() {
     const token = getToken();
     const grid = document.getElementById('grid-questoes');
 
-    // Loading
     grid.innerHTML = `
     <div class="loading-grid">
       <span class="loading">Consultando grimório...</span>
@@ -53,7 +52,13 @@ async function carregarQuestoes() {
             }
         });
 
-        if (!response.ok) throw new Error('Falha ao carregar');
+        // ← ADICIONA VERIFICAÇÃO DE AUTH
+        if (response.status === 401 || response.status === 403) {
+            tratarErroAutenticacao(response, 'Acesso negado ao carregar questões. Faça login novamente.');
+            return;
+        }
+
+        if (!response.ok) throw new Error('Erro na consulta');
 
         const data = await response.json();
         questoesCarregadas = data.data || [];
@@ -69,6 +74,8 @@ async function carregarQuestoes() {
       `;
         }
     } catch (error) {
+        if (error.message === 'Acesso negado') return; // Já foi tratado
+        
         console.error('Erro:', error);
         grid.innerHTML = `
       <div class="empty-state" style="color: #dc3545;">
@@ -220,19 +227,14 @@ async function salvarEdicao(event, idQuestao) {
   const formData = new FormData(form);
   const dados = Object.fromEntries(formData);
   
-  // Remove id_questao se estiver presente
   delete dados.id_questao;
-  
-  // Garante alternativa_correta em minúsculo
   dados.alternativa_correta = dados.alternativa_correta?.toLowerCase();
   
   const token = getToken();
   
-  // Verifica se tem token
   if (!token) {
-    mostrarAlerta('Sessão expirada. Faça login novamente.', "erro");
-      window.location.href = '/';
-      return;
+    bloquearAcesso('Sessão expirada. Faça login novamente.');
+    return;
   }
   
   const btnSubmit = form.querySelector('button[type="submit"]');
@@ -242,17 +244,18 @@ async function salvarEdicao(event, idQuestao) {
   
   try {
       const response = await fetch(`/api/admin/questoes/${idQuestao}`, {
-          method: 'PUT',  // ou 'PATCH'
+          method: 'PUT',
           headers: {
-              'Authorization': `Bearer ${token}`,  // ← Token aqui!
+              'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
           },
           body: JSON.stringify(dados)
       });
       
-      
-      if (response.status === 401) {
-          throw new Error('Sessão expirada. Faça login novamente.');
+      // ← ADICIONA VERIFICAÇÃO DE AUTH
+      if (response.status === 401 || response.status === 403) {
+          tratarErroAutenticacao(response, 'Sessão expirada ou acesso negado ao salvar.');
+          return;
       }
       
       if (!response.ok) {
@@ -267,6 +270,8 @@ async function salvarEdicao(event, idQuestao) {
       carregarQuestoes();
       
   } catch (error) {
+      if (error.message === 'Acesso negado') return;
+      
       console.error('Erro ao salvar:', error);
       mostrarAlerta('Erro ao salvar questão: ' + error.message, "erro");
   } finally {
@@ -372,6 +377,11 @@ async function deletarQuestao(id) {
 
     const token = getToken();
 
+    if (!token) {
+        bloquearAcesso('Sessão expirada. Faça login novamente.');
+        return;
+    }
+
     try {
         const response = await fetch(`/api/admin/questoes/${id}`, {
             method: 'DELETE',
@@ -381,13 +391,21 @@ async function deletarQuestao(id) {
             }
         });
 
+        // ← ADICIONA VERIFICAÇÃO DE AUTH
+        if (response.status === 401 || response.status === 403) {
+            tratarErroAutenticacao(response, 'Acesso negado ao deletar questão.');
+            return;
+        }
+
         if (!response.ok) {
             throw new Error('Erro ao deletar questão');
         }
 
         mostrarAlerta('Questão deletada com sucesso!', "sucesso");
-        carregarQuestoes(); // Recarrega com filtros atuais
+        carregarQuestoes();
     } catch (error) {
+        if (error.message === 'Acesso negado') return;
+        
         console.error('Erro:', error);
         mostrarAlerta('Erro ao deletar questão: ' + error.message, "erro");
     }
@@ -496,13 +514,15 @@ async function salvarNovaQuestao(event) {
   const formData = new FormData(form);
   let dados = Object.fromEntries(formData);
   
-  // ← REMOVE explicitamente id_questao se existir
   delete dados.id_questao;
-  
-  // Garante alternativa_correta em minúsculo
   dados.alternativa_correta = dados.alternativa_correta?.toLowerCase();
   
   const token = getToken();
+  
+  if (!token) {
+    bloquearAcesso('Sessão expirada. Faça login novamente.');
+    return;
+  }
   
   const btnSubmit = form.querySelector('button[type="submit"]');
   const textoOriginal = btnSubmit.textContent;
@@ -519,6 +539,12 @@ async function salvarNovaQuestao(event) {
           body: JSON.stringify(dados)
       });
       
+      // ← ADICIONA VERIFICAÇÃO DE AUTH
+      if (response.status === 401 || response.status === 403) {
+          tratarErroAutenticacao(response, 'Acesso negado ao criar questão.');
+          return;
+      }
+      
       if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Erro ao criar questão');
@@ -531,12 +557,106 @@ async function salvarNovaQuestao(event) {
       carregarQuestoes();
       
   } catch (error) {
+      if (error.message === 'Acesso negado') return;
+      
       console.error('Erro ao criar:', error);
       mostrarAlerta('Erro ao criar questão: ' + error.message, "erro");
   } finally {
       btnSubmit.textContent = textoOriginal;
       btnSubmit.disabled = false;
   }
+}
+
+// ============================================
+// SISTEMA DE BLOQUEIO DE ACESSO
+// ============================================
+
+// Função para bloquear a interface quando acesso é negado
+function bloquearAcesso(mensagem = 'Acesso negado. Você não tem permissão para acessar esta área.') {
+    // Remove overlay existente se houver
+    const overlayExistente = document.getElementById('overlay-bloqueio');
+    if (overlayExistente) overlayExistente.remove();
+
+    // Cria overlay de bloqueio
+    const overlay = document.createElement('div');
+    overlay.id = 'overlay-bloqueio';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        backdrop-filter: blur(5px);
+    `;
+
+    overlay.innerHTML = `
+        <div style="
+            background: linear-gradient(135deg, #2a1a0f 0%, #1a0f05 100%);
+            border: 2px solid #8b0000;
+            border-radius: 15px;
+            padding: 3rem;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(139, 0, 0, 0.5);
+        ">
+            <div style="
+                font-size: 4rem;
+                margin-bottom: 1rem;
+                color: #dc3545;
+            ">⛔</div>
+            <h2 style="
+                color: #dc3545;
+                margin-bottom: 1rem;
+                font-size: 1.8rem;
+            ">Acesso Negado</h2>
+            <p style="
+                color: #e0d0b0;
+                margin-bottom: 2rem;
+                line-height: 1.6;
+            ">${mensagem}</p>
+            <button onclick="window.location.href = '/mapa'" style="
+                background: linear-gradient(135deg, #8b0000 0%, #5a0000 100%);
+                color: #fff;
+                border: none;
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                font-size: 1.1rem;
+                cursor: pointer;
+                font-weight: bold;
+                transition: all 0.3s;
+            ">Voltar ao Mapa</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden'; // Impede scroll
+}
+
+// Função centralizada para tratar erros de autenticação
+function tratarErroAutenticacao(response, mensagemCustom = null) {
+    if (response.status === 401 || response.status === 403) {
+        const mensagem = mensagemCustom || 
+            (response.status === 401 ? 'Sessão expirada. Faça login novamente.' : 
+            'Você não tem permissão para realizar esta ação.');
+        
+        mostrarAlerta(mensagem, "erro");
+        bloquearAcesso(mensagem);
+        return true; // Indica que foi tratado
+    }
+    return false; // Não foi erro de autenticação
+}
+
+// Função auxiliar para verificar se response é erro de auth antes de processar
+async function verificarRespostaAuth(response, mensagemCustom = null) {
+    if (tratarErroAutenticacao(response, mensagemCustom)) {
+        throw new Error('Acesso negado');
+    }
+    return response;
 }
 
 // Inicializar quando a página carregar
