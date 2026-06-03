@@ -746,6 +746,10 @@
         if (q.resposta_salva) {
           confirmadas[q.id_questao] = true;
           respostas[q.id_questao] = q.resposta_salva;
+
+          if (q.resposta_correta_salva) {
+            acertos[q.id_questao] = true;
+          }
         }
       });
 
