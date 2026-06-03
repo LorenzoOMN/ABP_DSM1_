@@ -1,74 +1,141 @@
-// 1. DICIONÁRIO DE BOSSES
-const bossesData = {
-  "1": {
-    imagem: "/assets/img/capitulo_1/inimigos/confronto-1.png",
+// ============================================================================
+// DICIONÁRIO DE BOSSES
+// ============================================================================
+
+const BOSSES = {
+  1: {
     nome: "Documentação Confusa",
+    imagem: "/assets/img/capitulo_1/inimigos/confronto-1.png",
     descricao: "Responda às questões antes que o tempo termine, ou seja devorado pela Documentação Confusa."
   },
-  "2": {
-    imagem: "/assets/img/capitulo_2/inimigos/confronto-2.png",
+  2: {
     nome: "Golem da Confusão de Papéis",
+    imagem: "/assets/img/capitulo_2/inimigos/confronto-2.png",
     descricao: "O tempo é seu inimigo. Finalize o questionário antes que a burocracia consuma sua sanidade!"
   },
-  "3": {
-    imagem: "/assets/img/capitulo_3/inimigos/confronto-3.jpeg",
+  3: {
     nome: "Névoa da Improvisação",
+    imagem: "/assets/img/capitulo_3/inimigos/confronto-3.png",
     descricao: "Requisitos mudam a cada segundo. Mantenha o foco ou será esmagado pelas novas demandas!"
   },
-  "4": {
-    imagem: "/assets/img/capitulo_4/inimigos/confronto-4.jpeg",
+  4: {
     nome: "Colosso do Escopo Selvagem",
+    imagem: "/assets/img/capitulo_4/inimigos/confronto-4.png",
     descricao: "Encontre e elimine os erros antes que eles corrompam seu progresso!"
   },
-  "5": {
-    imagem: "/assets/img/capitulo_5/inimigos/confronto-5.jpeg",
+  5: {
     nome: "Guardião do Fluxo Perpétuo",
+    imagem: "/assets/img/capitulo_5/inimigos/confronto-5.png",
     descricao: "A produção caiu! Restaure o sistema respondendo corretamente antes do caos total."
   }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  let moduloId = "1"; // Valor padrão de segurança
+// ============================================================================
+// INICIALIZAÇÃO PRINCIPAL
+// ============================================================================
 
-  // PRIORIDADE 1: Lê o parâmetro da URL (Ex: /desafio?modulo=2)
-  const params = new URLSearchParams(window.location.search);
-  if (params.has("modulo")) {
-    moduloId = params.get("modulo");
-  } 
-  // PRIORIDADE 2: Se não tiver parâmetro, lê o nome da rota (Ex: /desafio1, /desafio-2, /desafio/3)
-  else {
-    const path = window.location.pathname;
-    const match = path.match(/desafio[_\-\/]?(\d+)/i); // Captura o número depois de "desafio"
-    if (match) {
-      moduloId = match[1];
-    }
+document.addEventListener("DOMContentLoaded", async () => {
+  // Carrega os dados do backend para determinar o módulo
+  await carregarDadosDoBackend();
+});
+
+async function carregarDadosDoBackend() {
+  const token = localStorage.getItem("token");
+  
+  if (!token) {
+    window.location.href = "/";
+    return;
   }
 
-  console.log("🔍 Módulo detectado pela rota/URL:", moduloId);
+  try {
+    const response = await fetch("/api/progresso/mapa", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-  // Busca os dados do boss (se o módulo não existir no dicionário, usa o 1 como fallback)
-  const bossAtual = bossesData[moduloId] || bossesData["1"];
-  console.log("🐉 Boss carregado:", bossAtual.nome, "| Imagem:", bossAtual.imagem);
+    if (!response.ok) {
+      console.error("❌ Erro ao buscar progresso do mapa");
+      aplicarBossNoDOM(BOSSES[1]);
+      configurarAcoesDesafio(1);
+      return;
+    }
 
-  // Aplica os dados no HTML
+    const data = await response.json();
+    console.log("📦 Resposta do backend:", data);
+
+    // Extrai o modulo_desafio_atual do backend
+    let moduloDoBanco = null;
+    let falhasDoBanco = 0;
+
+    if (Array.isArray(data)) {
+      // Formato: array direto com CROSS JOIN
+      const primeiroItem = data[0];
+      moduloDoBanco = primeiroItem?.modulo_desafio_atual;
+      falhasDoBanco = primeiroItem?.falhas_no_modulo || 0;
+    } else if (data.modulos && Array.isArray(data.modulos)) {
+      // Formato: { modulos: [...] }
+      const moduloAtual = data.modulos.find(m => m.desafio_atual);
+      if (moduloAtual) {
+        moduloDoBanco = moduloAtual.id_modulo || moduloAtual.numero || moduloAtual.modulo_desafio_atual;
+        falhasDoBanco = moduloAtual.falhas_no_modulo || 0;
+      }
+      // Fallback: tenta pegar modulo_desafio_atual do primeiro item
+      if (!moduloDoBanco && data.modulos[0]?.modulo_desafio_atual) {
+        moduloDoBanco = data.modulos[0].modulo_desafio_atual;
+        falhasDoBanco = data.modulos[0].falhas_no_modulo || 0;
+      }
+    }
+
+    console.log("🎯 Módulo do backend:", moduloDoBanco);
+
+    // Garante que temos um valor válido
+    const moduloFinal = (moduloDoBanco && moduloDoBanco >= 1 && moduloDoBanco <= 5) 
+      ? moduloDoBanco 
+      : 1;
+
+    console.log("✅ Módulo final selecionado:", moduloFinal);
+    console.log("💀 Falhas:", falhasDoBanco);
+
+    // Atualiza a interface
+    const bossCorreto = BOSSES[moduloFinal] || BOSSES[1];
+    aplicarBossNoDOM(bossCorreto);
+    revelarElementosEmSequencia();
+    configurarRegras();
+
+    // Atualiza vidas
+    carregarVidasDesafio(moduloFinal, falhasDoBanco);
+
+    // Configura botão
+    configurarAcoesDesafio(moduloFinal);
+
+  } catch (error) {
+    console.error("❌ Erro ao carregar dados do backend:", error);
+    // Em caso de erro, usa o módulo 1
+    const bossPadrao = BOSSES[1];
+    aplicarBossNoDOM(bossPadrao);
+    revelarElementosEmSequencia();
+    configurarRegras();
+    configurarAcoesDesafio(1);
+  }
+}
+
+// ============================================================================
+// FUNÇÕES AUXILIARES
+// ============================================================================
+
+function aplicarBossNoDOM(boss) {
   const imgElement = document.getElementById("bossImage");
   const nameElement = document.getElementById("bossName");
   
   if (imgElement) {
-    imgElement.src = bossAtual.imagem;
-    imgElement.alt = `Herói enfrentando ${bossAtual.nome}`;
+    imgElement.src = boss.imagem;
+    imgElement.alt = `Herói enfrentando ${boss.nome}`;
   }
   if (nameElement) {
-    nameElement.textContent = bossAtual.nome;
+    nameElement.textContent = boss.nome;
   }
 
-  // Inicializa as outras funções
-  revelarElementosEmSequencia();
-  configurarTextoDigitado(bossAtual.descricao);
-  configurarAcoesDesafio(moduloId);
-  configurarRegras();
-  carregarVidasDesafio();
-});
+  configurarTextoDigitado(boss.descricao);
+}
 
 function revelarElementosEmSequencia() {
   const passos = [
@@ -90,7 +157,9 @@ function configurarTextoDigitado(texto) {
   const elemento = document.getElementById("bossTypeText");
   if (!elemento) return;
 
+  elemento.textContent = "";
   let indice = 0;
+  
   function digitar() {
     elemento.textContent = texto.slice(0, indice);
     indice += 1;
@@ -98,18 +167,21 @@ function configurarTextoDigitado(texto) {
       setTimeout(digitar, 34);
     }
   }
-  setTimeout(digitar, 1200);
+  
+  setTimeout(digitar, 1000);
 }
 
-// FUNÇÃO ÚNICA DE AÇÕES (Removida a duplicata que existia no seu código)
 function configurarAcoesDesafio(moduloId) {
   const btnIniciar = document.getElementById("btnIniciarDesafio");
   const btnVoltarMapa = document.getElementById("btnVoltarMapa");
 
   if (btnIniciar) {
-    btnIniciar.addEventListener("click", () => {
+    btnIniciar.replaceWith(btnIniciar.cloneNode(true));
+    const novoBtnIniciar = document.getElementById("btnIniciarDesafio");
+
+    novoBtnIniciar.addEventListener("click", () => {
       sessionStorage.setItem("modulo_alvo_desafio", moduloId);
-      btnIniciar.disabled = true;
+      novoBtnIniciar.disabled = true;
 
       document.body.style.transition = "opacity 0.45s ease, transform 0.45s ease";
       document.body.style.opacity = "0";
@@ -122,7 +194,10 @@ function configurarAcoesDesafio(moduloId) {
   }
 
   if (btnVoltarMapa) {
-    btnVoltarMapa.addEventListener("click", () => {
+    btnVoltarMapa.replaceWith(btnVoltarMapa.cloneNode(true));
+    const novoBtnVoltar = document.getElementById("btnVoltarMapa");
+    
+    novoBtnVoltar.addEventListener("click", () => {
       window.location.href = "/mapa";
     });
   }
@@ -140,31 +215,37 @@ function configurarRegras() {
   });
 }
 
-async function carregarVidasDesafio() {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    window.location.href = "/";
+function carregarVidasDesafio(moduloId, falhasDoBanco = null) {
+  const container = document.getElementById("vidasDesafio");
+  
+  // Se o backend já forneceu as falhas, usa direto
+  if (falhasDoBanco !== null && typeof renderizarVidas === 'function') {
+    renderizarVidas(container, falhasDoBanco);
     return;
   }
+  
+  // Caso contrário, busca da API
+  const token = localStorage.getItem("token");
+  if (!token) return;
 
-  try {
-    const response = await fetch("/api/progresso/mapa", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  fetch("/api/progresso/mapa", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  .then(res => res.json())
+  .then(data => {
+    let falhas = 0;
     
-    if (!response.ok) return;
-
-    const data = await response.json();
-    // Aqui mantemos a lógica original do backend apenas para as VIDAS, que é seguro
-    const moduloAtual = data.modulos?.find(m => m.desafio_atual);
-    
-    if (moduloAtual) {
-      const container = document.getElementById("vidasDesafio");
-      if (typeof renderizarVidas === 'function') {
-        renderizarVidas(container, moduloAtual.falhas_no_modulo);
-      }
+    if (Array.isArray(data)) {
+      const moduloData = data.find(m => m.id_modulo == moduloId);
+      falhas = moduloData?.falhas_no_modulo || 0;
+    } else if (data.modulos && Array.isArray(data.modulos)) {
+      const moduloData = data.modulos.find(m => m.id_modulo == moduloId);
+      falhas = moduloData?.falhas_no_modulo || 0;
     }
-  } catch (error) {
-    console.error("Erro ao carregar vidas:", error);
-  }
+    
+    if (typeof renderizarVidas === 'function') {
+      renderizarVidas(container, falhas);
+    }
+  })
+  .catch(err => console.error("Erro ao carregar vidas:", err));
 }
