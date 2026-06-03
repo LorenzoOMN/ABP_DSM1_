@@ -6,7 +6,6 @@
   const DURACAO_TIMER_SEGUNDOS = 20 * 60;
   const RESPOSTA_PULADA = "x";
 
-  // Mapeamento dos bosses por número do questionário
   const BOSSES = {
     1: {
       nome: "Documentação Confusa",
@@ -63,6 +62,7 @@
 
   let fila = [];
   let indiceAtual = 0;
+  let questionarioNumero = 1; // Será definido pelo backend
 
   let respostas = {};
   let confirmadas = {};
@@ -72,54 +72,7 @@
   let segundosRestantes = DURACAO_TIMER_SEGUNDOS;
 
   let exameId = null;
-  let questionarioNumero = 1;
-
   let questionarioEncerrado = false;
-
-  // ============================================================================
-  // DETECÇÃO DO QUESTIONÁRIO
-  // ============================================================================
-
-  function detectarNumeroQuestionario() {
-    // Método 1: Verificar query param 'modulo' (ex: ?modulo=2)
-    const urlParams = new URLSearchParams(window.location.search);
-    const moduloParam = urlParams.get("modulo");
-    if (moduloParam) {
-      return parseInt(moduloParam, 10);
-    }
-
-    // Método 2: Verificar query param 'q' (ex: ?q=2)
-    const qParam = urlParams.get("q");
-    if (qParam) {
-      return parseInt(qParam, 10);
-    }
-
-    // Método 3: Verificar data attribute no body
-    const bodyNumero = document.body.dataset.questionarioNumero;
-    if (bodyNumero) {
-      return parseInt(bodyNumero, 10);
-    }
-
-    // Método 4: Verificar URL path (ex: /questionario/2, /questionario2)
-    const path = window.location.pathname;
-    const match = path.match(/questionario[-_]?(\d+)/i);
-    if (match && match[1]) {
-      return parseInt(match[1], 10);
-    }
-
-    // Método 5: Verificar pelo nome do script carregado
-    const scripts = document.getElementsByTagName("script");
-    for (let script of scripts) {
-      const src = script.src || "";
-      const match = src.match(/questionario[-_]?(\d+)\.js/i);
-      if (match && match[1]) {
-        return parseInt(match[1], 10);
-      }
-    }
-
-    // Padrão: questionário 1
-    return 1;
-  }
 
   // ============================================================================
   // TOKEN
@@ -694,7 +647,7 @@
   }
 
   // ============================================================================
-  // CARREGAMENTO
+  // CARREGAMENTO DAS QUESTÕES (FUNÇÃO PRINCIPAL ATUALIZADA)
   // ============================================================================
 
   async function carregarTodasQuestoes() {
@@ -725,13 +678,50 @@
 
       if (!res.ok) {
         mostrarAlerta(data.message || "Erro ao carregar questões", "erro");
-
         window.location.href = "/mapa";
-
         return;
       }
 
       fila = data;
+
+      // ========================================================================
+      // 🎯 DETERMINAR O MÓDULO PELO BACKEND (NÃO PELA URL!)
+      // ========================================================================
+
+      const primeiraQuestao = fila[0];
+
+      if (primeiraQuestao) {
+        // Tenta extrair o número do módulo das questões
+        // Prioridade: numero_modulo > id_modulo > extrair do id_exame
+        let moduloDetectado = null;
+
+        if (primeiraQuestao.numero_modulo) {
+          moduloDetectado = parseInt(primeiraQuestao.numero_modulo, 10);
+        } else if (primeiraQuestao.id_modulo) {
+          moduloDetectado = parseInt(primeiraQuestao.id_modulo, 10);
+        } else if (primeiraQuestao.id_exame) {
+          // Fallback: extrai do id_exame (ex: 401 → módulo 4)
+          const idExameStr = String(primeiraQuestao.id_exame);
+          const primeiroDigito = parseInt(idExameStr.charAt(0), 10);
+          if (!isNaN(primeiroDigito) && primeiroDigito >= 1 && primeiroDigito <= 5) {
+            moduloDetectado = primeiroDigito;
+          }
+        }
+
+        // Se detectou um módulo válido, usa ele
+        if (moduloDetectado && moduloDetectado >= 1 && moduloDetectado <= 5) {
+          questionarioNumero = moduloDetectado;
+          console.log(`✅ Módulo detectado do backend: ${questionarioNumero}`);
+        } else {
+          console.warn("⚠️ Não foi possível detectar o módulo das questões. Usando módulo 1.");
+          questionarioNumero = 1;
+        }
+      }
+
+      // Atualiza a interface com o boss correto
+      atualizarInterfaceQuestionario();
+
+      // ========================================================================
 
       exameId = fila[0]?.id_exame || null;
 
@@ -776,7 +766,6 @@
       iniciarTimer();
     } catch (err) {
       console.error(err);
-
       mostrarAlerta("Erro de conexão ao carregar questões", "erro");
     }
   }
@@ -786,7 +775,6 @@
   // ============================================================================
 
   function atualizarInterfaceQuestionario() {
-    questionarioNumero = detectarNumeroQuestionario();
     const boss = BOSSES[questionarioNumero] || BOSSES[1];
 
     // Atualizar título da página
@@ -811,6 +799,8 @@
         this.style.opacity = "0.5";
       };
     }
+
+    console.log(`🎨 Boss atualizado: ${boss.nome} (Módulo ${questionarioNumero})`);
   }
 
   // ============================================================================
@@ -833,9 +823,6 @@
   // INIT
   // ============================================================================
 
-  // IMPORTANTE: Atualizar interface do questionário (boss, título, etc)
-  atualizarInterfaceQuestionario();
-
-  // Carregar questões
+  // Carregar questões (isso determinará o módulo e o boss)
   carregarTodasQuestoes();
 })();
