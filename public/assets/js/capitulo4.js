@@ -883,9 +883,9 @@ function configurarPipelineDecisoes() {
     title.textContent = step.title;
     description.textContent = step.message;
 
-    await wait(520);
+    await wait(720);
     button.classList.remove("pipeline-action--flash");
-    await wait(170);
+    await wait(150);
   }
 
   function shakeBridge(button) {
