@@ -223,6 +223,17 @@
   margin-top: 0;
   background: transparent;
   backdrop-filter: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    visibility 0.28s ease;
+}
+
+.capitulo2-progress-wrap.is-hidden-for-final {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-120%);
 }
 
 .capitulo2-progress-wrap .chapter-progress {
@@ -2842,6 +2853,14 @@
   object-fit: cover;
   object-position: center 68%;
   filter: brightness(1.08) contrast(1.14) saturate(1.08);
+}
+
+.guardioes-final-bardo .guardioes-final-image-wrap img {
+  object-position: 18% 68%;
+}
+
+.guardioes-final-corvo .guardioes-final-image-wrap img {
+  object-position: 82% 68%;
 }
 
 .guardioes-final-dialogo {

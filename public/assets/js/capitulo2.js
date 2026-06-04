@@ -234,6 +234,7 @@ function configurarMangaIntroCapitulo2() {
 function configurarMangaFinalCapitulo2() {
   const secao = document.querySelector(".guardioes-final-scroll");
   const palco = secao?.querySelector(".guardioes-final-stage");
+  const barraProgresso = document.querySelector(".capitulo2-progress-wrap");
   const paineis = Array.from(document.querySelectorAll("[data-final-panel]"));
   const imagens = document.querySelectorAll(".guardioes-final-image-wrap img");
 
@@ -267,6 +268,11 @@ function configurarMangaFinalCapitulo2() {
     secao.style.setProperty("--guardioes-final-curtain", String(opacidadeCortina));
     secao.style.setProperty("--guardioes-final-stage-opacity", String(opacidadeCena));
     secao.classList.toggle("is-at-portal", indiceAtual === paineis.length - 1);
+
+    if (barraProgresso) {
+      const deveOcultarBarra = topoNaturalPalco < viewportAltura * 0.82 && rect.bottom > viewportAltura * 0.18;
+      barraProgresso.classList.toggle("is-hidden-for-final", deveOcultarBarra);
+    }
   }
 
   atualizarPaineis();
