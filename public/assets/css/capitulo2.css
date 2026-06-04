@@ -2736,6 +2736,7 @@
   background: transparent;
   --guardioes-final-curtain: 0;
   --guardioes-final-stage-opacity: 0;
+  --guardioes-final-text-opacity: 0;
 }
 
 .guardioes-final-scroll::before {
@@ -2747,17 +2748,37 @@
 }
 
 .guardioes-final-curtain {
-  content: "";
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 20;
+  display: grid;
+  place-items: center;
   background: #000;
   opacity: var(--guardioes-final-curtain);
   pointer-events: none;
   transition: opacity 0.06s linear;
+}
+
+.guardioes-final-curtain p {
+  width: min(980px, calc(100% - 2rem));
+  margin: 0;
+  color: #fff4d6;
+  font-family: "Cinzel", serif;
+  font-size: clamp(2.4rem, 7vw, 7rem);
+  font-weight: 800;
+  line-height: 0.98;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 16px rgba(255, 255, 255, 0.22),
+    0 0 34px rgba(244, 211, 94, 0.22),
+    0 10px 28px rgba(0, 0, 0, 0.86);
+  opacity: var(--guardioes-final-text-opacity);
+  transform: translateY(calc((1 - var(--guardioes-final-text-opacity)) * 18px));
+  transition: opacity 0.08s linear, transform 0.08s linear;
 }
 
 .guardioes-final-stage {
@@ -2769,6 +2790,11 @@
   background: #000;
   opacity: var(--guardioes-final-stage-opacity);
   transition: opacity 0.08s linear;
+}
+
+.guardioes-final-stage::before,
+.guardioes-final-stage::after {
+  content: none;
 }
 
 .guardioes-final-bg {
@@ -2811,18 +2837,9 @@
   left: 66.6667%;
 }
 
+.guardioes-final-slice::before,
 .guardioes-final-slice::after {
-  content: "";
-  position: absolute;
-  top: -5vh;
-  right: -18px;
-  bottom: -5vh;
-  z-index: 4;
-  width: clamp(22px, 2.6vw, 48px);
-  background: #000;
-  transform: rotate(2deg);
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.9);
-  pointer-events: none;
+  content: none;
 }
 
 .guardioes-final-corvo::after {
@@ -2947,42 +2964,178 @@
 
 .guardioes-final-portal-core {
   position: relative;
-  width: min(440px, 74vw);
-  aspect-ratio: 1;
-  border-radius: 50%;
+  width: min(520px, 76vw);
+  aspect-ratio: 2 / 3;
+  border-radius: 0;
   background:
-    radial-gradient(circle, rgba(255, 246, 199, 0.95) 0 8%, rgba(244, 211, 94, 0.56) 9% 18%, rgba(122, 31, 24, 0.72) 34%, transparent 67%);
-  filter: drop-shadow(0 0 38px rgba(244, 211, 94, 0.36));
-  animation: mangaFinalPortalPulso 2.8s ease-in-out infinite;
+    url("/assets/img/capitulo_2/final/portal-guardioes.png") center / contain no-repeat;
+  filter:
+    drop-shadow(0 0 22px rgba(255, 42, 231, 0.52))
+    drop-shadow(0 0 54px rgba(126, 58, 255, 0.42));
+  animation: guardioesFinalPortalImagemPulso 3.2s ease-in-out infinite;
 }
 
 .guardioes-final-portal-core span,
 .guardioes-final-portal-core::before,
 .guardioes-final-portal-core::after {
-  content: "";
-  position: absolute;
-  inset: 8%;
-  border: 1px solid rgba(244, 211, 94, 0.58);
-  border-radius: 50%;
-}
-
-.guardioes-final-portal-core::before {
-  animation: mangaFinalPortalGiro 5.4s linear infinite;
-}
-
-.guardioes-final-portal-core::after {
-  inset: 22%;
-  animation: mangaFinalPortalGiro 4.2s linear infinite reverse;
-}
-
-.guardioes-final-portal-core span:nth-child(1) {
-  inset: 32%;
-  border-style: dashed;
-}
-
-.guardioes-final-portal-core span:nth-child(2),
-.guardioes-final-portal-core span:nth-child(3) {
   display: none;
+}
+
+@keyframes guardioesFinalTintaPulso {
+  0%,
+  100% {
+    opacity: 0.95;
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    filter:
+      drop-shadow(-14px 0 20px rgba(0, 0, 0, 0.84))
+      drop-shadow(12px 0 20px rgba(0, 0, 0, 0.72));
+  }
+
+  45% {
+    opacity: 1;
+    background-position: 0 2px, 0 -4px, 0 3px, 0 -2px, 0 4px, 0 -3px, 0 5px, 0 -2px, 0 3px, 0 0, 0 14px;
+    filter:
+      drop-shadow(-18px 0 24px rgba(0, 0, 0, 0.92))
+      drop-shadow(14px 0 22px rgba(0, 0, 0, 0.78));
+  }
+}
+
+@keyframes guardioesFinalPortalImagemPulso {
+  0%,
+  100% {
+    opacity: 0.9;
+    transform: scale(0.96);
+    filter:
+      drop-shadow(0 0 18px rgba(255, 42, 231, 0.46))
+      drop-shadow(0 0 48px rgba(126, 58, 255, 0.36));
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+    filter:
+      drop-shadow(0 0 28px rgba(255, 42, 231, 0.72))
+      drop-shadow(0 0 72px rgba(126, 58, 255, 0.58))
+      drop-shadow(0 0 110px rgba(64, 146, 255, 0.26));
+  }
+}
+
+@keyframes guardioesFinalTintaFiapos {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: rotate(-1.6deg) translateY(0) scaleY(1);
+  }
+
+  38% {
+    opacity: 0.94;
+    transform: rotate(-1.2deg) translateY(10px) scaleY(1.04);
+  }
+
+  68% {
+    opacity: 0.8;
+    transform: rotate(-2deg) translateY(-6px) scaleY(0.98);
+  }
+}
+
+@keyframes guardioesFinalDivisoriaViva {
+  0%,
+  100% {
+    opacity: 1;
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    filter:
+      drop-shadow(-22px 0 24px rgba(0, 0, 0, 1))
+      drop-shadow(22px 0 24px rgba(0, 0, 0, 1))
+      drop-shadow(-8px 0 12px rgba(207, 64, 255, 0.75))
+      drop-shadow(8px 0 12px rgba(255, 42, 184, 0.58));
+    clip-path: polygon(
+      58% 0%,
+      82% 6%,
+      48% 13%,
+      76% 22%,
+      35% 30%,
+      70% 39%,
+      28% 49%,
+      76% 60%,
+      38% 71%,
+      84% 84%,
+      52% 100%,
+      8% 100%,
+      30% 84%,
+      10% 72%,
+      28% 60%,
+      6% 47%,
+      30% 34%,
+      8% 20%,
+      28% 9%,
+      7% 0%
+    );
+  }
+
+  36% {
+    opacity: 1;
+    background-position: 0 -18px, 0 14px, 0 -22px, 0 18px, 0 10px, 0 -8px, 0 18px, 0 -14px, 0 12px, 0 -10px, 0 14px, 0 0;
+    filter:
+      drop-shadow(-28px 0 30px rgba(0, 0, 0, 1))
+      drop-shadow(28px 0 30px rgba(0, 0, 0, 1))
+      drop-shadow(-16px 0 22px rgba(208, 42, 255, 1))
+      drop-shadow(16px 0 22px rgba(255, 45, 180, 0.96))
+      drop-shadow(0 0 20px rgba(153, 88, 255, 0.9));
+    clip-path: polygon(
+      66% 0%,
+      88% 8%,
+      52% 16%,
+      86% 25%,
+      27% 32%,
+      78% 42%,
+      18% 51%,
+      82% 61%,
+      30% 72%,
+      90% 86%,
+      48% 100%,
+      4% 100%,
+      24% 86%,
+      3% 73%,
+      22% 61%,
+      2% 48%,
+      24% 35%,
+      4% 22%,
+      22% 10%,
+      3% 0%
+    );
+  }
+
+  68% {
+    opacity: 1;
+    background-position: 0 16px, 0 -20px, 0 12px, 0 -16px, 0 -8px, 0 8px, 0 -18px, 0 10px, 0 -12px, 0 14px, 0 -10px, 0 0;
+    filter:
+      drop-shadow(-24px 0 26px rgba(0, 0, 0, 1))
+      drop-shadow(24px 0 26px rgba(0, 0, 0, 1))
+      drop-shadow(-12px 0 18px rgba(255, 0, 221, 0.98))
+      drop-shadow(12px 0 18px rgba(136, 68, 255, 0.96));
+    clip-path: polygon(
+      54% 0%,
+      90% 9%,
+      42% 17%,
+      82% 27%,
+      32% 35%,
+      74% 44%,
+      20% 53%,
+      78% 63%,
+      34% 74%,
+      86% 88%,
+      42% 100%,
+      6% 100%,
+      28% 88%,
+      2% 75%,
+      26% 63%,
+      4% 50%,
+      28% 37%,
+      2% 24%,
+      26% 11%,
+      5% 0%
+    );
+  }
 }
 
 .guardioes-final-dialogo-portal {
@@ -2996,12 +3149,12 @@
 
 .guardioes-final-portal-button {
   position: absolute;
-  inset: clamp(4rem, 8vh, 6rem) auto auto 50%;
-  width: min(440px, 74vw);
-  aspect-ratio: 1;
+  inset: clamp(3.5rem, 6vh, 5rem) auto auto 50%;
+  width: min(520px, 76vw);
+  aspect-ratio: 2 / 3;
   transform: translateX(-50%);
   border: 0;
-  border-radius: 50%;
+  border-radius: 40%;
   background: transparent;
   cursor: pointer;
 }
@@ -3045,5 +3198,56 @@
 
   .guardioes-final-dialogo blockquote {
     font-size: 0.78rem;
+  }
+}
+
+/* Divisorias em forma de raio roxo/rosa, inspiradas em feixe de energia. */
+.guardioes-final-stage::before,
+.guardioes-final-stage::after {
+  content: none;
+}
+
+@keyframes guardioesFinalRaioEnergia {
+  0%,
+  100% {
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    filter:
+      drop-shadow(0 0 6px rgba(255, 255, 255, 1))
+      drop-shadow(0 0 16px rgba(255, 38, 230, 1))
+      drop-shadow(0 0 36px rgba(126, 58, 255, 0.95))
+      drop-shadow(-18px 0 24px rgba(0, 0, 0, 1))
+      drop-shadow(18px 0 24px rgba(0, 0, 0, 1));
+  }
+
+  50% {
+    background-position: 0 12px, 0 -12px, 0 26px, 0 -18px, 0 18px, 0 -22px;
+    clip-path: polygon(
+      58% 0%,
+      78% 8%,
+      38% 15%,
+      76% 23%,
+      30% 31%,
+      80% 40%,
+      24% 49%,
+      82% 58%,
+      30% 68%,
+      76% 80%,
+      52% 100%,
+      22% 100%,
+      40% 84%,
+      18% 72%,
+      38% 61%,
+      14% 50%,
+      36% 38%,
+      16% 26%,
+      36% 14%,
+      18% 0%
+    );
+    filter:
+      drop-shadow(0 0 10px rgba(255, 255, 255, 1))
+      drop-shadow(0 0 28px rgba(255, 38, 230, 1))
+      drop-shadow(0 0 58px rgba(126, 58, 255, 1))
+      drop-shadow(-22px 0 30px rgba(0, 0, 0, 1))
+      drop-shadow(22px 0 30px rgba(0, 0, 0, 1));
   }
 }

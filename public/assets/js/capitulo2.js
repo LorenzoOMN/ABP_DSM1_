@@ -258,6 +258,7 @@ function configurarMangaFinalCapitulo2() {
     const revelarCena = Math.min(1, Math.max(0, (entradaPalco - viewportAltura * 0.72) / (viewportAltura * 0.24)));
     const opacidadeCortina = revelarCena > 0 ? 1 - revelarCena : escurecerEntrada;
     const opacidadeCena = revelarCena;
+    const opacidadeTexto = Math.min(1, Math.max(0, (opacidadeCortina - 0.58) / 0.34)) * (1 - revelarCena);
 
     paineis.forEach((painel, index) => {
       painel.classList.toggle("is-active", index === indiceAtual);
@@ -267,6 +268,7 @@ function configurarMangaFinalCapitulo2() {
     secao.dataset.finalIndex = String(indiceAtual);
     secao.style.setProperty("--guardioes-final-curtain", String(opacidadeCortina));
     secao.style.setProperty("--guardioes-final-stage-opacity", String(opacidadeCena));
+    secao.style.setProperty("--guardioes-final-text-opacity", String(opacidadeTexto));
     secao.classList.toggle("is-at-portal", indiceAtual === paineis.length - 1);
 
     if (barraProgresso) {
