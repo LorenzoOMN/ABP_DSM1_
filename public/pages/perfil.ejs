@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+
+    <title>Perfil</title>
+
+    <link rel="stylesheet" href="/assets/css/perfil.css" />
+  </head>
+
+  <body>
+    <%- include('./partials/header') %> <%- include('./partials/botao_voltar')
+    %> <%- include('./partials/alert') %>
+
+<main class="perfil-container">
+
+    <section class="livro-perfil">
+
+        <img
+            src="/assets/img/openbook.png"
+            alt="Livro"
+            class="livro-fundo"
+        >
+
+        <!-- ESQUERDA -->
+
+        <h1 class="perfil-titulo">
+            Perfil do Jogador
+        </h1>
+
+        <div class="avatar-teste"></div>
+
+        <span
+            id="nomeUsuario"
+            class="nome-usuario"
+        >
+            Carregando...
+        </span>
+
+        <span
+            id="emailUsuario"
+            class="email-usuario"
+        >
+            Carregando...
+        </span>
+
+        <div class="modulo-container">
+
+            <span class="label">
+                Módulo Atual:
+            </span>
+
+            <span id="capituloAtual">
+                -
+            </span>
+
+        </div>
+
+        <!-- DIREITA -->
+
+        <h2 class="config-titulo">
+            Configurações
+        </h2>
+
+        <span class="texto-musica">
+            Música
+        </span>
+
+        <div
+            id="toggleMusica"
+            class="toggle-audio"
+        ></div>
+
+        <span class="texto-efeitos">
+            Efeitos Sonoros
+        </span>
+
+        <div
+            id="toggleEfeitos"
+            class="toggle-audio"
+        ></div>
+
+        <a id="botaoDev" class="botao-dev" href="/admin">
+            <img
+                src="/assets/img/botao_adm.png"
+                alt="Botão ADM"
+                class="botao-dev-img"
+            >
+        </a>
+    </section>
+
+</main>
+
+    <script src="../assets/js/perfil.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <%- include('./partials/navegacao_inferior') %>
+  </body>
+</html>

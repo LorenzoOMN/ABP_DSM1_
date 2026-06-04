@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentIndex = 0;
   let slidesMapeadas = [];
 
+  const artefatoEstaDesbloqueado = (valor) =>
+    valor === true || valor === 1 || valor === '1' || valor === 'true';
+
   // ============================================================================
   // FUNÇÃO: OBTER TOKEN (Igual ao padrão do questionario.js)
   // ============================================================================
@@ -82,19 +85,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Cria slides dinamicamente
-    const slidesHTML = artefatos.map((artefato, index) => `
+    const slidesHTML = artefatos.map((artefato, index) => {
+      const desbloqueado = artefatoEstaDesbloqueado(artefato.desbloqueado);
+
+      return `
       <div class="carousel-slide ${index === 0 ? 'active' : ''}" 
            data-id="${artefato.id}" 
-           data-desbloqueado="${artefato.desbloqueado}">
+           data-desbloqueado="${desbloqueado}">
         
         <!-- IMAGEM: Monta o caminho usando o nome do banco -->
         <img src="/assets/img/artefatos/${artefato.imagem}" 
              alt="${artefato.titulo}"
-             class="${artefato.desbloqueado ? '' : 'img-bloqueada'}" 
+             class="${desbloqueado ? '' : 'img-bloqueada'}" 
              onerror="this.style.display='none'" />
         
         <!-- Overlay de bloqueio -->
-        ${!artefato.desbloqueado ? `
+        ${!desbloqueado ? `
           <div class="overlay-bloqueado">
             <span class="cadeado-icon"></span>
             <p class="texto-bloqueado">Cap. ${artefato.capitulo_requisito}</p>
@@ -102,7 +108,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         ` : ''}
         
       </div>
-    `).join('');
+    `;
+    }).join('');
 
     carouselFrame.innerHTML = slidesHTML;
     slidesMapeadas = document.querySelectorAll('.carousel-slide');
@@ -157,7 +164,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       descricaoArtefatoEl.style.opacity = '0';
 
       setTimeout(() => {
-        if (artefatoAtual.desbloqueado) {
+        if (artefatoEstaDesbloqueado(artefatoAtual.desbloqueado)) {
           // ✅ Conteúdo completo direto (sem botão "Ler mais")
           descricaoArtefatoEl.innerHTML = artefatoAtual.conteudo_longo;
         } else {

@@ -6,6 +6,29 @@
   const DURACAO_TIMER_SEGUNDOS = 20 * 60;
   const RESPOSTA_PULADA = "x";
 
+  const BOSSES = {
+    1: {
+      nome: "Documentação Confusa",
+      imagem: "/assets/img/boss_questionario1.png",
+    },
+    2: {
+      nome: "Golem da Confusão de Papéis",
+      imagem: "/assets/img/capitulo_2/inimigos/boss_questionario2.png",
+    },
+    3: {
+      nome: "Névoa da Improvisação",
+      imagem: "/assets/img/capitulo_3/inimigos/boss_questionario3.png",
+    },
+    4: {
+      nome: "Colosso do Escopo Selvagem",
+      imagem: "/assets/img/capitulo_4/inimigos/boss_questionario4.png",
+    },
+    5: {
+      nome: "Guardião do Fluxo Perpétuo",
+      imagem: "/assets/img/capitulo_5/inimigos/boss_questionario5.png",
+    },
+  };
+
   // ============================================================================
   // ELEMENTOS DO DOM
   // ============================================================================
@@ -13,6 +36,8 @@
   const bossHPFill = document.getElementById("boss-hp-fill");
   const bossHPTexto = document.getElementById("boss-hp-texto");
   const bossImagem = document.getElementById("bossImagem");
+  const bossNomeEl = document.getElementById("boss-nome");
+  const pageTitleEl = document.getElementById("page-title");
 
   const botoesResposta = Array.from(
     document.querySelectorAll(".botaoresposta"),
@@ -28,7 +53,6 @@
   const imagemContainer = document.getElementById("imagem-questao-container");
 
   const botaoConfirmar = document.querySelector(".confirmar");
-  const botaoPular = document.getElementById("botao-pular");
 
   const timerEl = document.getElementById("timer-questao");
 
@@ -38,6 +62,7 @@
 
   let fila = [];
   let indiceAtual = 0;
+  let questionarioNumero = 1; // Será definido pelo backend
 
   let respostas = {};
   let confirmadas = {};
@@ -47,6 +72,7 @@
   let segundosRestantes = DURACAO_TIMER_SEGUNDOS;
 
   let exameId = null;
+  let questionarioEncerrado = false;
 
   // ============================================================================
   // TOKEN
@@ -76,19 +102,19 @@
 
     if (bossHPFill) {
       bossHPFill.style.width = `${porcentagem}%`;
-    }
 
-    bossHPFill.animate(
-      [
-        { transform: "translateX(0)" },
-        { transform: "translateX(-2px)" },
-        { transform: "translateX(2px)" },
-        { transform: "translateX(0)" },
-      ],
-      {
-        duration: 180,
-      },
-    );
+      bossHPFill.animate(
+        [
+          { transform: "translateX(0)" },
+          { transform: "translateX(-2px)" },
+          { transform: "translateX(2px)" },
+          { transform: "translateX(0)" },
+        ],
+        {
+          duration: 180,
+        },
+      );
+    }
 
     if (bossHPTexto) {
       bossHPTexto.textContent = `${Math.round(porcentagem)}%`;
@@ -154,7 +180,12 @@
   }
 
   function iniciarTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+
     carregarTimerLocal();
+    salvarTimerLocal();
     atualizarTimerDOM();
 
     if (segundosRestantes <= 0) {
@@ -163,12 +194,12 @@
     }
 
     timerInterval = setInterval(function () {
-      segundosRestantes--;
+      segundosRestantes = Math.max(0, segundosRestantes - 1);
 
       salvarTimerLocal();
       atualizarTimerDOM();
 
-      if (segundosRestantes <= 0) {
+      if (segundosRestantes === 0) {
         clearInterval(timerInterval);
         encerrarPorTimer();
       }
@@ -176,7 +207,10 @@
   }
 
   function pararTimer() {
-    if (timerInterval) clearInterval(timerInterval);
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
 
     const chave = chaveTimer();
 
@@ -186,6 +220,10 @@
   }
 
   async function encerrarPorTimer() {
+    if (questionarioEncerrado) return;
+
+    questionarioEncerrado = true;
+
     pararTimer();
 
     if (timerEl) {
@@ -214,12 +252,6 @@
     return fila.length;
   }
 
-  function atualizarBotoesNavegacao() {
-  if (botaoPular) {
-    botaoPular.disabled = false;
-  }
-}
-
   // ============================================================================
   // BARRA DE PROGRESSO
   // ============================================================================
@@ -230,16 +262,14 @@
 
     let percentual;
 
-    if (n > total) {
+    if (total <= 1) {
+      percentual = 90;
+    } else if (n > total) {
       percentual = 100;
     } else if (n === total) {
       percentual = 90;
     } else {
       percentual = Math.round(((n - 1) / (total - 1)) * 90);
-
-      if (n === 1) {
-        percentual = 0;
-      }
     }
 
     percentual = Math.max(0, Math.min(100, percentual || 0));
@@ -333,7 +363,6 @@
     restaurarSelecao(q.id_questao);
 
     atualizarPercentual();
-    atualizarBotoesNavegacao();
 
     habilitarRespostas();
     if (botaoConfirmar) {
@@ -380,10 +409,6 @@
     if (botaoConfirmar) {
       botaoConfirmar.disabled = true;
     }
-
-    if (botaoPular) {
-      botaoPular.disabled = true;
-    }
   }
 
   // ============================================================================
@@ -428,6 +453,24 @@
   // ENVIO
   // ============================================================================
 
+  async function encerrarPorToken() {
+    if (questionarioEncerrado) return;
+
+    questionarioEncerrado = true;
+
+    pararTimer();
+
+    desabilitarTudo();
+
+    localStorage.removeItem("token");
+
+    mostrarAlerta("Sua sessão expirou. Faça login novamente.", "erro");
+
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1500);
+  }
+
   async function enviarResposta(idExame, idQuestao, resposta) {
     const token = obterToken();
 
@@ -450,6 +493,11 @@
           resposta,
         }),
       });
+
+      if (res.status === 401) {
+        await encerrarPorToken();
+        return false;
+      }
 
       if (res.ok) {
         const data = await res.json();
@@ -565,52 +613,22 @@
         botaoConfirmar.disabled = false;
       }
 
-      atualizarBotoesNavegacao();
-
       return;
     }
 
     if (indiceAtual < fila.length - 1) {
       indiceAtual++;
       renderizarQuestao();
-    } else {
-      await finalizarQuestionario();
-    }
-  }
-
-  async function aoPular() {
-    const q = questaoAtual();
-
-    if (!q) return;
-
-    if (!confirmadas[q.id_questao]) {
-      respostas[q.id_questao] = RESPOSTA_PULADA;
-    }
-
-    if (indiceAtual < fila.length - 1) {
-      indiceAtual++;
-      renderizarQuestao();
-      return;
-    }
-
-    const primeiraSemResposta = fila.findIndex(
-      (x) =>
-        !confirmadas[x.id_questao] &&
-        respostas[x.id_questao] !== RESPOSTA_PULADA,
-    );
-
-    if (primeiraSemResposta !== -1) {
-      indiceAtual = primeiraSemResposta;
-
-      renderizarQuestao();
-
-      mostrarAlerta("Você ainda tem questões sem resposta.", "info");
     } else {
       await finalizarQuestionario();
     }
   }
 
   async function finalizarQuestionario() {
+    if (questionarioEncerrado) return;
+
+    questionarioEncerrado = true;
+
     desabilitarTudo();
 
     pararTimer();
@@ -629,7 +647,7 @@
   }
 
   // ============================================================================
-  // CARREGAMENTO
+  // CARREGAMENTO DAS QUESTÕES (FUNÇÃO PRINCIPAL ATUALIZADA)
   // ============================================================================
 
   async function carregarTodasQuestoes() {
@@ -646,6 +664,11 @@
         },
       });
 
+      if (res.status === 401) {
+        await encerrarPorToken();
+        return;
+      }
+
       const data = await res.json();
 
       if (res.status === 404) {
@@ -655,13 +678,50 @@
 
       if (!res.ok) {
         mostrarAlerta(data.message || "Erro ao carregar questões", "erro");
-
         window.location.href = "/mapa";
-
         return;
       }
 
       fila = data;
+
+      // ========================================================================
+      // 🎯 DETERMINAR O MÓDULO PELO BACKEND (NÃO PELA URL!)
+      // ========================================================================
+
+      const primeiraQuestao = fila[0];
+
+      if (primeiraQuestao) {
+        // Tenta extrair o número do módulo das questões
+        // Prioridade: numero_modulo > id_modulo > extrair do id_exame
+        let moduloDetectado = null;
+
+        if (primeiraQuestao.numero_modulo) {
+          moduloDetectado = parseInt(primeiraQuestao.numero_modulo, 10);
+        } else if (primeiraQuestao.id_modulo) {
+          moduloDetectado = parseInt(primeiraQuestao.id_modulo, 10);
+        } else if (primeiraQuestao.id_exame) {
+          // Fallback: extrai do id_exame (ex: 401 → módulo 4)
+          const idExameStr = String(primeiraQuestao.id_exame);
+          const primeiroDigito = parseInt(idExameStr.charAt(0), 10);
+          if (!isNaN(primeiroDigito) && primeiroDigito >= 1 && primeiroDigito <= 5) {
+            moduloDetectado = primeiroDigito;
+          }
+        }
+
+        // Se detectou um módulo válido, usa ele
+        if (moduloDetectado && moduloDetectado >= 1 && moduloDetectado <= 5) {
+          questionarioNumero = moduloDetectado;
+          console.log(`✅ Módulo detectado do backend: ${questionarioNumero}`);
+        } else {
+          console.warn("⚠️ Não foi possível detectar o módulo das questões. Usando módulo 1.");
+          questionarioNumero = 1;
+        }
+      }
+
+      // Atualiza a interface com o boss correto
+      atualizarInterfaceQuestionario();
+
+      // ========================================================================
 
       exameId = fila[0]?.id_exame || null;
 
@@ -686,6 +746,10 @@
         if (q.resposta_salva) {
           confirmadas[q.id_questao] = true;
           respostas[q.id_questao] = q.resposta_salva;
+
+          if (q.resposta_correta_salva) {
+            acertos[q.id_questao] = true;
+          }
         }
       });
 
@@ -706,9 +770,41 @@
       iniciarTimer();
     } catch (err) {
       console.error(err);
-
       mostrarAlerta("Erro de conexão ao carregar questões", "erro");
     }
+  }
+
+  // ============================================================================
+  // ATUALIZAÇÃO DA INTERFACE DO QUESTIONÁRIO
+  // ============================================================================
+
+  function atualizarInterfaceQuestionario() {
+    const boss = BOSSES[questionarioNumero] || BOSSES[1];
+
+    // Atualizar título da página
+    if (pageTitleEl) {
+      pageTitleEl.textContent = `Questionário ${questionarioNumero} | Scrum Dungeon`;
+    }
+
+    // Atualizar nome do boss
+    if (bossNomeEl) {
+      bossNomeEl.textContent = boss.nome;
+    }
+
+    // Atualizar imagem do boss
+    if (bossImagem) {
+      bossImagem.src = boss.imagem;
+      bossImagem.alt = `Boss ${boss.nome}`;
+      bossImagem.dataset.bossSrc = boss.imagem;
+
+      // Tratamento de erro caso a imagem não exista
+      bossImagem.onerror = function () {
+        console.warn(`Imagem do boss não encontrada: ${boss.imagem}`);
+        this.style.opacity = "0.5";
+      };
+    }
+
+    console.log(`🎨 Boss atualizado: ${boss.nome} (Módulo ${questionarioNumero})`);
   }
 
   // ============================================================================
@@ -727,13 +823,10 @@
     botaoConfirmar.addEventListener("click", aoConfirmar);
   }
 
-  if (botaoPular) {
-    botaoPular.addEventListener("click", aoPular);
-  }
-
   // ============================================================================
   // INIT
   // ============================================================================
 
+  // Carregar questões (isso determinará o módulo e o boss)
   carregarTodasQuestoes();
 })();
