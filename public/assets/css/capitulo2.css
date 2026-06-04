@@ -328,6 +328,10 @@
   grid-column: 1 / -1;
 }
 
+.artefatos-block {
+  padding-left: clamp(5.5rem, 9vw, 7.5rem);
+}
+
 .lista-conceitos ul {
   margin: 0.75rem 0 0;
   padding-left: 1.25rem;
@@ -1109,6 +1113,7 @@
   }
 
   .guardioes-block,
+  .artefatos-block,
   .personagem-horizontal {
     padding-left: 1.25rem;
   }
