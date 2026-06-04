@@ -6,7 +6,8 @@ const { getProximaQuestaoService,
     getProximaTentativaService,
     getProximoModuloService,
     getModulosRespondidosService,
-    getResultadoAtualService } = require('./questoes.service');
+    getResultadoAtualService,
+    getTodasQuestoesService } = require('./questoes.service');
 
 // ============================================================================
 // CONTROLLER: OBTER PRÓXIMA QUESTÃO
@@ -109,8 +110,11 @@ async function getProximoModulo(req, res) {
         return res.status(401).json({ message: "Usuário não autenticado" });
     }
 
+    // id_exame pode vir no body para validação precisa (evita problemas após reset)
+    const idExame = req.body?.id_exame || null;
+
     try {
-        const resultado = await getProximoModuloService(idUsuario);
+        const resultado = await getProximoModuloService(idUsuario, idExame);
         return res.status(200).json(resultado);
     } catch (error) {
         // Mapeamento de erros de negócio → HTTP
@@ -169,6 +173,35 @@ async function getResultadoAtual(req, res) {
     }
 }
 
+
+// ============================================================================
+// CONTROLLER: BUSCAR TODAS AS QUESTÕES DO EXAME (para navegação local)
+// ============================================================================
+async function getTodasQuestoes(req, res) {
+    const idUsuario = req.usuario?.id_usuario;
+    if (!idUsuario) {
+        return res.status(401).json({ message: "Usuário não autenticado" });
+    }
+
+    try {
+        const questoes = await getTodasQuestoesService(idUsuario);
+        return res.status(200).json(questoes);
+    } catch (error) {
+        if (error.message === "Progresso de desafio não encontrado" ||
+            error.message === "Nenhuma questão encontrada para este exame") {
+            return res.status(404).json({ message: error.message });
+        }
+        if (error.code === "HISTORIA_NAO_CONCLUIDA") {
+            return res.status(403).json({
+                message: "Você precisa concluir a história antes de acessar o desafio deste módulo",
+                modulo: error.modulo
+            });
+        }
+        console.error("Erro em getTodasQuestoes:", error);
+        return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
 // ============================================================================
 // EXPORTAÇÕES
 // ============================================================================
@@ -179,4 +212,5 @@ module.exports = {
     getProximoModulo,
     getModulosRespondidos,
     getResultadoAtual,
+    getTodasQuestoes,
 };

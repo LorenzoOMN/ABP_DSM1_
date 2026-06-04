@@ -5,11 +5,33 @@ CREATE TABLE IF NOT EXISTS public.usuarios (
   cpf VARCHAR(11) NOT NULL,
   senha VARCHAR(200),
   certificado_hash VARCHAR(96),
-  barra_desbloqueada BOOLEAN DEFAULT FALSE
+  barra_desbloqueada BOOLEAN DEFAULT FALSE,
+  is_admin BOOLEAN DEFAULT false
 );
 
 ALTER TABLE public.usuarios
 ADD COLUMN IF NOT EXISTS barra_desbloqueada BOOLEAN DEFAULT FALSE;
+
+-- Adiciona a coluna is_admin
+ALTER TABLE usuarios 
+ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false;
+
+-- Configurações de áudio
+ALTER TABLE usuarios
+ADD COLUMN IF NOT EXISTS musica_ativa BOOLEAN DEFAULT true;
+
+ALTER TABLE usuarios
+ADD COLUMN IF NOT EXISTS efeitos_ativos BOOLEAN DEFAULT true;
+
+-- Define SEU usuário como admin (substitua pelo seu email)
+UPDATE usuarios 
+SET is_admin = true 
+WHERE email = '44@44';
+
+-- Verificar se funcionou
+-- SELECT id_usuario, email, nome, is_admin 
+-- FROM usuarios 
+-- WHERE is_admin = true;
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_usuarios_cpf
   ON public.usuarios (cpf)

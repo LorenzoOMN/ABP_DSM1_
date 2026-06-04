@@ -100,88 +100,49 @@ window.addEventListener("load", atualizarMenuAtivo);
 /* =========================================================
  NAVEGAÇÃO INFERIOR ATIVA
 ========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  const btnToggle = document.getElementById("btnToggleNavbar");
+  const navbarPrincipal = document.getElementById("navbarPrincipal");
 
-function marcarItemAtivoDaNavegacaoInferior() {
-  const itens = document.querySelectorAll(".navegacao-inferior__item");
+  if (btnToggle && navbarPrincipal) {
+    // 1. Abre e fecha ao clicar no botão de espada/ícone
+    btnToggle.addEventListener("click", (e) => {
+      e.stopPropagation(); // Evita que o clique feche imediatamente pelo listener global
+      navbarPrincipal.classList.toggle("navbar-aberta");
+      
+      // Opcional: Altera o ícone dinamicamente entre abrir (⚔️) e fechar (❌)
+      const iconSpan = btnToggle.querySelector(".toggle-icon");
+      if (iconSpan) {
+        if (navbarPrincipal.classList.contains("navbar-aberta")) {
+          iconSpan.textContent = "❌";
+        } else {
+          iconSpan.textContent = "⚔️";
+        }
+      }
+    });
 
-  // Encerra caso não existam itens
-  if (!itens.length) return;
+    // 2. Fecha a barra caso o usuário clique fora dela (na tela do sistema)
+    document.addEventListener("click", (e) => {
+      if (!navbarPrincipal.contains(e.target) && !btnToggle.contains(e.target)) {
+        if (navbarPrincipal.classList.contains("navbar-aberta")) {
+          navbarPrincipal.classList.remove("navbar-aberta");
+          const iconSpan = btnToggle.querySelector(".toggle-icon");
+          if (iconSpan) iconSpan.textContent = "⚔️";
+        }
+      }
+    });
+  }
 
-  // Remove barra final da rota atual
-  const rotaAtual = window.location.pathname.replace(/\/$/, "");
-
-  itens.forEach((item) => {
-    const rotaItem = item.dataset.rota?.replace(/\/$/, "");
-
-    item.classList.remove("ativo");
-
-    if (rotaAtual === rotaItem) {
-      item.classList.add("ativo");
+  // Lógica existente de marcar a rota atual ativa
+  const rotaAtual = window.location.pathname;
+  const itensMenu = document.querySelectorAll(".navegacao-inferior__item");
+  
+  itensMenu.forEach(item => {
+    if (item.getAttribute("data-rota") === rotaAtual) {
+      item.classList.add("item-ativo"); // Adicione estilização no seu CSS para a classe ativa se quiser
     }
   });
-}
-
-/* ----------- EVITAR SOBREPOSIÇÃO: NAVBAR INFERIOR + FOOTER -----------  */
-
-function controlarSobreposicaoNavbarFooter() {
-  const navbar = document.querySelector(".navegacao-inferior");
-  const footer = document.querySelector("footer");
-  if (!navbar || !footer) return;
-
-  let isTicking = false;
-
-  function calcularPosicao() {
-    // Desktop: ignora e limpa estilos inline para não conflitar
-    if (window.innerWidth > 520) {
-      navbar.style.removeProperty('bottom');
-      return;
-    }
-
-    // Se está oculta, não calcula
-    if (navbar.classList.contains('bloqueada') || navbar.style.display === 'none') return;
-
-    const footerRect = footer.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const gapSeguranca = 0;
-
-    // Footer está na parte inferior da tela?
-    const footerVisivel = footerRect.bottom > 0 && footerRect.top < viewportHeight;
-
-    if (footerVisivel) {
-      const alturaVisivel = viewportHeight - footerRect.top;
-      const novoBottom = Math.max(alturaVisivel + gapSeguranca, 0);
-      // ✅ Força sobrescrever o CSS !important
-      navbar.style.setProperty('bottom', `${novoBottom}px`, 'important');
-    } else {
-      navbar.style.setProperty('bottom', '0px', 'important');
-    }
-  }
-
-  function onScroll() {
-    if (!isTicking) {
-      window.requestAnimationFrame(() => {
-        calcularPosicao();
-        isTicking = false;
-      });
-      isTicking = true;
-    }
-  }
-
-  // Anexa eventos UMA VEZ
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", calcularPosicao);
-  calcularPosicao(); // Executa imediatamente no load
-}
-
-// Eventos
-function inicializarNavegacaoInferior() {
-  marcarItemAtivoDaNavegacaoInferior();
-  controlarSobreposicaoNavbarFooter();
-}
-
-window.addEventListener("load", marcarItemAtivoDaNavegacaoInferior);
-document.addEventListener("DOMContentLoaded", inicializarNavegacaoInferior);
-
+});
 /* =========================================================
  ALERTA CUSTOMIZADO
 ========================================================= */
@@ -195,6 +156,11 @@ document.addEventListener("DOMContentLoaded", inicializarNavegacaoInferior);
 function mostrarAlerta(mensagem, tipo) {
   const alerta = document.getElementById("custom-alert");
   const texto = document.getElementById("custom-alert-message");
+
+  if (!alerta || !texto) {
+    console.warn("mostrarAlerta: #custom-alert não encontrado.", mensagem);
+    return;
+  }
 
   // Define mensagem
   texto.innerText = mensagem;
@@ -305,7 +271,10 @@ function voltarPagina() {
 window.addEventListener("load", () => {
   atualizarAlturaFooter();
   atualizarAlturaHeader();
-  marcarItemAtivoDaNavegacaoInferior();
+
+  if (typeof marcarItemAtivoDaNavegacaoInferior === "function") {
+    marcarItemAtivoDaNavegacaoInferior();
+  }
 });
 
 // Quando a tela é redimensionada
@@ -390,14 +359,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await controlarVisibilidadeNavbar();
 
-  // ✅ CHAMA SEMPRE, independente se está visível ou não
-  controlarSobreposicaoNavbarFooter();
+  if (typeof controlarSobreposicaoNavbarFooter === "function") {
+    controlarSobreposicaoNavbarFooter();
+  }
 
-  marcarItemAtivoDaNavegacaoInferior();
+  if (typeof marcarItemAtivoDaNavegacaoInferior === "function") {
+    marcarItemAtivoDaNavegacaoInferior();
+  }
 
   const botaoLogout = document.getElementById("botao-logout");
+
   if (botaoLogout && localStorage.getItem("token")) {
-    botaoLogout.hidden = false;
+    botaoLogout.removeAttribute("hidden");
     botaoLogout.addEventListener("click", logout);
   }
 });
@@ -584,6 +557,41 @@ function renderizarVidas(container, falhasNoModulo, totalTentativas = 2) {
     container.appendChild(img);
   }
 }
+
+/**
+ * Glossario
+ */
+async function glossario() {
+
+  // pega o json
+  const r = await fetch("/assets/data/dicionario.json");
+
+  // transforma em objeto JS
+  const d = await r.json();
+
+  // pega todos elementos glossario
+  const termos = document.querySelectorAll(".glossario");
+
+  termos.forEach((el) => {
+
+    // pega o ID
+    const id = el.dataset.g;
+
+    // acha definição
+    const definicao = d[id];
+
+    // se existir
+    if (definicao) {
+
+      // adiciona tooltip
+      el.dataset.tip = definicao;
+    }
+
+  });
+
+}
+
+glossario();
 
 // Torna funções disponíveis globalmente para outras páginas
 window.marcarCapitulo1Concluido = marcarCapitulo1Concluido;

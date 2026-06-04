@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Questões | Scrum Dungeon</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/admin_questoes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="dungeon-theme">
+
+    <!-- ALERT -->
+    <%- include('partials/alert') %>
+
+    <!-- CABEÇALHO -->
+    <%- include('partials/header') %>
+
+    <main class="admin-container">
+
+        <div class="page-header">
+            <h1>Grimório das Questões</h1>
+            <p>Gerencie os desafios e enigmas da masmorra.</p>
+        </div>
+
+        <!-- Botão de Adicionar -->
+        <div style="margin-bottom: 1rem; text-align: right;">
+            <button class="btn-action btn-add" onclick="abrirModalCriacao()">
+                + Nova Questão
+            </button>
+        </div>
+
+        <!-- Painel de Filtros -->
+        <div class="rpg-panel">
+            <div class="modulo-filtro-container">
+                <span class="filtro-label">Filtrar por Módulo:</span>
+                <div class="modulo-botoes">
+                    <button class="modulo-btn active" data-modulo="todos">Todos</button>
+                    <button class="modulo-btn" data-modulo="1">Módulo 1</button>
+                    <button class="modulo-btn" data-modulo="2">Módulo 2</button>
+                    <button class="modulo-btn" data-modulo="3">Módulo 3</button>
+                    <button class="modulo-btn" data-modulo="4">Módulo 4</button>
+                    <button class="modulo-btn" data-modulo="5">Módulo 5</button>
+                </div>
+                <select id="filtro-dificuldade" class="filtro-select" onchange="aplicarFiltroDificuldade(this.value)">
+                    <option value="">Todas as dificuldades</option>
+                    <option value="fácil">Fácil</option>
+                    <option value="média">Média</option>
+                    <option value="difícil">Difícil</option>
+                </select>
+                <span id="modulo-atual-info" class="modulo-info">Exibindo: <strong>Todos os módulos</strong></span>
+            </div>
+        </div>
+
+        <!-- Grid de Questões (NOVO!) -->
+        <div class="questoes-grid" id="grid-questoes">
+            <!-- Cards serão inseridos via JavaScript -->
+        </div>
+
+        <!-- Modal de Edição -->
+        <div id="modal-questao" class="modal-overlay">
+            <div class="modal-content rpg-panel">
+                <div class="modal-header">
+                    <h2>Editar Questão</h2>
+                    <button class="btn-fechar" onclick="fecharModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulário será inserido via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('./partials/footer') %>
+    <%- include('./partials/navegacao_inferior') %>
+
+    <script src="../assets/js/admin_questoes.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+</body>
+
+</html>

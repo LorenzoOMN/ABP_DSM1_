@@ -16,7 +16,7 @@ async function carregarCertificado() {
     const usuario = await usuarioResponse.json();
 
     if (!usuarioResponse.ok) {
-      alert(usuario.message || "Erro ao carregar usuário");
+      mostrarAlerta(usuario.message || "Erro ao carregar usuário", "erro");
       return;
     }
 
@@ -45,7 +45,7 @@ async function carregarCertificado() {
     
   } catch (error) {
     console.error(error);
-    alert("Erro ao carregar certificado");
+    mostrarAlerta("Erro ao carregar certificado", "erro");
   }
 }
 
@@ -206,7 +206,7 @@ function configurarDownloadCertificado() {
     } catch (error) {
       document.getElementById("certificadoParaDownloadExportacao")?.remove();
       console.error(error);
-      alert("Não foi possível baixar o certificado.");
+      mostrarAlerta("Não foi possível baixar o certificado.", "erro");
     } finally {
       botaoDownload.disabled = false;
     }

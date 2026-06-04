@@ -1,107 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sala dos Artefatos | Scrum Quest</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <link rel="stylesheet" href="/assets/css/artefatos.css" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sala dos Artefatos | Scrum Quest</title>
 
-  <body>
-    <%- include('partials/alert') %> <%- include('partials/header') %> <%- include('partials/botao_voltar') %>
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/artefatos.css" />
+</head>
 
-    <main class="artefatos-container">
-      <!-- TÍTULO DA SEÇÃO -->
-      <section class="section-title-box">
-        <h1 class="section-title">SALA DOS ARTEFATOS</h1>
-      </section>
+<body>
+  <%- include('partials/alert') %>
+  <%- include('partials/header') %>
+  <%- include('partials/botao_voltar') %>
 
-      <!-- CONTEÚDO PRINCIPAL -->
-      <section class="artefatos-content">
-        <!-- COLUNA ESQUERDA -->
-        <div class="artefatos-left">
-          <p class="intro-text">
-            A cada <strong>sprint</strong> completada um artefato será
-            desbloqueado, use seus conhecimentos ancestrais para enfrentar os
-            desafios e recuperar todos.
+  <main class="artefatos-container">
+    <section class="section-title-box">
+      <h1 class="section-title">SALA DOS ARTEFATOS</h1>
+    </section>
+
+    <section class="artefatos-content">
+      <div class="artefatos-left">
+        <p class="intro-text">
+          A cada <strong>sprint</strong> completada um artefato ser&aacute;
+          desbloqueado. Use seus conhecimentos ancestrais para enfrentar os
+          desafios e recuperar todos.
+        </p>
+
+        <div class="side-image">
+          <img src="/assets/img/artefatos.png" alt="Artefatos do Scrum" />
+        </div>
+      </div>
+
+      <div class="artefatos-right">
+        <h2 class="artefato-title" id="nomeArtefato">Carregando...</h2>
+
+        <div class="carousel-large">
+          <button class="carousel-arrow prev" aria-label="Anterior">&lsaquo;&lsaquo;</button>
+
+          <div class="carousel-frame" id="carousel-frame">
+            <p style="color: var(--text-muted); text-align: center; padding: 2rem;">
+              Carregando artefatos...
+            </p>
+          </div>
+
+          <button class="carousel-arrow next" aria-label="Pr&oacute;ximo">&rsaquo;&rsaquo;</button>
+        </div>
+
+        <div class="artefato-description" id="descricaoArtefato">
+          <p style="color: var(--text-muted); text-align: center;">
+            Selecione um artefato para ver os detalhes.
           </p>
-          <br><br><br><br><br><br><br><br><br><br><br>
-          <div class="side-image">
-            <img src="/assets/img/artefatos.png" alt="Artefatos do Scrum" />
-          </div>
         </div>
+      </div>
+    </section>
+  </main>
 
-        <!-- COLUNA DIREITA: Título Artefato + Carrossel + Descrição -->
-        <div class="artefatos-right">
-          <!-- Título Dinâmico do Artefato -->
-          <h2 class="artefato-title" id="nomeArtefato">PRODUCT BACKLOG</h2>
+  <%- include('partials/navegacao_inferior') %>
+  <%- include('partials/footer') %>
 
-          <!-- CARROSSEL FUNCIONAL -->
-          <div class="carousel-large">
-            <button class="carousel-arrow prev" aria-label="Anterior">
-              ‹‹
-            </button>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/artefatos.js"></script>
+</body>
 
-            <div class="carousel-frame">
-              <!-- Slide 1: Product Backlog -->
-              <div class="carousel-slide active" data-artefato="backlog">
-                <img
-                  src="/assets/img/product_backlog.png"
-                  alt="Product Backlog"
-                />
-              </div>
-              
-             
-              <!-- carrosel continuação:
-              <div class="carousel-slide" data-artefato="sprint">
-                <img src="/assets/img/sprint_backlog.png" alt="Sprint Backlog" />
-              </div> 
-              -->
-            </div>
-
-            <button class="carousel-arrow next" aria-label="Próximo">››</button>
-          </div>
-
-          <!-- DESCRIÇÃO DINÂMICA DO ARTEFATO -->
-          <div class="artefato-description" id="descricaoArtefato">
-            <p>
-              Pense no <strong>Product Backlog</strong> como a
-              <span class="highlight">lista de missões</span>.
-            </p>
-            <p>
-              É basicamente um inventário de tudo que precisa ser feito para
-              evoluir na quest (ou <strong>produto</strong>). Cada item é uma
-              missão (ex: "criar novo inimigo", "melhorar o mapa", "corrigir bug
-              do pulo")
-            </p>
-            <p>
-              As missões ficam
-              <span class="highlight">ordenadas por prioridade</span> (as mais
-              importantes ficam no topo). O time vai pegando as missões uma por
-              vez e assim segue avançando na campanha.
-            </p>
-            <p>
-              O <strong>Product Backlog</strong> é criado transformando a ideia
-              do produto em uma lista de subtarefas, detalhadas com o time e
-              organizadas por prioridade — e ele
-              <span class="highlight"
-                >continua evoluindo durante todo o desenvolvimento</span
-              >. O responsável por este artefato é o
-              <strong>Product Owner</strong>.
-            </p>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
-    %>
-
-    <!-- Scripts -->
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/artefatos.js"></script>
-  </body>
 </html>

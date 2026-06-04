@@ -113,11 +113,10 @@ async function inserirRespostaQuestao(id_exame, id_questao, resposta, nota) {
     `
     INSERT INTO respostas (id_exame, id_questao, nota, resposta)
     VALUES ($1,$2,$3,$4)
-    RETURNING id_resposta, id_exame, id_questao, nota
+    RETURNING id_exame, id_questao, nota, id_resposta
    `,
     [id_exame, id_questao, nota, resposta],
   );
-  console.log("result", result);
   return result.rows[0];
 }
 
@@ -576,6 +575,189 @@ async function criarExameInicial(idUsuario, idModulo, grupo) {
   return result.rows[0] || null;
 }
 
+
+// Verifica se um exame específico (por id) está concluído
+async function exameEstaConcluido(idExame) {
+  const result = await pool.query(
+    `
+    SELECT
+      COUNT(DISTINCT q.id_questao)::INTEGER AS total_questoes,
+      COUNT(DISTINCT r.id_questao)::INTEGER AS total_respondidas,
+      COUNT(DISTINCT q.id_questao) > 0
+        AND COUNT(DISTINCT r.id_questao) >= COUNT(DISTINCT q.id_questao)
+        AS concluido
+    FROM exames e
+    INNER JOIN questoes q
+      ON q.id_modulo = e.id_modulo
+     AND q.grupo IS NOT DISTINCT FROM e.grupo
+    LEFT JOIN respostas r
+      ON r.id_exame = e.id_exame
+     AND r.id_questao = q.id_questao
+    WHERE e.id_exame = $1
+    GROUP BY e.id_exame
+    `,
+    [idExame]
+  );
+  return result.rows[0]?.concluido || false;
+}
+
+// Busca dados completos de um exame pelo id (independente do progresso atual)
+async function findExameById(idExame) {
+  const result = await pool.query(
+    `
+    SELECT
+      e.id_exame,
+      e.id_modulo,
+      e.id_usuario,
+      e.grupo,
+      e.tentativa,
+      m.titulo
+    FROM exames e
+    INNER JOIN modulos m ON m.id_modulo = e.id_modulo
+    WHERE e.id_exame = $1
+    LIMIT 1
+    `,
+    [idExame]
+  );
+  return result.rows[0] || null;
+}
+
+// Busca o resultado de um exame específico pelo id (independente do progresso atual)
+async function findResultadoByExameId(idExame) {
+  const result = await pool.query(
+    `
+    WITH exame AS (
+      SELECT id_exame, id_modulo, id_usuario, tentativa
+      FROM exames
+      WHERE id_exame = $1
+      LIMIT 1
+    ),
+    resultado_atual AS (
+      SELECT
+        e.id_exame,
+        e.id_modulo,
+        e.id_usuario,
+        e.tentativa,
+        COUNT(r.id_resposta)::INTEGER AS total_respondidas,
+        COALESCE(SUM(r.nota), 0)::INTEGER AS acertos,
+        ROUND(
+          (COALESCE(SUM(r.nota), 0)::numeric / NULLIF(COUNT(r.id_resposta), 0)) * 100,
+          2
+        ) AS percentual
+      FROM exame e
+      LEFT JOIN respostas r ON r.id_exame = e.id_exame
+      GROUP BY e.id_exame, e.id_modulo, e.id_usuario, e.tentativa
+    ),
+    resultados_do_modulo AS (
+  SELECT
+    e.id_exame,
+    e.id_modulo,        -- ← adiciona aqui
+    e.tentativa,
+    ROUND(
+      (COALESCE(SUM(r.nota), 0)::numeric / NULLIF(COUNT(r.id_resposta), 0)) * 100,
+      2
+    ) AS percentual
+  FROM exames e
+  INNER JOIN exame ex ON ex.id_modulo = e.id_modulo AND ex.id_usuario = e.id_usuario
+  LEFT JOIN respostas r ON r.id_exame = e.id_exame
+  GROUP BY e.id_exame, e.id_modulo, e.tentativa   -- ← e aqui
+)
+    SELECT
+      ra.id_exame,
+      ra.id_modulo,
+      ra.id_usuario,
+      ra.tentativa,
+      ra.total_respondidas,
+      ra.acertos,
+      ra.percentual,
+      COALESCE(MAX(rm.percentual), ra.percentual) AS melhor_percentual,
+      COALESCE(MAX(rm.percentual), ra.percentual) >= 70 AS aprovado_por_melhor_nota,
+      COUNT(rm.id_exame)::INTEGER AS total_tentativas_modulo,
+      COALESCE(MAX(rm.tentativa), ra.tentativa)::INTEGER AS maior_tentativa_modulo
+    FROM resultado_atual ra
+    LEFT JOIN resultados_do_modulo rm ON rm.id_modulo = ra.id_modulo
+    GROUP BY ra.id_exame, ra.id_modulo, ra.id_usuario, ra.tentativa,
+             ra.total_respondidas, ra.acertos, ra.percentual
+    `,
+    [idExame]
+  );
+
+  const row = result.rows[0];
+  if (!row) return null;
+
+  const percentual = Number(row.percentual) || 0;
+  const melhorPercentual = Number(row.melhor_percentual) || percentual;
+
+  return {
+    id_exame: row.id_exame,
+    id_modulo: row.id_modulo,
+    id_usuario: row.id_usuario,
+    tentativa: row.tentativa,
+    total_respondidas: row.total_respondidas,
+    acertos: row.acertos,
+    percentual,
+    aprovado: percentual >= 70,
+    melhor_percentual: melhorPercentual,
+    nota_considerada: melhorPercentual,
+    aprovado_por_melhor_nota: melhorPercentual >= 70,
+    total_tentativas_modulo: Number(row.total_tentativas_modulo) || 1,
+    maior_tentativa_modulo: Number(row.maior_tentativa_modulo) || 1,
+    pode_tentar_melhorar: percentual >= 70 && Number(row.tentativa) === 1,
+  };
+}
+
+
+// Busca todas as questões do exame atual do usuário (para navegação local)
+async function findTodasQuestoesDoExame(idUsuario) {
+  const result = await pool.query(
+    `
+    WITH progresso AS (
+      SELECT modulo_desafio_atual
+      FROM progresso_desafio
+      WHERE id_usuario = $1
+      LIMIT 1
+    ),
+    exame_atual AS (
+      SELECT
+        e.id_exame,
+        e.id_modulo,
+        e.grupo
+      FROM exames e
+      INNER JOIN progresso p
+        ON p.modulo_desafio_atual = e.id_modulo
+      WHERE e.id_usuario = $1
+      ORDER BY e.id_exame DESC
+      LIMIT 1
+    )
+    SELECT
+      e.id_exame,
+      q.id_questao,
+      q.id_modulo,
+      q.grupo,
+      q.numero,
+      q.dificuldade,
+      q.enunciado,
+      q.alternativa_a,
+      q.alternativa_b,
+      q.alternativa_c,
+      q.alternativa_d,
+      q.imagem,
+      r.resposta AS resposta_salva,
+      r.nota AS nota_salva
+    FROM exame_atual e
+    INNER JOIN questoes q
+      ON q.id_modulo = e.id_modulo
+     AND q.grupo IS NOT DISTINCT FROM e.grupo
+    LEFT JOIN respostas r
+      ON r.id_exame = e.id_exame
+     AND r.id_questao = q.id_questao
+    ORDER BY q.numero ASC NULLS LAST, q.id_questao ASC
+    `,
+    [idUsuario]
+  );
+  return result.rows;
+}
+
 module.exports = {
   findProximaQuestaoByUsuario,
   findQuestaoDoExameByUsuario,
@@ -592,4 +774,8 @@ module.exports = {
   findQualquerGrupoPorModulo,
   findExameExistente,
   criarExameInicial,
+  findTodasQuestoesDoExame,
+  exameEstaConcluido,
+  findExameById,
+  findResultadoByExameId,
 };

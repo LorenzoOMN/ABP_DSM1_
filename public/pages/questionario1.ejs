@@ -3,38 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/questionario1.css" />
-    <title>Questionário 1 | Scrum Dungeon</title>
+
+    <!-- Título será atualizado via JS -->
+    <title id="page-title">Questionário | Scrum Dungeon</title>
   </head>
 
-  <body class="pagina-questionario">
-    <%- include('partials/header') %> <%- include('./partials/botao_voltar') %>
+  <body class="pagina-questionario" data-questionario-numero="1">
+    <%- include('partials/header') %> 
+    <%- include('partials/botao_voltar') %>
+    <%- include('partials/alert') %>
 
     <main class="corpo-questionario">
       <section class="tela">
-        <section class="progresso-box">
-          <div class="progresso-textos">
-            <span class="progresso-subtitulo">Progresso</span>
-            <strong id="texto-progresso">Questão 1 de 10</strong>
+        <section class="boss-box">
+          <div class="boss-conteudo">
+            <div class="boss-info">
+              <span class="boss-label">BOSS</span>
+
+              <!-- ID para atualizar via JS -->
+              <h1 class="boss-nome" id="boss-nome">Carregando...</h1>
+
+              <div class="boss-hp-area">
+                <div class="boss-hp-barra">
+                  <div id="boss-hp-fill" class="boss-hp-fill"></div>
+                </div>
+
+                <span id="boss-hp-texto" class="boss-hp-texto"> 100% </span>
+              </div>
+            </div>
+
+            <div class="boss-imagem-area">
+              <!-- ID para atualizar via JS -->
+              <img
+                src=""
+                alt="Boss do Questionário"
+                class="boss-imagem"
+                id="bossImagem"
+                data-boss-src=""
+              />
+
+              <div id="damage-float"></div>
+            </div>
           </div>
 
-          <div
-            class="barra-container"
-            role="progressbar"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-            aria-label="Progresso atual do questionário"
-          >
+          <div class="battle-status">
+            <div class="progresso-textos">
+              <span class="progresso-subtitulo">Progresso</span>
+              <strong id="texto-progresso">Questão 1 de 10</strong>
+            </div>
+
             <div
-              id="progresso-dinamico"
-              class="barra-preenchimento"
-              style="width: 0%"
-            ></div>
-          </div>
+              class="barra-container"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              aria-label="Progresso atual do questionário"
+            >
+              <div
+                id="progresso-dinamico"
+                class="barra-preenchimento"
+                style="width: 0%"
+              ></div>
+            </div>
 
-          <p class="progresso-percentual" id="texto-percentual">0%</p>
+            <div class="timer-box">
+              <span class="timer-icone">⏳</span>
+              <span id="timer-questao" class="timer-valor">20:00</span>
+            </div>
+          </div>
         </section>
 
         <section class="questao-box" aria-labelledby="enunciado-questao">
@@ -90,17 +130,13 @@
         </section>
 
         <section class="botoesdenavegacao">
-          <button type="button" class="botaonavegacao">Voltar</button>
-
           <button type="button" class="confirmar">Confirmar Resposta</button>
-
-          <button type="button" class="botaonavegacao">Pular</button>
         </section>
       </section>
     </main>
 
-    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
-    %>
+    <%- include('partials/navegacao_inferior') %> 
+    <%- include('partials/footer') %>
 
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/questionario1.js"></script>

@@ -17,6 +17,10 @@ const {
     findQualquerGrupoPorModulo,
     findExameExistente,
     criarExameInicial,
+    findTodasQuestoesDoExame,
+    exameEstaConcluido,
+    findExameById,
+    findResultadoByExameId,
 } = require("./questoes.repository");
 
 const {
@@ -128,33 +132,47 @@ const exame = await updateProximaTentativa(
 // ============================================================================
 // FUNÇÃO: AVANÇAR PARA PRÓXIMO MÓDULO (LÓGICA COMPLEXA)
 // ============================================================================
-async function getProximoModuloService(idUsuario) {
+async function getProximoModuloService(idUsuario, idExame) {
     if (!idUsuario) throw new Error("ID do usuário é obrigatório");
 
-    // Validações iniciais
-    const concluido = await usuarioConcluiuModuloAtual(idUsuario);
-    if (!concluido) throw new Error("Módulo atual não concluído");
+    let moduloAtual, resultado;
 
-    const moduloAtual = await findModuloAtualByUsuario(idUsuario);
-    if (!moduloAtual) throw new Error("Módulo atual não encontrado");
+    if (idExame) {
+        const concluido = await exameEstaConcluido(idExame);
+        if (!concluido) throw new Error("Módulo atual não concluído");
 
-    const resultado = await findResultadoModuloAtual(idUsuario);
-    if (!resultado) throw new Error("Resultado do módulo não encontrado");
+        moduloAtual = await findExameById(idExame);
+        if (!moduloAtual) throw new Error("Módulo atual não encontrado");
 
-    const progressoAtual = await findProgressoDesafio(idUsuario);
-    if (!progressoAtual) throw new Error("Progresso de desafio não encontrado");
+        resultado = await findResultadoByExameId(idExame);
+        if (!resultado) throw new Error("Resultado do módulo não encontrado");
 
-    // Valida consistência
-    if (Number(resultado.id_modulo) !== Number(progressoAtual.modulo_desafio_atual)) {
-        const error = new Error("Inconsistência entre questionário e desafio atual");
-        error.code = "INCONSISTENCIA_MODULO";
-        error.desafio_atual = progressoAtual.modulo_desafio_atual;
-        error.modulo_resultado = resultado.id_modulo;
-        throw error;
+    } else {
+        // Caminho legado: usa o progresso atual
+        const concluido = await usuarioConcluiuModuloAtual(idUsuario);
+        if (!concluido) throw new Error("Módulo atual não concluído");
+
+        moduloAtual = await findModuloAtualByUsuario(idUsuario);
+        if (!moduloAtual) throw new Error("Módulo atual não encontrado");
+
+        resultado = await findResultadoModuloAtual(idUsuario);
+        if (!resultado) throw new Error("Resultado do módulo não encontrado");
+
+        const progressoAtual = await findProgressoDesafio(idUsuario);
+        if (!progressoAtual) throw new Error("Progresso de desafio não encontrado");
+
+        if (Number(resultado.id_modulo) !== Number(progressoAtual.modulo_desafio_atual)) {
+            const error = new Error("Inconsistência entre questionário e desafio atual");
+            error.code = "INCONSISTENCIA_MODULO";
+            error.desafio_atual = progressoAtual.modulo_desafio_atual;
+            error.modulo_resultado = resultado.id_modulo;
+            throw error;
+        }
     }
 
     // Fluxo: NÃO aprovado
     if (!resultado.aprovado_por_melhor_nota) {
+        const progressoAtual = await findProgressoDesafio(idUsuario);
         return await _processarReprovacao(idUsuario, moduloAtual, resultado, progressoAtual);
     }
 
@@ -271,6 +289,36 @@ async function getResultadoAtualService(idUsuario) {
     return resultado;
 }
 
+
+// ============================================================================
+// FUNÇÃO: BUSCAR TODAS AS QUESTÕES DO EXAME ATUAL (para navegação local)
+// ============================================================================
+async function getTodasQuestoesService(idUsuario) {
+    if (!idUsuario) throw new Error("ID do usuário é obrigatório");
+
+    const progresso = await findProgressoDesafio(idUsuario);
+    if (!progresso) throw new Error("Progresso de desafio não encontrado");
+
+    const historiaLiberada = await historiaConcluida(idUsuario, progresso.modulo_desafio_atual);
+    if (!historiaLiberada) {
+        const error = new Error("História não concluída");
+        error.code = "HISTORIA_NAO_CONCLUIDA";
+        error.modulo = progresso.modulo_desafio_atual;
+        throw error;
+    }
+
+    const questoes = await findTodasQuestoesDoExame(idUsuario);
+    if (!questoes || questoes.length === 0) throw new Error("Nenhuma questão encontrada para este exame");
+
+    return questoes.map(q => ({
+        ...q,
+        imagem: q.imagem ? `/assets/img/questoes/${q.imagem}` : null,
+        // 'x' é resposta de questão pulada — não expõe como selecionada
+        resposta_salva: q.resposta_salva === 'x' ? 'pulada' : (q.resposta_salva || null),
+        resposta_correta_salva: q.resposta_salva ? Number(q.nota_salva) > 0 : false,
+    }));
+}
+
 // ============================================================================
 // EXPORTAÇÕES
 // ============================================================================
@@ -281,4 +329,5 @@ module.exports = {
     getProximoModuloService,
     getModulosRespondidosService,
     getResultadoAtualService,
+    getTodasQuestoesService,
 };

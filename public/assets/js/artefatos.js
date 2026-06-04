@@ -1,64 +1,187 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.carousel-slide');
-    const prevBtn = document.querySelector('.carousel-arrow.prev');
-    const nextBtn = document.querySelector('.carousel-arrow.next');
-    
-    // Elementos de texto dinâmico
-    const nomeArtefatoEl = document.getElementById('nomeArtefato');
-    const descricaoArtefatoEl = document.getElementById('descricaoArtefato');
-    
-    let currentIndex = 0;
-  
-    // Dados dos artefatos (Expanda aqui quando tiver mais fotos)
-    const artefatosData = {
-      backlog: {
-        nome: 'PRODUCT BACKLOG',
-        descricao: `
-          <p>Pense no <strong>Product Backlog</strong> como a <span class="highlight">lista de missões</span>.</p>
-          <p>É basicamente um inventário de tudo que precisa ser feito para evoluir na quest (ou <strong>produto</strong>). Cada item é uma missão (ex: "criar novo inimigo", "melhorar o mapa", "corrigir bug do pulo")</p>
-          <p>As missões ficam <span class="highlight">ordenadas por prioridade</span> (as mais importantes ficam no topo). O time vai pegando as missões uma por vez e assim segue avançando na campanha.</p>
-          <p>O <strong>Product Backlog</strong> é criado transformando a ideia do produto em uma lista de subtarefas, detalhadas com o time e organizadas por prioridade — e ele <span class="highlight">continua evoluindo durante todo o desenvolvimento</span>. O responsável por este artefato é o <strong>Product Owner</strong>.</p>
-        `
+/**
+ * artefatos.js - Carrega artefatos do banco de dados via API
+ * Padrão igual ao questionario.js: usa localStorage para o token
+ */
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Elementos do carrossel
+  const prevBtn = document.querySelector('.carousel-arrow.prev');
+  const nextBtn = document.querySelector('.carousel-arrow.next');
+  const nomeArtefatoEl = document.getElementById('nomeArtefato');
+  const descricaoArtefatoEl = document.getElementById('descricaoArtefato');
+
+  // Estado
+  let artefatos = [];
+  let currentIndex = 0;
+  let slidesMapeadas = [];
+
+  const artefatoEstaDesbloqueado = (valor) =>
+    valor === true || valor === 1 || valor === '1' || valor === 'true';
+
+  // ============================================================================
+  // FUNÇÃO: OBTER TOKEN (Igual ao padrão do questionario.js)
+  // ============================================================================
+  function obterToken() {
+    // Verifica o token salvo no localStorage
+    const token = localStorage.getItem("token");
+
+    // Se não tiver token, não redireciona imediatamente para permitir
+    // que a página carregue como "visitante" (arte fatos bloqueados),
+    // a menos que você queira forçar o login.
+    return token;
+  }
+
+  // 1️ Busca artefatos da API
+  try {
+    const token = obterToken(); // 🔑 Lê o token igual suas outras páginas
+
+    // Prepara os headers. Se tiver token, envia. Se não, vai sem (API pública/limitada).
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch('/api/artefatos', {
+      method: 'GET',
+      headers: headers
+      // ❌ Removido credentials: 'include' pois usamos Bearer Token
+    });
+
+    if (!response.ok) {
+      // Se der 401 ou erro, tratamos como não autenticado
+      console.log('Acesso à API restrito ou erro:', response.status);
+    } else {
+      const { success, data } = await response.json();
+
+      if (success && data) {
+        artefatos = data;
+      } else {
+        console.warn('API não retornou dados válidos');
       }
-      // Adicione outros artefatos:
-      // sprint: { nome: 'SPRINT BACKLOG', descricao: '...' },
-    };
-  
-    if (!slides.length) return;
-  
-    const updateCarousel = () => {
-      // Atualiza visual do slide
-      slides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === currentIndex);
+    }
+
+    // Atualiza o carrossel com os dados (ou lista vazia)
+    atualizarCarrosselComArtefatos();
+    configurarNavegacao();
+
+  } catch (err) {
+    console.error('Erro ao carregar artefatos:', err);
+    if (descricaoArtefatoEl) {
+      descricaoArtefatoEl.innerHTML = '<p style="color: #c95c5c;">⚠️ Erro de conexão.</p>';
+    }
+  }
+
+  // ============================================================================
+  // FUNÇÕES DE INTERFACE
+  // ============================================================================
+
+  function atualizarCarrosselComArtefatos() {
+    const carouselFrame = document.querySelector('.carousel-frame');
+
+    if (!artefatos || artefatos.length === 0) {
+      // Fallback visual se não houver dados
+      carouselFrame.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">Nenhum artefato encontrado.</p>';
+      return;
+    }
+
+    // Cria slides dinamicamente
+    const slidesHTML = artefatos.map((artefato, index) => {
+      const desbloqueado = artefatoEstaDesbloqueado(artefato.desbloqueado);
+
+      return `
+      <div class="carousel-slide ${index === 0 ? 'active' : ''}" 
+           data-id="${artefato.id}" 
+           data-desbloqueado="${desbloqueado}">
+        
+        <!-- IMAGEM: Monta o caminho usando o nome do banco -->
+        <img src="/assets/img/artefatos/${artefato.imagem}" 
+             alt="${artefato.titulo}"
+             class="${desbloqueado ? '' : 'img-bloqueada'}" 
+             onerror="this.style.display='none'" />
+        
+        <!-- Overlay de bloqueio -->
+        ${!desbloqueado ? `
+          <div class="overlay-bloqueado">
+            <span class="cadeado-icon"></span>
+            <p class="texto-bloqueado">Cap. ${artefato.capitulo_requisito}</p>
+          </div>
+        ` : ''}
+        
+      </div>
+    `;
+    }).join('');
+
+    carouselFrame.innerHTML = slidesHTML;
+    slidesMapeadas = document.querySelectorAll('.carousel-slide');
+
+    // Seleciona o primeiro desbloqueado automaticamente
+    const primeiroDesbloqueado = Array.from(slidesMapeadas).findIndex(s => s.dataset.desbloqueado === 'true');
+    currentIndex = primeiroDesbloqueado !== -1 ? primeiroDesbloqueado : 0;
+
+    atualizarVisualizacao();
+  }
+
+  function configurarNavegacao() {
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + slidesMapeadas.length) % slidesMapeadas.length;
+        atualizarVisualizacao();
       });
-      
-      // Atualiza textos dinamicamente
-      const activeSlide = slides[currentIndex];
-      const artefatoKey = activeSlide?.dataset.artefato;
-      
-      if (artefatoKey && artefatosData[artefatoKey]) {
-        const data = artefatosData[artefatoKey];
-        if (nomeArtefatoEl) nomeArtefatoEl.textContent = data.nome;
-        if (descricaoArtefatoEl) descricaoArtefatoEl.innerHTML = data.descricao;
-      }
-    };
-  
-    prevBtn?.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-      updateCarousel();
-    });
-  
-    nextBtn?.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % slides.length;
-      updateCarousel();
-    });
-  
-    // Suporte a teclas
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % slidesMapeadas.length;
+        atualizarVisualizacao();
+      });
+    }
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') prevBtn?.click();
-      if (e.key === 'ArrowRight') nextBtn?.click();
+      if (e.key === 'ArrowLeft' && prevBtn) {
+        currentIndex = (currentIndex - 1 + slidesMapeadas.length) % slidesMapeadas.length;
+        atualizarVisualizacao();
+      }
+      if (e.key === 'ArrowRight' && nextBtn) {
+        currentIndex = (currentIndex + 1) % slidesMapeadas.length;
+        atualizarVisualizacao();
+      }
     });
-  
-    // Inicializa
-    updateCarousel();
-  });
+  }
+
+  function atualizarVisualizacao() {
+    const artefatoAtual = artefatos[currentIndex];
+    if (!artefatoAtual) return;
+
+    slidesMapeadas.forEach((slide, i) => {
+      slide.classList.toggle('active', i === currentIndex);
+    });
+
+    if (nomeArtefatoEl) {
+      nomeArtefatoEl.textContent = artefatoAtual.titulo.toUpperCase();
+    }
+
+    if (descricaoArtefatoEl) {
+      // Fade out suave
+      descricaoArtefatoEl.style.opacity = '0';
+
+      setTimeout(() => {
+        if (artefatoEstaDesbloqueado(artefatoAtual.desbloqueado)) {
+          // ✅ Conteúdo completo direto (sem botão "Ler mais")
+          descricaoArtefatoEl.innerHTML = artefatoAtual.conteudo_longo;
+        } else {
+          descricaoArtefatoEl.innerHTML = `
+          <p class="bloqueado-text">
+            🔒 Desbloqueie o <strong>Capítulo ${artefatoAtual.capitulo_requisito}</strong> 
+            para descobrir os segredos deste artefato.
+          </p>
+        `;
+        }
+
+        // Fade in
+        descricaoArtefatoEl.style.opacity = '1';
+
+        // Reseta scroll para o topo ao trocar de artefato
+        descricaoArtefatoEl.scrollTop = 0;
+      }, 150);
+    }
+  }
+});
