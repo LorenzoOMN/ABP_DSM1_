@@ -611,17 +611,17 @@ function configurarDividaTecnica() {
 
     if (status) {
       status.textContent = remaining === 0
-        ? "Dívida reduzida. A estrutura melhorou sem mudar o comportamento externo."
+        ? "Dívida reduzida. As correntes caíram, mas deixaram rastros para investigar."
         : `Refatoração aplicada. Restam ${remaining} ajustes internos.`;
     }
 
     if (title) {
-      title.textContent = remaining === 0 ? "Caminho mais leve" : "Peso reduzido";
+      title.textContent = remaining === 0 ? "Rastros revelados" : "Peso reduzido";
     }
 
     if (description) {
       description.textContent = remaining === 0
-        ? "O comportamento continua igual, mas o time volta a avançar com menos retrabalho."
+        ? "O comportamento continua igual. Agora o time consegue seguir as evidências do próprio fluxo."
         : "O usuário recebe o mesmo resultado. Por dentro, o sistema ficou mais simples.";
     }
 
@@ -631,7 +631,7 @@ function configurarDividaTecnica() {
       button.textContent = "Dívida reduzida";
       if (workbenchStep) workbenchStep.textContent = "Peso técnico: baixo";
       if (workbenchTitle) workbenchTitle.textContent = "Refatoração concluída";
-      if (workbenchText) workbenchText.textContent = "Atalhos viraram melhorias internas. Menos retrabalho para a próxima entrega.";
+      if (workbenchText) workbenchText.textContent = "Atalhos viraram melhorias internas. Os rastros apontam para as métricas.";
       concluirMinigame("divida-tecnica");
       return;
     }
@@ -642,7 +642,7 @@ function configurarDividaTecnica() {
   renderRefactoring();
 }
 
-function configurarPipelineDecisoes() {
+function configurarPipelineDecisoesAntigo() {
   const status = document.getElementById("pipelineStatus");
   const panel = document.querySelector(".pipeline-panel");
   const scene = document.querySelector(".pipeline-scene");
@@ -779,6 +779,349 @@ function configurarPipelineDecisoes() {
   renderDecision();
 }
 
+function configurarPipelineDecisoes() {
+  const status = document.getElementById("pipelineStatus");
+  const panel = document.getElementById("pipelineVoid");
+  const scene = document.querySelector(".pipeline-scene");
+  const introCard = scene?.querySelector(".story-text");
+  const gameStage = document.getElementById("pipelineVoid");
+  const scrollBlackout = document.getElementById("pipelineScrollBlackout");
+  const stepLabel = document.getElementById("commitStep");
+  const title = document.getElementById("commitTitle");
+  const description = document.getElementById("commitDescription");
+  const replayButton = document.getElementById("btnRepetirPipeline");
+  const progressBar = document.querySelector("[data-pipeline-progress]");
+  const actionButtons = Array.from(document.querySelectorAll("[data-pipeline-step]"));
+  const sequence = [
+    {
+      id: "codigo",
+      title: "Código",
+      message: "O incremento saiu da DoD pronto para entrar no fluxo.",
+    },
+    {
+      id: "integrar",
+      title: "Integrar",
+      message: "CI integra o código produzido frequentemente.",
+    },
+    {
+      id: "testes",
+      title: "Testes",
+      message: "Testes automatizados validam o caminho antes da entrega.",
+    },
+    {
+      id: "build",
+      title: "Build",
+      message: "Build verde confirma que o incremento segue estável.",
+    },
+    {
+      id: "deploy",
+      title: "Deploy",
+      message: "CD automatiza o deploy quando o caminho está validado.",
+    },
+  ];
+  let roundLength = 2;
+  let inputIndex = 0;
+  let started = false;
+  let acceptingInput = false;
+  let pipelineBusy = false;
+  let completed = false;
+  let playbackToken = 0;
+  let scrollTicking = false;
+
+  if (!status || !stepLabel || !title || !description || actionButtons.length === 0) return;
+
+  const wait = (duration) => new Promise((resolve) => {
+    window.setTimeout(resolve, duration);
+  });
+
+  function setPipelineStatus(message, variant = "info") {
+    status.textContent = message;
+    status.classList.remove("pipeline-status--success", "pipeline-status--error");
+
+    if (variant !== "info") {
+      status.classList.add(`pipeline-status--${variant}`);
+    }
+  }
+
+  function setActionsDisabled(disabled) {
+    actionButtons.forEach((button) => {
+      button.disabled = disabled;
+    });
+  }
+
+  function setReplayDisabled(disabled) {
+    if (replayButton) {
+      replayButton.disabled = disabled;
+    }
+  }
+
+  function updateProgress(value) {
+    if (progressBar) {
+      progressBar.style.width = `${clamp(value, 0, 100)}%`;
+    }
+  }
+
+  function clearPickedAction() {
+    actionButtons.forEach((button) => {
+      button.classList.remove("pipeline-action--picked");
+      button.classList.remove("pipeline-action--wrong");
+      button.classList.remove("pipeline-action--flash");
+    });
+  }
+
+  function getButtonByStep(stepId) {
+    return actionButtons.find((button) => button.dataset.pipelineStep === stepId);
+  }
+
+  async function flashStep(stepId, token) {
+    const button = getButtonByStep(stepId);
+    const step = sequence.find((item) => item.id === stepId);
+
+    if (!button || !step || token !== playbackToken) return;
+
+    button.classList.add("pipeline-action--flash");
+    title.textContent = step.title;
+    description.textContent = step.message;
+
+    await wait(520);
+    button.classList.remove("pipeline-action--flash");
+    await wait(170);
+  }
+
+  function shakeBridge(button) {
+    setPipelineStatus("A ponte apagou. O fluxo foi quebrado. Observe a sequência novamente.", "error");
+
+    if (button) {
+      button.classList.remove("pipeline-action--wrong");
+      void button.offsetWidth;
+      button.classList.add("pipeline-action--wrong");
+    }
+
+    if (panel) {
+      panel.classList.remove("pipeline-panel--shake");
+      void panel.offsetWidth;
+      panel.classList.add("pipeline-panel--shake");
+    }
+  }
+
+  async function playSequence() {
+    const token = playbackToken + 1;
+    playbackToken = token;
+    acceptingInput = false;
+    pipelineBusy = true;
+    inputIndex = 0;
+    clearPickedAction();
+    setActionsDisabled(true);
+    setReplayDisabled(true);
+    updateProgress(0);
+
+    const currentRound = roundLength - 1;
+    const totalRounds = sequence.length - 1;
+    stepLabel.textContent = `Rodada ${currentRound}/${totalRounds}`;
+    title.textContent = `Memorize ${roundLength} passos`;
+    description.textContent = "A ponte vai piscar a ordem do processo. Depois repita sem pular etapas.";
+    setPipelineStatus("Observe a sequência. Ainda não clique nas runas.");
+
+    await wait(520);
+
+    for (const step of sequence.slice(0, roundLength)) {
+      if (token !== playbackToken || completed) return;
+      await flashStep(step.id, token);
+    }
+
+    if (token !== playbackToken || completed) return;
+
+    acceptingInput = true;
+    pipelineBusy = false;
+    setActionsDisabled(false);
+    setReplayDisabled(false);
+    stepLabel.textContent = `Sua vez: ${roundLength} passos`;
+    title.textContent = "Repita o fluxo contínuo";
+    description.textContent = "Clique nas runas na mesma ordem em que elas brilharam.";
+    setPipelineStatus(`Repita os ${roundLength} passos na ordem correta.`);
+  }
+
+  async function startPipelineGame() {
+    if (started || completed || scene?.classList.contains("is-locked")) return;
+
+    started = true;
+    setActionsDisabled(true);
+    await playSequence();
+  }
+
+  function atualizarEscuridaoPipeline() {
+    if (!gameStage) return;
+
+    const stageRect = gameStage.getBoundingClientRect();
+    const introRect = introCard?.getBoundingClientRect();
+    const introTop = introRect ? introRect.top + window.scrollY : stageRect.top + window.scrollY;
+    const introHeight = introCard?.offsetHeight || 0;
+    const stageTop = introTop + introHeight / 2 - window.innerHeight * 0.82;
+    const stageHeight = window.innerHeight;
+    const darkness = calcularProgressoBlackoutHero(window.scrollY, stageTop, stageHeight);
+    const gameOpacity = clamp((darkness - 0.88) / 0.12, 0, 1);
+    const gameStageVisible = stageRect.top <= window.innerHeight * 0.72
+      && stageRect.bottom >= window.innerHeight * 0.28;
+
+    gameStage.style.setProperty("--pipeline-darkness", darkness.toFixed(3));
+    gameStage.style.setProperty("--pipeline-game-opacity", gameOpacity.toFixed(3));
+
+    if (scrollBlackout) {
+      scrollBlackout.style.opacity = completed ? "0" : String(darkness);
+    }
+
+    if (!started && !completed && darkness < 0.82) {
+      stepLabel.textContent = "A ponte desaparece";
+      title.textContent = "Continue descendo";
+      description.textContent = "A imagem da ponte ainda guarda o caminho. Deixe a escuridão revelar a sequência.";
+      setPipelineStatus("Continue descendo até a tela ficar totalmente preta.");
+    }
+
+    if (darkness >= 0.96 && gameStageVisible && !started && !completed && !scene?.classList.contains("is-locked")) {
+      startPipelineGame();
+    }
+  }
+
+  function solicitarAtualizacaoEscuridao() {
+    if (scrollTicking) return;
+
+    scrollTicking = true;
+    window.requestAnimationFrame(() => {
+      scrollTicking = false;
+      atualizarEscuridaoPipeline();
+    });
+  }
+
+  function completeBridge() {
+    completed = true;
+    acceptingInput = false;
+    pipelineBusy = false;
+    playbackToken += 1;
+
+    if (panel) {
+      panel.classList.add("pipeline-panel--complete");
+    }
+
+    if (scene) {
+      scene.classList.add("pipeline-scene--complete");
+    }
+
+    actionButtons.forEach((button) => {
+      button.disabled = true;
+    });
+
+    setReplayDisabled(true);
+    updateProgress(100);
+    stepLabel.textContent = "Sequência completa";
+    title.textContent = "Ponte Contínua estabilizada";
+    description.textContent = "Código, integração, testes, build e deploy seguiram a ordem certa.";
+
+    if (replayButton) {
+      replayButton.textContent = "Sequência concluída";
+    }
+
+    setPipelineStatus("CI integrou e testou. CD automatizou a entrega. A ponte está estável.", "success");
+
+    if (scrollBlackout) {
+      scrollBlackout.style.opacity = "0";
+    }
+
+    concluirMinigame("pipeline", { scrollTo: "#cena-divida" });
+  }
+
+  actionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!started) {
+        startPipelineGame();
+        return;
+      }
+
+      if (pipelineBusy || !acceptingInput || completed) return;
+
+      const expectedStep = sequence[inputIndex];
+      const selectedStep = button.dataset.pipelineStep;
+
+      if (!expectedStep || selectedStep !== expectedStep.id) {
+        shakeBridge(button);
+        acceptingInput = false;
+        pipelineBusy = true;
+        setActionsDisabled(true);
+        setReplayDisabled(true);
+        window.setTimeout(() => {
+          playSequence();
+        }, 920);
+        return;
+      }
+
+      button.classList.add("pipeline-action--picked");
+      inputIndex += 1;
+      updateProgress((inputIndex / roundLength) * 100);
+      setPipelineStatus(expectedStep.message, "success");
+
+      if (inputIndex < roundLength) {
+        return;
+      }
+
+      acceptingInput = false;
+      pipelineBusy = true;
+      setActionsDisabled(true);
+      setReplayDisabled(true);
+
+      if (roundLength >= sequence.length) {
+        completeBridge();
+        return;
+      }
+
+      roundLength += 1;
+      stepLabel.textContent = "Fluxo expandido";
+      title.textContent = "A ponte revelou mais uma etapa";
+      description.textContent = "Memorize a sequência maior. CI prepara o caminho para CD.";
+      setPipelineStatus("Correto. A ponte vai revelar uma sequência mais longa.", "success");
+
+      window.setTimeout(() => {
+        playSequence();
+      }, 1050);
+    });
+  });
+
+  if (replayButton) {
+    replayButton.addEventListener("click", () => {
+      if (completed) return;
+
+      if (!started) {
+        startPipelineGame();
+        return;
+      }
+
+      if (pipelineBusy) return;
+
+      playSequence();
+    });
+  }
+
+  setActionsDisabled(true);
+  atualizarEscuridaoPipeline();
+  window.addEventListener("scroll", solicitarAtualizacaoEscuridao, { passive: true });
+  window.addEventListener("resize", solicitarAtualizacaoEscuridao);
+
+  if ("IntersectionObserver" in window && gameStage) {
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.some((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.38);
+
+      if (visible && !started && !scene?.classList.contains("is-locked")) {
+        atualizarEscuridaoPipeline();
+      }
+
+      if (visible && !started && !scene?.classList.contains("is-locked") && Number(gameStage.style.getPropertyValue("--pipeline-darkness")) >= 0.96) {
+        startPipelineGame();
+        observer.disconnect();
+      }
+    }, { threshold: [0.38, 0.62] });
+
+    observer.observe(gameStage);
+  }
+}
+
 function configurarMetricas() {
   const status = document.getElementById("metricStatus");
   const panel = document.querySelector(".oracle-panel");
@@ -848,7 +1191,7 @@ function configurarMetricas() {
     if (status) {
       status.textContent = seenMetrics.size < metricKeys.length
         ? `Foco calibrado. ${seenMetrics.size}/5 instrumentos observados.`
-        : "Todos os instrumentos foram observados. Calibre a intenção do time.";
+        : "Todos os instrumentos foram observados. Agora decida se eles servem para aprender ou punir.";
     }
 
     panel.classList.toggle("oracle-panel--ready", seenMetrics.size === metricKeys.length);
@@ -885,7 +1228,7 @@ function configurarMetricas() {
         button.classList.add("oracle-calibration--wrong");
 
         if (status) {
-          status.textContent = "Observe os cinco instrumentos antes de calibrar o Oráculo.";
+          status.textContent = "Observe as cinco evidências antes de calibrar o Oráculo.";
         }
 
         return;
@@ -898,7 +1241,7 @@ function configurarMetricas() {
         panel.classList.add("oracle-panel--distorted");
 
         if (status) {
-          status.textContent = "Errado. Métrica usada para punir distorce os dados e destrói confiança.";
+          status.textContent = "Errado. Métrica usada para punir vira pressão, distorce os dados e destrói confiança.";
         }
 
         return;
@@ -911,7 +1254,7 @@ function configurarMetricas() {
       });
 
       if (status) {
-        status.textContent = "Correto. Métrica é bússola: gera transparência e melhoria contínua.";
+        status.textContent = "Correto. Métrica é bússola: transforma rastros em aprendizado para o time.";
       }
 
       concluirMinigame("metricas");

@@ -307,58 +307,79 @@
 
       <div class="story-text">
         <span class="section-number">Cena 04</span>
-        <h2>A Ponte CI/CD</h2>
+        <h2>A Ponte Contínua CI/CD</h2>
         <p class="scene-impact">
-          Integrar sem testar espalha o erro mais depressa.
+          A ponte só acende na ordem certa.
         </p>
         <p>
-          A porta da forja leva a uma ponte mecânica. No chão, duas runas acendem:
-          CI e CD.
+          A Porta da DoD se fecha atrás do grupo. À frente, uma ponte mecânica
+          desaparece na névoa. No chão, duas runas apagadas esperam: CI e CD.
         </p>
         <p>
-          CI significa Integração Contínua. O objetivo é integrar e testar
-          frequentemente o código produzido.
+          O Corvo fala baixo: "A partir daqui, não basta estar pronto. O incremento
+          precisa seguir o caminho certo."
         </p>
         <p>
-          CD significa Entrega Contínua. Ela está associada à automação do deploy.
-          Nem todo código deve atravessar: um commit sem validação quebra o fluxo.
+          CI significa Integração Contínua: integrar e testar frequentemente o código
+          produzido. CD significa Entrega Contínua: automatizar a entrega quando o
+          caminho está validado.
         </p>
-        <blockquote>Decida o que integrar, o que corrigir e quando automatizar a entrega.</blockquote>
+        <p>
+          Então tudo fica escuro. A ponte só revela o próximo passo por instantes.
+          O time precisa memorizar a sequência do fluxo.
+        </p>
+        <blockquote>Código, integração, testes, build e deploy. Lembre a ordem.</blockquote>
       </div>
 
-      <div class="story-art pipeline-art">
-        <div class="pipeline-panel" aria-label="Mesa de Integração CI CD interativa">
-          <div class="pipeline-runes" aria-label="Runas CI e CD">
-            <span><strong>CI</strong> integra e testa</span>
-            <span><strong>CD</strong> automatiza entrega</span>
+      <div class="pipeline-scroll-blackout" id="pipelineScrollBlackout" aria-hidden="true"></div>
+
+      <div class="pipeline-void" id="pipelineVoid" aria-label="Ponte Contínua no escuro">
+        <div class="pipeline-void__inner">
+          <div class="pipeline-void__copy" aria-live="polite">
+            <span id="commitStep">A ponte ainda aparece na escuridão</span>
+            <strong id="commitTitle">Role até o breu completo</strong>
+            <p id="commitDescription">A imagem da ponte vai sumir com o scroll. Quando tudo apagar, observe o brilho atrás dos ícones.</p>
           </div>
 
-          <div class="commit-focus" aria-live="polite">
-            <img class="commit-focus-image" src="/assets/img/capitulo_4/ponte-cicd-pipeline-pixel.png" alt="Ponte mecânica CI CD do capítulo 4" aria-hidden="true">
-            <span id="commitStep">Analise o commit e escolha a ação</span>
-            <strong id="commitTitle">Nova tela validada</strong>
-            <p id="commitDescription">Critérios atendidos. Teste local passou. A ponte espera uma decisão de CI.</p>
-            <p class="decision-hint" id="decisionHint">Qual ação mantém a ponte segura?</p>
+          <div class="pipeline-neon-board" aria-label="Repita a sequência correta do pipeline">
+            <button class="pipeline-neon-step" type="button" data-pipeline-step="codigo" aria-label="Código">
+              <span class="pipeline-neon-glow" aria-hidden="true"></span>
+              <img class="pipeline-neon-icon pipeline-bridge-piece" src="/assets/img/capitulo_4/bridge-piece-codigo.png" alt="" aria-hidden="true">
+              <strong>Código</strong>
+            </button>
+            <button class="pipeline-neon-step" type="button" data-pipeline-step="integrar" aria-label="Integrar">
+              <span class="pipeline-neon-glow" aria-hidden="true"></span>
+              <img class="pipeline-neon-icon pipeline-bridge-piece" src="/assets/img/capitulo_4/bridge-piece-integrar.png" alt="" aria-hidden="true">
+              <strong>Integrar</strong>
+            </button>
+            <button class="pipeline-neon-step" type="button" data-pipeline-step="testes" aria-label="Testes">
+              <span class="pipeline-neon-glow" aria-hidden="true"></span>
+              <img class="pipeline-neon-icon pipeline-bridge-piece" src="/assets/img/capitulo_4/bridge-piece-testes.png" alt="" aria-hidden="true">
+              <strong>Testes</strong>
+            </button>
+            <button class="pipeline-neon-step" type="button" data-pipeline-step="build" aria-label="Build">
+              <span class="pipeline-neon-glow" aria-hidden="true"></span>
+              <img class="pipeline-neon-icon pipeline-bridge-piece" src="/assets/img/capitulo_4/bridge-piece-build.png" alt="" aria-hidden="true">
+              <strong>Build</strong>
+            </button>
+            <button class="pipeline-neon-step" type="button" data-pipeline-step="deploy" aria-label="Deploy">
+              <span class="pipeline-neon-glow" aria-hidden="true"></span>
+              <img class="pipeline-neon-icon pipeline-bridge-piece" src="/assets/img/capitulo_4/bridge-piece-deploy.png" alt="" aria-hidden="true">
+              <strong>Deploy</strong>
+            </button>
           </div>
 
-          <div class="pipeline-actions" aria-label="Escolha a ação correta para o commit">
-            <button class="pipeline-action" type="button" data-pipeline-action="integrar-testar">
-              <strong>Integrar e testar</strong>
-              <span>Código validado</span>
+          <div class="pipeline-void__footer">
+            <div class="pipeline-memory-progress" aria-hidden="true">
+              <span data-pipeline-progress></span>
+            </div>
+            <button class="pipeline-replay-button" id="btnRepetirPipeline" type="button">
+              Rever sequência
             </button>
-            <button class="pipeline-action" type="button" data-pipeline-action="corrigir">
-              <strong>Corrigir antes</strong>
-              <span>Sem validação</span>
-            </button>
-            <button class="pipeline-action" type="button" data-pipeline-action="deploy">
-              <strong>Automatizar deploy</strong>
-              <span>Build verde</span>
-            </button>
+            <p class="pipeline-status" id="pipelineStatus" aria-live="polite">
+              Continue descendo até a tela ficar totalmente preta.
+            </p>
           </div>
-
-          <p class="pipeline-status" id="pipelineStatus" aria-live="polite">
-            Para atravessar, escolha a ação que protege o fluxo. A decisão errada faz a ponte tremer.
-          </p>
         </div>
       </div>
 
@@ -381,27 +402,39 @@
           Atalhos técnicos cobram juros.
         </p>
         <p>
-          Depois da ponte, o time anda mais devagar. Correntes surgem nos tornozelos
-          dos Developers.
+          Depois da ponte CI/CD, o time espera avançar com leveza. Mas cada passo
+          fica mais pesado.
         </p>
         <p>
-          Dívida técnica é o resultado de decisões técnicas ruins que facilitam o
-          presente, mas geram retrabalho futuro.
+          Correntes surgem do nada e se prendem nos tornozelos. Cada elo parece ter sido forjado por uma
+          decisão anterior da Sprint: tarefas demais em andamento, testes pulados,
+          critérios ignorados e correções deixadas para depois.
+        </p>
+        <p>
+          Dívida técnica é o resultado de decisões técnicas inadequadas que facilitam
+          o presente, mas geram retrabalho futuro.
         </p>
         <p>
           Refatorar é melhorar a estrutura interna do código sem alterar seu
-          comportamento externo.
+          comportamento externo. O usuário recebe o mesmo resultado; por dentro, o
+          caminho fica mais seguro.
         </p>
-        <blockquote>Remendar parece rápido. Refatorar reduz o peso do caminho.</blockquote>
+        <blockquote>As correntes caem, mas deixam rastros. Sigam as evidências.</blockquote>
       </div>
 
       <div class="story-art debt-art">
         <div class="debt-panel" aria-label="Bancada de refatoração contra dívida técnica">
           <div class="debt-illustration">
             <img src="/assets/img/capitulo_4/correntes-divida-tecnica-pixel.png" alt="Aventureiros diante da porta final presos por correntes nos pés">
+            <div class="debt-echoes" aria-label="Decisões que criaram dívida técnica">
+              <span>Tarefas demais</span>
+              <span>Testes pulados</span>
+              <span>Critérios ignorados</span>
+              <span>Correções adiadas</span>
+            </div>
             <div class="debt-caption">
               <span>Dívida técnica</span>
-              <strong id="debtTitle">Peso acumulado</strong>
+              <strong id="debtTitle">Peso acumulado da Sprint</strong>
               <p id="debtDescription">O time ainda entrega, mas cada atalho torna a próxima mudança mais lenta.</p>
             </div>
           </div>
@@ -438,6 +471,13 @@
           <p class="debt-status" id="debtStatus" aria-live="polite">
             Aplique a refatoração indicada. O comportamento externo não muda.
           </p>
+
+          <div class="debt-evidence-trail" aria-label="Rastros deixados pela dívida técnica">
+            <span>Retrabalho</span>
+            <span>Gargalo</span>
+            <span>Atraso</span>
+            <span>Espera</span>
+          </div>
         </div>
       </div>
 
@@ -460,21 +500,34 @@
           Métrica é bússola, não chicote.
         </p>
         <p>
-          A sala seguinte é circular. Relógios, gráficos e ampulhetas flutuam no escuro.
+          O grupo segue os rastros deixados pelas correntes até uma sala circular.
+          Relógios, gráficos e ampulhetas flutuam no escuro.
+        </p>
+        <p>
+          Cada rastro vira uma evidência: trabalho parado, entregas concluídas,
+          tempo perdido, ritmo do time e espera do cliente.
         </p>
         <p>
           O Oráculo apresenta cinco instrumentos: Burndown, Burnup, Velocity,
-          Lead Time e Cycle Time.
+          Lead Time e Cycle Time. Eles servem para criar transparência e melhoria
+          contínua.
         </p>
         <p>
-          Eles servem para criar transparência e melhoria contínua. Quando viram punição,
-          os números se distorcem e a confiança morre.
+          Quando métricas viram punição, os números se distorcem e a confiança morre.
+          Quando viram aprendizado, o time enxerga o fluxo sem procurar culpados.
         </p>
-        <blockquote>Gire o foco. Leia o instrumento. Calibre a intenção.</blockquote>
+        <blockquote>Eu não mostro culpa. Mostro evidências.</blockquote>
       </div>
 
       <div class="story-art oracle-art">
         <div class="oracle-panel" aria-label="Oráculo Vivo das métricas">
+          <div class="oracle-evidence-strip" aria-label="Evidências reveladas pela dívida técnica">
+            <span>Trabalho restante</span>
+            <span>Progresso concluído</span>
+            <span>Previsão interna</span>
+            <span>Pedido até entrega</span>
+            <span>Início até conclusão</span>
+          </div>
           <div class="oracle-chamber">
             <img src="/assets/img/capitulo_4/oraculo-metricas-pixel.png" alt="Sala circular do Oráculo das Métricas com relógios e gráficos">
             <div class="oracle-orbit" aria-label="Instrumentos orbitais do Oráculo">
@@ -523,6 +576,11 @@
           <p class="oracle-status" id="metricStatus" aria-live="polite">
             Gire o foco pelos cinco instrumentos antes de calibrar o Oráculo.
           </p>
+
+          <div class="oracle-warning" aria-label="Risco de uso incorreto das métricas">
+            <strong>Próximo risco</strong>
+            <p>As mesmas métricas que ajudam o time a aprender também podem virar pressão nas mãos erradas.</p>
+          </div>
         </div>
       </div>
 

@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Capítulo 5 | Scrum Dungeon</title>
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/capitulo5.css" />
+    <link rel="stylesheet" href="../assets/css/burningdown.css" />
+  </head>
+
+  <body>
+    <%- include('partials/alert') %> <%- include('partials/header') %> <%-
+    include('./partials/botao_voltar') %>
+
+    <main class="capitulo5-page capitulo5-page--locked" id="capitulo5Page">
+      <section class="capitulo5-hero" id="heroCapitulo5">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+          <p class="chapter-kicker">Capítulo 5</p>
+          <h1>O Mestre do Fluxo</h1>
+          <p>
+            Atravesse a ponte, enfrente os impedimentos do caminho e conduza o
+            time até a grande porta final.
+          </p>
+
+          <button id="btnEntrarNaPonte" class="btn-hero-ponte" type="button">
+            <span>Entrar na ponte</span>
+            <span class="btn-hero-ponte__icon">➜</span>
+          </button>
+        </div>
+
+        <div class="hero-bottom-fade"></div>
+      </section>
+
+     <div class="capitulo5-transition-lock" id="transitionLock" aria-hidden="true"></div>
+
+<aside class="mochila-flutuante" id="mochilaFlutuante">
+  <button
+    class="mochila-toggle"
+    id="btnMochila"
+    type="button"
+    aria-expanded="false"
+    aria-label="Abrir mochila"
+  >
+    <span class="mochila-toggle__icon">🎒</span>
+  </button>
+
+  <div class="mochila-painel hidden" id="mochilaPainel">
+    <p class="mochila-titulo">Artefatos da Jornada</p>
+
+    <div class="mochila-grid">
+      <button class="mochila-item" type="button" data-artefato="backlog">
+        <img
+          src="/assets/img/artefatos/product-backlog-icon.png"
+          alt="Product Backlog"
+        />
+        <span class="mochila-item-tooltip">
+          Product Backlog — organiza prioridades e orienta o que gera mais valor.
+        </span>
+      </button>
+
+      <button class="mochila-item" type="button" data-artefato="medalhao">
+        <img
+          src="/assets/img/artefatos/medalhao-icon.png"
+          alt="Medalhão dos Papéis"
+        />
+        <span class="mochila-item-tooltip">
+          Medalhão dos Papéis — revela e organiza responsabilidades do time.
+        </span>
+      </button>
+
+      <button class="mochila-item" type="button" data-artefato="ampulheta">
+        <img
+          src="/assets/img/artefatos/ampulheta-icon.png"
+          alt="Ampulheta da Sprint"
+        />
+        <span class="mochila-item-tooltip">
+          Ampulheta da Sprint — representa ciclos curtos, foco e adaptação.
+        </span>
+      </button>
+
+      <button class="mochila-item" type="button" data-artefato="bau">
+        <img
+          src="/assets/img/artefatos/bau-da-iteracao-icon.png"
+          alt="Baú da iteração"
+        />
+        <span class="mochila-item-tooltip">
+          Baú da Iteração — guarda aprendizados e reforça a evolução contínua.
+        </span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<section class="capitulo5-conteudo" id="conteudoCapitulo5">
+  <section class="ponte-layout" id="mapaPonte">
+          <section class="mapa-ponte-card">
+            <header class="mapa-ponte-header">
+              <p class="chapter-kicker">Mapa da Ponte</p>
+              <h2>A Travessia Final</h2>
+              <p>
+                Vocês começam a andar sobre a ponte e, de repente, tudo parece
+                ficar mais escuro. Sombras surgem por toda parte. A distância da
+                porta aumenta. Algo impede o caminho.
+              </p>
+            </header>
+
+            <div class="ponte-visual ponte-visual--mapa">
+              <img
+                class="ponte-mapa-img"
+                src="/assets/img/capitulo_5/ponte-mapa.png"
+                alt="Mapa da ponte com o caminho até a porta final"
+              />
+
+              <button
+                class="ponte-node ponte-node--1 active"
+                data-step="duplo"
+                type="button"
+                aria-label="Duplo"
+              >
+                <img
+                  class="ponte-node-icon"
+                  src="/assets/img/capitulo_5/duplo-icon.png"
+                  alt="Duplo"
+                />
+                <span class="ponte-node-tooltip">Alguém perdido</span>
+              </button>
+
+              <button
+                class="ponte-node ponte-node--2 locked"
+                data-step="stakeholder"
+                type="button"
+                aria-label="Stakeholder Selvagem"
+              >
+                <img
+                  class="ponte-node-icon"
+                  src="/assets/img/capitulo_5/stake-holder-selvagem-icon.png"
+                  alt="Stakeholder Selvagem"
+                />
+                <span class="ponte-node-tooltip">Vozes ecoam desse lugar</span>
+              </button>
+
+              <button
+                class="ponte-node ponte-node--3 locked"
+                data-step="necrobranch"
+                type="button"
+                aria-label="Necrobranch Commitada"
+              >
+                <img
+                  class="ponte-node-icon"
+                  src="/assets/img/capitulo_5/necrobranch-icon-simples.png"
+                  alt="Necrobranch Commitada"
+                />
+                <span class="ponte-node-tooltip">O caminho parece obstruído</span>
+              </button>
+
+              <button
+                class="ponte-node ponte-node--4 locked"
+                data-step="bug-infernal"
+                type="button"
+                aria-label="Bug Infernal"
+              >
+                <img
+                  class="ponte-node-icon"
+                  src="/assets/img/capitulo_5/bug-infernal-icon.png"
+                  alt="Bug Infernal"
+                />
+                <span class="ponte-node-tooltip">Um zumbido chato</span>
+              </button>
+
+              <button
+                class="ponte-node ponte-node--5 locked"
+                data-step="forja-mvp"
+                type="button"
+                aria-label="Forja do MVP"
+              >
+                <img
+                  class="ponte-node-icon"
+                  src="/assets/img/capitulo_5/base-artefato-bau.png"
+                  alt="Forja do MVP"
+                />
+                <span class="ponte-node-tooltip">Hora de construir algo</span>
+              </button>
+
+              <button
+                class="ponte-node ponte-node--final locked"
+                data-step="porta-final"
+                type="button"
+                aria-label="Porta Final"
+              >
+                <img
+                  class="ponte-node-icon"
+                  src="/assets/img/capitulo_1/icones/porta.png"
+                  alt="Porta Final"
+                />
+                <span class="ponte-node-tooltip">Porta Final, falta tão pouco</span>
+              </button>
+            </div>
+
+            <div class="ponte-progressao-views">
+              <div class="bridge-view active" data-bridge-view="1"></div>
+              <div class="bridge-view" data-bridge-view="2"></div>
+              <div class="bridge-view" data-bridge-view="3"></div>
+              <div class="bridge-view" data-bridge-view="4"></div>
+              <div class="bridge-view" data-bridge-view="5"></div>
+            </div>
+          </section>
+          <aside
+            class="encontro-atual-card encontro-intro-card"
+            id="encontroAtualCard"
+          >
+            <p class="encontro-label">A Travessia Começa</p>
+            <h3 id="encontroTitulo">O Duplo</h3>
+
+            <div class="encontro-arte encontro-arte--cinematica">
+              <img
+                id="encontroImagem"
+                src="/assets/img/capitulo_5/encontro-duplo.png"
+                alt="O Duplo surge na ponte"
+              />
+
+              <button
+                class="btn-iniciar-hover"
+                id="btnAbrirDesafioAtual"
+                type="button"
+              >
+                Iniciar desafio
+              </button>
+            </div>
+
+            <p id="encontroDescricao">
+              Vocês começam a andar sobre a ponte e, de repente, tudo parece
+              ficar mais escuro. Sombras surgem por toda parte, a distância da
+              porta parece aumentar… algo impede o seu caminho.
+            </p>
+          </aside>
+        </section>
+
+        <section
+          class="capitulo5-step reveal obstaculo-step encounter-stage"
+          id="encounter-duplo"
+          data-step="duplo"
+        >
+          <span class="section-number">01</span>
+          <p class="chapter-kicker">Obstáculo 1</p>
+          <h2>O Duplo</h2>
+
+          <div class="obstaculo-layout obstaculo-layout--visual">
+            <div class="obstaculo-copy">
+              <p>
+                Uma sombra surge na ponte e começa a imitar os passos do grupo.
+                Quanto mais confusos os papéis, mais forte ela se torna.
+              </p>
+
+              <p>
+                Para vencer o Duplo, o time precisa reorganizar seus movimentos
+                e reconhecer com clareza as responsabilidades de cada
+                integrante.
+              </p>
+            </div>
+
+            <div class="obstaculo-media obstaculo-media--duplo">
+              <img
+                id="duploCena"
+                class="obstaculo-img obstaculo-img--frame"
+                src="/assets/img/capitulo_5/encontro-duplo.png"
+                alt="O encontro inicial com o Duplo"
+              />
+
+              <button
+                id="btnMedalhaoDuplo"
+                class="btn-primary btn-medalhao hidden"
+                type="button"
+              >
+                Colocar medalhão na criatura
+              </button>
+            </div>
+          </div>
+          <article class="capitulo5-info">
+            <h3>Conceito Scrum</h3>
+            <p>
+              Um time saudável precisa de papéis claros, responsabilidades
+              visíveis e colaboração real. O Scrum Master facilita essa clareza
+              sem mandar no time.
+            </p>
+          </article>
+
+          <div class="duplo-desafio" id="duploDesafio">
+            <article class="duplo-cenario">
+              <p class="duplo-etiqueta">Memória 1</p>
+              <h3>PO Caótico</h3>
+              <p>
+                O Product Owner muda prioridades a cada conversa, aceita pedidos
+                soltos e o time nunca sabe o que realmente precisa entregar.
+              </p>
+
+              <div class="duplo-opcoes">
+                <button
+                  class="duplo-opcao"
+                  data-cenario="po-caotico"
+                  data-resposta="aceitar-tudo"
+                  type="button"
+                >
+                  Aceitar todos os pedidos para evitar conflito
+                </button>
+
+                <button
+                  class="duplo-opcao"
+                  data-cenario="po-caotico"
+                  data-resposta="priorizar-backlog"
+                  type="button"
+                >
+                  Organizar os pedidos no Product Backlog e priorizar com
+                  clareza
+                </button>
+
+                <button
+                  class="duplo-opcao"
+                  data-cenario="po-caotico"
+                  data-resposta="ignorar-stakeholders"
+                  type="button"
+                >
+                  Ignorar stakeholders até a entrega final
+                </button>
+              </div>
+            </article>
+
+            <article class="duplo-cenario">
+              <p class="duplo-etiqueta">Memória 2</p>
+              <h3>Time Silencioso</h3>
+              <p>
+                O time encontra impedimentos, mas ninguém fala nada. As tarefas
+                travam em silêncio e o progresso parece normal por fora.
+              </p>
+
+              <div class="duplo-opcoes">
+                <button
+                  class="duplo-opcao"
+                  data-cenario="time-silencioso"
+                  data-resposta="expor-impedimentos"
+                  type="button"
+                >
+                  Tornar impedimentos visíveis e conversar sobre eles na Daily
+                </button>
+
+                <button
+                  class="duplo-opcao"
+                  data-cenario="time-silencioso"
+                  data-resposta="esperar-sozinho"
+                  type="button"
+                >
+                  Esperar que cada pessoa resolva sozinha
+                </button>
+
+                <button
+                  class="duplo-opcao"
+                  data-cenario="time-silencioso"
+                  data-resposta="cobrar-mais"
+                  type="button"
+                >
+                  Cobrar mais velocidade sem investigar o bloqueio
+                </button>
+              </div>
+            </article>
+
+            <article class="duplo-cenario">
+              <p class="duplo-etiqueta">Memória 3</p>
+              <h3>Falso Scrum Master</h3>
+              <p>
+                Uma pessoa tenta controlar todas as decisões, distribui ordens e
+                impede o time de aprender a se organizar.
+              </p>
+
+              <div class="duplo-opcoes">
+                <button
+                  class="duplo-opcao"
+                  data-cenario="falso-scrum-master"
+                  data-resposta="facilitar-autonomia"
+                  type="button"
+                >
+                  Facilitar a autonomia do time sem centralizar decisões
+                </button>
+
+                <button
+                  class="duplo-opcao"
+                  data-cenario="falso-scrum-master"
+                  data-resposta="mandar-mais"
+                  type="button"
+                >
+                  Mandar mais para garantir que tudo saia do jeito certo
+                </button>
+
+                <button
+                  class="duplo-opcao"
+                  data-cenario="falso-scrum-master"
+                  data-resposta="remover-time"
+                  type="button"
+                >
+                  Remover o time das decisões para ganhar tempo
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <p class="duplo-feedback" id="duploFeedback">
+            Escolha a melhor atitude para cada memória do Anti-Time.
+          </p>
+
+          <article class="capitulo5-info" id="duploResultado">
+            <h3>Artefato usado</h3>
+            <p>
+              <strong>Medalhão dos Papéis.</strong> Quando as responsabilidades
+              ficam claras, o Duplo enfraquece. Ao colocar o medalhão nele, a
+              maldição se desfaz e a criatura se revela como um Dev Lendário
+              perdido.
+            </p>
+          </article>
+
+          <button class="btn-primary" id="btnResolverDuplo" type="button">
+            Enfraquecer o Duplo
+          </button>
+        </section>
+
+        <section
+          class="capitulo5-step reveal obstaculo-step encounter-stage hidden"
+          id="encounter-stakeholder"
+          data-step="stakeholder"
+        >
+          <span class="section-number">02</span>
+          <p class="chapter-kicker">Obstáculo 2</p>
+          <h2>Stakeholder Selvagem</h2>
+
+          <div class="obstaculo-layout obstaculo-layout--visual">
+            <div class="obstaculo-copy">
+              <p>
+                Vozes surgem da escuridão exigindo mudanças, novos requisitos e
+                entregas impossíveis. O Stakeholder Selvagem cresce quando não
+                existe alinhamento.
+              </p>
+
+              <p>
+                Para seguir, o time precisa transformar ruído em conversa,
+                pedido em item de backlog e expectativa em acordo claro.
+              </p>
+            </div>
+
+            <div class="obstaculo-media stakeholder-media">
+              <img
+                class="obstaculo-img obstaculo-img--frame"
+                src="/assets/img/capitulo_5/carta_stakeholder-selvagem.png"
+                alt="Carta do Stakeholder Selvagem"
+              />
+
+              <div class="stakeholder-formas">
+                <img
+                  class="stakeholder-forma ativa"
+                  src="/assets/img/capitulo_5/stake-holder-selvagem-icon.png"
+                  alt="Forma selvagem do stakeholder"
+                />
+
+                <img
+                  class="stakeholder-forma"
+                  src="/assets/img/capitulo_5/stakeholder-transformation1.png"
+                  alt="Stakeholder começando a se acalmar"
+                />
+              </div>
+            </div>
+          </div>
+
+          <article class="capitulo5-info">
+            <h3>Conceito Scrum</h3>
+            <p>
+              Stakeholders não são inimigos. Eles precisam de transparência,
+              escuta, feedback frequente e visibilidade sobre o que está sendo
+              entregue.
+            </p>
+          </article>
+
+          <div class="stakeholder-desafio" id="stakeholderDesafio">
+            <article class="stakeholder-cenario">
+              <p class="stakeholder-etiqueta">Caminho 1</p>
+              <h3>Pedido em forma de grito</h3>
+              <p>
+                O Stakeholder Selvagem exige: “Quero essa nova funcionalidade
+                agora!”. O pedido parece importante, mas ainda não está claro o
+                problema que ele resolve.
+              </p>
+
+              <div class="stakeholder-opcoes">
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="pedido-confuso"
+                  data-resposta="entender-necessidade"
+                  type="button"
+                >
+                  Fazer perguntas para entender a necessidade antes de assumir a
+                  solução
+                </button>
+
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="pedido-confuso"
+                  data-resposta="prometer-entrega"
+                  type="button"
+                >
+                  Prometer a entrega imediatamente para acalmar o stakeholder
+                </button>
+
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="pedido-confuso"
+                  data-resposta="recusar-sem-ouvir"
+                  type="button"
+                >
+                  Recusar o pedido sem investigar o valor
+                </button>
+              </div>
+            </article>
+
+            <article class="stakeholder-cenario">
+              <p class="stakeholder-etiqueta">Caminho 2</p>
+              <h3>Mudança no meio da Sprint</h3>
+              <p>
+                Uma mudança urgente aparece enquanto o time já está executando a
+                Sprint. O risco é abandonar tudo sem avaliar impacto.
+              </p>
+
+              <div class="stakeholder-opcoes">
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="mudanca-sprint"
+                  data-resposta="avaliar-impacto"
+                  type="button"
+                >
+                  Avaliar impacto, conversar com o PO e decidir com
+                  transparência
+                </button>
+
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="mudanca-sprint"
+                  data-resposta="trocar-tudo"
+                  type="button"
+                >
+                  Trocar todo o plano da Sprint sem avisar o time
+                </button>
+
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="mudanca-sprint"
+                  data-resposta="ignorar-mudanca"
+                  type="button"
+                >
+                  Ignorar completamente a mudança até o final do projeto
+                </button>
+              </div>
+            </article>
+
+            <article class="stakeholder-cenario">
+              <p class="stakeholder-etiqueta">Caminho 3</p>
+              <h3>Feedback desconfortável</h3>
+              <p>
+                Após ver o incremento, o stakeholder diz que esperava outro
+                resultado. A tensão aumenta e o time fica defensivo.
+              </p>
+
+              <div class="stakeholder-opcoes">
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="feedback"
+                  data-resposta="adaptar-backlog"
+                  type="button"
+                >
+                  Escutar o feedback, registrar aprendizados e adaptar o backlog
+                </button>
+
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="feedback"
+                  data-resposta="culpar-stakeholder"
+                  type="button"
+                >
+                  Culpar o stakeholder por não ter explicado melhor antes
+                </button>
+
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="feedback"
+                  data-resposta="esconder-problema"
+                  type="button"
+                >
+                  Esconder o problema para evitar retrabalho
+                </button>
+              </div>
+            </article>
+
+            <article class="stakeholder-cenario">
+              <p class="stakeholder-etiqueta">Caminho 4</p>
+              <h3>Acordo final</h3>
+              <p>
+                Depois do alinhamento, todos entendem qual entrega gera mais
+                valor agora. Falta transformar a conversa em compromisso
+                visível.
+              </p>
+
+              <div class="stakeholder-opcoes">
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="acordo"
+                  data-resposta="formalizar-aval"
+                  type="button"
+                >
+                  Registrar o acordo e obter o Aval de Aprovação
+                </button>
+
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="acordo"
+                  data-resposta="seguir-sem-registro"
+                  type="button"
+                >
+                  Seguir sem registrar nada, confiando apenas na memória do
+                  grupo
+                </button>
+
+                <button
+                  class="stakeholder-opcao"
+                  data-cenario="acordo"
+                  data-resposta="aumentar-escopo"
+                  type="button"
+                >
+                  Aproveitar o acordo para adicionar mais escopo sem priorização
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <p class="stakeholder-feedback" id="stakeholderFeedback">
+            Escolha o melhor caminho para transformar ruído em alinhamento.
+          </p>
+
+          <article class="capitulo5-info" id="stakeholderResultado">
+            <h3>Recompensa</h3>
+            <p>
+              Quando o Product Backlog organiza as vozes da escuridão, o
+              Stakeholder Selvagem se acalma. Ele deixa de atacar o time e
+              entrega o
+              <strong>Aval de Aprovação</strong>.
+            </p>
+          </article>
+
+          <button class="btn-primary" id="btnResolverStakeholder" type="button">
+            Entregar Backlog Organizado
+          </button>
+
+          <article class="capitulo5-info">
+            <h3>Artefato usado</h3>
+            <p>
+              <strong>Product Backlog.</strong> Com ele, o grupo organiza os
+              pedidos e o Stakeholder Selvagem se torna um aliado, entregando o
+              Aval de Aprovação.
+            </p>
+          </article>
+        </section>
+
+        <section
+          class="capitulo5-step reveal obstaculo-step encounter-stage hidden"
+          id="encounter-necrobranch"
+          data-step="necrobranch"
+        >
+          <span class="section-number">03</span>
+          <p class="chapter-kicker">Obstáculo 3</p>
+          <h2>Necrobranch Commitada</h2>
+
+          <div class="obstaculo-layout">
+            <div>
+              <p>
+                Uma branch esquecida retorna dos mortos, carregada de conflitos,
+                commits quebrados e código instável.
+              </p>
+
+              <p>
+                Para sobreviver, o time precisa decidir o que recuperar
+                primeiro. Nem tudo tem o mesmo valor, risco ou urgência.
+              </p>
+            </div>
+
+            <img
+              class="obstaculo-img"
+              src="/assets/img/capitulo_5/necrobranch-icon-simples.png"
+              alt="Necrobranch Commitada"
+            />
+          </div>
+
+          <article class="capitulo5-info">
+            <h3>Conceito Scrum</h3>
+            <p>
+              O Scrum Master ajuda o time a enxergar gargalos, riscos e
+              prioridades. Recuperar o fluxo é mais importante do que tentar
+              resolver tudo ao mesmo tempo.
+            </p>
+          </article>
+
+          <div class="necrobranch-desafio" id="necrobranchDesafio">
+            <article class="necrobranch-cenario">
+              <p class="necrobranch-etiqueta">Raiz 1</p>
+              <h3>Branch desconhecida</h3>
+              <p>
+                A Necrobranch desperta cheia de commits antigos. Ninguém sabe
+                exatamente o que foi alterado, o que ainda funciona ou onde o
+                conflito começou.
+              </p>
+
+              <div class="necrobranch-opcoes">
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="branch-desconhecida"
+                  data-resposta="inspecionar-estado"
+                  type="button"
+                >
+                  Inspecionar o estado atual antes de alterar qualquer coisa
+                </button>
+
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="branch-desconhecida"
+                  data-resposta="apagar-branch"
+                  type="button"
+                >
+                  Apagar a branch imediatamente sem entender o impacto
+                </button>
+
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="branch-desconhecida"
+                  data-resposta="integrar-direto"
+                  type="button"
+                >
+                  Integrar tudo direto na Main para ganhar tempo
+                </button>
+              </div>
+            </article>
+
+            <article class="necrobranch-cenario">
+              <p class="necrobranch-etiqueta">Raiz 2</p>
+              <h3>Quadro de Valor</h3>
+              <p>
+                O time encontra várias tarefas presas na branch: correção
+                crítica, melhoria visual, refatoração interna e uma
+                funcionalidade incompleta. Nem tudo pode ser salvo ao mesmo
+                tempo.
+              </p>
+
+              <div class="necrobranch-opcoes">
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="quadro-valor"
+                  data-resposta="priorizar-impacto"
+                  type="button"
+                >
+                  Priorizar o que desbloqueia a entrega e reduz maior risco
+                </button>
+
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="quadro-valor"
+                  data-resposta="escolher-bonito"
+                  type="button"
+                >
+                  Começar pela melhoria visual porque parece mais rápida
+                </button>
+
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="quadro-valor"
+                  data-resposta="fazer-tudo"
+                  type="button"
+                >
+                  Tentar recuperar tudo de uma vez, sem ordem de prioridade
+                </button>
+              </div>
+            </article>
+
+            <article class="necrobranch-cenario">
+              <p class="necrobranch-etiqueta">Raiz 3</p>
+              <h3>Main em risco</h3>
+              <p>
+                A Main Funcional ainda existe, mas está vulnerável. Um merge
+                apressado pode quebrar a única versão estável que o grupo
+                possui.
+              </p>
+
+              <div class="necrobranch-opcoes">
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="main-risco"
+                  data-resposta="proteger-main"
+                  type="button"
+                >
+                  Proteger a Main Funcional e recuperar mudanças com segurança
+                </button>
+
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="main-risco"
+                  data-resposta="quebrar-main"
+                  type="button"
+                >
+                  Substituir a Main pela Necrobranch sem validação
+                </button>
+
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="main-risco"
+                  data-resposta="ignorar-versao"
+                  type="button"
+                >
+                  Ignorar versionamento e copiar arquivos manualmente
+                </button>
+              </div>
+            </article>
+
+            <article class="necrobranch-cenario">
+              <p class="necrobranch-etiqueta">Raiz 4</p>
+              <h3>Integração final</h3>
+              <p>
+                A branch parece controlada, mas o time ainda precisa confirmar
+                se o incremento recuperado realmente funciona antes de seguir.
+              </p>
+
+              <div class="necrobranch-opcoes">
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="integracao-final"
+                  data-resposta="testar-integrar"
+                  type="button"
+                >
+                  Testar, validar e só então integrar a recuperação
+                </button>
+
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="integracao-final"
+                  data-resposta="pular-testes"
+                  type="button"
+                >
+                  Pular os testes porque a Sprint está acabando
+                </button>
+
+                <button
+                  class="necrobranch-opcao"
+                  data-cenario="integracao-final"
+                  data-resposta="culpar-branch"
+                  type="button"
+                >
+                  Culpar a branch antiga e abandonar a recuperação
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <p class="necrobranch-feedback" id="necrobranchFeedback">
+            Escolha a melhor estratégia para recuperar a Main Funcional.
+          </p>
+
+          <article class="capitulo5-info" id="necrobranchResultado">
+            <h3>Recompensa</h3>
+            <p>
+              Ao girar a <strong>Ampulheta da Sprint</strong>, o time recupera a
+              <strong>Main Funcional</strong>. Mas o Dev Lendário se sacrifica
+              para conter a instabilidade da Necrobranch, deixando para trás o
+              Medalhão dos Papéis.
+            </p>
+          </article>
+
+          <button class="btn-primary" id="btnResolverNecrobranch" type="button">
+            Girar a Ampulheta da Sprint
+          </button>
+
+          <article class="capitulo5-info">
+            <h3>Artefato usado</h3>
+            <p>
+              <strong>Ampulheta da Sprint.</strong> Ao girá-la, o time consegue
+              recuperar a Main Funcional, mas o Dev Lendário se sacrifica para
+              conter a instabilidade da branch.
+            </p>
+          </article>
+        </section>
+
+        <section
+          class="capitulo5-step reveal obstaculo-step encounter-stage hidden"
+          id="encounter-bug"
+          data-step="bug-infernal"
+        >
+          <span class="section-number">04</span>
+          <p class="chapter-kicker">Obstáculo 4</p>
+          <h2>Bug Infernal</h2>
+
+          <div class="obstaculo-layout">
+            <div>
+              <p>
+                O Bug Infernal não pode ser vencido no chute. Cada correção
+                apressada o torna mais forte.
+              </p>
+
+              <p>
+                Para aprisioná-lo, o time precisa entender o problema,
+                reproduzir o erro e validar a correção.
+              </p>
+            </div>
+
+            <img
+              class="obstaculo-img"
+              src="/assets/img/capitulo_5/bug-infernal-icon.png"
+              alt="Bug Infernal"
+            />
+          </div>
+
+          <article class="capitulo5-info">
+            <h3>Conceito Scrum</h3>
+            <p>
+              Uma entrega só gera confiança quando existe clareza sobre o
+              comportamento esperado, o comportamento atual e os critérios de
+              validação.
+            </p>
+          </article>
+
+          <div class="bug-desafio" id="bugDesafio">
+            <article class="bug-cenario">
+              <p class="bug-etiqueta">Rastro 1</p>
+              <h3>Comportamento esperado</h3>
+              <p>
+                O Bug Infernal distorce a entrega porque ninguém sabe dizer com
+                clareza como a funcionalidade deveria funcionar.
+              </p>
+
+              <div class="bug-opcoes">
+                <button
+                  class="bug-opcao"
+                  data-cenario="comportamento-esperado"
+                  data-resposta="definir-esperado"
+                  type="button"
+                >
+                  Descrever qual resultado o usuário deveria receber
+                </button>
+
+                <button
+                  class="bug-opcao"
+                  data-cenario="comportamento-esperado"
+                  data-resposta="corrigir-sem-entender"
+                  type="button"
+                >
+                  Corrigir direto no código sem entender o fluxo esperado
+                </button>
+
+                <button
+                  class="bug-opcao"
+                  data-cenario="comportamento-esperado"
+                  data-resposta="ignorar-usuario"
+                  type="button"
+                >
+                  Ignorar a experiência do usuário e focar só na tela quebrada
+                </button>
+              </div>
+            </article>
+
+            <article class="bug-cenario">
+              <p class="bug-etiqueta">Rastro 2</p>
+              <h3>Comportamento atual</h3>
+              <p>
+                O time percebe que a funcionalidade falha, mas ainda não
+                registrou o que realmente acontece quando o erro aparece.
+              </p>
+
+              <div class="bug-opcoes">
+                <button
+                  class="bug-opcao"
+                  data-cenario="comportamento-atual"
+                  data-resposta="registrar-atual"
+                  type="button"
+                >
+                  Registrar o que acontece agora e comparar com o esperado
+                </button>
+
+                <button
+                  class="bug-opcao"
+                  data-cenario="comportamento-atual"
+                  data-resposta="chutar-causa"
+                  type="button"
+                >
+                  Chutar a causa mais provável e começar a alterar arquivos
+                </button>
+
+                <button
+                  class="bug-opcao"
+                  data-cenario="comportamento-atual"
+                  data-resposta="culpar-usuario"
+                  type="button"
+                >
+                  Assumir que o usuário usou errado sem investigar
+                </button>
+              </div>
+            </article>
+
+            <article class="bug-cenario">
+              <p class="bug-etiqueta">Rastro 3</p>
+              <h3>Passos para reproduzir</h3>
+              <p>
+                O Bug Infernal aparece e desaparece como uma sombra. Sem
+                reprodução, o time não consegue confirmar se realmente corrigiu
+                o problema.
+              </p>
+
+              <div class="bug-opcoes">
+                <button
+                  class="bug-opcao"
+                  data-cenario="reproducao"
+                  data-resposta="definir-passos"
+                  type="button"
+                >
+                  Listar os passos que fazem o erro acontecer novamente
+                </button>
+
+                <button
+                  class="bug-opcao"
+                  data-cenario="reproducao"
+                  data-resposta="testar-aleatorio"
+                  type="button"
+                >
+                  Testar telas aleatórias até o bug aparecer por sorte
+                </button>
+
+                <button
+                  class="bug-opcao"
+                  data-cenario="reproducao"
+                  data-resposta="seguir-sem-reproduzir"
+                  type="button"
+                >
+                  Seguir sem reproduzir, confiando que a correção resolveu
+                </button>
+              </div>
+            </article>
+
+            <article class="bug-cenario">
+              <p class="bug-etiqueta">Rastro 4</p>
+              <h3>Critério de validação</h3>
+              <p>
+                O bug foi isolado. Agora o time precisa saber qual evidência
+                prova que a correção funcionou e que o incremento pode seguir.
+              </p>
+
+              <div class="bug-opcoes">
+                <button
+                  class="bug-opcao"
+                  data-cenario="validacao"
+                  data-resposta="validar-correcao"
+                  type="button"
+                >
+                  Definir um critério claro para validar a correção
+                </button>
+
+                <button
+                  class="bug-opcao"
+                  data-cenario="validacao"
+                  data-resposta="aprovar-sem-teste"
+                  type="button"
+                >
+                  Aprovar sem testar porque o código parece certo
+                </button>
+
+                <button
+                  class="bug-opcao"
+                  data-cenario="validacao"
+                  data-resposta="guardar-erro"
+                  type="button"
+                >
+                  Guardar o erro para resolver em outro momento sem registrar
+                  nada
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <p class="bug-feedback" id="bugFeedback">
+            Investigue os quatro rastros antes de aprisionar o Bug Infernal.
+          </p>
+
+          <article class="capitulo5-info" id="bugResultado">
+            <h3>Recompensa</h3>
+            <p>
+              Com o problema descrito, reproduzido e validado, o
+              <strong>Baú da Melhoria</strong> aprisiona o Bug Infernal. O baú
+              se transforma em um <strong>Escudo Mágico</strong>, símbolo de um
+              produto testado.
+            </p>
+          </article>
+
+          <button class="btn-primary" id="btnResolverBug" type="button">
+            Aprisionar o Bug no Baú
+          </button>
+
+          <article class="capitulo5-info">
+            <h3>Artefato usado</h3>
+            <p>
+              <strong>Baú da Melhoria.</strong> O bug é isolado e aprisionado. O
+              baú se transforma em um Escudo Mágico, sinal de um produto
+              testado.
+            </p>
+          </article>
+        </section>
+
+        <section
+          class="capitulo5-step reveal forja-step encounter-stage hidden"
+          id="encounter-forja"
+          data-step="forja-mvp"
+        >
+          <span class="section-number">05</span>
+          <p class="chapter-kicker">A Forja</p>
+          <h2>A Forja do MVP</h2>
+
+          <p>
+            Após vencer os quatro obstáculos, o grupo chega à forja. Cada item
+            conquistado representa uma parte essencial de uma entrega ágil.
+          </p>
+
+          <article class="capitulo5-info">
+            <h3>Resultado</h3>
+            <p>
+              Os artefatos se unem e formam o <strong>MVP</strong>: uma entrega
+              mínima, funcional, validada e com valor suficiente para atravessar
+              a porta final.
+            </p>
+          </article>
+          <div class="forja-desafio" id="forjaDesafio">
+            <article class="forja-cenario">
+              <p class="forja-etiqueta">Ingrediente 1</p>
+              <h3>Time alinhado</h3>
+              <p>
+                Antes de entregar valor, o grupo precisa entender quem facilita,
+                quem prioriza e quem constrói.
+              </p>
+
+              <div class="forja-opcoes">
+                <button
+                  class="forja-opcao"
+                  data-cenario="time-alinhado"
+                  data-resposta="medalhao-papeis"
+                  type="button"
+                >
+                  Medalhão dos Papéis
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="time-alinhado"
+                  data-resposta="escudo-magico"
+                  type="button"
+                >
+                  Escudo Mágico
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="time-alinhado"
+                  data-resposta="main-funcional"
+                  type="button"
+                >
+                  Main Funcional
+                </button>
+              </div>
+            </article>
+
+            <article class="forja-cenario">
+              <p class="forja-etiqueta">Ingrediente 2</p>
+              <h3>Valor validado</h3>
+              <p>
+                O produto precisa fazer sentido para quem recebe a entrega. Sem
+                validação, o time pode construir algo funcional, mas sem valor.
+              </p>
+
+              <div class="forja-opcoes">
+                <button
+                  class="forja-opcao"
+                  data-cenario="valor-validado"
+                  data-resposta="aval-aprovacao"
+                  type="button"
+                >
+                  Aval de Aprovação
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="valor-validado"
+                  data-resposta="ampulheta-quebrada"
+                  type="button"
+                >
+                  Ampulheta Quebrada
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="valor-validado"
+                  data-resposta="medalhao-papeis"
+                  type="button"
+                >
+                  Medalhão dos Papéis
+                </button>
+              </div>
+            </article>
+
+            <article class="forja-cenario">
+              <p class="forja-etiqueta">Ingrediente 3</p>
+              <h3>Incremento funcionando</h3>
+              <p>
+                O MVP precisa existir como algo utilizável. Ideias, promessas e
+                tarefas soltas ainda não são uma entrega.
+              </p>
+
+              <div class="forja-opcoes">
+                <button
+                  class="forja-opcao"
+                  data-cenario="incremento-funcionando"
+                  data-resposta="main-funcional"
+                  type="button"
+                >
+                  Main Funcional
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="incremento-funcionando"
+                  data-resposta="aval-aprovacao"
+                  type="button"
+                >
+                  Aval de Aprovação
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="incremento-funcionando"
+                  data-resposta="escudo-magico"
+                  type="button"
+                >
+                  Escudo Mágico
+                </button>
+              </div>
+            </article>
+
+            <article class="forja-cenario">
+              <p class="forja-etiqueta">Ingrediente 4</p>
+              <h3>Ciclo encerrado</h3>
+              <p>
+                A Sprint tem duração fixa. Quando o tempo termina, o time
+                inspeciona o que foi possível entregar e aprende com o ciclo.
+              </p>
+
+              <div class="forja-opcoes">
+                <button
+                  class="forja-opcao"
+                  data-cenario="ciclo-encerrado"
+                  data-resposta="ampulheta-quebrada"
+                  type="button"
+                >
+                  Ampulheta Quebrada
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="ciclo-encerrado"
+                  data-resposta="main-funcional"
+                  type="button"
+                >
+                  Main Funcional
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="ciclo-encerrado"
+                  data-resposta="aval-aprovacao"
+                  type="button"
+                >
+                  Aval de Aprovação
+                </button>
+              </div>
+            </article>
+
+            <article class="forja-cenario">
+              <p class="forja-etiqueta">Ingrediente 5</p>
+              <h3>Produto testado</h3>
+              <p>
+                Para atravessar a porta final, o incremento precisa ter sido
+                verificado. O time precisa confiar que a entrega funciona.
+              </p>
+
+              <div class="forja-opcoes">
+                <button
+                  class="forja-opcao"
+                  data-cenario="produto-testado"
+                  data-resposta="escudo-magico"
+                  type="button"
+                >
+                  Escudo Mágico
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="produto-testado"
+                  data-resposta="medalhao-papeis"
+                  type="button"
+                >
+                  Medalhão dos Papéis
+                </button>
+
+                <button
+                  class="forja-opcao"
+                  data-cenario="produto-testado"
+                  data-resposta="ampulheta-quebrada"
+                  type="button"
+                >
+                  Ampulheta Quebrada
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <p class="forja-feedback" id="forjaFeedback">
+            Escolha qual artefato representa cada parte essencial do MVP.
+          </p>
+
+          <article class="capitulo5-info" id="forjaResultado">
+            <h3>Resultado</h3>
+            <p>
+              Quando os artefatos se unem corretamente, surge o
+              <strong>MVP</strong>: uma entrega mínima, funcional, validada,
+              testada e com valor suficiente para atravessar a porta final.
+            </p>
+          </article>
+
+          <button class="btn-primary" id="btnForjarMvp" type="button">
+            Forjar o MVP
+          </button>
+        </section>
+
+        <section
+          class="capitulo5-step reveal final-step encounter-stage hidden"
+          id="encounter-porta"
+          data-step="porta-final"
+        >
+          <span class="section-number">Final</span>
+          <h2>A Porta Final</h2>
+
+          <p>
+            A inscrição na porta diz: “Aquele que entende o fluxo… torna-se
+            parte dele.”
+          </p>
+
+          <p>Ao concluir esta história, o último desafio será liberado.</p>
+
+          <p class="porta-bloqueada" id="portaBloqueada">
+            A porta ainda observa sua jornada. Resolva os obstáculos e forje o
+            MVP para atravessá-la.
+          </p>
+
+          <button
+            class="btn-primary hidden"
+            id="btnConcluirHistoria"
+            type="button"
+          >
+            Concluir história e atravessar a porta
+          </button>
+
+          <p class="status-historia" id="statusHistoria"></p>
+
+          <button
+            class="btn-primary porta-final-btn hidden"
+            id="btnEntrarDesafio"
+            type="button"
+          >
+            Encarar o desafio final
+          </button>
+        </section>
+      </section>
+    </main>
+
+    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
+    %>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/capitulo5.js"></script>
+  </body>
+</html>
