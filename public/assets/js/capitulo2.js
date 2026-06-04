@@ -111,6 +111,61 @@ const guardioesDetalhesData = {
   },
 };
 
+const preparoDesafioData = {
+  refinamento: {
+    framework: {
+      numero: "I",
+      titulo: "Scrum é um framework",
+      texto:
+        "Ele não é uma lista rígida de etapas. O Scrum organiza papéis, eventos, artefatos e compromissos para lidar com produtos complexos.",
+    },
+    refinamento: {
+      numero: "II",
+      titulo: "Refinamento do Product Backlog",
+      texto:
+        "O Product Backlog precisa ser continuamente detalhado, esclarecido e reordenado para que o time entenda o que gera mais valor.",
+    },
+    planning: {
+      numero: "III",
+      titulo: "Sprint Planning",
+      texto:
+        "Quando o Product Backlog não está claro ou ordenado, a Sprint Planning perde direção e o time tem dificuldade para escolher o trabalho certo.",
+    },
+    sprintBacklog: {
+      numero: "IV",
+      titulo: "Sprint Backlog",
+      texto:
+        "Os Developers são responsáveis pelo Sprint Backlog: os itens escolhidos para a Sprint e o plano para transformá-los em Incremento.",
+    },
+  },
+  conselho: {
+    po: {
+      numero: "V",
+      titulo: "Product Owner presente",
+      texto:
+        "Um Product Owner ausente prejudica a transparência, enfraquece a priorização e compromete a maximização de valor.",
+    },
+    cancelamento: {
+      numero: "VI",
+      titulo: "Cancelar uma Sprint",
+      texto:
+        "Se o objetivo da Sprint deixar de fazer sentido, o unico que pode cancelá-la é o Product Owner.",
+    },
+    qualidade: {
+      numero: "VII",
+      titulo: "Qualidade compartilhada",
+      texto:
+        "A qualidade do Incremento não pertence a uma pessoa isolada. Ela é responsabilidade de todo o Scrum Team.",
+    },
+    auto: {
+      numero: "VIII",
+      titulo: "Auto-organização",
+      texto:
+        "O Scrum não depende de um gerente de projetos tradicional distribuindo tarefas. O time se organiza para cumprir seus compromissos.",
+    },
+  },
+};
+
 function obterTokenCapitulo2() {
   const token = localStorage.getItem("token");
 
@@ -246,6 +301,33 @@ function configurarGuardioes() {
   });
 }
 
+function configurarPreparoDesafio() {
+  const experiencias = document.querySelectorAll("[data-pre-desafio]");
+
+  experiencias.forEach((experiencia) => {
+    const tipo = experiencia.dataset.preDesafio;
+    const painel = experiencia.querySelector(".pre-desafio-painel");
+    const botoes = experiencia.querySelectorAll("[data-conceito], [data-conselho]");
+
+    botoes.forEach((botao) => {
+      botao.addEventListener("click", () => {
+        const chave = botao.dataset.conceito || botao.dataset.conselho;
+        const conceito = preparoDesafioData[tipo]?.[chave];
+
+        if (!conceito || !painel) return;
+
+        botoes.forEach((item) => item.classList.toggle("is-active", item === botao));
+
+        painel.innerHTML = `
+          <span class="pre-desafio-numero">${conceito.numero}</span>
+          <h3>${conceito.titulo}</h3>
+          <p>${conceito.texto}</p>
+        `;
+      });
+    });
+  });
+}
+
 async function concluirHistoriaCapitulo2() {
   const token = obterTokenCapitulo2();
 
@@ -370,6 +452,7 @@ document.addEventListener("DOMContentLoaded", () => {
   configurarRevealCapitulo2();
   configurarProgressoCapitulo2();
   configurarGuardioes();
+  configurarPreparoDesafio();
   configurarConclusaoCapitulo2();
   configurarDesbloqueioNavbarCapitulo2();
   ajustarHashInicialCapitulo2();

@@ -7,7 +7,7 @@
   background:
     linear-gradient(
       to top,
-      #140024 0%,
+      #050505 0%,
       #000 3%,
       rgba(0, 0, 0, 0.9) 40%,
       rgb(0, 0, 0) 70%,
@@ -502,7 +502,7 @@
   padding: clamp(1.45rem, 3vw, 1.9rem);
   text-align: center;
   background:
-    radial-gradient(ellipse at center, rgba(80, 38, 95, 0.22), transparent 68%),
+    radial-gradient(ellipse at center, rgba(212, 175, 55, 0.08), transparent 68%),
     linear-gradient(135deg, rgba(11, 6, 16, 0.94), rgba(28, 21, 20, 0.92));
   border-color: rgba(212, 175, 55, 0.72);
   border-radius: 14px;
@@ -688,6 +688,251 @@
   object-fit: contain;
 }
 
+.pre-desafio-block {
+  display: block;
+  padding: clamp(1.5rem, 3vw, 2.4rem);
+}
+
+.pre-desafio-refinamento,
+.pre-desafio-conselho {
+  background: rgba(7, 7, 6, 0.82);
+}
+
+.pre-desafio-kicker {
+  margin: 0 0 0.45rem;
+  color: #d6ad35;
+  font-family: "Cinzel", serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pre-desafio-experiencia {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  gap: clamp(1rem, 2.4vw, 1.7rem);
+  align-items: stretch;
+  margin-top: 1.5rem;
+}
+
+.pre-desafio-experiencia-reversa {
+  grid-template-columns: minmax(300px, 0.88fr) minmax(0, 1.12fr);
+}
+
+.pre-desafio-imagem {
+  position: relative;
+  grid-row: span 2;
+  min-height: 320px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.34);
+  border-radius: 14px;
+  background: #050505;
+  box-shadow: none;
+}
+
+.pre-desafio-imagem::after {
+  content: none;
+}
+
+.pre-desafio-imagem img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.82) contrast(1.08) saturate(0.96);
+}
+
+.pre-desafio-tabs,
+.conselho-selos {
+  grid-column: 2;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.pre-desafio-experiencia-reversa .pre-desafio-imagem {
+  grid-column: 2;
+}
+
+.pre-desafio-experiencia-reversa .conselho-selos,
+.pre-desafio-experiencia-reversa .pre-desafio-painel {
+  grid-column: 1;
+}
+
+.pre-desafio-tab,
+.conselho-selo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 54px;
+  padding: 0.75rem 0.9rem;
+  color: #d8c9a9;
+  font-family: "Cinzel", serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+  text-transform: uppercase;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 10px;
+  background: rgba(7, 7, 6, 0.78);
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.pre-desafio-tab:hover,
+.pre-desafio-tab:focus-visible,
+.conselho-selo:hover,
+.conselho-selo:focus-visible,
+.pre-desafio-tab.is-active,
+.conselho-selo.is-active {
+  color: #fff0b5;
+  border-color: rgba(244, 211, 94, 0.72);
+  background: rgba(10, 10, 9, 0.92);
+  box-shadow: none;
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.conselho-selo {
+  gap: 0.75rem;
+}
+
+.conselho-selo span {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: #fff0b5;
+  border: 1px solid rgba(244, 211, 94, 0.48);
+  border-radius: 50%;
+  background: rgba(16, 10, 21, 0.92);
+  box-shadow: none;
+}
+
+.pre-desafio-painel {
+  position: relative;
+  grid-column: 2;
+  min-height: 220px;
+  margin-top: 0.85rem;
+  padding: 1.35rem;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.46);
+  border-radius: 12px;
+  background: rgba(7, 7, 6, 0.86);
+  box-shadow: none;
+}
+
+.pre-desafio-numero {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 0.8rem;
+  color: #fff1b8;
+  font-family: "Cinzel", serif;
+  font-weight: 800;
+  border: 1px solid rgba(244, 211, 94, 0.58);
+  border-radius: 50%;
+  background: rgba(14, 9, 20, 0.9);
+}
+
+.pre-desafio-painel h3 {
+  margin: 0 0 0.6rem;
+  color: #f5e6b0;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.pre-desafio-painel p {
+  margin: 0;
+  color: #ddd2bd;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.pre-desafio-refinamento {
+  width: min(1120px, calc(100% - 2rem));
+}
+
+.mesa-refinamento-titulo {
+  width: 100%;
+  margin: 0 0 2.2rem;
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  text-align: center;
+  border: 1px solid rgba(244, 211, 94, 0.72);
+  border-radius: 12px;
+  background: rgba(7, 7, 6, 0.72);
+  box-shadow: none;
+}
+
+.mesa-refinamento-titulo h2 {
+  margin: 0.25rem 0 0.6rem;
+  font-size: clamp(2rem, 4.2vw, 3.9rem);
+}
+
+.mesa-refinamento-titulo p:last-child {
+  width: min(760px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mesa-refinamento-titulo p:last-child {
+  margin-bottom: 0;
+}
+
+.mesa-refinamento-layout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: clamp(1.5rem, 3vw, 2.4rem);
+  margin: 0 auto;
+}
+
+.mesa-refinamento-layout .pre-desafio-tabs {
+  grid-column: auto;
+  width: 100%;
+  display: flex;
+  justify-content: stretch;
+  gap: 0.55rem;
+}
+
+.mesa-refinamento-layout .pre-desafio-tab {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: rgba(7, 7, 6, 0.62);
+}
+
+.mesa-refinamento-imagem {
+  grid-row: auto;
+  width: min(860px, 100%);
+  min-height: 340px;
+  aspect-ratio: 16 / 7.5;
+}
+
+.mesa-refinamento-layout .pre-desafio-painel {
+  grid-column: auto;
+  width: 100%;
+  min-height: 0;
+  margin-top: 0;
+  border-radius: 12px;
+}
+
 /* ============================================================
    PORTA FINAL DO CAPÍTULO 2 — ANIMAÇÃO DE ABERTURA
 ============================================================ */
@@ -860,6 +1105,22 @@
     grid-template-columns: 1fr;
   }
 
+  .pre-desafio-experiencia,
+  .pre-desafio-experiencia-reversa {
+    grid-template-columns: 1fr;
+  }
+
+  .pre-desafio-imagem,
+  .pre-desafio-painel,
+  .pre-desafio-tabs,
+  .conselho-selos,
+  .pre-desafio-experiencia-reversa .pre-desafio-imagem,
+  .pre-desafio-experiencia-reversa .conselho-selos,
+  .pre-desafio-experiencia-reversa .pre-desafio-painel {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
   .porta2-selos {
     grid-template-columns: 1fr;
   }
@@ -912,20 +1173,71 @@
 
   .guardiao-bardo {
     left: -2%;
-    width: 34%;
+    z-index: 3;
+    width: 32%;
     height: 50%;
   }
 
   .guardiao-equipe {
-    left: 16%;
-    width: 68%;
+    left: 32%;
+    z-index: 2;
+    width: 36%;
     height: 58%;
   }
 
   .guardiao-corvo {
     right: -5%;
-    width: 38%;
+    z-index: 3;
+    width: 34%;
     height: 56%;
+  }
+
+  .pre-desafio-block {
+    padding: 1rem;
+  }
+
+  .pre-desafio-imagem {
+    min-height: 220px;
+  }
+
+  .pre-desafio-tabs,
+  .conselho-selos {
+    gap: 0.5rem;
+  }
+
+  .pre-desafio-tab,
+  .conselho-selo {
+    min-height: 48px;
+    font-size: 0.76rem;
+  }
+
+  .mesa-refinamento-titulo {
+    width: 100%;
+  }
+
+  .mesa-refinamento-layout {
+    width: 100%;
+    gap: 1.4rem;
+  }
+
+  .mesa-refinamento-layout .pre-desafio-tabs {
+    flex-wrap: wrap;
+  }
+
+  .mesa-refinamento-layout .pre-desafio-tab {
+    flex: 1 1 46%;
+    border-right-width: 1px;
+  }
+
+  .mesa-refinamento-imagem {
+    width: 100%;
+    min-height: 190px;
+    aspect-ratio: 16 / 9;
+  }
+
+  .pre-desafio-painel {
+    min-height: auto;
+    padding: 1rem;
   }
 }
 
@@ -943,7 +1255,7 @@
   padding-top: clamp(2rem, 5vw, 4rem);
   padding-bottom: clamp(2rem, 5vw, 4rem);
   background:
-    radial-gradient(circle at 50% 68%, rgba(102, 43, 154, 0.18), transparent 38%),
+    radial-gradient(circle at 50% 68%, rgba(212, 175, 55, 0.08), transparent 38%),
     radial-gradient(circle at 50% 24%, rgba(212, 175, 55, 0.09), transparent 34%),
     linear-gradient(180deg, rgba(10, 8, 12, 0.96), rgba(2, 2, 3, 0.86));
 }
@@ -974,7 +1286,7 @@
   border-radius: 50%;
   transform: translate(-50%, -50%);
   box-shadow:
-    0 0 42px rgba(128, 70, 190, 0.16),
+    0 0 42px rgba(212, 175, 55, 0.1),
     inset 0 0 54px rgba(212, 175, 55, 0.06);
 }
 
@@ -983,7 +1295,7 @@
   width: min(900px, 96vw);
   height: 14rem;
   transform: translateX(-50%);
-  background: radial-gradient(ellipse at center, rgba(96, 36, 146, 0.32), transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.12), transparent 70%);
   filter: blur(6px);
 }
 
@@ -1025,7 +1337,7 @@
     radial-gradient(circle at 50% 18%, rgba(212, 175, 55, 0.14), transparent 42%),
     linear-gradient(180deg, rgba(15, 12, 19, 0.92), rgba(5, 5, 7, 0.82));
   box-shadow:
-    inset 0 0 24px rgba(111, 55, 162, 0.12),
+    inset 0 0 24px rgba(212, 175, 55, 0.06),
     0 14px 28px rgba(0, 0, 0, 0.22);
 }
 
@@ -1043,7 +1355,7 @@
   background: rgba(12, 8, 18, 0.9);
   box-shadow:
     0 0 18px rgba(212, 175, 55, 0.18),
-    inset 0 0 16px rgba(116, 57, 172, 0.2);
+    inset 0 0 16px rgba(212, 175, 55, 0.1);
 }
 
 .porta2-selo strong {
@@ -1074,10 +1386,10 @@
   border: 1px solid rgba(212, 175, 55, 0.48);
   border-radius: 14px;
   background:
-    radial-gradient(circle at 50% 0%, rgba(128, 70, 190, 0.22), transparent 58%),
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.1), transparent 58%),
     linear-gradient(135deg, rgba(12, 10, 15, 0.92), rgba(5, 5, 6, 0.76));
   box-shadow:
-    inset 0 0 32px rgba(120, 65, 180, 0.12),
+    inset 0 0 32px rgba(212, 175, 55, 0.06),
     0 16px 38px rgba(0, 0, 0, 0.32);
   animation: guardioesJuramentoPulso 3.8s ease-in-out infinite;
 }
@@ -1115,7 +1427,7 @@
   z-index: 0;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 50% 50%, rgba(151, 61, 230, 0.22), transparent 48%),
+    radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.12), transparent 48%),
     radial-gradient(circle at 50% 70%, rgba(212, 175, 55, 0.18), transparent 54%);
   filter: blur(20px);
   opacity: 0.72;
@@ -1255,15 +1567,15 @@
   100% {
     border-color: rgba(212, 175, 55, 0.42);
     box-shadow:
-      inset 0 0 30px rgba(120, 65, 180, 0.1),
+      inset 0 0 30px rgba(212, 175, 55, 0.05),
       0 16px 38px rgba(0, 0, 0, 0.32);
   }
 
   50% {
     border-color: rgba(244, 211, 94, 0.7);
     box-shadow:
-      inset 0 0 42px rgba(120, 65, 180, 0.2),
-      0 0 30px rgba(128, 70, 190, 0.14),
+      inset 0 0 42px rgba(212, 175, 55, 0.1),
+      0 0 30px rgba(212, 175, 55, 0.1),
       0 16px 38px rgba(0, 0, 0, 0.34);
   }
 }
