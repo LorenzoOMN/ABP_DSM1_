@@ -231,6 +231,49 @@ function configurarMangaIntroCapitulo2() {
   window.addEventListener("resize", atualizarFrases);
 }
 
+function configurarMangaFinalCapitulo2() {
+  const secao = document.querySelector(".guardioes-final-scroll");
+  const palco = secao?.querySelector(".guardioes-final-stage");
+  const paineis = Array.from(document.querySelectorAll("[data-final-panel]"));
+  const imagens = document.querySelectorAll(".guardioes-final-image-wrap img");
+
+  if (!secao || !palco || paineis.length === 0) return;
+
+  imagens.forEach((imagem) => {
+    imagem.addEventListener("error", () => {
+      imagem.closest(".guardioes-final-image-wrap")?.classList.add("is-missing");
+    });
+  });
+
+  function atualizarPaineis() {
+    const rect = secao.getBoundingClientRect();
+    const viewportAltura = window.innerHeight;
+    const topoNaturalPalco = rect.top + palco.offsetTop;
+    const entradaPalco = viewportAltura - topoNaturalPalco;
+    const alturaRolavel = secao.offsetHeight - window.innerHeight;
+    const progresso = Math.min(1, Math.max(0, -rect.top / Math.max(alturaRolavel, 1)));
+    const indiceAtual = Math.min(paineis.length - 1, Math.floor(progresso * paineis.length));
+    const escurecerEntrada = Math.min(1, Math.max(0, entradaPalco / (viewportAltura * 0.42)));
+    const revelarCena = Math.min(1, Math.max(0, (entradaPalco - viewportAltura * 0.72) / (viewportAltura * 0.24)));
+    const opacidadeCortina = revelarCena > 0 ? 1 - revelarCena : escurecerEntrada;
+    const opacidadeCena = revelarCena;
+
+    paineis.forEach((painel, index) => {
+      painel.classList.toggle("is-active", index === indiceAtual);
+      painel.classList.toggle("is-past", index < indiceAtual);
+    });
+
+    secao.dataset.finalIndex = String(indiceAtual);
+    secao.style.setProperty("--guardioes-final-curtain", String(opacidadeCortina));
+    secao.style.setProperty("--guardioes-final-stage-opacity", String(opacidadeCena));
+    secao.classList.toggle("is-at-portal", indiceAtual === paineis.length - 1);
+  }
+
+  atualizarPaineis();
+  window.addEventListener("scroll", atualizarPaineis, { passive: true });
+  window.addEventListener("resize", atualizarPaineis);
+}
+
 function configurarRevealCapitulo2() {
   const elementos = document.querySelectorAll(".reveal");
 
@@ -365,7 +408,7 @@ async function concluirHistoriaCapitulo2() {
     localStorage.setItem("moduloAtual", String(ID_MODULO));
 
     if (status) {
-      status.textContent = "Os tres selos responderam. A Segunda Porta esta aberta.";
+      status.textContent = "Os tres guardioes responderam. O portal esta aberto.";
     }
 
     if (btnConcluir) {
@@ -448,6 +491,7 @@ function configurarDesbloqueioNavbarCapitulo2() {
 
 document.addEventListener("DOMContentLoaded", () => {
   configurarMangaIntroCapitulo2();
+  configurarMangaFinalCapitulo2();
   configurarScrollCapitulo2();
   configurarRevealCapitulo2();
   configurarProgressoCapitulo2();

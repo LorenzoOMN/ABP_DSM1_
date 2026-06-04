@@ -187,7 +187,7 @@
         <h2>A Lição dos Artefatos</h2>
 
         <p>
-          Três círculos de luz surgem no chão. Cada artefato existe para tornar visível
+          Cada artefato existe para tornar visível
           uma parte importante do trabalho.
         </p>
       </div>
@@ -332,67 +332,94 @@
         </article>
       </div>
     </section>
-    <section class="story-block reveal final-block porta2-block" id="porta2" data-step="porta2">
-      <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/desafio-icone.png" alt="">
-      </div>
+    <section class="guardioes-final-scroll final-block" id="porta2" data-step="porta2" data-final-index="0" aria-label="O chamado final dos Guardioes">
+      <div class="guardioes-final-curtain" aria-hidden="true"></div>
 
-      <div class="story-text porta2-ritual-text">
-        <p class="porta2-kicker">A Segunda Porta desperta</p>
-        <h2>O Teste dos Guardioes</h2>
+      <div class="guardioes-final-stage">
+        <div class="guardioes-final-bg" aria-hidden="true"></div>
 
-        <p>
-          A sala escurece. Na madeira antiga, tres selos brilham como se reconhecessem
-          tudo o que voce aprendeu diante dos guardioes.
-        </p>
+        <article class="guardioes-final-slice guardioes-final-bardo is-active" data-final-panel="0">
+          <div class="guardioes-final-image-wrap">
+            <img
+              src="/assets/img/capitulo_2/banners/bardo-banner.png"
+              alt="Bardo encarando o heroi com expressao seria"
+            />
+          </div>
 
-        <div class="porta2-selos" aria-label="Selos necessarios para atravessar a Segunda Porta">
-          <article class="porta2-selo">
-            <span class="porta2-selo-runa">I</span>
-            <strong>Valor</strong>
-            <p>Priorizar o que mais importa.</p>
-          </article>
+          <div class="guardioes-final-dialogo">
+            <p class="porta2-kicker">O Bardo interrompe o silencio</p>
+            <h2>Valor antes de movimento.</h2>
+            <blockquote>
+              "Uma Sprint sem prioridade e apenas ruido vestido de plano."
+            </blockquote>
+          </div>
+        </article>
 
-          <article class="porta2-selo">
-            <span class="porta2-selo-runa">II</span>
-            <strong>Fluxo</strong>
-            <p>Remover bloqueios e manter o time em movimento.</p>
-          </article>
+        <article class="guardioes-final-slice guardioes-final-equipe" data-final-panel="1">
+          <div class="guardioes-final-image-wrap">
+            <img
+              src="/assets/img/capitulo_2/banners/equipe-banner.jpeg"
+              alt="Equipe de aventureiros encarando o heroi com expressao seria"
+            />
+          </div>
 
-          <article class="porta2-selo">
-            <span class="porta2-selo-runa">III</span>
-            <strong>Entrega</strong>
-            <p>Transformar trabalho pronto em incremento real.</p>
-          </article>
+          <div class="guardioes-final-dialogo">
+            <p class="porta2-kicker">A Equipe avanca um passo</p>
+            <h2>Entrega e compromisso.</h2>
+            <blockquote>
+              "Ideia sem incremento nao atravessa masmorra nenhuma."
+            </blockquote>
+          </div>
+        </article>
+
+        <article class="guardioes-final-slice guardioes-final-corvo" data-final-panel="2">
+          <div class="guardioes-final-image-wrap">
+            <img
+              src="/assets/img/capitulo_2/banners/corvo-banner.png"
+              alt="Corvo encarando o heroi com expressao seria"
+            />
+          </div>
+
+          <div class="guardioes-final-dialogo">
+            <p class="porta2-kicker">O Corvo sela o conselho</p>
+            <h2>Fluxo exige verdade.</h2>
+            <blockquote>
+              "O bloqueio ignorado sempre volta maior."
+            </blockquote>
+          </div>
+        </article>
+
+        <article class="guardioes-final-portal" data-final-panel="3">
+          <div class="guardioes-final-portal-core" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="guardioes-final-dialogo guardioes-final-dialogo-portal">
+            <p class="porta2-kicker">O portal desperta</p>
+            <h2>O Teste dos Guardioes</h2>
+            <blockquote>
+              "Muitos aprendem os nomes. Poucos compreendem o fluxo."
+            </blockquote>
+          </div>
+
+          <button class="guardioes-final-portal-button porta2-interativa" id="porta2Scene" type="button" aria-label="Portal para o desafio dos Guardioes">
+            <span class="porta2-tooltip">Conclua a historia para atravessar.</span>
+          </button>
+        </article>
+
+        <div class="porta2-actions">
+          <button class="btn-primary" id="btnConcluirHistoriaCapitulo2" type="button">
+            Invocar o portal
+          </button>
+
+          <button class="btn-secondary hidden" id="btnIrDesafioCapitulo2" type="button">
+            Atravessar para o desafio
+          </button>
+
+          <p class="status-historia" id="statusHistoriaCapitulo2"></p>
         </div>
-
-        <blockquote class="guardioes-juramento" aria-label="Juramento dos Guardioes do Fluxo">
-          <span>"Nos somos a voz do fluxo.</span>
-          <span>Muitos aprendem os nomes. Poucos compreendem o fluxo. Chegou a hora de provar a diferenca."</span>
-        </blockquote>
-      </div>
-
-      <div class="story-art porta2-art">
-        <button class="porta2-interativa" id="porta2Scene" type="button" aria-label="Teste dos Guardioes do Fluxo">
-          <span class="porta2-aura"></span>
-          <span class="porta2-cena"></span>
-          <span class="porta2-door porta2-door-left"></span>
-          <span class="porta2-door porta2-door-right"></span>
-          <span class="porta2-brilho"></span>
-          <span class="porta2-tooltip">Os guardioes aguardam sua resposta...</span>
-        </button>
-      </div>
-
-      <div class="porta2-actions">
-        <button class="btn-primary" id="btnConcluirHistoriaCapitulo2" type="button">
-          Abrir a Segunda Porta
-        </button>
-
-        <button class="btn-secondary hidden" id="btnIrDesafioCapitulo2" type="button">
-          Atravessar para o desafio
-        </button>
-
-        <p class="status-historia" id="statusHistoriaCapitulo2"></p>
       </div>
     </section>
 
