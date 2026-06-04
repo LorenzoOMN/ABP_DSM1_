@@ -622,6 +622,21 @@ document.addEventListener("click", (event) => {
   tocarSomClick();
 });
 
+function tocarEfeito(caminho, volume = 0.25) {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const audio = new Audio(caminho);
+
+  audio.volume = volume;
+
+  audio.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 glossario();
 
 // Torna funções disponíveis globalmente para outras páginas

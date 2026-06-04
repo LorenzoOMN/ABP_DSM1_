@@ -28,6 +28,7 @@ const bossesData = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  tocarEfeito("/assets/audio/porta.mp3", 0.25);
   let moduloId = "1"; // Valor padrão de segurança
 
   // PRIORIDADE 1: Lê o parâmetro da URL (Ex: /desafio?modulo=2)
