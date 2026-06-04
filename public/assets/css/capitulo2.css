@@ -664,6 +664,28 @@
   text-transform: uppercase;
 }
 
+.artefato-card-link {
+  display: inline-grid;
+  justify-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.artefato-card-link h3 {
+  color: #5f8cff;
+}
+
+.artefato-card-link:hover h3,
+.artefato-card-link:focus-visible h3 {
+  color: #8fb0ff;
+  text-decoration: underline;
+}
+
+.artefato-card-link:focus-visible {
+  outline: 1px solid #8fb0ff;
+  outline-offset: 6px;
+}
+
 .papel-card p,
 .artefato-card p {
   margin: 0;
@@ -755,11 +777,18 @@
 
 .pre-desafio-experiencia-reversa .pre-desafio-imagem {
   grid-column: 2;
+  grid-row: 1;
 }
 
-.pre-desafio-experiencia-reversa .conselho-selos,
-.pre-desafio-experiencia-reversa .pre-desafio-painel {
+.pre-desafio-experiencia-reversa .conselho-selos {
   grid-column: 1;
+  grid-row: 1;
+}
+
+.pre-desafio-experiencia-reversa .pre-desafio-painel {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 100%;
 }
 
 .pre-desafio-tab,
