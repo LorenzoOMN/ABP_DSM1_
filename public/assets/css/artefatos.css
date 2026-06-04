@@ -43,13 +43,13 @@ body::before {
     linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.28));
 }
 
-p,
-span,
-a,
-button,
-input,
-textarea,
-li {
+.artefatos-container p,
+.artefatos-container span,
+.artefatos-container a,
+.artefatos-container button,
+.artefatos-container input,
+.artefatos-container textarea,
+.artefatos-container li {
   font-family: "Source Serif 4", serif;
   font-size: 16px;
   font-weight: 400;
@@ -57,15 +57,14 @@ li {
   letter-spacing: 0;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+.artefatos-container h1,
+.artefatos-container h2,
+.artefatos-container h3,
+.artefatos-container h4,
+.artefatos-container h5,
+.artefatos-container h6,
 .section-title,
-.artefato-title,
-.nav-item span {
+.artefato-title {
   font-family: "Cinzel", serif;
   font-weight: 700;
   line-height: 1.12;
