@@ -26,6 +26,7 @@ const ENCONTROS_CAPITULO_5 = {
 let etapaAtualCapitulo5 = "duplo";
 
 const STORAGE_CAPITULO5 = "scrum_dungeon_capitulo5_estado";
+const STORAGE_CAPITULO5_ENTRADA = "scrum_dungeon_capitulo5_entrada";
 
 const estadoForja = {
   slots: {
@@ -77,7 +78,32 @@ function restaurarEstadoCapitulo5Local() {
 
 function resetarJornadaCapitulo5() {
   localStorage.removeItem(STORAGE_CAPITULO5);
+  localStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
   window.location.reload();
+}
+
+function salvarEntradaCapitulo5() {
+  localStorage.setItem(STORAGE_CAPITULO5_ENTRADA, "true");
+}
+
+function restaurarEntradaCapitulo5() {
+  const capitulo5Page = document.getElementById("capitulo5Page");
+  const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
+
+  const entrou = localStorage.getItem(STORAGE_CAPITULO5_ENTRADA) === "true";
+
+  if (!entrou) return;
+
+  if (capitulo5Page) {
+    capitulo5Page.classList.remove("capitulo5-page--locked");
+    capitulo5Page.classList.add("capitulo5-page--entered");
+  }
+
+  if (btnEntrarNaPonte) {
+    btnEntrarNaPonte.disabled = true;
+    btnEntrarNaPonte.classList.add("concluida");
+    btnEntrarNaPonte.classList.add("ativando");
+  }
 }
 
 const stakeholderTurnos = [
@@ -336,31 +362,6 @@ function concluirEtapaCapitulo5(step) {
   }
 
   atualizarProgressoCapitulo();
-
-  function concluirEtapaCapitulo5(step) {
-    etapasConcluidas.add(step);
-
-    const stage = document.querySelector(
-      `.encounter-stage[data-step="${step}"]`,
-    );
-    if (stage) {
-      stage.classList.add("etapa-concluida");
-    }
-
-    const indiceAtual = obterIndiceEtapa(step);
-    const proximaEtapa =
-      indiceAtual < ETAPAS_CAPITULO_5.length - 1
-        ? ETAPAS_CAPITULO_5[indiceAtual + 1]
-        : "porta-final";
-
-    if (proximaEtapa && etapaEstaLiberada(proximaEtapa)) {
-      etapaAtualCapitulo5 = proximaEtapa;
-    }
-
-    atualizarProgressoCapitulo();
-    salvarEstadoCapitulo5Local();
-  }
-
   salvarEstadoCapitulo5Local();
 }
 
@@ -378,6 +379,7 @@ function animarAvancoNoMapa(proximaEtapa, abrirStageDepois = true) {
     etapaAtualCapitulo5 = proximaEtapa;
     atualizarNavegacaoCapitulo5();
     atualizarMapaPonte();
+    atualizarPreviewsPonte();
     atualizarMochila();
   }, 700);
 
@@ -424,6 +426,11 @@ function configurarDesafioDuplo() {
       duploMedalhaoStage.classList.add("energizado");
 
       document.body.classList.add("mochila-highlight-medalhao");
+      
+      const mochilaCallout = document.getElementById("mochilaCallout");
+      if (mochilaCallout) {
+        mochilaCallout.classList.remove("hidden");
+      }
 
       const medalhao = document.querySelector('[data-artefato="medalhao"]');
       if (medalhao) {
@@ -1261,6 +1268,7 @@ function configurarForjaMvp() {
     concluirEtapaCapitulo5("forja-mvp");
     atualizarMochila();
     atualizarMapaPonte();
+    atualizarPreviewsPonte();
 
     forjaRevelacaoStage.classList.remove("hidden");
 
@@ -1397,6 +1405,7 @@ function selecionarEtapaCapitulo5(step, abrirStage = false) {
   atualizarNavegacaoCapitulo5();
   atualizarMochila();
   atualizarMapaPonte();
+  atualizarPreviewsPonte();
 
   if (abrirStage) {
     abrirStageCapitulo5(step);
@@ -1429,6 +1438,7 @@ function configurarNavegacaoCapitulo5() {
         capitulo5Page.classList.remove("capitulo5-page--locked");
         capitulo5Page.classList.add("capitulo5-page--entered");
       }
+      salvarEntradaCapitulo5();
 
       btnEntrarNaPonte.disabled = true;
       btnEntrarNaPonte.classList.add("concluida");
@@ -1448,6 +1458,7 @@ function configurarNavegacaoCapitulo5() {
 function configurarMochila() {
   const btnMochila = document.getElementById("btnMochila");
   const mochilaPainel = document.getElementById("mochilaPainel");
+  const mochilaCallout = document.getElementById("mochilaCallout");
 
   if (!btnMochila || !mochilaPainel) return;
 
@@ -1456,6 +1467,10 @@ function configurarMochila() {
 
     mochilaPainel.classList.toggle("hidden", aberta);
     btnMochila.setAttribute("aria-expanded", String(!aberta));
+
+    if (mochilaCallout && !aberta) {
+      mochilaCallout.classList.add("hidden");
+    }
   });
 }
 
@@ -1796,6 +1811,44 @@ function atualizarMapaPonte() {
   atualizarPosicaoJogador();
 }
 
+function configurarCliquePreviewsPonte() {
+  const previews = document.querySelectorAll(".bridge-view");
+  if (!previews.length) return;
+
+  previews.forEach((preview) => {
+    preview.addEventListener("click", () => {
+      const step = preview.dataset.step;
+
+      if (!step) return;
+      if (preview.disabled) return;
+      if (preview.classList.contains("is-locked")) return;
+      if (!etapaEstaLiberada(step)) return;
+
+      selecionarEtapaCapitulo5(step, true);
+    });
+  });
+}
+
+function atualizarPreviewsPonte() {
+  const previews = document.querySelectorAll(".bridge-view");
+  if (!previews.length) return;
+
+  previews.forEach((preview) => {
+    const step = preview.dataset.step;
+    if (!step) return;
+
+    const liberado = etapaEstaLiberada(step);
+    const ativo = etapaAtualCapitulo5 === step;
+
+    preview.classList.toggle("is-unlocked", liberado);
+    preview.classList.toggle("is-locked", !liberado);
+    preview.classList.toggle("active", ativo);
+
+    preview.disabled = !liberado;
+    preview.setAttribute("aria-disabled", String(!liberado));
+  });
+}
+
 function configurarCliqueArtefatosMochila() {
   document.querySelectorAll(".mochila-item").forEach((item) => {
     item.addEventListener("click", () => {
@@ -1977,6 +2030,7 @@ function renderizarRoleDuplo(
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
   restaurarEstadoCapitulo5Local();
+  restaurarEntradaCapitulo5();
 
   window.scrollTo({
     top: 0,
@@ -2006,6 +2060,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   atualizarProgressoCapitulo();
   atualizarMapaPonte();
+  configurarCliquePreviewsPonte();
+  atualizarPreviewsPonte();
 
   document.querySelectorAll(".encounter-stage").forEach((stage) => {
     stage.classList.add("hidden");
