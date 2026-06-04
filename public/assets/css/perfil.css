@@ -229,11 +229,11 @@ body {
 
     position: absolute;
 
-    bottom: 13%;
-    left: 12%;
+    bottom: 18.3%;
+    left: 15%;
 
-    width: clamp(15px, 15vw, 250px);
-    height: clamp(15px, 15vw, 250px);
+    width: clamp(15px, 8vw, 250px);
+    height: clamp(15px, 8vw, 250px);
 
     padding: 0;
 
