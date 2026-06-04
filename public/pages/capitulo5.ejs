@@ -56,6 +56,11 @@
             alt="Mochila"
           />
         </button>
+
+<div class="mochila-callout hidden" id="mochilaCallout">
+  <p>Algo reage na mochila. Abra para continuar.</p>
+</div>
+
         <div class="mochila-painel hidden" id="mochilaPainel">
           <p class="mochila-titulo">Artefatos da Jornada</p>
 
@@ -161,6 +166,7 @@
               <button
                 class="ponte-node ponte-node--1 active"
                 data-step="duplo"
+                data-bridge-view="1"
                 type="button"
                 aria-label="Duplo"
               >
@@ -174,6 +180,7 @@
 
               <button
                 class="ponte-node ponte-node--2 locked"
+                 data-bridge-view="2"
                 data-step="stakeholder"
                 type="button"
                 aria-label="Stakeholder Selvagem"
@@ -188,6 +195,7 @@
 
               <button
                 class="ponte-node ponte-node--3 locked"
+                data-bridge-view="3"
                 data-step="necrobranch"
                 type="button"
                 aria-label="Necrobranch Commitada"
@@ -204,6 +212,7 @@
 
               <button
                 class="ponte-node ponte-node--4 locked"
+                 data-bridge-view="4"
                 data-step="bug-infernal"
                 type="button"
                 aria-label="Bug Infernal"
@@ -218,6 +227,7 @@
 
               <button
                 class="ponte-node ponte-node--5 locked"
+                data-bridge-view="5"
                 data-step="forja-mvp"
                 type="button"
                 aria-label="Forja do MVP"
@@ -247,46 +257,77 @@
               </button>
             </div>
 
-            <div class="ponte-progressao-views">
-              <div class="bridge-view active" data-bridge-view="1">
-                <img
-                  src="/assets/img/capitulo_5/ponte-1.png"
-                  alt="Cena 1 da travessia na ponte"
-                  class="bridge-view-img"
-                />
-              </div>
+        <div class="ponte-progressao-views">
+ <button
+  type="button"
+  class="bridge-view active is-unlocked"
+  data-bridge-view="1"
+  data-step="duplo"
+>
+    <img
+      src="/assets/img/capitulo_5/ponte-1.png"
+      alt="Cena 1 da travessia na ponte"
+      class="bridge-view-img"
+    />
+    <span class="bridge-view-lock">?</span>
+  </button>
 
-              <div class="bridge-view" data-bridge-view="2">
-                <img
-                  src="/assets/img/capitulo_5/ponte-2.png"
-                  alt="Cena 2 da travessia na ponte"
-                  class="bridge-view-img"
-                />
-              </div>
+<button
+  type="button"
+  class="bridge-view is-locked"
+  data-bridge-view="2"
+  data-step="stakeholder"
+>
+    <img
+      src="/assets/img/capitulo_5/ponte-2.png"
+      alt="Cena 2 da travessia na ponte"
+      class="bridge-view-img"
+    />
+    <span class="bridge-view-lock">?</span>
+  </button>
 
-              <div class="bridge-view" data-bridge-view="3">
-                <img
-                  src="/assets/img/capitulo_5/ponte-3.png"
-                  alt="Cena 3 da travessia na ponte"
-                  class="bridge-view-img"
-                />
-              </div>
+ <button
+  type="button"
+  class="bridge-view is-locked"
+  data-bridge-view="3"
+  data-step="necrobranch"
+>
+    <img
+      src="/assets/img/capitulo_5/ponte-3.png"
+      alt="Cena 3 da travessia na ponte"
+      class="bridge-view-img"
+    />
+    <span class="bridge-view-lock">?</span>
+  </button>
 
-              <div class="bridge-view" data-bridge-view="4">
-                <img
-                  src="/assets/img/capitulo_5/ponte-4.png"
-                  alt="Cena 4 da travessia na ponte"
-                  class="bridge-view-img"
-                />
-              </div>
+ <button
+  type="button"
+  class="bridge-view is-locked"
+  data-bridge-view="4"
+  data-step="bug-infernal"
+>
+    <img
+      src="/assets/img/capitulo_5/ponte-4.png"
+      alt="Cena 4 da travessia na ponte"
+      class="bridge-view-img"
+    />
+    <span class="bridge-view-lock">?</span>
+  </button>
 
-              <div class="bridge-view" data-bridge-view="5">
-                <img
-                  src="/assets/img/capitulo_5/ponte-5.png"
-                  alt="Cena 5 da travessia na ponte"
-                  class="bridge-view-img"
-                />
-              </div>
+ <button
+  type="button"
+  class="bridge-view is-locked"
+  data-bridge-view="5"
+  data-step="forja-mvp"
+>
+    <img
+      src="/assets/img/capitulo_5/ponte-5.png"
+      alt="Cena 5 da travessia na ponte"
+      class="bridge-view-img"
+    />
+    <span class="bridge-view-lock">?</span>
+  </button>
+</div>
             </div>
           </section>
         </section>
@@ -497,7 +538,7 @@
             <div class="stakeholder-intro-card" id="stakeholderIntroCard">
               <div class="stakeholder-intro-scene">
                 <img
-                  src="/assets/img/capitulo_5/carta_stakeholder-selvagem.png"
+                  src="/assets/img/capitulo_5/stakeholder-entrada.png"
                   alt="O encontro com o Stakeholder Selvagem"
                   class="stakeholder-intro-image"
                 />
@@ -603,7 +644,7 @@
 
               <div class="stakeholder-drop-scene">
                 <img
-                  src="/assets/img/capitulo_5/carta_stakeholder-selvagem.png"
+                  src="/assets/img/capitulo_5/stakeholder-meio.png"
                   alt="Stakeholder aguardando o backlog"
                   class="stakeholder-drop-bg"
                 />
@@ -630,7 +671,7 @@
               <div class="stakeholder-reveal-cinematic">
                 <div class="stakeholder-reveal-media">
                   <img
-                    src="/assets/img/capitulo_5/stake-holder-icon.png"
+                    src="/assets/img/capitulo_5/stakeholder-desfecho.png"
                     alt="Stakeholder amigável"
                     class="stakeholder-reveal-image"
                   />
@@ -673,7 +714,7 @@
             <div class="necro-intro-card" id="necroIntroCard">
               <div class="necro-intro-scene">
                 <img
-                  src="/assets/img/capitulo_5/carta-necrobranch-commitada.png"
+                  src="/assets/img/capitulo_5/necrobranch-intro.png"
                   alt="O surgimento da Necrobranch Commitada"
                   class="necro-intro-image"
                 />
@@ -795,7 +836,7 @@
 
               <div class="necro-ritual-scene">
                 <img
-                  src="/assets/img/capitulo_5/carta-necrobranch-commitada.png"
+                  src="/assets/img/capitulo_5/necrobranch-meio.png"
                   alt="A Dev Lendária se prepara para restaurar a ponte"
                   class="necro-ritual-bg"
                 />
@@ -840,7 +881,7 @@
               <div class="necro-reveal-cinematic">
                 <div class="necro-reveal-media">
                   <img
-                    src="/assets/img/capitulo_5/carta-necrobranch-commitada.png"
+                    src="/assets/img/capitulo_5/necrobranch-fim.png"
                     alt="O sacrifício da Dev Lendária"
                     class="necro-reveal-image"
                   />
@@ -850,11 +891,9 @@
                   <span class="necro-reveal-tag">Sacrifício na ponte</span>
                   <h3 class="necro-reveal-title">“Voem, seus devs!”</h3>
                   <p class="necro-reveal-text">
-                    A Dev Lendária percebe que tudo não passava da terrível
-                    magia necromante de uma branch antiga. A destemida paladina
+                    A destemida paladina
                     então utiliza sua espada mágica para iluminar o caminho dos
-                    códigos, banindo a criatura para o abismo. Em seguida, gira
-                    a Ampulheta da Sprint e começa a restaurar a ponte. Mas,
+                    códigos, banindo a criatura para o abismo. Mas,
                     antes de selar o caminho por completo, um galho da branch
                     necromante prende sua perna e a puxa para a escuridão. Você
                     tenta alcançá-la. Seus olhos se cruzam. Então ela diz:
@@ -884,7 +923,7 @@
             <div class="bug-intro-card" id="bugIntroCard">
               <div class="bug-intro-scene">
                 <img
-                  src="/assets/img/capitulo_5/carta-bug-infernal.png"
+                  src="/assets/img/capitulo_5/bug-intro.png"
                   alt="O encontro com o Bug Infernal"
                   class="bug-intro-image"
                 />
