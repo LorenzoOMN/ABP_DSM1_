@@ -534,8 +534,16 @@
   border: 1px solid rgba(214, 173, 53, 0.34);
   background:
     linear-gradient(180deg, rgba(16, 20, 24, 0.94), rgba(10, 9, 8, 0.98)),
-    radial-gradient(circle at 24% 16%, rgba(214, 173, 53, 0.09), transparent 42%),
-    radial-gradient(circle at 92% 6%, rgba(126, 176, 255, 0.05), transparent 32%);
+    radial-gradient(
+      circle at 24% 16%,
+      rgba(214, 173, 53, 0.09),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 92% 6%,
+      rgba(126, 176, 255, 0.05),
+      transparent 32%
+    );
   box-shadow:
     0 18px 44px rgba(0, 0, 0, 0.34),
     inset 0 1px 0 rgba(255, 244, 220, 0.06);
@@ -570,12 +578,11 @@
 .ponte-visual--mapa {
   position: relative;
   min-height: 220px;
-   padding: 0.45rem 0.8rem 0;
+  padding: 0.45rem 0.8rem 0;
   display: block;
   border: 1;
   border-radius: 22px;
   overflow: visible;
-  
 }
 
 .ponte-visual--mapa::after {
@@ -925,6 +932,78 @@
   font-size: 0.95rem;
 }
 
+/* =========================================================
+   MAPA — RESET DA JORNADA COM AMPULHETA
+========================================================= */
+
+.ponte-reset-tempo {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 12;
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(214, 177, 92, 0.42);
+  background:
+    radial-gradient(circle, rgba(255, 220, 140, 0.14), transparent 62%),
+    linear-gradient(180deg, rgba(24, 19, 14, 0.96), rgba(8, 7, 7, 0.98));
+  cursor: pointer;
+  box-shadow:
+    0 0 18px rgba(214, 177, 92, 0.16),
+    0 14px 28px rgba(0, 0, 0, 0.38);
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.ponte-reset-tempo img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 10px rgba(255, 220, 140, 0.24))
+    drop-shadow(0 8px 12px rgba(0, 0, 0, 0.38));
+}
+
+.ponte-reset-tempo span {
+  position: absolute;
+  right: calc(100% + 0.6rem);
+  top: 50%;
+  width: max-content;
+  max-width: 220px;
+  padding: 0.45rem 0.7rem;
+  transform: translateY(-50%) translateX(8px);
+  border-radius: 10px;
+  border: 1px solid rgba(214, 177, 92, 0.24);
+  background: rgba(10, 10, 14, 0.96);
+  color: #f3e7cf;
+  font-size: 0.78rem;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.ponte-reset-tempo:hover {
+  transform: translateY(-2px) scale(1.04);
+  filter: brightness(1.1);
+  box-shadow:
+    0 0 24px rgba(214, 177, 92, 0.24),
+    0 18px 34px rgba(0, 0, 0, 0.44);
+}
+
+.ponte-reset-tempo:hover span {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+
 /* 6. ENCONTRO ATUAL */
 
 .encontro-atual-card h3 {
@@ -1200,7 +1279,6 @@
   margin-top: 1rem;
   color: #f0d8ff;
 }
-
 
 .btn-stakeholder-iniciar {
   align-self: center;
@@ -1519,35 +1597,20 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
 
 /* 9. PADRÃO VISUAL DOS DESAFIOS */
 
-:is(
-  .duplo-desafio,
-  .stakeholder-desafio,
-  .necrobranch-desafio,
-  .bug-desafio
- ) {
+:is(.duplo-desafio, .stakeholder-desafio, .necrobranch-desafio, .bug-desafio) {
   display: grid;
   gap: 1rem;
   margin-top: 1.5rem;
 }
 
-:is(
-  .duplo-cenario,
-  .stakeholder-cenario,
-  .necrobranch-cenario,
-  .bug-cenario
-) {
+:is(.duplo-cenario, .stakeholder-cenario, .necrobranch-cenario, .bug-cenario) {
   padding: 1rem;
   background: rgba(18, 14, 10, 0.92);
   border: 1px solid rgba(218, 169, 58, 0.28);
   border-radius: 16px;
 }
 
-:is(
-    .duplo-cenario,
-    .stakeholder-cenario,
-    .necrobranch-cenario,
-    .bug-cenario
-  )
+:is(.duplo-cenario, .stakeholder-cenario, .necrobranch-cenario, .bug-cenario)
   h3 {
   margin: 0.25rem 0 0.5rem;
 }
@@ -1565,23 +1628,13 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   letter-spacing: 0.12em;
 }
 
-:is(
-  .duplo-opcoes,
-  .stakeholder-opcoes,
-  .necrobranch-opcoes,
-  .bug-opcoes
-) {
+:is(.duplo-opcoes, .stakeholder-opcoes, .necrobranch-opcoes, .bug-opcoes) {
   display: grid;
   gap: 0.65rem;
   margin-top: 1rem;
 }
 
-:is(
-  .duplo-opcao,
-  .stakeholder-opcao,
-  .necrobranch-opcao,
-  .bug-opcao
-) {
+:is(.duplo-opcao, .stakeholder-opcao, .necrobranch-opcao, .bug-opcao) {
   width: 100%;
   padding: 0.85rem 1rem;
   background: rgba(255, 255, 255, 0.04);
@@ -1596,43 +1649,23 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
     background 0.2s ease;
 }
 
-:is(
-  .duplo-opcao,
-  .stakeholder-opcao,
-  .necrobranch-opcao,
-  .bug-opcao
-):hover {
+:is(.duplo-opcao, .stakeholder-opcao, .necrobranch-opcao, .bug-opcao):hover {
   transform: translateY(-1px);
   border-color: rgba(218, 169, 58, 0.6);
   background: rgba(218, 169, 58, 0.1);
 }
 
-:is(
-  .duplo-opcao,
-  .stakeholder-opcao,
-  .necrobranch-opcao,
-  .bug-opcao
-).ativo {
+:is(.duplo-opcao, .stakeholder-opcao, .necrobranch-opcao, .bug-opcao).ativo {
   border-color: rgba(218, 169, 58, 0.95);
   background: rgba(218, 169, 58, 0.18);
 }
 
-:is(
-  .duplo-opcao,
-  .stakeholder-opcao,
-  .necrobranch-opcao,
-  .bug-opcao
-).correta {
+:is(.duplo-opcao, .stakeholder-opcao, .necrobranch-opcao, .bug-opcao).correta {
   border-color: rgba(120, 255, 142, 0.75);
   background: rgba(120, 255, 142, 0.12);
 }
 
-:is(
-  .duplo-opcao,
-  .stakeholder-opcao,
-  .necrobranch-opcao,
-  .bug-opcao
-):disabled {
+:is(.duplo-opcao, .stakeholder-opcao, .necrobranch-opcao, .bug-opcao):disabled {
   cursor: not-allowed;
 }
 
@@ -1736,8 +1769,6 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   margin-top: 1rem;
   color: #f0d8ff;
 }
-
-
 
 .btn-duplo-iniciar {
   align-self: center;
@@ -2367,8 +2398,6 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   color: #e3d6ff;
 }
 
-
-
 .btn-necro-iniciar,
 .btn-ritual-necro {
   align-self: center;
@@ -2533,7 +2562,7 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   object-fit: cover;
   display: block;
   filter: brightness(0.72) saturate(1.02);
-  border-radius:22px;
+  border-radius: 22px;
 }
 
 .necro-ritual-scene {
@@ -2625,8 +2654,7 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   width: 164px;
   height: 164px;
   object-fit: contain;
-  filter:
-    drop-shadow(0 0 18px rgba(255, 220, 120, 0.30))
+  filter: drop-shadow(0 0 18px rgba(255, 220, 120, 0.3))
     drop-shadow(0 0 34px rgba(173, 122, 255, 0.18));
 }
 
@@ -2677,8 +2705,6 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
     min-height: 380px;
   }
 }
-
-
 
 /* =========================================================
    BUG INFERNAL
@@ -2753,7 +2779,6 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   color: #ffd9d9;
 }
 
-
 .btn-bug-iniciar {
   align-self: center;
   margin-bottom: 0.5rem;
@@ -2811,8 +2836,11 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   transform: translateX(-50%);
   border-radius: 999px;
   border: 1px solid rgba(214, 177, 92, 0.34);
-  background:
-    linear-gradient(180deg, rgba(42, 28, 16, 0.96), rgba(14, 10, 8, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(42, 28, 16, 0.96),
+    rgba(14, 10, 8, 0.98)
+  );
   color: #ffe2a1;
   font-family: "Cinzel", serif;
   font-size: clamp(0.9rem, 1.3vw, 1.02rem);
@@ -2907,8 +2935,7 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
     transform 0.45s ease,
     opacity 0.45s ease,
     filter 0.45s ease;
-  filter:
-    drop-shadow(0 22px 34px rgba(0, 0, 0, 0.46))
+  filter: drop-shadow(0 22px 34px rgba(0, 0, 0, 0.46))
     drop-shadow(0 0 28px rgba(255, 76, 76, 0.18));
 }
 
@@ -2921,13 +2948,12 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   height: 58px;
   border-radius: 999px;
   border: 1px solid rgba(255, 222, 140, 0.76);
-  background:
-    radial-gradient(
-      circle,
-      rgba(255, 226, 145, 0.38),
-      rgba(255, 120, 80, 0.1) 58%,
-      transparent 72%
-    );
+  background: radial-gradient(
+    circle,
+    rgba(255, 226, 145, 0.38),
+    rgba(255, 120, 80, 0.1) 58%,
+    transparent 72%
+  );
   cursor: pointer;
   transform: translate(-50%, -50%);
   box-shadow:
@@ -3020,8 +3046,7 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
 .bug-creature-wrap.estado-final .bug-creature-image {
   opacity: 0.22;
   transform: scale(0.42);
-  filter:
-    drop-shadow(0 0 18px rgba(255, 120, 120, 0.24))
+  filter: drop-shadow(0 0 18px rgba(255, 120, 120, 0.24))
     drop-shadow(0 0 34px rgba(255, 160, 80, 0.16));
 }
 
@@ -3036,7 +3061,11 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   border: 1px solid rgba(214, 177, 92, 0.34);
   background:
     linear-gradient(180deg, rgba(20, 17, 16, 0.96), rgba(10, 9, 10, 0.98)),
-    radial-gradient(circle at top left, rgba(255, 210, 120, 0.12), transparent 58%);
+    radial-gradient(
+      circle at top left,
+      rgba(255, 210, 120, 0.12),
+      transparent 58%
+    );
   box-shadow:
     0 18px 36px rgba(0, 0, 0, 0.46),
     0 0 22px rgba(214, 177, 92, 0.12);
@@ -3166,8 +3195,7 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   height: 128px;
   object-fit: contain;
   cursor: grab;
-  filter:
-    drop-shadow(0 0 16px rgba(255, 120, 120, 0.36))
+  filter: drop-shadow(0 0 16px rgba(255, 120, 120, 0.36))
     drop-shadow(0 0 30px rgba(255, 180, 80, 0.24))
     drop-shadow(0 12px 20px rgba(0, 0, 0, 0.42));
   animation: pulseBugContido 1.3s ease-in-out infinite;
@@ -3239,7 +3267,6 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   align-items: stretch;
 }
 
-
 .bug-reveal-image {
   width: 100%;
   min-height: 520px;
@@ -3297,8 +3324,11 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
 
 .bug-analise-progresso--arena.is-completo {
   border-color: rgba(214, 177, 92, 0.4);
-  background:
-    linear-gradient(180deg, rgba(44, 32, 18, 0.94), rgba(18, 14, 10, 0.96));
+  background: linear-gradient(
+    180deg,
+    rgba(44, 32, 18, 0.94),
+    rgba(18, 14, 10, 0.96)
+  );
   color: #ffe2a1;
   cursor: pointer;
   box-shadow:
@@ -3335,7 +3365,11 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   border: 1px solid rgba(214, 177, 92, 0.22);
   background:
     linear-gradient(180deg, rgba(20, 17, 16, 0.94), rgba(10, 9, 10, 0.98)),
-    radial-gradient(circle at top left, rgba(255, 210, 120, 0.1), transparent 58%);
+    radial-gradient(
+      circle at top left,
+      rgba(255, 210, 120, 0.1),
+      transparent 58%
+    );
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.3);
 }
 
@@ -3423,7 +3457,11 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   object-fit: contain;
   padding: 0.35rem;
   background:
-    radial-gradient(circle at center, rgba(214, 177, 92, 0.08), transparent 52%),
+    radial-gradient(
+      circle at center,
+      rgba(214, 177, 92, 0.08),
+      transparent 52%
+    ),
     #08090f;
 }
 
@@ -3499,11 +3537,42 @@ body.mochila-highlight-backlog .mochila-item[data-artefato="backlog"] {
   object-fit: contain;
   padding: 0.35rem;
   background:
-    radial-gradient(circle at center, rgba(214, 177, 92, 0.08), transparent 52%),
+    radial-gradient(
+      circle at center,
+      rgba(214, 177, 92, 0.08),
+      transparent 52%
+    ),
     #08090f;
 }
 
+/* =========================================================
+   BUG — REFINO DO DESFECHO E CARTA
+========================================================= */
 
+.bug-reveal-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.bug-reveal-copy .btn-prosseguir-epico {
+  align-self: center;
+}
+
+.bug-flip-card__hint--back {
+  top: 0.85rem;
+  left: 0.85rem;
+  right: auto;
+  bottom: auto;
+  width: auto;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.bug-flip-card__face--back .bug-flip-card__hint--back {
+  transform: none;
+}
 
 /* =========================================================
    MOCHILA — 
@@ -3613,11 +3682,19 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
 }
 
 @keyframes pulseMochilaCallout {
-  0% { transform: translateY(0); opacity: 0.92; }
-  50% { transform: translateY(-2px); opacity: 1; }
-  100% { transform: translateY(0); opacity: 0.92; }
+  0% {
+    transform: translateY(0);
+    opacity: 0.92;
+  }
+  50% {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.92;
+  }
 }
-
 
 .forja-intro-card,
 .forja-aula-wrap,
@@ -3627,8 +3704,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 2rem;
   border-radius: 24px;
   border: 1px solid rgba(214, 177, 92, 0.14);
-  background:
-    linear-gradient(180deg, rgba(8, 10, 18, 0.96), rgba(5, 7, 14, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(8, 10, 18, 0.96),
+    rgba(5, 7, 14, 0.98)
+  );
   box-shadow: 0 22px 46px rgba(0, 0, 0, 0.24);
 }
 
@@ -3652,7 +3732,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   border-radius: 24px;
   border: 1px solid rgba(214, 177, 92, 0.16);
   background:
-    radial-gradient(circle at 50% 72%, rgba(245, 207, 120, 0.1), transparent 32%),
+    radial-gradient(
+      circle at 50% 72%,
+      rgba(245, 207, 120, 0.1),
+      transparent 32%
+    ),
     linear-gradient(180deg, rgba(9, 10, 18, 0.84), rgba(6, 7, 12, 0.96));
   box-shadow:
     inset 0 1px 0 rgba(255, 244, 220, 0.04),
@@ -3732,7 +3816,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   border-radius: 16px;
   border: 1px dashed rgba(255, 220, 140, 0.32);
   background:
-    radial-gradient(circle at center, rgba(245, 207, 120, 0.08), transparent 64%),
+    radial-gradient(
+      circle at center,
+      rgba(245, 207, 120, 0.08),
+      transparent 64%
+    ),
     rgba(255, 220, 140, 0.04);
   display: grid;
   place-items: center;
@@ -3753,7 +3841,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   transform: scale(1.02);
   border-color: rgba(255, 230, 150, 0.72);
   background:
-    radial-gradient(circle at center, rgba(245, 207, 120, 0.18), transparent 64%),
+    radial-gradient(
+      circle at center,
+      rgba(245, 207, 120, 0.18),
+      transparent 64%
+    ),
     rgba(255, 220, 140, 0.08);
   box-shadow:
     0 0 18px rgba(245, 207, 120, 0.18),
@@ -3772,7 +3864,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   font-weight: 700;
   text-align: center;
   background:
-    radial-gradient(circle at center, rgba(245, 207, 120, 0.18), transparent 58%),
+    radial-gradient(
+      circle at center,
+      rgba(245, 207, 120, 0.18),
+      transparent 58%
+    ),
     rgba(245, 207, 120, 0.06);
   box-shadow:
     inset 0 0 18px rgba(245, 207, 120, 0.08),
@@ -3812,8 +3908,12 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(255, 230, 150, 0.54), rgba(214, 100, 40, 0.22) 44%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 230, 150, 0.54),
+    rgba(214, 100, 40, 0.22) 44%,
+    transparent 70%
+  );
   filter: blur(1px);
   box-shadow:
     0 0 28px rgba(255, 190, 80, 0.24),
@@ -3838,7 +3938,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   border: 1px solid rgba(214, 177, 92, 0.18);
   background:
     linear-gradient(180deg, rgba(20, 17, 16, 0.96), rgba(10, 9, 10, 0.98)),
-    radial-gradient(circle at top left, rgba(255, 210, 120, 0.12), transparent 58%);
+    radial-gradient(
+      circle at top left,
+      rgba(255, 210, 120, 0.12),
+      transparent 58%
+    );
   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.3);
 }
 
@@ -3935,8 +4039,16 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   overflow: hidden;
   border-color: rgba(245, 207, 120, 0.24);
   background:
-    radial-gradient(circle at 50% 0%, rgba(245, 160, 60, 0.14), transparent 42%),
-    radial-gradient(circle at 12% 22%, rgba(173, 122, 255, 0.1), transparent 34%),
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(245, 160, 60, 0.14),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 12% 22%,
+      rgba(173, 122, 255, 0.1),
+      transparent 34%
+    ),
     linear-gradient(180deg, rgba(12, 10, 16, 0.98), rgba(5, 7, 14, 0.98));
 }
 
@@ -4014,7 +4126,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   position: absolute;
   inset: auto -20% -34% -20%;
   height: 150px;
-  background: radial-gradient(circle, rgba(245, 207, 120, 0.12), transparent 62%);
+  background: radial-gradient(
+    circle,
+    rgba(245, 207, 120, 0.12),
+    transparent 62%
+  );
   opacity: 0.7;
   pointer-events: none;
 }
@@ -4105,8 +4221,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 1rem 1.2rem;
   border-radius: 18px;
   border: 1px solid rgba(214, 177, 92, 0.22);
-  background:
-    linear-gradient(180deg, rgba(44, 30, 14, 0.78), rgba(12, 10, 8, 0.86));
+  background: linear-gradient(
+    180deg,
+    rgba(44, 30, 14, 0.78),
+    rgba(12, 10, 8, 0.86)
+  );
   text-align: center;
   box-shadow:
     0 14px 28px rgba(0, 0, 0, 0.28),
@@ -4164,13 +4283,12 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   flex-direction: column;
   justify-content: space-between;
   padding: 2.2rem;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(5, 5, 10, 0.72) 0%,
-      rgba(5, 5, 10, 0.22) 40%,
-      rgba(5, 5, 10, 0.86) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(5, 5, 10, 0.72) 0%,
+    rgba(5, 5, 10, 0.22) 40%,
+    rgba(5, 5, 10, 0.86) 100%
+  );
 }
 
 .btn-forja-iniciar {
@@ -4179,7 +4297,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   min-width: 240px;
   border-radius: 18px;
   border: 1px solid rgba(214, 177, 92, 0.34);
-  background: linear-gradient(180deg, rgba(92, 58, 22, 0.96), rgba(46, 24, 8, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(92, 58, 22, 0.96),
+    rgba(46, 24, 8, 0.98)
+  );
   color: #fff2d8;
   cursor: pointer;
 }
@@ -4196,7 +4318,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 1.2rem;
   border-radius: 18px;
   border: 1px solid rgba(214, 177, 92, 0.14);
-  background: linear-gradient(180deg, rgba(12, 13, 22, 0.96), rgba(8, 9, 18, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(12, 13, 22, 0.96),
+    rgba(8, 9, 18, 0.98)
+  );
 }
 
 .forja-drop-layout {
@@ -4260,7 +4386,9 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
 .forja-reveal-copy {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .forja-reveal-copy.show {
@@ -4299,7 +4427,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 1rem 1rem 1.1rem;
   border-radius: 24px;
   border: 1px solid rgba(214, 177, 92, 0.28);
-  background: linear-gradient(180deg, rgba(12, 11, 22, 0.98), rgba(6, 8, 16, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(12, 11, 22, 0.98),
+    rgba(6, 8, 16, 0.98)
+  );
   color: #f3ead7;
   text-align: left;
   cursor: pointer;
@@ -4381,7 +4513,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   position: absolute;
   inset: 14px;
   border-radius: 18px;
-  background: radial-gradient(circle, rgba(255, 177, 70, 0.08), transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 177, 70, 0.08),
+    transparent 70%
+  );
   opacity: 0.35;
   transition: opacity 0.28s ease;
 }
@@ -4394,9 +4530,7 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   image-rendering: pixelated;
   opacity: 0;
   transform: scale(0.82);
-  filter:
-    blur(6px)
-    drop-shadow(0 0 8px rgba(255, 170, 60, 0.12));
+  filter: blur(6px) drop-shadow(0 0 8px rgba(255, 170, 60, 0.12));
   transition:
     opacity 0.35s ease,
     transform 0.35s ease,
@@ -4407,9 +4541,7 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
 .forja-fornalha.is-ativa .forja-fornalha__icon {
   opacity: 1;
   transform: scale(1);
-  filter:
-    blur(0)
-    drop-shadow(0 0 14px rgba(255, 200, 90, 0.42))
+  filter: blur(0) drop-shadow(0 0 14px rgba(255, 200, 90, 0.42))
     drop-shadow(0 0 28px rgba(255, 120, 40, 0.2));
 }
 
@@ -4448,7 +4580,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 1.2rem;
   border-radius: 24px;
   border: 1px solid rgba(214, 177, 92, 0.18);
-  background: linear-gradient(180deg, rgba(20, 17, 16, 0.96), rgba(10, 9, 10, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(20, 17, 16, 0.96),
+    rgba(10, 9, 10, 0.98)
+  );
 }
 
 .forja-codex--resumo h4 {
@@ -4490,7 +4626,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 1rem 1.15rem;
   border-radius: 18px;
   border: 1px solid rgba(214, 177, 92, 0.18);
-  background: linear-gradient(180deg, rgba(32, 20, 10, 0.72), rgba(16, 12, 10, 0.78));
+  background: linear-gradient(
+    180deg,
+    rgba(32, 20, 10, 0.72),
+    rgba(16, 12, 10, 0.78)
+  );
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 239, 190, 0.03);
@@ -4527,7 +4667,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 0.9rem 1.4rem;
   border: 1px solid rgba(214, 177, 92, 0.5);
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(118, 72, 24, 0.96), rgba(48, 28, 10, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(118, 72, 24, 0.96),
+    rgba(48, 28, 10, 0.98)
+  );
   color: #ffe8b7;
   font-family: "Cinzel", serif;
   font-size: 0.92rem;
@@ -4598,8 +4742,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 0.9rem 1.4rem;
   border: 1px solid rgba(214, 177, 92, 0.5);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(118, 72, 24, 0.96), rgba(48, 28, 10, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(118, 72, 24, 0.96),
+    rgba(48, 28, 10, 0.98)
+  );
   color: #ffe8b7;
   font-family: "Cinzel", serif;
   font-size: 0.92rem;
@@ -4647,8 +4794,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 0.95rem 1.4rem;
   border: 1px solid rgba(214, 177, 92, 0.5);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(118, 72, 24, 0.96), rgba(48, 28, 10, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(118, 72, 24, 0.96),
+    rgba(48, 28, 10, 0.98)
+  );
   color: #ffe8b7;
   font-family: "Cinzel", serif;
   font-size: 0.92rem;
@@ -4673,6 +4823,81 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
     0 0 24px rgba(214, 177, 92, 0.24),
     0 18px 34px rgba(0, 0, 0, 0.38),
     inset 0 1px 0 rgba(255, 239, 190, 0.12);
+}
+
+/* =========================================================
+   FORJA — BOTÃO CENTRAL MVP
+========================================================= */
+
+.btn-forjar-mvp-core {
+  border: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.btn-forjar-mvp-core.hidden {
+  display: none !important;
+}
+
+.btn-forjar-mvp-core .forja-core__ring {
+  border-color: rgba(255, 218, 118, 0.78);
+  box-shadow:
+    0 0 24px rgba(255, 170, 64, 0.34),
+    0 0 56px rgba(255, 92, 36, 0.2),
+    inset 0 0 26px rgba(255, 220, 120, 0.14);
+}
+
+.btn-forjar-mvp-core .forja-core__ember {
+  background:
+    radial-gradient(circle, rgba(255, 235, 150, 0.72), rgba(255, 126, 40, 0.35) 42%, transparent 72%);
+  box-shadow:
+    0 0 30px rgba(255, 190, 80, 0.34),
+    0 0 64px rgba(255, 100, 60, 0.22);
+}
+
+.forja-core__action {
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  color: #ffe8b7;
+  font-family: "Cinzel", serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0;
+  text-shadow:
+    0 0 8px rgba(255, 220, 140, 0.42),
+    0 2px 8px rgba(0, 0, 0, 0.5);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.btn-forjar-mvp-core:hover {
+  transform: translateY(-3px) scale(1.04);
+  filter: brightness(1.12);
+}
+
+.btn-forjar-mvp-core:hover .forja-core__action {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.btn-forjar-mvp-core:hover .forja-core__ring {
+  box-shadow:
+    0 0 32px rgba(255, 190, 80, 0.52),
+    0 0 74px rgba(255, 92, 36, 0.34),
+    inset 0 0 34px rgba(255, 220, 120, 0.18);
+}
+
+.btn-forjar-mvp-core:hover .forja-core__label {
+  text-shadow:
+    0 0 12px rgba(255, 220, 140, 0.58),
+    0 0 28px rgba(255, 120, 40, 0.28),
+    0 8px 18px rgba(0, 0, 0, 0.52);
 }
 
 /* =========================================================
@@ -4707,6 +4932,207 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
 }
 
 /* =========================================================
+   PORTA FINAL — PORTA COMO BOTÃO PRINCIPAL
+========================================================= */
+
+.porta-final-scene {
+  cursor: default;
+  isolation: isolate;
+}
+
+.porta-final-stage.is-unlocked .porta-final-scene {
+  cursor: pointer;
+}
+
+.porta-final-glow {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 52%;
+  width: 42%;
+  height: 62%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(180, 86, 255, 0.48), rgba(100, 40, 255, 0.2) 48%, transparent 72%);
+  filter: blur(20px);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: portaFinalGlowRoxo 2.4s ease-in-out infinite;
+}
+
+.porta-final-image {
+  position: relative;
+  z-index: 2;
+}
+
+.porta-final-lock-zone {
+  z-index: 5;
+}
+
+.porta-final-entrar-text {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%) scale(1.24);
+  color: #f6dcff;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow:
+    0 0 8px rgba(210, 120, 255, 0.72),
+    0 0 22px rgba(150, 80, 255, 0.58),
+    0 0 42px rgba(90, 50, 255, 0.42);
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.porta-final-stage.is-unlocked .porta-final-scene:hover .porta-final-entrar-text {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: portaFinalEntrePulse 1.4s ease-in-out infinite;
+}
+
+.porta-final-stage.is-unlocked .porta-final-scene:hover .porta-final-image {
+  filter:
+    brightness(1)
+    saturate(1.08)
+    drop-shadow(0 0 28px rgba(170, 100, 255, 0.34))
+    drop-shadow(0 0 58px rgba(100, 60, 255, 0.24))
+    drop-shadow(0 22px 36px rgba(0, 0, 0, 0.46));
+}
+
+#btnEntrarDesafio {
+  display: none !important;
+}
+
+@keyframes portaFinalGlowRoxo {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+
+  50% {
+    opacity: 0.86;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@keyframes portaFinalEntrePulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 8px rgba(210, 120, 255, 0.72),
+      0 0 22px rgba(150, 80, 255, 0.58),
+      0 0 42px rgba(90, 50, 255, 0.42);
+  }
+
+  50% {
+    text-shadow:
+      0 0 14px rgba(230, 150, 255, 0.9),
+      0 0 32px rgba(170, 90, 255, 0.72),
+      0 0 58px rgba(100, 60, 255, 0.52);
+  }
+}
+
+/* =========================================================
+   PORTA FINAL — AMPULHETA DE RESET
+========================================================= */
+
+.porta-final-actions {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+  margin-top: 1.3rem;
+  min-height: 84px;
+}
+
+.porta-reset-tempo {
+  justify-self: end;
+  width: 74px;
+  height: 74px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(214, 177, 92, 0.42);
+  background:
+    radial-gradient(circle, rgba(255, 220, 140, 0.14), transparent 62%),
+    linear-gradient(180deg, rgba(24, 19, 14, 0.96), rgba(8, 7, 7, 0.98));
+  cursor: pointer;
+  box-shadow:
+    0 0 18px rgba(214, 177, 92, 0.16),
+    0 14px 28px rgba(0, 0, 0, 0.38);
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.porta-reset-tempo img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 10px rgba(255, 220, 140, 0.24))
+    drop-shadow(0 8px 12px rgba(0, 0, 0, 0.38));
+}
+
+.porta-reset-tempo span {
+  position: absolute;
+  right: 5.2rem;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  width: max-content;
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(214, 177, 92, 0.24);
+  background: rgba(10, 10, 14, 0.96);
+  color: #f3e7cf;
+  font-size: 0.78rem;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.porta-reset-tempo:hover {
+  transform: translateY(-2px) scale(1.04);
+  filter: brightness(1.1);
+  box-shadow:
+    0 0 24px rgba(214, 177, 92, 0.24),
+    0 18px 34px rgba(0, 0, 0, 0.44);
+}
+
+.porta-reset-tempo:hover span {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.porta-reset-tempo.is-girando img {
+  animation: ampulhetaResetGira 0.7s ease-in-out;
+}
+
+@keyframes ampulhetaResetGira {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
    PADRÃO DE LEITURA DAS INTROS DOS DESAFIOS
 ========================================================= */
 
@@ -4721,7 +5147,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   border: 1px solid rgba(214, 177, 92, 0.22);
   background:
     linear-gradient(180deg, rgba(8, 8, 12, 0.68), rgba(8, 8, 12, 0.46)),
-    radial-gradient(circle at top left, rgba(214, 173, 53, 0.1), transparent 54%);
+    radial-gradient(
+      circle at top left,
+      rgba(214, 173, 53, 0.1),
+      transparent 54%
+    );
   backdrop-filter: blur(2px);
   box-shadow:
     0 16px 34px rgba(0, 0, 0, 0.34),
@@ -4966,6 +5396,7 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   font-weight: 700;
 }
 
+
 /* =========================================================
    PORTA FINAL — AJUSTE VISUAL REFINADO
 ========================================================= */
@@ -5001,7 +5432,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   border-radius: 24px;
   border: 1px solid rgba(214, 177, 92, 0.18);
   background:
-    radial-gradient(circle at center, rgba(130, 70, 255, 0.14), transparent 48%),
+    radial-gradient(
+      circle at center,
+      rgba(130, 70, 255, 0.14),
+      transparent 48%
+    ),
     linear-gradient(180deg, rgba(8, 10, 18, 0.96), rgba(5, 7, 14, 0.98));
   box-shadow:
     0 22px 46px rgba(0, 0, 0, 0.3),
@@ -5015,9 +5450,7 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   object-fit: contain;
   display: block;
   image-rendering: pixelated;
-  filter:
-    brightness(0.9)
-    saturate(1.05)
+  filter: brightness(0.9) saturate(1.05)
     drop-shadow(0 0 24px rgba(140, 80, 255, 0.18))
     drop-shadow(0 20px 32px rgba(0, 0, 0, 0.42));
 }
@@ -5050,8 +5483,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   place-items: center;
   border-radius: 999px;
   border: 1px dashed rgba(255, 220, 140, 0.48);
-  background:
-    radial-gradient(circle, rgba(255, 220, 140, 0.2), transparent 68%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 220, 140, 0.2),
+    transparent 68%
+  );
   box-shadow:
     0 0 18px rgba(255, 220, 140, 0.28),
     0 0 38px rgba(150, 90, 255, 0.18);
@@ -5082,8 +5518,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   padding: 1.5rem;
   border-radius: 24px;
   border: 1px solid rgba(214, 177, 92, 0.18);
-  background:
-    linear-gradient(180deg, rgba(20, 17, 16, 0.96), rgba(10, 9, 10, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(20, 17, 16, 0.96),
+    rgba(10, 9, 10, 0.98)
+  );
   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
 }
 
@@ -5167,6 +5606,141 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   .porta-final-image {
     max-height: 390px;
   }
+}
+
+/* =========================================================
+   FORJA — CÍRCULO MVP COMO BOTÃO FINAL
+========================================================= */
+
+.btn-forjar-mvp-core {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 155px;
+  height: 155px;
+  margin: 0.2rem auto 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: not-allowed;
+  opacity: 0.72;
+  filter: grayscale(0.25) brightness(0.82);
+  pointer-events: auto;
+  transition:
+    transform 0.24s ease,
+    filter 0.24s ease,
+    opacity 0.24s ease;
+}
+
+.btn-forjar-mvp-core.hidden {
+  display: grid !important;
+}
+
+.btn-forjar-mvp-core:disabled {
+  cursor: not-allowed;
+}
+
+.btn-forjar-mvp-core .forja-core__ring {
+  opacity: 0.62;
+  border-color: rgba(245, 207, 120, 0.22);
+  box-shadow:
+    0 0 18px rgba(245, 207, 120, 0.08),
+    inset 0 0 22px rgba(245, 207, 120, 0.06);
+}
+
+.btn-forjar-mvp-core .forja-core__ember {
+  opacity: 0.58;
+}
+
+.forja-core__action {
+  position: absolute;
+  left: 50%;
+  bottom: 1.1rem;
+  transform: translateX(-50%) translateY(4px);
+  color: #ffe8b7;
+  font-family: "Cinzel", serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow:
+    0 0 8px rgba(255, 220, 140, 0.42),
+    0 2px 8px rgba(0, 0, 0, 0.5);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.btn-forjar-mvp-core.is-pronto {
+  cursor: pointer;
+  opacity: 1;
+  filter: brightness(1.08) saturate(1.15);
+  animation: forjaMvpProntoPulse 1.45s ease-in-out infinite;
+}
+
+.btn-forjar-mvp-core.is-pronto .forja-core__ring {
+  opacity: 1;
+  border-color: rgba(255, 218, 118, 0.82);
+  box-shadow:
+    0 0 24px rgba(255, 170, 64, 0.36),
+    0 0 58px rgba(255, 92, 36, 0.22),
+    inset 0 0 28px rgba(255, 220, 120, 0.16);
+}
+
+.btn-forjar-mvp-core.is-pronto .forja-core__ember {
+  opacity: 1;
+  background:
+    radial-gradient(circle, rgba(255, 235, 150, 0.72), rgba(255, 126, 40, 0.35) 42%, transparent 72%);
+  box-shadow:
+    0 0 30px rgba(255, 190, 80, 0.34),
+    0 0 64px rgba(255, 100, 60, 0.22);
+}
+
+.btn-forjar-mvp-core.is-pronto:hover {
+  transform: translateY(-3px) scale(1.04);
+  filter: brightness(1.18) saturate(1.22);
+}
+
+.btn-forjar-mvp-core.is-pronto:hover .forja-core__action {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@keyframes forjaMvpProntoPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(255, 170, 64, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 34px rgba(255, 140, 44, 0.22);
+  }
+}
+
+/* =========================================================
+   PORTA FINAL — CLIQUE DIRETO NA PORTA
+========================================================= */
+
+#btnConcluirHistoria {
+  display: none !important;
+}
+
+.porta-final-stage.is-unlocked .porta-final-scene,
+.porta-final-stage.is-unlocked .porta-final-image {
+  cursor: pointer;
+}
+
+.porta-final-stage.is-unlocked .porta-final-scene:hover .porta-final-image {
+  filter: brightness(1) saturate(1.08)
+    drop-shadow(0 0 28px rgba(170, 100, 255, 0.28))
+    drop-shadow(0 22px 36px rgba(0, 0, 0, 0.46));
 }
 
 /* 11. RESPONSIVIDADE */
@@ -5269,24 +5843,23 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
     grid-template-columns: repeat(2, 1fr);
   }
 
-
   .bridge-view {
     height: 108px;
   }
 }
 
-  .ponte-node {
-    width: 88px;
-    height: 88px;
-  }
+.ponte-node {
+  width: 88px;
+  height: 88px;
+}
 
-  .obstaculo-img--frame {
-    min-height: 300px;
-  }
+.obstaculo-img--frame {
+  min-height: 300px;
+}
 
-  .duplo-reveal-media {
-    min-height: 340px;
-  }
+.duplo-reveal-media {
+  min-height: 340px;
+}
 
 /* =========================================================
    FORJA — BOTÃO FINAL EM CHAMAS
@@ -5300,7 +5873,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   border: 1px solid rgba(255, 218, 118, 0.72);
   border-radius: 999px;
   background:
-    radial-gradient(circle at 50% 120%, rgba(255, 230, 120, 0.42), transparent 45%),
+    radial-gradient(
+      circle at 50% 120%,
+      rgba(255, 230, 120, 0.42),
+      transparent 45%
+    ),
     linear-gradient(180deg, #9a4f16 0%, #5f260c 48%, #2b1008 100%);
   color: #fff0bf;
   font-family: "Cinzel", serif;
@@ -5325,9 +5902,21 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   position: absolute;
   inset: -60% -20%;
   background:
-    radial-gradient(circle at 20% 80%, rgba(255, 222, 90, 0.34), transparent 28%),
-    radial-gradient(circle at 50% 90%, rgba(255, 122, 40, 0.28), transparent 32%),
-    radial-gradient(circle at 80% 80%, rgba(255, 188, 72, 0.28), transparent 26%);
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(255, 222, 90, 0.34),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(255, 122, 40, 0.28),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255, 188, 72, 0.28),
+      transparent 26%
+    );
   opacity: 0.75;
   transform: translateY(18%);
   animation: forjaBotaoChamaSubir 1.2s ease-in-out infinite;
@@ -5407,7 +5996,11 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   border-radius: 24px;
   border: 1px solid rgba(214, 177, 92, 0.2);
   background:
-    radial-gradient(circle at center, rgba(245, 207, 120, 0.12), transparent 48%),
+    radial-gradient(
+      circle at center,
+      rgba(245, 207, 120, 0.12),
+      transparent 48%
+    ),
     linear-gradient(180deg, rgba(9, 10, 18, 0.94), rgba(5, 6, 12, 0.98));
   box-shadow:
     0 24px 48px rgba(0, 0, 0, 0.36),
@@ -5421,8 +6014,7 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   object-fit: contain;
   display: block;
   image-rendering: pixelated;
-  filter:
-    drop-shadow(0 0 18px rgba(255, 220, 120, 0.28))
+  filter: drop-shadow(0 0 18px rgba(255, 220, 120, 0.28))
     drop-shadow(0 0 34px rgba(130, 70, 255, 0.18))
     drop-shadow(0 18px 28px rgba(0, 0, 0, 0.42));
   animation: chaveMvpFlutua 2.6s ease-in-out infinite;
@@ -5826,5 +6418,239 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   .btn-forja-iniciar {
     width: 100%;
     min-width: 0;
+  }
+}
+
+/* =========================================================
+   MODAL — RESET PELA AMPULHETA
+========================================================= */
+
+.tempo-reset-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(8px);
+}
+
+.tempo-reset-modal.hidden {
+  display: none !important;
+}
+
+.tempo-reset-card {
+  width: min(900px, 100%);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 28px;
+  border: 1px solid rgba(214, 177, 92, 0.58);
+  background:
+    radial-gradient(circle at left, rgba(140, 80, 255, 0.12), transparent 38%),
+    linear-gradient(180deg, rgba(11, 11, 12, 0.98), rgba(4, 4, 5, 0.99));
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.54),
+    0 0 34px rgba(214, 177, 92, 0.12);
+}
+
+.tempo-reset-corvo {
+  width: 100%;
+  max-width: 240px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter:
+    drop-shadow(0 0 14px rgba(170, 100, 255, 0.24))
+    drop-shadow(0 16px 24px rgba(0, 0, 0, 0.42));
+}
+
+.tempo-reset-kicker {
+  margin: 0 0 0.8rem;
+  color: #f5d27a;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tempo-reset-copy p {
+  color: #f4ead8;
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.55;
+}
+
+.tempo-reset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.4rem;
+}
+
+@media (max-width: 760px) {
+  .tempo-reset-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .tempo-reset-corvo {
+    margin-inline: auto;
+  }
+
+  .tempo-reset-actions {
+    justify-content: center;
+  }
+}
+
+/* =========================================================
+   BUG — AJUSTE DO DESFECHO
+========================================================= */
+
+.bug-reveal-copy {
+  min-height: 100%;
+}
+
+.bug-reveal-copy .btn-prosseguir-epico {
+  align-self: center;
+  margin-inline: auto;
+}
+
+.bug-flip-card__hint--back {
+  top: 0.85rem;
+  left: 0.85rem;
+  right: auto;
+  bottom: auto;
+  width: auto;
+  padding: 0.45rem 0.7rem;
+  transform: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.bug-flip-card__face--back .bug-flip-card__hint--back {
+  transform: none;
+}
+
+/* =========================================================
+   DESFECHOS — TEXTO CINEMATOGRÁFICO REUTILIZÁVEL
+========================================================= */
+
+.necro-reveal-copy,
+.bug-reveal-copy,
+.forja-reveal-copy {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(10px);
+  transition: none;
+}
+
+.necro-reveal-copy.show,
+.bug-reveal-copy.show,
+.forja-reveal-copy.show {
+  animation: desfechoTextoSurge 0.9s ease forwards;
+}
+
+.necro-reveal-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.necro-reveal-copy .btn-prosseguir-epico {
+  align-self: center;
+}
+
+@keyframes desfechoTextoSurge {
+  0% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   MODAL — BOTÕES DO RESET PELA AMPULHETA
+========================================================= */
+
+.tempo-reset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.4rem;
+}
+
+.tempo-reset-btn {
+  min-width: 220px;
+  padding: 0.95rem 1.25rem;
+  border-radius: 999px;
+  font-family: "Cinzel", serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.tempo-reset-btn--confirmar {
+  border: 1px solid rgba(255, 218, 118, 0.72);
+  background:
+    radial-gradient(circle at 50% 120%, rgba(255, 230, 120, 0.32), transparent 45%),
+    linear-gradient(180deg, #8f531e 0%, #4b260f 58%, #1c0f08 100%);
+  color: #fff0bf;
+  box-shadow:
+    0 0 18px rgba(255, 170, 64, 0.32),
+    0 0 42px rgba(255, 92, 36, 0.16),
+    0 16px 30px rgba(0, 0, 0, 0.34);
+}
+
+.tempo-reset-btn--cancelar {
+  border: 1px solid rgba(214, 177, 92, 0.26);
+  background:
+    linear-gradient(180deg, rgba(20, 18, 16, 0.96), rgba(8, 8, 10, 0.98));
+  color: #eadfc9;
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 244, 220, 0.05);
+}
+
+.tempo-reset-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.08);
+}
+
+.tempo-reset-btn--confirmar:hover {
+  box-shadow:
+    0 0 24px rgba(255, 190, 80, 0.44),
+    0 0 58px rgba(255, 92, 36, 0.22),
+    0 18px 34px rgba(0, 0, 0, 0.38);
+}
+
+.tempo-reset-btn--cancelar:hover {
+  border-color: rgba(214, 177, 92, 0.42);
+  box-shadow:
+    0 0 18px rgba(214, 177, 92, 0.12),
+    0 16px 30px rgba(0, 0, 0, 0.34);
+}
+
+@media (max-width: 760px) {
+  .tempo-reset-actions {
+    justify-content: center;
+  }
+
+  .tempo-reset-btn {
+    width: 100%;
   }
 }

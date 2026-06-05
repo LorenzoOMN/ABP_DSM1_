@@ -1168,7 +1168,7 @@
         />
 
         <span class="bug-flip-card__hint bug-flip-card__hint--back">
-          Impedimento revelado
+          Voltar
         </span>
       </span>
     </span>
@@ -1445,11 +1445,18 @@
         </div>
       </div>
 
-      <div class="forja-core forja-core--montagem" aria-hidden="true">
-        <div class="forja-core__ring"></div>
-        <div class="forja-core__ember"></div>
-        <span class="forja-core__label">MVP</span>
-      </div>
+    <button
+  type="button"
+  class="forja-core forja-core--montagem btn-forjar-mvp-core"
+  id="btnForjarMvp"
+  aria-label="Forjar MVP"
+  disabled
+>
+  <div class="forja-core__ring"></div>
+  <div class="forja-core__ember"></div>
+  <span class="forja-core__label">MVP</span>
+  <span class="forja-core__action">Forjar</span>
+</button>
     </div>
 
     <aside class="forja-codex forja-codex--montagem">
@@ -1495,17 +1502,7 @@
     Posicione os artefatos nas chamas corretas.
   </p>
 
-  <div class="forja-actions forja-actions--epicas">
-   <button
-  class="btn-primary btn-forjar-mvp hidden"
-  id="btnForjarMvp"
-  type="button"
->
-  Forjar MVP
-</button>
-
-      </div>
-</div>
+ </div>
           <div class="forja-revelacao-stage hidden" id="forjaRevelacaoStage">
   <div class="forja-reveal-cinematic">
     <div class="forja-reveal-media forja-reveal-media--chave">
@@ -1570,13 +1567,20 @@
                 class="porta-final-image"
                 id="portaFinalImgFechada"
               />
-
+            
               <img
                 src="/assets/img/capitulo_5/porta-final-aberta.png"
                 alt="Porta final aberta"
                 class="porta-final-image hidden"
                 id="portaFinalImgAberta"
               />
+
+                <span class="porta-final-glow"></span>
+
+              <span class="porta-final-entrar-text">
+              Entre
+              </span>
+
 
               <div class="porta-final-lock-zone" id="portaFinalLockZone">
                 <div class="porta-final-lock-core">
@@ -1622,26 +1626,77 @@
           </p>
 
           <div class="porta-final-actions">
-            <button
-              type="button"
-              class="btn-primary btn-porta-final hidden"
-              id="btnConcluirHistoria"
-            >
-              Salvar conclusão da história
-            </button>
+  <button
+    type="button"
+    class="btn-primary btn-porta-final hidden"
+    id="btnConcluirHistoria"
+  >
+    Salvar conclusão da história
+  </button>
 
-            <p class="status-historia" id="statusHistoria"></p>
+  <p class="status-historia" id="statusHistoria"></p>
 
-            <button
-              type="button"
-              class="btn-primary porta-final-btn hidden"
-              id="btnEntrarDesafio"
-            >
-              Encarar o desafio final
-            </button>
-          </div>
+  <button
+    type="button"
+    class="btn-primary porta-final-btn hidden"
+    id="btnEntrarDesafio"
+  >
+    Encarar o desafio final
+  </button>
+
+  <button
+    class="porta-reset-tempo"
+    id="btnResetTempoCapitulo5"
+    type="button"
+    aria-label="Voltar no tempo"
+  >
+    <span>Voltar no tempo</span>
+
+    <img
+      src="/assets/img/artefatos/ampulheta-icon.png"
+      alt=""
+      aria-hidden="true"
+    />
+  </button>
+</div>
         </section>
       </section>
+
+      <div class="tempo-reset-modal hidden" id="tempoResetModal" role="dialog" aria-modal="true">
+  <div class="tempo-reset-card">
+    <img
+      src="/assets/img/capitulo_5/corvo-notificacao.png"
+      alt="Corvo surpreso"
+      class="tempo-reset-corvo"
+    />
+
+    <div class="tempo-reset-copy">
+      <p class="tempo-reset-kicker">Tem certeza disso?</p>
+
+      <p>
+        Ao girar a ampulheta, você retornará ao começo da sprint do capítulo 5.
+      </p>
+<div class="tempo-reset-actions">
+  <button
+    type="button"
+    class="tempo-reset-btn tempo-reset-btn--confirmar"
+    id="btnConfirmarResetTempo"
+  >
+    Girar mesmo assim
+  </button>
+
+  <button
+    type="button"
+    class="tempo-reset-btn tempo-reset-btn--cancelar"
+    id="btnCancelarResetTempo"
+  >
+    Continuar jornada
+  </button>
+</div>
+    </div>
+  </div>
+</div>
+
     </main>
 
     <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')

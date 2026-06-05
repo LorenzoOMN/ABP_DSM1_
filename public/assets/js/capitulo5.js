@@ -24,6 +24,8 @@ const ENCONTROS_CAPITULO_5 = {
 };
 
 let etapaAtualCapitulo5 = "duplo";
+let chaveMvpUsadaNaPorta = false;
+let historia5ConcluidaNoBackend = false;
 
 const STORAGE_CAPITULO5 = "scrum_dungeon_capitulo5_estado";
 const STORAGE_CAPITULO5_ENTRADA = "scrum_dungeon_capitulo5_entrada";
@@ -44,6 +46,7 @@ function salvarEstadoCapitulo5Local() {
       etapaAtualCapitulo5,
       etapasConcluidas: [...etapasConcluidas],
       estadoForja,
+      chaveMvpUsadaNaPorta,
     }),
   );
 }
@@ -71,6 +74,7 @@ function restaurarEstadoCapitulo5Local() {
     }
 
     estadoForja.concluida = !!estado.estadoForja?.concluida;
+    chaveMvpUsadaNaPorta = !!estado.chaveMvpUsadaNaPorta;
   } catch (erro) {
     console.error("Erro ao restaurar estado local do capítulo 5:", erro);
   }
@@ -80,6 +84,39 @@ function resetarJornadaCapitulo5() {
   localStorage.removeItem(STORAGE_CAPITULO5);
   localStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
   window.location.reload();
+}
+function configurarResetTempoCapitulo5() {
+  const btnResetTempo = document.getElementById("btnResetTempoCapitulo5");
+  const tempoResetModal = document.getElementById("tempoResetModal");
+  const btnConfirmarResetTempo = document.getElementById(
+    "btnConfirmarResetTempo",
+  );
+  const btnCancelarResetTempo = document.getElementById(
+    "btnCancelarResetTempo",
+  );
+
+  if (!btnResetTempo || !tempoResetModal) return;
+
+  btnResetTempo.addEventListener("click", () => {
+    btnResetTempo.classList.add("is-girando");
+
+    setTimeout(() => {
+      btnResetTempo.classList.remove("is-girando");
+      tempoResetModal.classList.remove("hidden");
+    }, 650);
+  });
+
+  if (btnCancelarResetTempo) {
+    btnCancelarResetTempo.addEventListener("click", () => {
+      tempoResetModal.classList.add("hidden");
+    });
+  }
+
+  if (btnConfirmarResetTempo) {
+    btnConfirmarResetTempo.addEventListener("click", () => {
+      resetarJornadaCapitulo5();
+    });
+  }
 }
 
 function salvarEntradaCapitulo5() {
@@ -99,11 +136,11 @@ function restaurarEntradaCapitulo5() {
     capitulo5Page.classList.add("capitulo5-page--entered");
   }
 
- if (btnEntrarNaPonte) {
-  btnEntrarNaPonte.disabled = false;
-  btnEntrarNaPonte.classList.add("concluida");
-  btnEntrarNaPonte.classList.remove("ativando");
-}
+  if (btnEntrarNaPonte) {
+    btnEntrarNaPonte.disabled = false;
+    btnEntrarNaPonte.classList.add("concluida");
+    btnEntrarNaPonte.classList.remove("ativando");
+  }
 }
 
 const stakeholderTurnos = [
@@ -178,6 +215,18 @@ function obterToken() {
   }
 
   return token;
+}
+
+function consumirArtefatoDaMochila(chaveArtefato) {
+  const item = document.querySelector(
+    `.mochila-item[data-artefato="${chaveArtefato}"]`,
+  );
+
+  if (!item) return;
+
+  item.classList.add("hidden");
+  item.classList.remove("ativo", "destacado", "convocado", "is-over");
+  item.removeAttribute("draggable");
 }
 
 function configurarRevealNoScroll() {
@@ -284,16 +333,25 @@ async function carregarEstadoHistoria() {
 
     if (!modulo || !modulo.historia_concluida) return;
 
+    historia5ConcluidaNoBackend = true;
+
     if (btnConcluir) {
       btnConcluir.classList.add("hidden");
     }
 
+    /*
+      Importante:
+      Mesmo que a história já esteja concluída no backend,
+      a porta final desta cena não abre sozinha.
+      O jogador precisa usar a Chave MVP localmente para repetir o fluxo.
+    */
     if (btnEntrarDesafio) {
-      btnEntrarDesafio.classList.remove("hidden");
+      btnEntrarDesafio.classList.add("hidden");
     }
 
     if (status) {
-      status.textContent = "História concluída. A porta final foi liberada.";
+      status.textContent =
+        "História já registrada no sistema. Para repetir a cena, use a Chave MVP na fechadura.";
     }
   } catch (error) {
     console.error(error);
@@ -302,23 +360,117 @@ async function carregarEstadoHistoria() {
 
 function configurarPortaFinal() {
   const btnIrPortaFinal = document.getElementById("btnIrPortaFinal");
-  const portaFinalStage =
-    document.getElementById("encounter-porta") ||
-    document.getElementById("portaFinalStage");
-
+  const portaFinalStage = document.getElementById("encounter-porta");
   const portaFinalLockZone = document.getElementById("portaFinalLockZone");
   const portaFinalImgFechada = document.getElementById("portaFinalImgFechada");
   const portaFinalImgAberta = document.getElementById("portaFinalImgAberta");
   const portaFinalFeedback = document.getElementById("portaFinalFeedback");
   const portaBloqueada = document.getElementById("portaBloqueada");
   const btnConcluirHistoria = document.getElementById("btnConcluirHistoria");
+  const btnEntrarDesafio = document.getElementById("btnEntrarDesafio");
   const statusHistoria = document.getElementById("statusHistoria");
+  const portaFinalScene = document.querySelector(
+    "#encounter-porta .porta-final-scene",
+  );
+
+  if (!portaFinalStage) return;
+
+  let portaFoiAberta = chaveMvpUsadaNaPorta;
+
+  function mostrarFeedbackPorta(mensagem) {
+    if (!portaFinalFeedback) return;
+
+    portaFinalFeedback.textContent = mensagem;
+    portaFinalFeedback.classList.remove("hidden");
+  }
+
+  function aplicarVisualPortaFechada() {
+    portaFoiAberta = false;
+
+    portaFinalStage.classList.remove("porta-final-aberta");
+    portaFinalStage.classList.remove("is-unlocked");
+
+    document.body.classList.remove("porta-final-destravada");
+
+    if (portaFinalImgFechada) {
+      portaFinalImgFechada.classList.remove("hidden");
+    }
+
+    if (portaFinalImgAberta) {
+      portaFinalImgAberta.classList.add("hidden");
+    }
+
+    if (portaFinalLockZone) {
+      portaFinalLockZone.classList.remove("hidden");
+    }
+
+    if (btnEntrarDesafio) {
+      btnEntrarDesafio.classList.add("hidden");
+    }
+
+    if (portaBloqueada) {
+      portaBloqueada.textContent =
+        "O MVP foi forjado. A porta reconhece que o time está pronto, mas ainda espera a Chave MVP tocar sua fechadura.";
+      portaBloqueada.classList.add("liberada");
+    }
+
+    mostrarFeedbackPorta(
+      "Arraste a Chave MVP da mochila até a fechadura para abrir a última porta.",
+    );
+  }
+
+  function aplicarVisualPortaAberta() {
+    portaFoiAberta = true;
+
+    portaFinalStage.classList.add("porta-final-aberta");
+    portaFinalStage.classList.add("is-unlocked");
+
+    document.body.classList.add("porta-final-destravada");
+
+    if (portaFinalImgFechada) {
+      portaFinalImgFechada.classList.add("hidden");
+    }
+
+    if (portaFinalImgAberta) {
+      portaFinalImgAberta.classList.remove("hidden");
+    }
+
+    if (portaFinalLockZone) {
+      portaFinalLockZone.classList.add("hidden");
+    }
+
+    if (portaBloqueada) {
+      portaBloqueada.textContent =
+        "A porta reconhece o fluxo. Clique na porta aberta para encarar o desafio final.";
+      portaBloqueada.classList.add("liberada");
+    }
+
+    if (btnEntrarDesafio) {
+      btnEntrarDesafio.classList.remove("hidden");
+    }
+
+    mostrarFeedbackPorta(
+      "A porta está aberta. Clique nela para encarar o desafio final.",
+    );
+  }
 
   function abrirSalaDaPortaFinal() {
-    if (!portaFinalStage) {
-      console.warn("Stage da porta final não encontrado.");
-      return;
+    if (!etapasConcluidas.has("forja-mvp")) {
+      etapasConcluidas.add("forja-mvp");
+
+      const stageForja = document.querySelector(
+        '.encounter-stage[data-step="forja-mvp"]',
+      );
+
+      if (stageForja) {
+        stageForja.classList.add("etapa-concluida");
+      }
     }
+
+    etapaAtualCapitulo5 = "porta-final";
+
+    atualizarProgressoCapitulo();
+    salvarEstadoCapitulo5Local();
 
     document.querySelectorAll(".encounter-stage").forEach((stage) => {
       stage.classList.add("hidden");
@@ -327,11 +479,16 @@ function configurarPortaFinal() {
     portaFinalStage.classList.remove("hidden");
     portaFinalStage.classList.add("visible");
 
-    etapaAtualCapitulo5 = "porta-final";
-
     atualizarNavegacaoCapitulo5();
     atualizarMapaPonte();
     atualizarPreviewsPonte();
+    atualizarMochila();
+
+    if (chaveMvpUsadaNaPorta) {
+      aplicarVisualPortaAberta();
+    } else {
+      aplicarVisualPortaFechada();
+    }
 
     portaFinalStage.scrollIntoView({
       behavior: "smooth",
@@ -339,109 +496,110 @@ function configurarPortaFinal() {
     });
   }
 
-  /*
-    Importante:
-    o botão de ir para a porta é configurado mesmo se algum elemento
-    interno da fechadura estiver faltando.
-  */
+  function historia5ProntaParaConclusao() {
+    return etapasConcluidas.has("forja-mvp") || estadoForja.concluida;
+  }
+
+  function entrarNoDesafioFinalPelaPorta() {
+    if (!portaFoiAberta) {
+      mostrarFeedbackPorta(
+        "A porta ainda está fechada. Use a Chave MVP na fechadura para liberar o desafio final.",
+      );
+      return;
+    }
+
+    if (btnEntrarDesafio) {
+      btnEntrarDesafio.click();
+    }
+  }
+
+  async function abrirPortaFinal() {
+    aplicarVisualPortaAberta();
+
+    chaveMvpUsadaNaPorta = true;
+    consumirArtefatoDaMochila("chave-mvp");
+    salvarEstadoCapitulo5Local();
+
+    mostrarFeedbackPorta(
+      "A fechadura aceita a Chave MVP. A história está sendo registrada automaticamente.",
+    );
+
+    if (btnConcluirHistoria) {
+      btnConcluirHistoria.classList.add("hidden");
+    }
+
+    if (statusHistoria) {
+      statusHistoria.textContent =
+        "A dungeon está registrando sua jornada final...";
+    }
+
+    await concluirHistoria();
+
+    historia5ConcluidaNoBackend = true;
+
+    if (btnEntrarDesafio) {
+      btnEntrarDesafio.classList.remove("hidden");
+    }
+
+    mostrarFeedbackPorta(
+      "História concluída. Clique na porta aberta para encarar o desafio final.",
+    );
+  }
+
   if (btnIrPortaFinal) {
     btnIrPortaFinal.addEventListener("click", abrirSalaDaPortaFinal);
   }
 
-  if (
-    !portaFinalStage ||
-    !portaFinalLockZone ||
-    !portaFinalImgFechada ||
-    !portaFinalImgAberta ||
-    !portaFinalFeedback ||
-    !btnConcluirHistoria
-  ) {
-    console.warn(
-      "A sala da porta pode abrir, mas algum elemento da interação da fechadura está faltando.",
+  if (portaFinalLockZone) {
+    portaFinalLockZone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+
+      if (portaFoiAberta) return;
+
+      portaFinalLockZone.classList.add("is-over");
+    });
+
+    portaFinalLockZone.addEventListener("dragleave", () => {
+      portaFinalLockZone.classList.remove("is-over");
+    });
+
+    portaFinalLockZone.addEventListener("drop", (event) => {
+      event.preventDefault();
+
+      portaFinalLockZone.classList.remove("is-over");
+
+      if (portaFoiAberta) return;
+
+      if (!historia5ProntaParaConclusao()) {
+        mostrarFeedbackPorta(
+          "A porta permanece imóvel. Antes de abri-la, a Forja precisa reconhecer o MVP.",
+        );
+        return;
+      }
+
+      const artefatoRecebido = event.dataTransfer.getData("text/plain");
+
+      if (artefatoRecebido !== "chave-mvp") {
+        mostrarFeedbackPorta(
+          "A fechadura não responde. Apenas a Chave MVP pode abrir esta porta.",
+        );
+        return;
+      }
+
+      abrirPortaFinal();
+    });
+  }
+
+  if (portaFinalScene) {
+    portaFinalScene.addEventListener("click", entrarNoDesafioFinalPelaPorta);
+  }
+
+  if (portaFinalImgAberta) {
+    portaFinalImgAberta.addEventListener(
+      "click",
+      entrarNoDesafioFinalPelaPorta,
     );
-    return;
   }
-
-  let portaFoiAberta = false;
-
-  function historia5ProntaParaConclusao() {
-    return (
-      etapasConcluidas.has("forja-mvp") ||
-      estadoForja.concluida
-    );
-  }
-
-  function mostrarFeedbackPorta(mensagem) {
-    portaFinalFeedback.textContent = mensagem;
-    portaFinalFeedback.classList.remove("hidden");
-  }
-
-  function abrirPortaFinal() {
-    portaFoiAberta = true;
-
-    portaFinalStage.classList.add("porta-final-aberta");
-    portaFinalStage.classList.add("is-unlocked");
-
-    portaFinalImgFechada.classList.add("hidden");
-    portaFinalImgAberta.classList.remove("hidden");
-
-    portaFinalLockZone.classList.add("hidden");
-
-    if (portaBloqueada) {
-      portaBloqueada.textContent =
-        "A Chave MVP girou na fechadura. A porta reconhece o fluxo e permite registrar a conclusão da história.";
-      portaBloqueada.classList.add("liberada");
-    }
-
-    mostrarFeedbackPorta(
-      "A fechadura aceita a Chave MVP. Agora salve a conclusão da história para liberar o último desafio.",
-    );
-
-    btnConcluirHistoria.classList.remove("hidden");
-
-    if (statusHistoria) {
-      statusHistoria.textContent =
-        "Porta aberta. Falta apenas registrar a conclusão da história.";
-    }
-  }
-
-  portaFinalLockZone.addEventListener("dragover", (event) => {
-    event.preventDefault();
-
-    if (portaFoiAberta) return;
-
-    portaFinalLockZone.classList.add("is-over");
-  });
-
-  portaFinalLockZone.addEventListener("dragleave", () => {
-    portaFinalLockZone.classList.remove("is-over");
-  });
-
-  portaFinalLockZone.addEventListener("drop", (event) => {
-    event.preventDefault();
-
-    portaFinalLockZone.classList.remove("is-over");
-
-    if (portaFoiAberta) return;
-
-    if (!historia5ProntaParaConclusao()) {
-      mostrarFeedbackPorta(
-        "A porta permanece imóvel. Antes de abri-la, a Forja precisa reconhecer o MVP.",
-      );
-      return;
-    }
-
-    const artefatoRecebido = event.dataTransfer.getData("text/plain");
-
-    if (artefatoRecebido !== "chave-mvp") {
-      mostrarFeedbackPorta(
-        "A fechadura não responde. Apenas a Chave MVP, forjada a partir da entrega real, pode abrir esta porta.",
-      );
-      return;
-    }
-
-    abrirPortaFinal();
-  });
 }
 
 function configurarConclusaoHistoria() {
@@ -580,7 +738,7 @@ function configurarDesafioDuplo() {
       duploMedalhaoStage.classList.add("energizado");
 
       document.body.classList.add("mochila-highlight-medalhao");
-      
+
       const mochilaCallout = document.getElementById("mochilaCallout");
       if (mochilaCallout) {
         mochilaCallout.classList.remove("hidden");
@@ -1140,8 +1298,6 @@ function configurarDesafioNecrobranch() {
   });
 }
 
-
-
 function configurarDesafioBugInfernal() {
   const btnIniciarBug = document.getElementById("btnIniciarBug");
   const bugAnaliseWrap = document.getElementById("bugAnaliseWrap");
@@ -1153,8 +1309,8 @@ function configurarDesafioBugInfernal() {
   const bugArrasteWrap = document.getElementById("bugArrasteWrap");
   const bugResumoAnalise = document.getElementById("bugResumoAnalise");
   const bugDicaBauCreature = document.getElementById("bugDicaBauCreature");
-const bauItem = document.querySelector('[data-artefato="bau"]');
-const bugFlipCard = document.getElementById("bugFlipCard");
+  const bauItem = document.querySelector('[data-artefato="bau"]');
+  const bugFlipCard = document.getElementById("bugFlipCard");
 
   const bugMiniaturaArrastavel = document.getElementById(
     "bugMiniaturaArrastavel",
@@ -1269,9 +1425,9 @@ const bugFlipCard = document.getElementById("bugFlipCard");
   }
 
   if (bugFlipCard) {
-  bugFlipCard.classList.remove("is-flipped");
-  bugFlipCard.setAttribute("aria-pressed", "false");
-}
+    bugFlipCard.classList.remove("is-flipped");
+    bugFlipCard.setAttribute("aria-pressed", "false");
+  }
 
   btnIniciarBug.addEventListener("click", () => {
     resetarArenaBug();
@@ -1330,12 +1486,12 @@ const bugFlipCard = document.getElementById("bugFlipCard");
   });
 
   if (bugFlipCard) {
-  bugFlipCard.addEventListener("click", () => {
-    const cartaVirada = bugFlipCard.classList.toggle("is-flipped");
+    bugFlipCard.addEventListener("click", () => {
+      const cartaVirada = bugFlipCard.classList.toggle("is-flipped");
 
-    bugFlipCard.setAttribute("aria-pressed", String(cartaVirada));
-  });
-}
+      bugFlipCard.setAttribute("aria-pressed", String(cartaVirada));
+    });
+  }
 
   btnConcluirBugNarrativa.addEventListener("click", () => {
     concluirEtapaCapitulo5("bug-infernal");
@@ -1343,30 +1499,30 @@ const bugFlipCard = document.getElementById("bugFlipCard");
   });
 
   if (bauItem && bugDicaBauCreature) {
-  bauItem.setAttribute("draggable", "true");
+    bauItem.setAttribute("draggable", "true");
 
-  bauItem.addEventListener("dragstart", (event) => {
-    event.dataTransfer.setData("text/plain", "bau");
-  });
+    bauItem.addEventListener("dragstart", (event) => {
+      event.dataTransfer.setData("text/plain", "bau");
+    });
 
-  bugCreatureWrap.addEventListener("dragover", (event) => {
-    event.preventDefault();
-  });
+    bugCreatureWrap.addEventListener("dragover", (event) => {
+      event.preventDefault();
+    });
 
-  bugCreatureWrap.addEventListener("drop", (event) => {
-    event.preventDefault();
+    bugCreatureWrap.addEventListener("drop", (event) => {
+      event.preventDefault();
 
-    const tipoArrastado = event.dataTransfer.getData("text/plain");
+      const tipoArrastado = event.dataTransfer.getData("text/plain");
 
-    if (tipoArrastado !== "bau") return;
+      if (tipoArrastado !== "bau") return;
 
-    bugDicaBauCreature.classList.remove("hidden");
+      bugDicaBauCreature.classList.remove("hidden");
 
-    setTimeout(() => {
-      bugDicaBauCreature.classList.add("hidden");
-    }, 3200);
-  });
-}
+      setTimeout(() => {
+        bugDicaBauCreature.classList.add("hidden");
+      }, 3200);
+    });
+  }
 }
 function configurarDropBugNoBau() {
   const bugMiniaturaArrastavel = document.getElementById(
@@ -1436,7 +1592,9 @@ function configurarDropBugNoBau() {
 
 function configurarFornalhasDaForja() {
   const fornalhas = document.querySelectorAll(".forja-fornalha");
-  const btnLiberarMontagemForja = document.getElementById("btnLiberarMontagemForja");
+  const btnLiberarMontagemForja = document.getElementById(
+    "btnLiberarMontagemForja",
+  );
   const forjaDropStage = document.getElementById("forjaDropStage");
   const forjaDicaFinal = document.getElementById("forjaDicaFinal");
 
@@ -1488,7 +1646,6 @@ function configurarForjaMvp() {
   const forjaRevelacaoStage = document.getElementById("forjaRevelacaoStage");
   const forjaFeedback = document.getElementById("forjaFeedback");
   const btnForjarMvp = document.getElementById("btnForjarMvp");
-  const btnResetCapitulo5 = document.getElementById("btnResetCapitulo5");
 
   const slotAval = document.getElementById("forjaSlotAval");
   const slotOrb = document.getElementById("forjaSlotOrb");
@@ -1619,42 +1776,44 @@ function configurarForjaMvp() {
     });
   }
 
-  function atualizarInterfaceForja() {
-    ordemForja.forEach((chaveArtefato) => {
-      renderizarSlotForja(chaveArtefato);
-    });
+function atualizarInterfaceForja() {
+  ordemForja.forEach((chaveArtefato) => {
+    renderizarSlotForja(chaveArtefato);
+  });
 
-    atualizarDestaqueProximoSlot();
+  atualizarDestaqueProximoSlot();
 
-    const totalPreenchidos = contarArtefatosPosicionados();
+  const totalPreenchidos = contarArtefatosPosicionados();
 
-    if (totalPreenchidos === 0) {
-      definirFeedbackForja(
-        "Arraste os artefatos transformados da mochila para os receptáculos da Forja.",
-      );
-    }
-
-    if (totalPreenchidos > 0 && totalPreenchidos < 3) {
-      const proximoArtefato = obterProximoArtefatoEsperado();
-      const nomeProximo = artefatosForja[proximoArtefato]?.nome;
-
-      definirFeedbackForja(
-        `Artefatos posicionados: ${totalPreenchidos}/3. Próximo artefato esperado: ${nomeProximo}.`,
-        "sucesso",
-      );
-    }
-
-    if (totalPreenchidos === 3) {
-      btnForjarMvp.classList.remove("hidden");
-
-      definirFeedbackForja(
-        "A Forja reconhece a sequência correta. O MVP pode ser criado.",
-        "sucesso",
-      );
-    } else {
-      btnForjarMvp.classList.add("hidden");
-    }
+  if (totalPreenchidos === 0) {
+    definirFeedbackForja(
+      "Arraste os artefatos transformados da mochila para os receptáculos da Forja.",
+    );
   }
+
+  if (totalPreenchidos > 0 && totalPreenchidos < 3) {
+    const proximoArtefato = obterProximoArtefatoEsperado();
+    const nomeProximo = artefatosForja[proximoArtefato]?.nome;
+
+    definirFeedbackForja(
+      `Artefatos posicionados: ${totalPreenchidos}/3. Próximo artefato esperado: ${nomeProximo}.`,
+      "sucesso",
+    );
+  }
+
+  if (totalPreenchidos === 3) {
+    btnForjarMvp.disabled = false;
+    btnForjarMvp.classList.add("is-pronto");
+
+    definirFeedbackForja(
+      "A Forja reconhece a sequência correta. O MVP pode ser criado.",
+      "sucesso",
+    );
+  } else {
+    btnForjarMvp.disabled = true;
+    btnForjarMvp.classList.remove("is-pronto");
+  }
+}
 
   function esconderArtefatoDaMochila(chaveArtefato) {
     const item = document.querySelector(
@@ -1729,17 +1888,17 @@ function configurarForjaMvp() {
   }
 
   btnIniciarForja.addEventListener("click", () => {
-  forjaAulaWrap.classList.remove("hidden");
-  forjaDropStage.classList.add("hidden");
+    forjaAulaWrap.classList.remove("hidden");
+    forjaDropStage.classList.add("hidden");
 
-  atualizarMochila();
-  atualizarInterfaceForja();
+    atualizarMochila();
+    atualizarInterfaceForja();
 
-  forjaAulaWrap.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
+    forjaAulaWrap.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   });
-});
 
   document.addEventListener("dragstart", (event) => {
     const itemArrastavel = event.target.closest(
@@ -1779,44 +1938,38 @@ function configurarForjaMvp() {
     });
   });
 
-  btnForjarMvp.addEventListener("click", () => {
-    const totalPreenchidos = contarArtefatosPosicionados();
+ btnForjarMvp.addEventListener("click", () => {
+  const totalPreenchidos = contarArtefatosPosicionados();
 
-    if (totalPreenchidos < 3) {
-      definirFeedbackForja(
-        "A Forja ainda não está completa. Acenda os três receptáculos antes de criar o MVP.",
-        "erro",
-      );
-      return;
-    }
-
-    estadoForja.concluida = true;
-
-    concluirEtapaCapitulo5("forja-mvp");
-    atualizarMochila();
-    atualizarMapaPonte();
-    atualizarPreviewsPonte();
-
-    forjaRevelacaoStage.classList.remove("hidden");
-
-    const forjaRevealCopy = document.getElementById("forjaRevealCopy");
-
-    if (forjaRevealCopy) {
-      setTimeout(() => {
-        forjaRevealCopy.classList.add("show");
-      }, 250);
-    }
-
-    setTimeout(() => {
-      animarAvancoNoMapa("porta-final", true);
-    }, 900);
-
-    salvarEstadoCapitulo5Local();
-  });
-
-  if (btnResetCapitulo5) {
-    btnResetCapitulo5.addEventListener("click", resetarJornadaCapitulo5);
+  if (totalPreenchidos < 3) {
+    definirFeedbackForja(
+      "A Forja ainda não está completa. Acenda os três receptáculos antes de criar o MVP.",
+      "erro",
+    );
+    return;
   }
+
+  estadoForja.concluida = true;
+
+  forjaDropStage.classList.add("hidden");
+  forjaRevelacaoStage.classList.remove("hidden");
+
+  const forjaRevealCopy = document.getElementById("forjaRevealCopy");
+
+  if (forjaRevealCopy) {
+    setTimeout(() => {
+      forjaRevealCopy.classList.add("show");
+    }, 250);
+  }
+
+  atualizarMochila();
+  salvarEstadoCapitulo5Local();
+
+  forjaRevelacaoStage.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+});
 
   atualizarInterfaceForja();
 
@@ -1937,7 +2090,6 @@ function configurarSequenciaIntroNoScroll() {
   cards.forEach((card) => observer.observe(card));
 }
 
-
 function abrirStageCapitulo5(step) {
   const encontro = ENCONTROS_CAPITULO_5[step];
   if (!encontro) return;
@@ -2027,8 +2179,8 @@ function configurarNavegacaoCapitulo5() {
             block: "start",
           });
           setTimeout(() => {
-  btnEntrarNaPonte.classList.remove("ativando");
-}, 900);
+            btnEntrarNaPonte.classList.remove("ativando");
+          }, 900);
         }
       }, 520);
     });
@@ -2233,16 +2385,16 @@ function atualizarMochila() {
   ) {
     medalhao.classList.add("convocado");
   }
- 
+
   if (etapaAtualCapitulo5 === "forja-mvp") {
     if (btnMochila) {
-  btnMochila.classList.add("destacada-forja");
-  btnMochila.setAttribute("aria-expanded", "false");
-}
+      btnMochila.classList.add("destacada-forja");
+      btnMochila.setAttribute("aria-expanded", "false");
+    }
 
-if (mochilaPainel) {
-  mochilaPainel.classList.add("hidden");
-}
+    if (mochilaPainel) {
+      mochilaPainel.classList.add("hidden");
+    }
 
     if (backlog) backlog.classList.add("hidden");
     if (medalhao) medalhao.classList.add("hidden");
@@ -2295,42 +2447,50 @@ if (mochilaPainel) {
       if (estadoForja.slots.bau) bau.classList.add("hidden");
     }
   }
-
-  // Após concluir a Forja -> só resta o MVP
+  // Após concluir a Forja -> só resta a Chave MVP,
+  // a menos que ela já tenha sido usada na porta final.
   if (etapasConcluidas.has("forja-mvp")) {
     if (backlog) backlog.classList.add("hidden");
+    if (aval) aval.classList.add("hidden");
     if (medalhao) medalhao.classList.add("hidden");
     if (ampulheta) ampulheta.classList.add("hidden");
 
     if (bau) {
-  bau.classList.remove("hidden", "ativo", "destacado", "convocado");
-  bau.classList.add("destacado");
+      if (chaveMvpUsadaNaPorta) {
+        bau.classList.add("hidden");
+        bau.classList.remove("ativo", "destacado", "convocado", "is-over");
+        bau.removeAttribute("draggable");
+        return;
+      }
 
-  bau.dataset.artefato = "chave-mvp";
-  bau.setAttribute("draggable", "true");
+      bau.classList.remove("hidden", "ativo", "destacado", "convocado");
+      bau.classList.add("destacado");
 
-  const img = bau.querySelector("img");
-  const tooltip = bau.querySelector(".mochila-item-tooltip");
+      bau.dataset.artefato = "chave-mvp";
+      bau.setAttribute("draggable", "true");
 
-  if (img) {
-    img.src = "/assets/img/capitulo_5/chave-mvp.png";
-    img.alt = "Chave MVP";
-  }
+      const img = bau.querySelector("img");
+      const tooltip = bau.querySelector(".mochila-item-tooltip");
 
-  if (tooltip) {
-    tooltip.textContent =
-      "Chave MVP — a menor versão funcional de uma entrega que já gera valor real e pode abrir a última porta.";
-  }
-}
+      if (img) {
+        img.src = "/assets/img/capitulo_5/chave-mvp.png";
+        img.alt = "Chave MVP";
+      }
 
-   if (btnMochila) {
-  btnMochila.classList.add("destacada-forja");
-  btnMochila.setAttribute("aria-expanded", "false");
-}
+      if (tooltip) {
+        tooltip.textContent =
+          "Chave MVP — a menor versão funcional de uma entrega que já gera valor real e pode abrir a última porta.";
+      }
+    }
 
-if (mochilaPainel) {
-  mochilaPainel.classList.add("hidden");
-}
+    if (btnMochila) {
+      btnMochila.classList.add("destacada-forja");
+      btnMochila.setAttribute("aria-expanded", "false");
+    }
+
+    if (mochilaPainel) {
+      mochilaPainel.classList.add("hidden");
+    }
   }
 }
 
@@ -2639,6 +2799,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   configurarMochila();
   atualizarMochila();
   configurarCliqueArtefatosMochila();
+  configurarResetTempoCapitulo5();
   configurarPortaFinal();
   configurarConclusaoHistoria();
   configurarEntradaDesafio();
