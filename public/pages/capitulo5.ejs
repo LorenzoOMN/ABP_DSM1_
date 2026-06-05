@@ -219,7 +219,7 @@
               >
                 <img
                   class="ponte-node-icon"
-                  src="/assets/img/capitulo_5/bug-infernal-icon.png"
+                  src="/assets/img/capitulo_5/bug-infernal.png"
                   alt="Bug Infernal"
                 />
                 <span class="ponte-node-tooltip">Um zumbido chato</span>
@@ -246,11 +246,7 @@
                 type="button"
                 aria-label="Porta Final"
               >
-                <img
-                  class="ponte-node-icon"
-                  src="/assets/img/capitulo_1/icones/porta.png"
-                  alt="Porta Final"
-                />
+                
                 <span class="ponte-node-tooltip"
                   >Porta Final, falta tão pouco</span
                 >
@@ -339,43 +335,49 @@
         >
           <div class="duplo-flow">
             <!-- 1) INTRO CINEMATOGRÁFICA -->
-            <div class="duplo-intro-card" id="duploIntroCard">
-              <div class="duplo-intro-scene">
-                <img
-                  class="duplo-intro-image"
-                  src="/assets/img/capitulo_5/encontro-duplo.png"
-                  alt="O Duplo surge no caminho da ponte"
-                />
+           <div class="duplo-intro-card intro-sequencia" id="duploIntroCard">
+  <div class="duplo-intro-scene">
+    <img
+      class="duplo-intro-image"
+      src="/assets/img/capitulo_5/encontro-duplo.png"
+      alt="O Duplo surge no caminho da ponte"
+    />
 
-                <div class="duplo-intro-overlay">
-                  <div class="duplo-intro-text">
-                    <span class="section-number">01</span>
-                    <p class="section-kicker">OBSTÁCULO 1</p>
-                    <h2>O DUPLO</h2>
+    <div class="duplo-intro-overlay">
+      <div class="duplo-intro-text">
+       
+        <p class="section-kicker intro-seq-item" data-seq="kicker">
+          OBSTÁCULO 1
+        </p>
 
-                    <p class="duplo-texto-base">
-                      Uma sombra surge na ponte e começa a imitar os passos do
-                      grupo. Quanto mais confusos os papéis, mais forte ela se
-                      torna.
-                    </p>
+        <h2 class="intro-seq-item" data-seq="titulo">
+          O DUPLO
+        </h2>
 
-                    <p class="duplo-texto-hover">
-                      Para vencer o Duplo, o time precisa reorganizar seus
-                      movimentos e reconhecer com clareza as responsabilidades
-                      de cada integrante.
-                    </p>
-                  </div>
+        <p class="duplo-texto-base intro-seq-item" data-seq="texto1">
+          Uma sombra surge na ponte e começa a imitar os passos do
+          grupo. Quanto mais confusos os papéis, mais forte ela se
+          torna.
+        </p>
 
-                  <button
-                    type="button"
-                    class="btn-duplo-iniciar"
-                    id="btnMostrarDesafioDuplo"
-                  >
-                    Iniciar desafio
-                  </button>
-                </div>
-              </div>
-            </div>
+        <p class="duplo-texto-hover intro-seq-item" data-seq="texto2">
+          Para vencer o Duplo, o time precisa reorganizar seus
+          movimentos e reconhecer com clareza as responsabilidades
+          de cada integrante.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn-duplo-iniciar intro-seq-item"
+        data-seq="botao"
+        id="btnMostrarDesafioDuplo"
+      >
+        Iniciar desafio
+      </button>
+    </div>
+  </div>
+</div>
 
             <!-- 2) DESAFIO DOS PAPÉIS -->
             <div class="duplo-desafio-wrap hidden" id="duploDesafioWrap">
@@ -535,48 +537,54 @@
           data-step="stakeholder"
         >
           <div class="stakeholder-flow">
-            <div class="stakeholder-intro-card" id="stakeholderIntroCard">
-              <div class="stakeholder-intro-scene">
-                <img
-                  src="/assets/img/capitulo_5/stakeholder-entrada.png"
-                  alt="O encontro com o Stakeholder Selvagem"
-                  class="stakeholder-intro-image"
-                />
+            <div class="stakeholder-intro-card intro-sequencia" id="stakeholderIntroCard">
+  <div class="stakeholder-intro-scene">
+    <img
+      src="/assets/img/capitulo_5/stakeholder-entrada.png"
+      alt="O encontro com o Stakeholder Selvagem"
+      class="stakeholder-intro-image"
+    />
 
-                <div class="stakeholder-intro-overlay">
-                  <div class="stakeholder-intro-text">
-                    <p class="chapter-kicker">Obstáculo 2</p>
-                    <h2>O Stakeholder Selvagem</h2>
+    <div class="stakeholder-intro-overlay">
+      <div class="stakeholder-intro-text">
+        <p class="chapter-kicker intro-seq-item" data-seq="kicker">
+          Obstáculo 2
+        </p>
 
-                    <p class="stakeholder-texto-base">
-                      Após a batalha com o Duplo, o grupo segue caminhando pela
-                      ponte. Por alguns instantes, tudo parece em ordem. Então
-                      os gritos começam. Gritos de exigências. Pedidos
-                      atravessados. Mudanças urgentes. Cobranças sem fim. Das
-                      sombras, surge uma figura tomada pelo ruído: o Stakeholder
-                      Selvagem.
-                    </p>
+        <h2 class="intro-seq-item" data-seq="titulo">
+          O Stakeholder Selvagem
+        </h2>
 
-                    <p class="stakeholder-texto-hover">
-                      As vozes atingem o Bardo Product Owner com mais força do
-                      que os demais. Sua audição apurada capta cada pedido, cada
-                      mudança e cada expectativa ao mesmo tempo. Para
-                      sobreviver, o grupo precisará ajudá-lo a transformar caos
-                      em prioridade, pressão em transparência e exigência em
-                      alinhamento.
-                    </p>
-                  </div>
+        <p class="stakeholder-texto-base intro-seq-item" data-seq="texto1">
+          Após a batalha com o Duplo, o grupo segue caminhando pela
+          ponte. Por alguns instantes, tudo parece em ordem. Então
+          os gritos começam. Gritos de exigências. Pedidos
+          atravessados. Mudanças urgentes. Cobranças sem fim. Das
+          sombras, surge uma figura tomada pelo ruído: o Stakeholder
+          Selvagem.
+        </p>
 
-                  <button
-                    type="button"
-                    class="btn-stakeholder-iniciar"
-                    id="btnIniciarStakeholder"
-                  >
-                    Enfrentar o Stakeholder
-                  </button>
-                </div>
-              </div>
-            </div>
+        <p class="stakeholder-texto-hover intro-seq-item" data-seq="texto2">
+          As vozes atingem o Bardo Product Owner com mais força do
+          que os demais. Sua audição apurada capta cada pedido, cada
+          mudança e cada expectativa ao mesmo tempo. Para
+          sobreviver, o grupo precisará ajudá-lo a transformar caos
+          em prioridade, pressão em transparência e exigência em
+          alinhamento.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn-stakeholder-iniciar intro-seq-item"
+        data-seq="botao"
+        id="btnIniciarStakeholder"
+      >
+        Enfrentar o Stakeholder
+      </button>
+    </div>
+  </div>
+</div>
 
             <div
               class="stakeholder-turnos-wrap hidden"
@@ -711,46 +719,52 @@
           data-step="necrobranch"
         >
           <div class="necro-flow">
-            <div class="necro-intro-card" id="necroIntroCard">
-              <div class="necro-intro-scene">
-                <img
-                  src="/assets/img/capitulo_5/necrobranch-intro.png"
-                  alt="O surgimento da Necrobranch Commitada"
-                  class="necro-intro-image"
-                />
+           <div class="necro-intro-card intro-sequencia" id="necroIntroCard">
+  <div class="necro-intro-scene">
+    <img
+      src="/assets/img/capitulo_5/necrobranch-intro.png"
+      alt="O surgimento da Necrobranch Commitada"
+      class="necro-intro-image"
+    />
 
-                <div class="necro-intro-overlay">
-                  <div class="necro-intro-text">
-                    <p class="chapter-kicker">Obstáculo 3</p>
-                    <h2>Necrobranch Commitada</h2>
+    <div class="necro-intro-overlay">
+      <div class="necro-intro-text">
+        <p class="chapter-kicker intro-seq-item" data-seq="kicker">
+          Obstáculo 3
+        </p>
 
-                    <p class="necro-texto-base">
-                      O grupo segue pela ponte até que, de repente, um tremor
-                      sacode todo o caminho. Um barulho ensurdecedor atravessa a
-                      travessia. Quando a poeira baixa, os aventureiros percebem
-                      que parte da ponte desmoronou. Algo antigo e corrompido
-                      tenta puxar o caminho para o abismo.
-                    </p>
+        <h2 class="intro-seq-item" data-seq="titulo">
+          Necrobranch Commitada
+        </h2>
 
-                    <p class="necro-texto-hover">
-                      A Dev Lendária percebe a verdade: tudo não passa da magia
-                      necromante de uma branch esquecida, cheia de conflitos,
-                      integrações imprudentes e código instável. Antes de
-                      seguir, o time precisará entender por que a ponte caiu — e
-                      como restaurar o fluxo.
-                    </p>
-                  </div>
+        <p class="necro-texto-base intro-seq-item" data-seq="texto1">
+          O grupo segue pela ponte até que, de repente, um tremor
+          sacode todo o caminho. Um barulho ensurdecedor atravessa a
+          travessia. Quando a poeira baixa, os aventureiros percebem
+          que parte da ponte desmoronou. Algo antigo e corrompido
+          tenta puxar o caminho para o abismo.
+        </p>
 
-                  <button
-                    type="button"
-                    class="btn-necro-iniciar"
-                    id="btnIniciarNecrobranch"
-                  >
-                    Analisar o desmoronamento
-                  </button>
-                </div>
-              </div>
-            </div>
+        <p class="necro-texto-hover intro-seq-item" data-seq="texto2">
+          A Dev Lendária percebe a verdade: tudo não passa da magia
+          necromante de uma branch esquecida, cheia de conflitos,
+          integrações imprudentes e código instável. Antes de
+          seguir, o time precisará entender por que a ponte caiu — e
+          como restaurar o fluxo.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn-necro-iniciar intro-seq-item"
+        data-seq="botao"
+        id="btnIniciarNecrobranch"
+      >
+        Analisar o desmoronamento
+      </button>
+    </div>
+  </div>
+</div>
 
             <div class="necro-analise-wrap hidden" id="necroAnaliseWrap">
               <div class="necro-analise-header">
@@ -920,45 +934,51 @@
           data-step="bug-infernal"
         >
           <div class="bug-flow">
-            <div class="bug-intro-card" id="bugIntroCard">
-              <div class="bug-intro-scene">
-                <img
-                  src="/assets/img/capitulo_5/bug-intro.png"
-                  alt="O encontro com o Bug Infernal"
-                  class="bug-intro-image"
-                />
+          <div class="bug-intro-card intro-sequencia" id="bugIntroCard">
+  <div class="bug-intro-scene">
+    <img
+      src="/assets/img/capitulo_5/bug-intro.png"
+      alt="O encontro com o Bug Infernal"
+      class="bug-intro-image"
+    />
 
-                <div class="bug-intro-overlay">
-                  <div class="bug-intro-text">
-                    <p class="chapter-kicker">Obstáculo 4</p>
-                    <h2>Bug Infernal</h2>
+    <div class="bug-intro-overlay">
+      <div class="bug-intro-text">
+        <p class="chapter-kicker intro-seq-item" data-seq="kicker">
+          Obstáculo 4
+        </p>
 
-                    <p class="bug-texto-base">
-                      Um zumbido incômodo cresce na escuridão. A travessia
-                      vacila, falhas se acumulam ao redor e cada passo parece
-                      acionar um novo erro no caminho. Então a criatura se
-                      revela: o Bug Infernal, alimentado por comportamento
-                      inesperado, reprodução confusa e ausência de validação.
-                    </p>
+        <h2 class="intro-seq-item" data-seq="titulo">
+          Bug Infernal
+        </h2>
 
-                    <p class="bug-texto-hover">
-                      O grupo percebe que não basta atacá-lo às cegas. Será
-                      preciso analisá-lo com precisão, identificar o que
-                      sustenta sua força e reduzir a criatura até que ela possa
-                      ser contida.
-                    </p>
-                  </div>
+        <p class="bug-texto-base intro-seq-item" data-seq="texto1">
+          Um zumbido incômodo cresce na escuridão. A travessia
+          vacila, falhas se acumulam ao redor e cada passo parece
+          acionar um novo erro no caminho. Então a criatura se
+          revela: o Bug Infernal, alimentado por comportamento
+          inesperado, reprodução confusa e ausência de validação.
+        </p>
 
-                  <button
-                    type="button"
-                    class="btn-bug-iniciar"
-                    id="btnIniciarBug"
-                  >
-                    Analisar a criatura
-                  </button>
-                </div>
-              </div>
-            </div>
+        <p class="bug-texto-hover intro-seq-item" data-seq="texto2">
+          O grupo percebe que não basta atacá-lo às cegas. Será
+          preciso analisá-lo com precisão, identificar o que
+          sustenta sua força e reduzir a criatura até que ela possa
+          ser contida.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn-bug-iniciar intro-seq-item"
+        data-seq="botao"
+        id="btnIniciarBug"
+      >
+        Analisar a criatura
+      </button>
+    </div>
+  </div>
+</div>
 
             <div class="bug-analise-wrap hidden" id="bugAnaliseWrap">
               <div class="bug-analise-header">
@@ -971,85 +991,189 @@
                 </p>
               </div>
 
-              <div class="bug-analise-card">
-                <div class="bug-analise-media">
-                  <div class="bug-creature-wrap" id="bugCreatureWrap">
-                    <img
-                      src="/assets/img/capitulo_5/bug-infernal-icon.png"
-                      alt="Bug Infernal"
-                      class="bug-creature-image"
-                      id="bugCreatureImage"
-                    />
+        <div class="bug-analise-card bug-analise-card--arena">
+  <div class="bug-arena" id="bugArena">
+    <p class="bug-arena-instrucao">
+      Clique nos pontos críticos da criatura para revelar o que precisa ser
+      compreendido, registrado e validado antes da correção.
+    </p>
 
-                    <button
-                      type="button"
-                      class="bug-hotspot bug-hotspot--1"
-                      data-bug-hotspot="esperado"
-                      aria-label="Analisar comportamento esperado"
-                    ></button>
+    <div
+      class="bug-floating-bubble bug-floating-bubble--esperado hidden"
+      data-bug-bubble="esperado"
+    >
+      <p class="bug-floating-label">Análise revelada</p>
+      <h4>Comportamento esperado</h4>
+      <p>
+        Antes de corrigir, o time precisa entender qual era o comportamento
+        correto esperado. Sem isso, qualquer correção vira tentativa no escuro.
+      </p>
+    </div>
 
-                    <button
-                      type="button"
-                      class="bug-hotspot bug-hotspot--2"
-                      data-bug-hotspot="atual"
-                      aria-label="Analisar comportamento atual"
-                    ></button>
+    <div
+      class="bug-floating-bubble bug-floating-bubble--atual hidden"
+      data-bug-bubble="atual"
+    >
+      <p class="bug-floating-label">Análise revelada</p>
+      <h4>Comportamento atual</h4>
+      <p>
+        O comportamento real precisa ser observado e reproduzido. Só assim o
+        time entende onde a falha aparece e como ela afeta o fluxo.
+      </p>
+    </div>
 
-                    <button
-                      type="button"
-                      class="bug-hotspot bug-hotspot--3"
-                      data-bug-hotspot="validacao"
-                      aria-label="Analisar validação da correção"
-                    ></button>
+    <div
+      class="bug-floating-bubble bug-floating-bubble--validacao hidden"
+      data-bug-bubble="validacao"
+    >
+      <p class="bug-floating-label">Análise revelada</p>
+      <h4>Validação da correção</h4>
+      <p>
+        Depois de corrigir, é preciso validar se o problema realmente foi
+        resolvido e se a mudança não criou novos efeitos colaterais.
+      </p>
+    </div>
 
-                    <div class="bug-arraste-wrap hidden" id="bugArrasteWrap">
-                      <p class="bug-arraste-hint">
-                        Agora a criatura pode ser contida. Arraste o Bug
-                        Infernal até o Baú da Iteração.
-                      </p>
+    <div class="bug-creature-wrap" id="bugCreatureWrap">
+      <div class="bug-creature-stage">
+        <img
+          src="/assets/img/capitulo_5/bug-infernal.png"
+          alt="Bug Infernal"
+          class="bug-creature-image"
+          id="bugCreatureImage"
+        />
 
-                      <img
-                        src="/assets/img/capitulo_5/bug-infernal-icon.png"
-                        alt="Bug Infernal reduzido"
-                        class="bug-miniatura bug-miniatura--mesma-cena"
-                        id="bugMiniaturaArrastavel"
-                        draggable="true"
-                      />
-                    </div>
-                  </div>
+        <button
+          type="button"
+          class="bug-hotspot bug-hotspot--1"
+          data-bug-hotspot="esperado"
+          aria-label="Analisar comportamento esperado"
+        ></button>
 
-                  <div class="bug-analise-panel">
-                    <p class="bug-analise-label" id="bugAnaliseLabel">
-                      Anatomia do problema
-                    </p>
+        <button
+          type="button"
+          class="bug-hotspot bug-hotspot--2"
+          data-bug-hotspot="atual"
+          aria-label="Analisar comportamento atual"
+        ></button>
 
-                    <h4 id="bugAnaliseTitulo">
-                      Selecione um ponto da criatura
-                    </h4>
+        <button
+          type="button"
+          class="bug-hotspot bug-hotspot--3"
+          data-bug-hotspot="validacao"
+          aria-label="Analisar validação da correção"
+        ></button>
 
-                    <p id="bugAnaliseTexto">
-                      Cada parte analisada revela como o time pode investigar
-                      melhor o bug, reduzir incerteza e conter a ameaça com
-                      segurança.
-                    </p>
+        <div class="bug-arraste-wrap hidden" id="bugArrasteWrap">
+          <img
+            src="/assets/img/capitulo_5/bug-infernal.png"
+            alt="Bug Infernal reduzido"
+            class="bug-miniatura--mesma-cena"
+            id="bugMiniaturaArrastavel"
+            draggable="true"
+          />
 
-                    <div class="bug-analise-progresso" id="bugAnaliseProgresso">
-                      Pontos analisados: 0/3
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <p class="bug-arraste-hint">
+            O Bug foi reduzido. Arraste-o até o baú para conter a ameaça.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="bug-dica-bau-creature hidden" id="bugDicaBauCreature" aria-live="polite">
+  O baú é muito pesado, mas o Bug está pequeno o suficiente para entrar na mochila.
+</p>
+    <button
+      type="button"
+      class="bug-analise-progresso bug-analise-progresso--arena"
+      id="bugAnaliseProgresso"
+      aria-expanded="false"
+      aria-controls="bugResumoAnalise"
+    >
+      Pontos analisados: 0/3
+    </button>
+  </div>
+
+  <div class="bug-resumo-analise hidden" id="bugResumoAnalise">
+    <article class="bug-resumo-card">
+      <p class="bug-floating-label">Registro 1</p>
+      <h4>Comportamento esperado</h4>
+      <p>
+        Antes de corrigir, o time precisa entender qual era o comportamento
+        correto esperado. Sem isso, qualquer correção vira tentativa no escuro.
+      </p>
+    </article>
+
+    <article class="bug-resumo-card">
+      <p class="bug-floating-label">Registro 2</p>
+      <h4>Comportamento atual</h4>
+      <p>
+        O comportamento real precisa ser observado e reproduzido. Só assim o
+        time entende onde a falha aparece e como ela afeta o fluxo.
+      </p>
+    </article>
+
+    <article class="bug-resumo-card">
+      <p class="bug-floating-label">Registro 3</p>
+      <h4>Validação da correção</h4>
+      <p>
+        Depois de corrigir, é preciso validar se o problema realmente foi
+        resolvido e se a mudança não criou novos efeitos colaterais.
+      </p>
+    </article>
+  </div>
+
+  <div class="bug-analise-panel bug-analise-panel--oculto" aria-hidden="true">
+    <p class="bug-analise-label" id="bugAnaliseLabel">Anatomia do problema</p>
+
+    <h4 id="bugAnaliseTitulo">
+      Selecione um ponto da criatura
+    </h4>
+
+    <p id="bugAnaliseTexto">
+      Cada parte analisada revela como o time pode investigar melhor o bug,
+      reduzir incerteza e conter a ameaça com segurança.
+    </p>
+  </div>
+</div>
 
             <div class="bug-revelacao-stage hidden" id="bugRevelacaoStage">
               <div class="bug-reveal-cinematic">
-                <div class="bug-reveal-media">
-                  <img
-                    src="/assets/img/capitulo_5/carta-bug-infernal.png"
-                    alt="O Bug Infernal foi contido"
-                    class="bug-reveal-image"
-                  />
-                </div>
+               <div class="bug-reveal-media">
+  <button
+    type="button"
+    class="bug-flip-card"
+    id="bugFlipCard"
+    aria-label="Revelar carta do Bug Infernal"
+    aria-pressed="false"
+  >
+    <span class="bug-flip-card__inner">
+      <span class="bug-flip-card__face bug-flip-card__face--front">
+        <img
+          src="/assets/img/capitulo_5/bug-fim.png"
+          alt="O Bug Infernal enfraquecido após ser contido"
+          class="bug-reveal-image bug-reveal-image--fim"
+        />
+
+        <span class="bug-flip-card__hint">
+          Clique para revelar a carta
+        </span>
+      </span>
+
+      <span class="bug-flip-card__face bug-flip-card__face--back">
+        <img
+          src="/assets/img/capitulo_5/carta-escudo.png"
+          alt="Carta do impedimento Bug Infernal"
+          class="bug-reveal-image bug-reveal-image--carta"
+        />
+
+        <span class="bug-flip-card__hint bug-flip-card__hint--back">
+          Impedimento revelado
+        </span>
+      </span>
+    </span>
+  </button>
+</div>
 
                 <div class="bug-reveal-copy" id="bugRevealCopy">
                   <span class="bug-reveal-tag">Ameaça contida</span>
@@ -1082,226 +1206,440 @@
           data-step="forja-mvp"
         >
           <div class="forja-flow">
-            <div class="forja-intro-card" id="forjaIntroCard">
-              <div class="forja-intro-scene">
-                <img
-                  src="/assets/img/capitulo_5/base-artefato-bau.png"
-                  alt="A Grande Forja onde nasce o MVP"
-                  class="forja-intro-image"
-                />
+           <div class="forja-intro-card intro-sequencia" id="forjaIntroCard">
+  <div class="forja-intro-scene">
+    <img
+      src="/assets/img/capitulo_5/forja-intro.png"
+      alt="A Grande Forja onde nasce o MVP"
+      class="forja-intro-image"
+    />
 
-                <div class="forja-intro-overlay">
-                  <div class="forja-intro-text">
-                    <p class="chapter-kicker">Obstáculo Final da Jornada</p>
-                    <h2>A Grande Forja do MVP</h2>
+    <div class="forja-intro-overlay">
+  <div class="forja-intro-text">
+    <p class="chapter-kicker intro-seq-item" data-seq="kicker">
+      Obstáculo final da jornada
+    </p>
 
-                    <p class="forja-texto-base">
-                      Após atravessar a ponte e superar os impedimentos do
-                      caminho, os aventureiros finalmente encontram a Grande
-                      Forja. É aqui que as entregas ganham forma. Todo produto
-                      nasce imperfeito, mas pode nascer útil — em sua primeira
-                      versão de valor real.
-                    </p>
+    <h2 class="intro-seq-item" data-seq="titulo">
+      A Grande Forja do MVP
+    </h2>
 
-                    <p class="forja-texto-hover">
-                      Um MVP não é um produto incompleto por descuido. É a menor
-                      versão possível que já entrega valor, pode ser usada,
-                      validada e evoluída.
-                    </p>
-                  </div>
+    <p class="forja-texto-base intro-seq-item" data-seq="texto1">
+      Depois da travessia, o grupo encontra a Grande Forja: o lugar onde uma
+      ideia finalmente toma forma como entrega real.
+    </p>
 
-                  <button
-                    type="button"
-                    class="btn-forja-iniciar"
-                    id="btnIniciarForja"
-                  >
-                    Entrar na forja
-                  </button>
-                </div>
-              </div>
-            </div>
+    <p class="forja-texto-hover intro-seq-item" data-seq="texto2">
+      Um MVP é a menor versão que já pode ser usada, validada e evoluída.
+    </p>
+  </div>
 
-            <div class="forja-aula-wrap hidden" id="forjaAulaWrap">
-              <div class="forja-aula-header">
-                <p class="chapter-kicker">Antes de forjar</p>
-                <h3>O que forma um MVP?</h3>
-              </div>
+  <button
+    type="button"
+    class="btn-forja-iniciar intro-seq-item"
+    data-seq="botao"
+    id="btnIniciarForja"
+  >
+    Entrar na forja
+  </button>
+</div>
+  </div>
+</div>
+<div class="forja-aula-wrap hidden forja-aula-wrap--epica" id="forjaAulaWrap">
+  <div class="forja-aula-header forja-aula-header--epica">
+    <p class="chapter-kicker">Antes de forjar</p>
+    <h3>As 3 Fornalhas da Forja</h3>
+    <p>
+      Antes de criar o MVP, acenda as três fornalhas e descubra o que sustenta
+      uma entrega real.
+    </p>
+  </div>
 
-              <div class="forja-aula-grid">
-                <article class="forja-aula-card">
-                  <h4>User Story</h4>
-                  <p>
-                    Antes de construir, é preciso clareza sobre a necessidade do
-                    usuário. Uma boa User Story ajuda o time a entender
-                    <strong>quem</strong> precisa,
-                    <strong>o quê</strong> precisa e <strong>por quê</strong>.
-                  </p>
-                </article>
+  <div class="forja-fornalhas-layout">
+    <div class="forja-fornalhas-grid" id="forjaFornalhasGrid">
+      <!-- FORNALHA 1 -->
+      <button
+        type="button"
+        class="forja-fornalha"
+        data-fornalha="valor"
+      >
+        <span class="forja-fornalha__kicker">1ª Fornalha</span>
+        <strong class="forja-fornalha__titulo">Valor</strong>
 
-                <article class="forja-aula-card">
-                  <h4>Incremento funcional</h4>
-                  <p>
-                    O MVP precisa funcionar de verdade. Não basta ter intenção
-                    ou ideia: é preciso existir uma versão real, utilizável e
-                    inspecionável.
-                  </p>
-                </article>
+        <span class="forja-fornalha__trigger">Acender</span>
 
-                <article class="forja-aula-card">
-                  <h4>Validação e qualidade</h4>
-                  <p>
-                    O time também precisa proteger o que construiu: validar com
-                    quem recebe valor e garantir confiança para seguir sem
-                    quebrar o fluxo.
-                  </p>
-                </article>
-              </div>
-            </div>
+        <div class="forja-fornalha__media">
+          <img
+            src="/assets/img/capitulo_5/chama-valor.png"
+            alt="Chama do Valor"
+            class="forja-fornalha__icon"
+          />
 
-            <div class="forja-drop-stage hidden" id="forjaDropStage">
-              <div class="forja-drop-header">
-                <p class="chapter-kicker">Montagem do MVP</p>
-                <h3>Posicione os artefatos na ordem correta</h3>
-                <p>
-                  Comece pelo valor validado, depois traga o incremento
-                  funcional e por fim sele a entrega com proteção e confiança.
-                </p>
-              </div>
+          <div class="forja-fornalha__overlay">
+            <p class="forja-fornalha__ensino">
+              Entregue algo que realmente importa para alguém.
+            </p>
+          </div>
+        </div>
+      </button>
 
-              <div class="forja-drop-layout">
-                <div class="forja-drop-scene">
-                  <div
-                    class="forja-slot"
-                    data-slot-index="0"
-                    data-aceita="aval"
-                  >
-                    <span class="forja-slot-kicker">1º passo</span>
-                    <h4>Valor validado</h4>
-                    <p>
-                      O MVP precisa nascer com direção clara para o usuário.
-                    </p>
-                    <div class="forja-slot-drop" id="forjaSlotAval"></div>
-                  </div>
+      <!-- FORNALHA 2 -->
+      <button
+        type="button"
+        class="forja-fornalha"
+        data-fornalha="incremento"
+      >
+        <span class="forja-fornalha__kicker">2ª Fornalha</span>
+        <strong class="forja-fornalha__titulo">Incremento</strong>
 
-                  <div
-                    class="forja-slot"
-                    data-slot-index="1"
-                    data-aceita="ampulheta"
-                  >
-                    <span class="forja-slot-kicker">2º passo</span>
-                    <h4>Incremento funcional</h4>
-                    <p>Agora entra a menor versão que realmente funciona.</p>
-                    <div class="forja-slot-drop" id="forjaSlotOrb"></div>
-                  </div>
+        <span class="forja-fornalha__trigger">Acender</span>
 
-                  <div class="forja-slot" data-slot-index="2" data-aceita="bau">
-                    <span class="forja-slot-kicker">3º passo</span>
-                    <h4>Qualidade e proteção</h4>
-                    <p>
-                      Por fim, o produto precisa seguir estável, testado e
-                      protegido.
-                    </p>
-                    <div class="forja-slot-drop" id="forjaSlotEscudo"></div>
-                  </div>
-                </div>
+        <div class="forja-fornalha__media">
+          <img
+            src="/assets/img/capitulo_5/chama-incremento.png"
+            alt="Chama do Incremento"
+            class="forja-fornalha__icon"
+          />
 
-                <aside class="forja-drop-hint">
-                  <p class="forja-drop-hint__title">Ordem esperada</p>
-                  <p>
-                    1. Aval de Aprovação → 2. Orb Main Funcional → 3. Escudo
-                    Mágico
-                  </p>
-                  <p>
-                    Quando todos os receptáculos forem preenchidos corretamente,
-                    a forja liberará a criação do MVP.
-                  </p>
-                </aside>
-              </div>
+          <div class="forja-fornalha__overlay">
+            <p class="forja-fornalha__ensino">
+              Um MVP precisa funcionar, poder ser usado e gerar aprendizado.
+            </p>
+          </div>
+        </div>
+      </button>
 
-              <p class="forja-feedback" id="forjaFeedback">
-                Arraste os artefatos da mochila para a forja.
-              </p>
+      <!-- FORNALHA 3 -->
+      <button
+        type="button"
+        class="forja-fornalha"
+        data-fornalha="protecao"
+      >
+        <span class="forja-fornalha__kicker">3ª Fornalha</span>
+        <strong class="forja-fornalha__titulo">Proteção</strong>
 
-              <div class="forja-actions">
-                <button
-                  class="btn-primary hidden"
-                  id="btnForjarMvp"
-                  type="button"
-                >
-                  Forjar MVP
-                </button>
+        <span class="forja-fornalha__trigger">Acender</span>
 
-                <button
-                  class="btn-secondary"
-                  id="btnResetCapitulo5"
-                  type="button"
-                >
-                  Resetar jornada
-                </button>
-              </div>
-            </div>
+        <div class="forja-fornalha__media">
+          <img
+            src="/assets/img/capitulo_5/chama-protecao.png"
+            alt="Chama da Proteção"
+            class="forja-fornalha__icon"
+          />
 
-            <div class="forja-revelacao-stage hidden" id="forjaRevelacaoStage">
-              <div class="forja-reveal-cinematic">
-                <div class="forja-reveal-media">
-                  <img
-                    src="/assets/img/capitulo_5/base-artefato-bau.png"
-                    alt="O MVP nasce na grande forja"
-                    class="forja-reveal-image"
-                  />
-                </div>
+          <div class="forja-fornalha__overlay">
+            <p class="forja-fornalha__ensino">
+              Proteja a entrega com qualidade, validação e remoção de
+              impedimentos.
+            </p>
+          </div>
+        </div>
+      </button>
+    </div>
 
-                <div class="forja-reveal-copy" id="forjaRevealCopy">
-                  <span class="forja-reveal-tag">MVP forjado</span>
-                  <h3 class="forja-reveal-title">A chave final está pronta</h3>
-                  <p class="forja-reveal-text">
-                    Os artefatos se unem e formam o MVP: a menor versão
-                    funcional, validada e protegida de uma entrega real. Agora o
-                    grupo está pronto para se aproximar da última porta.
-                  </p>
-                </div>
-              </div>
-            </div>
+    <aside class="forja-codex forja-codex--resumo">
+      <p class="forja-codex__kicker">Ensinamento da Forja</p>
+      <h4>O que sustenta um MVP?</h4>
+
+      <p>
+        O MVP nasce quando o time combina direção clara, entrega funcional e
+        proteção do fluxo.
+      </p>
+
+      <div class="forja-palavras-chave">
+        <span class="forja-tag">Valor</span>
+        <span class="forja-tag">Prioridade</span>
+        <span class="forja-tag">Incremento</span>
+        <span class="forja-tag">Funcional</span>
+        <span class="forja-tag">Qualidade</span>
+        <span class="forja-tag">Impedimentos</span>
+      </div>
+    </aside>
+  </div>
+
+  <!-- DICA FINAL: aparece só depois das 3 acesas -->
+  <div class="forja-dica-final hidden" id="forjaDicaFinal">
+    <p class="forja-dica-final__kicker">Dica para o desafio</p>
+    <p class="forja-dica-final__texto">
+      Pense em entrega de valor, funcionamento real, inspeção, adaptação e
+      proteção da solução.
+    </p>
+  </div>
+
+  <div class="forja-mantra">
+    <p>“Toda entrega forte nasce de valor, funcionamento e proteção.”</p>
+  </div>
+
+  <div class="forja-aula-actions">
+    <button
+      type="button"
+      class="btn-primary btn-liberar-montagem-forja hidden"
+      id="btnLiberarMontagemForja"
+    >
+      Ir para a montagem da Forja
+    </button>
+  </div>
+</div>
+
+<div class="forja-drop-stage hidden forja-drop-stage--epica" id="forjaDropStage">
+  <div class="forja-drop-header forja-drop-header--epica">
+    <p class="chapter-kicker">Montagem do MVP</p>
+
+    <h3>Alimente cada chama com o artefato certo</h3>
+
+    <p>
+      A Forja só desperta quando valor, incremento e proteção trabalham juntos.
+      Posicione cada artefato na chama correspondente.
+    </p>
+  </div>
+
+  <div class="forja-montagem-layout">
+    <div class="forja-montagem-main">
+      <div class="forja-chamas-grid">
+        <div
+          class="forja-slot forja-slot--valor"
+          data-slot-index="0"
+          data-aceita="aval"
+        >
+          <span class="forja-slot-kicker">Chama 1</span>
+
+          <h4>Chama do Valor</h4>
+
+          <p>
+            Antes de construir, o time precisa saber qual valor será entregue.
+          </p>
+
+          <div class="forja-slot-drop" id="forjaSlotAval"></div>
+        </div>
+
+        <div
+          class="forja-slot forja-slot--fluxo"
+          data-slot-index="1"
+          data-aceita="ampulheta"
+        >
+          <span class="forja-slot-kicker">Chama 2</span>
+
+          <h4>Chama do Incremento</h4>
+
+          <p>
+            O MVP precisa funcionar, ser usado, observado e validado.
+          </p>
+
+          <div class="forja-slot-drop" id="forjaSlotOrb"></div>
+        </div>
+
+        <div
+          class="forja-slot forja-slot--protecao"
+          data-slot-index="2"
+          data-aceita="bau"
+        >
+          <span class="forja-slot-kicker">Chama 3</span>
+
+          <h4>Chama da Proteção</h4>
+
+          <p>
+            A entrega precisa manter qualidade, aprendizado e fluxo saudável.
+          </p>
+
+          <div class="forja-slot-drop" id="forjaSlotEscudo"></div>
+        </div>
+      </div>
+
+      <div class="forja-core forja-core--montagem" aria-hidden="true">
+        <div class="forja-core__ring"></div>
+        <div class="forja-core__ember"></div>
+        <span class="forja-core__label">MVP</span>
+      </div>
+    </div>
+
+    <aside class="forja-codex forja-codex--montagem">
+      <p class="forja-codex__kicker">Codex da Forja</p>
+
+      <h4>Como nasce um MVP?</h4>
+
+      <p>
+        Um MVP não é uma entrega incompleta. É a menor versão capaz de gerar
+        valor real, funcionar de verdade e trazer aprendizado para o próximo
+        passo.
+      </p>
+
+      <div class="forja-codex-passos">
+        <div class="forja-codex-passo">
+          <strong>1. Valor</strong>
+          <span>entender o que importa e para quem.</span>
+        </div>
+
+        <div class="forja-codex-passo">
+          <strong>2. Incremento</strong>
+          <span>criar algo utilizável e observável.</span>
+        </div>
+
+        <div class="forja-codex-passo">
+          <strong>3. Proteção</strong>
+          <span>validar, aprender e remover impedimentos.</span>
+        </div>
+      </div>
+
+      <div class="forja-palavras-chave">
+        <span class="forja-tag">Valor</span>
+        <span class="forja-tag">Prioridade</span>
+        <span class="forja-tag">Incremento</span>
+        <span class="forja-tag">Funcional</span>
+        <span class="forja-tag">Qualidade</span>
+        <span class="forja-tag">Impedimentos</span>
+      </div>
+    </aside>
+  </div>
+
+  <p class="forja-feedback forja-feedback--epico" id="forjaFeedback">
+    Posicione os artefatos nas chamas corretas.
+  </p>
+
+  <div class="forja-actions forja-actions--epicas">
+   <button
+  class="btn-primary btn-forjar-mvp hidden"
+  id="btnForjarMvp"
+  type="button"
+>
+  Forjar MVP
+</button>
+
+      </div>
+</div>
+          <div class="forja-revelacao-stage hidden" id="forjaRevelacaoStage">
+  <div class="forja-reveal-cinematic">
+    <div class="forja-reveal-media forja-reveal-media--chave">
+      <img
+        src="/assets/img/capitulo_5/chave-mvp.png"
+        alt="Chave do MVP"
+        class="forja-reveal-image forja-reveal-image--chave"
+      />
+    </div>
+
+    <div class="forja-reveal-copy" id="forjaRevealCopy">
+      <span class="forja-reveal-tag">MVP forjado</span>
+
+      <h3 class="forja-reveal-title">
+        A chave final está pronta
+      </h3>
+
+      <p class="forja-reveal-text">
+        Os artefatos se unem e formam o MVP: a menor versão funcional,
+        validada e protegida de uma entrega real. Agora o grupo está pronto
+        para se aproximar da última porta.
+      </p>
+
+       <div class="forja-reveal-actions">
+        <button
+          type="button"
+          class="btn-primary btn-ir-porta-final"
+          id="btnIrPortaFinal"
+        >
+          Levar a chave até a última porta
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
           </div>
         </section>
 
         <section
-          class="capitulo5-step reveal final-step encounter-stage hidden"
+          class="capitulo5-step reveal final-step encounter-stage hidden porta-final-stage"
           id="encounter-porta"
           data-step="porta-final"
         >
-          <span class="section-number">Final</span>
-          <h2>A Porta Final</h2>
+          <p class="chapter-kicker">Limiar final</p>
 
-          <p>
-            A inscrição na porta diz: “Aquele que entende o fluxo… torna-se
-            parte dele.”
+          <h2>A Chave do MVP e a Última Porta</h2>
+
+          <p class="porta-final-intro">
+            A Forja reconhece o que foi aprendido. Valor, incremento funcional e
+            proteção agora se condensam na Chave do MVP. À frente do grupo, a
+            última porta responde com um brilho antigo — mas só se abrirá quando
+            a chave certa tocar sua fechadura.
           </p>
 
-          <p>Ao concluir esta história, o último desafio será liberado.</p>
+          <div class="porta-final-layout">
+            <div class="porta-final-scene">
+              <img
+                src="/assets/img/capitulo_5/porta-final-fechada.png"
+                alt="Porta final fechada"
+                class="porta-final-image"
+                id="portaFinalImgFechada"
+              />
+
+              <img
+                src="/assets/img/capitulo_5/porta-final-aberta.png"
+                alt="Porta final aberta"
+                class="porta-final-image hidden"
+                id="portaFinalImgAberta"
+              />
+
+              <div class="porta-final-lock-zone" id="portaFinalLockZone">
+                <div class="porta-final-lock-core">
+                  <span class="porta-final-lock-icon">🔒</span>
+                </div>
+
+                <p class="porta-final-lock-hint">
+                  Arraste a <strong>Chave MVP</strong> até a fechadura.
+                </p>
+              </div>
+
+              <p class="porta-final-feedback hidden" id="portaFinalFeedback">
+                A porta ainda aguarda a chave forjada.
+              </p>
+            </div>
+
+            <div class="porta-final-copy">
+              <div class="porta-final-copy-card">
+                <p class="porta-final-copy-kicker">Desfecho narrativo</p>
+
+                <h3>O caminho está pronto</h3>
+
+                <p>
+                  Esta não é apenas uma porta física. Ela representa o momento em
+                  que o time prova que sabe transformar esforço em entrega real.
+                </p>
+
+                <p>
+                  Valor antes de volume. Incremento funcional antes da perfeição.
+                  Proteção do fluxo para sustentar a entrega.
+                </p>
+
+                <p>
+                  Quando a chave encaixar, a história será registrada como
+                  concluída e o último desafio será liberado.
+                </p>
+              </div>
+            </div>
+          </div>
 
           <p class="porta-bloqueada" id="portaBloqueada">
-            A porta ainda observa sua jornada. Resolva os obstáculos e forje o
-            MVP para atravessá-la.
+            A porta ainda observa sua jornada. Use a Chave MVP para atravessá-la.
           </p>
 
-          <button
-            class="btn-primary hidden"
-            id="btnConcluirHistoria"
-            type="button"
-          >
-            Concluir história e atravessar a porta
-          </button>
+          <div class="porta-final-actions">
+            <button
+              type="button"
+              class="btn-primary btn-porta-final hidden"
+              id="btnConcluirHistoria"
+            >
+              Salvar conclusão da história
+            </button>
 
-          <p class="status-historia" id="statusHistoria"></p>
+            <p class="status-historia" id="statusHistoria"></p>
 
-          <button
-            class="btn-primary porta-final-btn hidden"
-            id="btnEntrarDesafio"
-            type="button"
-          >
-            Encarar o desafio final
-          </button>
+            <button
+              type="button"
+              class="btn-primary porta-final-btn hidden"
+              id="btnEntrarDesafio"
+            >
+              Encarar o desafio final
+            </button>
+          </div>
         </section>
       </section>
     </main>
