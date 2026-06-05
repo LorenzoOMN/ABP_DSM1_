@@ -482,21 +482,43 @@ a.navegacao-inferior__item.item-ativo span {
 /* =========================================================
    REGRAS MOBILE 
 ========================================================= */
+/* =========================================================
+   REGRAS MOBILE (Menu de ponta a ponta com bordas apenas top/bottom)
+========================================================= */
 @media (max-width: 768px) {
-  .navbar-toggle-btn {
-    display: none !important;
-  }
+    .navbar-toggle-btn {
+        display: none !important;
+    }
+    
+    .navbar-container-fixo {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        pointer-events: auto !important;
+        padding: 0 !important;
+        display: block !important;
+    }
 
-  .navegacao-inferior {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: translateY(0) scale(1) !important;
-    position: relative !important;
-  }
+    .navegacao-inferior {
+        position: relative !important;
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(0) scale(1) !important;
+        width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important; 
+        border: none !important;
+        border-top: 2px solid rgba(153, 107, 15, 0.5) !important;
+        border-bottom: 2px solid rgba(153, 107, 15, 0.5) !important;
+        bottom: 0px !important; 
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+    }
 }
-
 /* ================= FIM DA NAVEGAÇÃO INFERIOR ================= */
 
 /* ================= BOTÃO VOLTAR ================= */
