@@ -545,20 +545,6 @@ function atualizarBridgeViews() {
 }
 
 function atualizarNavegacaoCapitulo5() {
-  document.querySelectorAll(".progress-item").forEach((item) => {
-    const step = item.dataset.step;
-    if (!step) return;
-
-    const liberada = etapaEstaLiberada(step);
-    const ativa = etapaAtualCapitulo5 === step;
-    const concluida = etapasConcluidas.has(step);
-
-    item.disabled = !liberada;
-    item.classList.toggle("locked", !liberada);
-    item.classList.toggle("active", ativa);
-    item.classList.toggle("concluida", concluida);
-  });
-
   document.querySelectorAll(".ponte-node").forEach((node) => {
     const step = node.dataset.step;
     if (!step) return;
@@ -712,7 +698,7 @@ function selecionarEtapaCapitulo5(step, abrirStage = false) {
 }
 
 function configurarNavegacaoCapitulo5() {
-  document.querySelectorAll(".progress-item, .ponte-node").forEach((botao) => {
+  document.querySelectorAll(".ponte-node").forEach((botao) => {
     botao.addEventListener("click", () => {
       const step = botao.dataset.step;
 
@@ -721,16 +707,7 @@ function configurarNavegacaoCapitulo5() {
       selecionarEtapaCapitulo5(step, true);
     });
   });
-
-  const btnAbrirDesafioAtual = document.getElementById("btnAbrirDesafioAtual");
-
-  if (btnAbrirDesafioAtual) {
-    btnAbrirDesafioAtual.addEventListener("click", () => {
-      abrirStageCapitulo5(etapaAtualCapitulo5);
-    });
-  }
 }
-
 function atualizarPosicaoJogador() {
   const pontePlayer = document.getElementById("pontePlayer");
   if (!pontePlayer) return;
