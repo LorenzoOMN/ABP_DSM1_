@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="pt-BR">
   <head>
@@ -11,11 +12,16 @@
     <link rel="stylesheet" href="../assets/css/burningdown.css" />
   </head>
 
-  <body>
-    <%- include('partials/alert') %> <%- include('partials/header') %> <%-
-    include('./partials/botao_voltar') %>
+<body>
+  <%- include('partials/alert') %>
+  <%- include('partials/header') %>
+  <%- include('./partials/botao_voltar') %>
 
     <main class="capitulo5-page capitulo5-page--locked" id="capitulo5Page">
+
+      <!-- =======================================================
+        HERO / ENTRADA
+      ======================================================= -->
       <section class="capitulo5-hero" id="heroCapitulo5">
         <div class="hero-overlay"></div>
 
@@ -42,6 +48,10 @@
         aria-hidden="true"
       ></div>
 
+      <!-- =======================================================
+       MOCHILA
+      ======================================================= -->
+
       <aside class="mochila-flutuante" id="mochilaFlutuante">
         <button
           class="mochila-toggle"
@@ -57,9 +67,9 @@
           />
         </button>
 
-<div class="mochila-callout hidden" id="mochilaCallout">
-  <p>Algo reage na mochila. Abra para continuar.</p>
-</div>
+        <div class="mochila-callout hidden" id="mochilaCallout">
+          <p>Algo reage na mochila. Abra para continuar.</p>
+        </div>
 
         <div class="mochila-painel hidden" id="mochilaPainel">
           <p class="mochila-titulo">Artefatos da Jornada</p>
@@ -132,6 +142,11 @@
       </aside>
 
       <section class="capitulo5-conteudo" id="conteudoCapitulo5">
+
+<!-- =======================================================
+  MAPA DA PONTE
+======================================================= -->
+
         <section class="ponte-layout" id="mapaPonte">
           <section class="mapa-ponte-card">
             <header class="mapa-ponte-header">
@@ -150,7 +165,6 @@
                 src="/assets/img/capitulo_5/ponte-mapa.png"
                 alt="Mapa da ponte com o caminho até a porta final"
               />
-
               <div
                 class="ponte-player ponte-player--duplo"
                 id="pontePlayer"
@@ -180,7 +194,7 @@
 
               <button
                 class="ponte-node ponte-node--2 locked"
-                 data-bridge-view="2"
+                data-bridge-view="2"
                 data-step="stakeholder"
                 type="button"
                 aria-label="Stakeholder Selvagem"
@@ -212,7 +226,7 @@
 
               <button
                 class="ponte-node ponte-node--4 locked"
-                 data-bridge-view="4"
+                data-bridge-view="4"
                 data-step="bug-infernal"
                 type="button"
                 aria-label="Bug Infernal"
@@ -253,83 +267,86 @@
               </button>
             </div>
 
-        <div class="ponte-progressao-views">
- <button
-  type="button"
-  class="bridge-view active is-unlocked"
-  data-bridge-view="1"
-  data-step="duplo"
->
-    <img
-      src="/assets/img/capitulo_5/ponte-1.png"
-      alt="Cena 1 da travessia na ponte"
-      class="bridge-view-img"
-    />
-    <span class="bridge-view-lock">?</span>
-  </button>
+<div class="ponte-progressao-views">
+                <button
+                  type="button"
+                  class="bridge-view active is-unlocked"
+                  data-bridge-view="1"
+                  data-step="duplo"
+                >
+                  <img
+                    src="/assets/img/capitulo_5/ponte-1.png"
+                    alt="Cena 1 da travessia na ponte"
+                    class="bridge-view-img"
+                  />
+                  <span class="bridge-view-lock">?</span>
+                </button>
 
-<button
-  type="button"
-  class="bridge-view is-locked"
-  data-bridge-view="2"
-  data-step="stakeholder"
->
-    <img
-      src="/assets/img/capitulo_5/ponte-2.png"
-      alt="Cena 2 da travessia na ponte"
-      class="bridge-view-img"
-    />
-    <span class="bridge-view-lock">?</span>
-  </button>
+                <button
+                  type="button"
+                  class="bridge-view is-locked"
+                  data-bridge-view="2"
+                  data-step="stakeholder"
+                >
+                  <img
+                    src="/assets/img/capitulo_5/ponte-2.png"
+                    alt="Cena 2 da travessia na ponte"
+                    class="bridge-view-img"
+                  />
+                  <span class="bridge-view-lock">?</span>
+                </button>
 
- <button
-  type="button"
-  class="bridge-view is-locked"
-  data-bridge-view="3"
-  data-step="necrobranch"
->
-    <img
-      src="/assets/img/capitulo_5/ponte-3.png"
-      alt="Cena 3 da travessia na ponte"
-      class="bridge-view-img"
-    />
-    <span class="bridge-view-lock">?</span>
-  </button>
+                <button
+                  type="button"
+                  class="bridge-view is-locked"
+                  data-bridge-view="3"
+                  data-step="necrobranch"
+                >
+                  <img
+                    src="/assets/img/capitulo_5/ponte-3.png"
+                    alt="Cena 3 da travessia na ponte"
+                    class="bridge-view-img"
+                  />
+                  <span class="bridge-view-lock">?</span>
+                </button>
 
- <button
-  type="button"
-  class="bridge-view is-locked"
-  data-bridge-view="4"
-  data-step="bug-infernal"
->
-    <img
-      src="/assets/img/capitulo_5/ponte-4.png"
-      alt="Cena 4 da travessia na ponte"
-      class="bridge-view-img"
-    />
-    <span class="bridge-view-lock">?</span>
-  </button>
+                <button
+                  type="button"
+                  class="bridge-view is-locked"
+                  data-bridge-view="4"
+                  data-step="bug-infernal"
+                >
+                  <img
+                    src="/assets/img/capitulo_5/ponte-4.png"
+                    alt="Cena 4 da travessia na ponte"
+                    class="bridge-view-img"
+                  />
+                  <span class="bridge-view-lock">?</span>
+                </button>
 
- <button
-  type="button"
-  class="bridge-view is-locked"
-  data-bridge-view="5"
-  data-step="forja-mvp"
->
-    <img
-      src="/assets/img/capitulo_5/ponte-5.png"
-      alt="Cena 5 da travessia na ponte"
-      class="bridge-view-img"
-    />
-    <span class="bridge-view-lock">?</span>
-  </button>
-</div>
-            </div>
+                <button
+                  type="button"
+                  class="bridge-view is-locked"
+                  data-bridge-view="5"
+                  data-step="forja-mvp"
+                >
+                  <img
+                    src="/assets/img/capitulo_5/ponte-5.png"
+                    alt="Cena 5 da travessia na ponte"
+                    class="bridge-view-img"
+                  />
+                  <span class="bridge-view-lock">?</span>
+                </button>
+              </div>
           </section>
         </section>
 
+       <!-- =======================================================
+           DESAFIO 1 — DUPLO
+        ======================================================= --> 
+
         <section
-          class="capitulo5-step reveal obstaculo-step encounter-stage"
+          class="capitulo5-step reveal encounter-stage"
           id="encounter-duplo"
           data-step="duplo"
         >
@@ -532,7 +549,7 @@
         </section>
 
         <section
-          class="capitulo5-step reveal obstaculo-step encounter-stage hidden"
+          class="capitulo5-step reveal encounter-stage hidden"
           id="encounter-stakeholder"
           data-step="stakeholder"
         >
@@ -714,7 +731,7 @@
         </section>
 
         <section
-          class="capitulo5-step reveal obstaculo-step encounter-stage hidden"
+          class="capitulo5-step reveal encounter-stage hidden"
           id="encounter-necrobranch"
           data-step="necrobranch"
         >
@@ -929,7 +946,7 @@
         </section>
 
         <section
-          class="capitulo5-step reveal obstaculo-step encounter-stage hidden"
+          class="capitulo5-step reveal encounter-stage hidden"
           id="encounter-bug"
           data-step="bug-infernal"
         >
@@ -1168,7 +1185,7 @@
         />
 
         <span class="bug-flip-card__hint bug-flip-card__hint--back">
-          Impedimento revelado
+          Voltar
         </span>
       </span>
     </span>
@@ -1201,7 +1218,7 @@
         </section>
 
         <section
-          class="capitulo5-step reveal forja-step encounter-stage hidden"
+          class="capitulo5-step reveal encounter-stage hidden"
           id="encounter-forja"
           data-step="forja-mvp"
         >
@@ -1445,11 +1462,18 @@
         </div>
       </div>
 
-      <div class="forja-core forja-core--montagem" aria-hidden="true">
-        <div class="forja-core__ring"></div>
-        <div class="forja-core__ember"></div>
-        <span class="forja-core__label">MVP</span>
-      </div>
+    <button
+  type="button"
+  class="forja-core forja-core--montagem btn-forjar-mvp-core"
+  id="btnForjarMvp"
+  aria-label="Forjar MVP"
+  disabled
+>
+  <div class="forja-core__ring"></div>
+  <div class="forja-core__ember"></div>
+  <span class="forja-core__label">MVP</span>
+  <span class="forja-core__action">Forjar</span>
+</button>
     </div>
 
     <aside class="forja-codex forja-codex--montagem">
@@ -1495,17 +1519,7 @@
     Posicione os artefatos nas chamas corretas.
   </p>
 
-  <div class="forja-actions forja-actions--epicas">
-   <button
-  class="btn-primary btn-forjar-mvp hidden"
-  id="btnForjarMvp"
-  type="button"
->
-  Forjar MVP
-</button>
-
-      </div>
-</div>
+ </div>
           <div class="forja-revelacao-stage hidden" id="forjaRevelacaoStage">
   <div class="forja-reveal-cinematic">
     <div class="forja-reveal-media forja-reveal-media--chave">
@@ -1570,13 +1584,20 @@
                 class="porta-final-image"
                 id="portaFinalImgFechada"
               />
-
+            
               <img
                 src="/assets/img/capitulo_5/porta-final-aberta.png"
                 alt="Porta final aberta"
                 class="porta-final-image hidden"
                 id="portaFinalImgAberta"
               />
+
+                <span class="porta-final-glow"></span>
+
+              <span class="porta-final-entrar-text">
+              Entre
+              </span>
+
 
               <div class="porta-final-lock-zone" id="portaFinalLockZone">
                 <div class="porta-final-lock-core">
@@ -1622,30 +1643,92 @@
           </p>
 
           <div class="porta-final-actions">
-            <button
-              type="button"
-              class="btn-primary btn-porta-final hidden"
-              id="btnConcluirHistoria"
-            >
-              Salvar conclusão da história
-            </button>
+  <button
+    type="button"
+    class="btn-primary btn-porta-final hidden"
+    id="btnConcluirHistoria"
+  >
+    Salvar conclusão da história
+  </button>
 
-            <p class="status-historia" id="statusHistoria"></p>
+  <p class="status-historia" id="statusHistoria"></p>
 
-            <button
-              type="button"
-              class="btn-primary porta-final-btn hidden"
-              id="btnEntrarDesafio"
-            >
-              Encarar o desafio final
-            </button>
-          </div>
+  <button
+    type="button"
+    class="btn-primary porta-final-btn hidden"
+    id="btnEntrarDesafio"
+  >
+    Encarar o desafio final
+  </button>
+
+  <button
+    class="porta-reset-tempo"
+    id="btnResetTempoCapitulo5"
+    type="button"
+    aria-label="Voltar no tempo"
+  >
+    <span>Voltar no tempo</span>
+
+    <img
+      src="/assets/img/artefatos/ampulheta-icon.png"
+      alt=""
+      aria-hidden="true"
+    />
+  </button>
+</div>
         </section>
       </section>
+
+<!-- =======================================================
+        MODAL — RESET TEMPORAL
+      ======================================================= -->
+
+      <div
+        class="tempo-reset-modal hidden"
+        id="tempoResetModal"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="tempo-reset-card">
+          <img
+            src="/assets/img/capitulo_5/corvo-notificacao.png"
+            alt="Corvo surpreso"
+            class="tempo-reset-corvo"
+          />
+
+          <div class="tempo-reset-copy">
+            <p class="tempo-reset-kicker">Tem certeza disso?</p>
+
+            <p>
+              Ao girar a ampulheta, você retornará ao começo da sprint do
+              capítulo 5.
+            </p>
+
+            <div class="tempo-reset-actions">
+              <button
+                type="button"
+                class="tempo-reset-btn tempo-reset-btn--confirmar"
+                id="btnConfirmarResetTempo"
+              >
+                Girar mesmo assim
+              </button>
+
+              <button
+                type="button"
+                class="tempo-reset-btn tempo-reset-btn--cancelar"
+                id="btnCancelarResetTempo"
+              >
+                Continuar jornada
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </main>
 
-    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
-    %>
+    <%- include('partials/navegacao_inferior') %>
+    <%- include('partials/footer') %>
 
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/capitulo5.js"></script>
