@@ -2,6 +2,42 @@ const ID_MODULO = 2;
 const ROTA_DESAFIO_CAPITULO2 = "/desafio1";
 const SCROLL_OFFSET_CAPITULO2 = 150;
 
+const guardioesData = {
+  bardo: {
+    titulo: "O Bardo da Compreensão",
+    texto:
+      "Product Owner: maximiza o valor do produto, mantém o Product Backlog claro e ordenado e ajuda o time a entender o que deve vir primeiro.",
+  },
+  corvo: {
+    titulo: "O Corvo e a Cadeira Vazia",
+    texto:
+      "Scrum Master: facilita o Scrum, remove impedimentos e ajuda todos a compreenderem e aplicarem o framework corretamente.",
+  },
+  equipe: {
+    titulo: "Os Aventureiros",
+    texto:
+      "Developers: planejam, constroem e entregam Incrementos utilizáveis. São multifuncionais e compartilham a responsabilidade pela qualidade.",
+  },
+};
+
+const papeisData = {
+  po: {
+    titulo: "Product Owner",
+    texto:
+      "Responsável por maximizar o valor do produto e ordenar o Product Backlog conforme prioridade e valor.",
+  },
+  sm: {
+    titulo: "Scrum Master",
+    texto:
+      "Responsável por garantir que o Scrum seja compreendido e aplicado, além de ajudar o time removendo impedimentos.",
+  },
+  devs: {
+    titulo: "Developers",
+    texto:
+      "Responsáveis por planejar, construir e entregar o Incremento durante a Sprint.",
+  },
+};
+
 const guardioesDetalhesData = {
   bardo: {
     titulo: "O Bardo da Compreens&atilde;o",
