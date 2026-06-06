@@ -1,0 +1,285 @@
+body {
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    background-image: url("/assets/img/fundo_perfil.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    font-family: "Cinzel", serif;
+}
+
+.perfil-container {
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.livro-perfil {
+
+    position: relative;
+
+    aspect-ratio: 1200 / 750;
+
+    font-size: clamp(0.8rem, 2.2vw, 2.2rem);
+}
+
+.livro-fundo {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+/* ================================= */
+/* TÍTULO */
+/* ================================= */
+
+.perfil-titulo {
+
+    position: absolute;
+
+    top: 16.7%;
+    left: 16.25%;
+
+    color: #2b1708;
+
+    margin: 0;
+
+    font-size: clamp(0.8rem, 2.2vw, 2.2rem);
+}
+
+/* ================================= */
+/* AVATAR */
+/* ================================= */
+
+.avatar-teste {
+
+    position: absolute;
+
+    top: 29.3%;
+    left: 15.8%;
+
+    width: 8.3%;
+    aspect-ratio: 1/1;
+
+    background: white;
+
+    border-radius: 40%;
+
+    border: 3px solid #8b5a2b;
+}
+
+/* ================================= */
+/* NOME */
+/* ================================= */
+
+.nome-usuario {
+
+    position: absolute;
+
+    top: 34.7%;
+    left: 25%;
+
+    color: #2b1708;
+
+    font-size: clamp(0.5rem, 1.3vw, 1.3rem);
+
+    font-weight: bold;
+}
+
+/* ================================= */
+/* EMAIL */
+/* ================================= */
+
+.email-usuario {
+
+    position: absolute;
+
+    top: 39.3%;
+    left: 25%;
+
+    font-size: clamp(0.5rem, 1.2vw, 1rem);
+
+    color: #2b1708;
+}
+
+/* ================================= */
+/* MODULO */
+/* ================================= */
+
+.modulo-container {
+
+    position: absolute;
+
+    top: 50.7%;
+    left: 15.8%;
+
+    color: #2b1708;
+
+    font-size: clamp(0.8rem, 1.5vw, 1.8rem);
+}
+
+#capituloAtual {
+
+    font-weight: 700;
+}
+
+.label {
+    font-weight: bold;
+}
+
+/* ================================= */
+/* CONFIGURAÇÕES */
+/* ================================= */
+
+.config-titulo {
+
+    position: absolute;
+
+    top: 16.7%;
+    left: 55%;
+
+    color: #2b1708;
+
+    margin: 0;
+
+    font-size: clamp(1rem, 2.2vw, 2.5rem);
+}
+
+/* ================================= */
+/* MÚSICA */
+/* ================================= */
+
+.texto-musica {
+
+    position: absolute;
+
+    top: 37.3%;
+    left: 54.2%;
+
+    color: #2b1708;
+
+    font-size: clamp(0.8rem, 1.4vw, 1.6rem);
+
+    font-weight: bold;
+}
+
+#toggleMusica {
+
+    position: absolute;
+
+    top: 36%;
+    left: 81.7%;
+}
+
+/* ================================= */
+/* EFEITOS */
+/* ================================= */
+
+.texto-efeitos {
+
+    position: absolute;
+
+    top: 48%;
+    left: 54.2%;
+
+    color: #2b1708;
+
+    font-size: clamp(0.8rem, 1.4vw, 1.6rem);
+
+    font-weight: bold;
+}
+
+#toggleEfeitos {
+
+    position: absolute;
+
+    top: 46.7%;
+    left: 81.7%;
+}
+
+/* ================================= */
+/* TOGGLES */
+/* ================================= */
+
+.toggle-audio {
+
+    width: clamp(18px, 2.5vw, 35px);
+    height: clamp(18px, 2.5vw, 35px);
+
+    cursor: pointer;
+
+    background: #2ECC71;
+    border: 2px solid #168042;
+
+    border-radius: 40%;
+
+    transition: all 0.2s ease;
+}
+
+/* DESATIVADO */
+
+.toggle-audio.desativado {
+
+    background: #462817;
+
+    border: 2px solid #996B0F;
+}
+
+/* ================================= */
+/* BOTÃO ADM */
+/* ================================= */
+
+.botao-dev {
+
+    position: absolute;
+
+    bottom: 12%;
+    left: 11%;
+
+    width: clamp(15px, 15vw, 250px);
+    height: clamp(15px, 15vw, 250px);
+
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.botao-dev-img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+.botao-dev:hover {
+
+    transform: scale(1.05);
+}
+
+.botao-dev:active {
+
+    transform: scale(0.95);
+}

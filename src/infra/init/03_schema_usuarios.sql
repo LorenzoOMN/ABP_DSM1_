@@ -16,6 +16,13 @@ ADD COLUMN IF NOT EXISTS barra_desbloqueada BOOLEAN DEFAULT FALSE;
 ALTER TABLE usuarios 
 ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false;
 
+-- Configurações de áudio
+ALTER TABLE usuarios
+ADD COLUMN IF NOT EXISTS musica_ativa BOOLEAN DEFAULT true;
+
+ALTER TABLE usuarios
+ADD COLUMN IF NOT EXISTS efeitos_ativos BOOLEAN DEFAULT true;
+
 -- Define SEU usuário como admin (substitua pelo seu email)
 UPDATE usuarios 
 SET is_admin = true 

@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Desafio 1 | Scrum Dungeon</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <link rel="stylesheet" href="/assets/css/desafio1.css" />
-  </head>
+  <title>Desafio 1 | Scrum Dungeon</title>
 
-  <body class="pagina-desafio1">
-    <%- include('partials/header') %>
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/desafio1.css" />
+</head>
+
+<body class="pagina-desafio1">
+  <%- include('partials/header') %>
 
     <main class="desafio1-main">
       <section class="desafio1-wrapper">
@@ -23,14 +24,12 @@
 
         <section class="boss-intro-card">
           <div class="boss-image-frame reveal-step step-2">
-            <img
-              src="/assets/img/capitulo_1/inimigos/confronto-1.png"
-              alt="Herói encontrando a Documentação Confusa"
-              class="boss-scene-img"
-            />
+            <img id="bossImage" src="/assets/img/capitulo_1/inimigos/confronto-1.png" alt="Boss do desafio"
+              class="boss-scene-img" />
           </div>
 
           <div class="boss-type-box reveal-step step-3">
+            <h3 id="bossName" style="color: #f7e6aa; text-align: center; margin: 0 0 0.5rem 0; font-size: 1.3rem;"></h3>
             <p id="bossTypeText"></p>
           </div>
         </section>
@@ -46,12 +45,7 @@
 
           <div class="boss-lives-box">
             <span class="boss-lives-label">Vidas da run</span>
-
-            <div
-              id="vidasDesafio"
-              class="boss-lives-icons vidas-container"
-              aria-label="Tentativas restantes"
-            ></div>
+            <div id="vidasDesafio" class="boss-lives-icons vidas-container"></div>
           </div>
         </section>
 
@@ -63,15 +57,9 @@
           <div class="rules-content" id="rulesContent">
             <ul>
               <li>Você enfrentará 10 questões.</li>
-              <li>O desafio terá tempo limite de 30 minutos.</li>
-              <li>
-                Ao sair antes do fim, o desafio poderá ser reiniciado
-                futuramente.
-              </li>
-              <li>
-                Quando o tempo acabar, questões não respondidas contarão como
-                erradas.
-              </li>
+              <li>O desafio terá tempo limite de 20 minutos.</li>
+              <li>Ao sair antes do fim, o desafio poderá ser reiniciado futuramente.</li>
+              <li>Quando o tempo acabar, questões não respondidas contarão como erradas.</li>
               <li>Você possui 2 tentativas para derrotar este boss.</li>
             </ul>
           </div>
@@ -81,7 +69,8 @@
 
     <%- include('partials/footer') %>
 
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/desafio1.js"></script>
-  </body>
+      <script src="../assets/js/main.js"></script>
+      <script src="../assets/js/desafio1.js"></script>
+</body>
+
 </html>

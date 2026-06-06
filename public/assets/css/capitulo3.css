@@ -2,6 +2,7 @@
   background: #090908;
   color: #f4efe2;
   padding-bottom: 120px;
+  overflow-x: hidden;
 }
 
 .capitulo-hero {
@@ -191,8 +192,8 @@ blockquote {
 .story-art img {
   max-width: 100%;
   max-height: 360px;
-  object-fit: contain;
-  filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.55));
+  object-fit: contain;  
+  filter: drop-shadow(0 18px 24px rgba(214, 218, 234, 0.365));
 }
 
 .btn-primary {
@@ -286,6 +287,26 @@ strong{
 /* ============================================================
    FANTASMA
 ============================================================ */
+.fantasma {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+.fantasma img {
+  display: block;
+  width: min(320px, 100%);
+  max-width: 100%;
+  max-height: 360px;
+  height: auto;
+  object-fit: contain;  
+  filter: drop-shadow(0 18px 24px rgba(214, 218, 234, 0.365));
+}
+
 
 .fala-fantasma {
   position: relative;
@@ -370,14 +391,17 @@ strong{
 
 .bussola {
   display: flex;
-  justify-content: center;
   align-items: center;
-  grid-column: 1 / -1;
-  margin: 0.5rem 0;
+  justify-content: center;
+  align-self: stretch;
+  min-height: 100%;
+  margin: 0;
+  transform: translateY(clamp(2.5rem, 5vw, 4.5rem));
 }
 
 .bussola img {
-  width: min(260px, 100%);
+  width: min(320px, 100%);
+  max-height: 100%;
   height: auto;
   object-fit: contain;
   transition:
@@ -386,23 +410,14 @@ strong{
   filter:
     drop-shadow(0 18px 24px rgba(0, 0, 0, 0.55))
     drop-shadow(0 0 18px rgba(94, 149, 244, 0.45))
-    drop-shadow(0 0 34px rgba(53, 152, 214, 0.22));
+    drop-shadow(0 0 34px rgba(124, 191, 232, 0.22));
 }
 
-.bussola img:hover {
-  transform: translateY(-12px);
-  filter:
-    drop-shadow(0 24px 26px rgba(0, 0, 0, 0.5))
-    drop-shadow(0 0 22px rgba(245, 213, 139, 0.68))
-    drop-shadow(0 0 42px rgba(212, 175, 55, 0.38));
+#bussola .story-text p {
+  padding: 12px;
 }
 
-#objetivo .story-text {
-  grid-column: 1 / -1;
-  text-align: justify;
-  max-width: 900px;
-  margin: 0 auto;
-}
+
 
 /* ============================================================
    MESA DOS HERÓIS
@@ -423,6 +438,7 @@ strong{
 
 .mesa-art img {
   width: min(420px, 100%);
+  border-radius: 18px;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.55));
@@ -444,14 +460,14 @@ strong{
 .mesa-hotspots::before {
   content: "";
   position: absolute;
-  inset: 0% -4%;
+  inset: -18% -24%;
   z-index: 0;
   border-radius: 50%;
   background:
-  radial-gradient(circle, rgba(120, 200, 255, 1) 0%, rgba(70, 140, 255, 0.28) 36%, rgba(70, 140, 255, 0) 70%);
-  filter: blur(78px);
+  radial-gradient(circle, rgba(120, 200, 255, 1) 0%, rgba(70, 140, 255, 0.28) 36%, rgba(70, 140, 255, 0) 78%);
+  filter: blur(110px);
   opacity: 0;
-  transform: scale(0.92);
+  transform: scale(1.08);
   transition:
     opacity 0.25s ease,
     transform 0.25s ease;
@@ -475,8 +491,8 @@ strong{
 .mesa-hotspot {
   position: absolute;
   z-index: 2;
-  width: 35px;
-  height: 35px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border:0;
   background:transparent;
@@ -484,33 +500,33 @@ strong{
 }
 
 .hotspot-1 {
-  left: 18%;
+  left: 16%;
   top: 15%;
 }
 
 .hotspot-2 {
-  left: 47%;
-  top: 47%;
+  left: 45%;
+  top: 42%;
 }
 
 .hotspot-3 {
-  left: 89%;
-  top: 38%;
+  left: 87%;
+  top: 37%;
 }
 
 .hotspot-4 {
-  left: 48%;
-  top: 05%;
+  left: 45%;
+  top: 07%;
 }
 
 .hotspot-5 {
-  left: 77%;
+  left: 75%;
   top: 15%; 
 }
 
 .hotspot-6 {
-  left: 33%;
-  top: 67%; 
+  left: 28%;
+  top: 58%; 
 }
 
 .mesa-hotspot span {
@@ -778,10 +794,11 @@ strong{
   z-index: 1;
   width: 100%;
   max-height: 100%;
+  border-radius: 18px;
   opacity: 0;
   transform: scaleY(0.08);
   transform-origin: top center;
-  clip-path: inset(0 0 92% 0);
+  clip-path: inset(0 0 92% 0 round 18px);
   filter:
     drop-shadow(0 20px 28px rgba(0, 0, 0, 0.55))
     drop-shadow(0 0 20px rgba(244, 211, 94, 0.18));
@@ -815,7 +832,7 @@ strong{
 .retrospectiva-scroll.is-open .retrospectiva-img {
   opacity: 1;
   transform: scaleY(1);
-  clip-path: inset(0);
+  clip-path: inset(0 round 18px);
 }
 
 .retrospectiva-scroll.is-open .pergaminho-img {
@@ -829,8 +846,8 @@ strong{
 .retrospectiva-hotspot {
   position: absolute;
   z-index: 6;
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: transparent;
   opacity: 0;
@@ -838,26 +855,41 @@ strong{
   cursor: help;
 }
 
+.retrospectiva-scroll.is-open .retrospectiva-hotspot::before {
+  content: "?";
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #2b1a04;
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
 .retrospectiva-scroll.is-open .retrospectiva-hotspot {
   pointer-events: auto;
   opacity: 1;
   background: radial-gradient(
     circle,
-    rgba(255, 244, 190, 0.95) 0%,
-    rgba(244, 211, 94, 0.55) 38%,
-    rgba(244, 211, 94, 0.12) 70%,
+    rgba(213, 213, 211, 0.95) 0%,
+    rgba(63, 62, 60, 0.55) 38%,
+    rgba(10, 10, 9, 0) 70%,
     transparent 100%
   );
-  border: 1px solid rgba(255, 235, 156, 0.95);
+  border: 1px solid rgba(46, 46, 45, 0.95);
   box-shadow:
-    0 0 12px rgba(244, 211, 94, 0.9),
-    0 0 28px rgba(244, 211, 94, 0.55),
-    0 0 48px rgba(244, 211, 94, 0.28);
-  animation: retrospectivaHotspotBrilho 1.35s ease-in-out infinite;
+     0 0 12px rgba(177, 177, 174, 0.9),
+    0 0 28px rgba(82, 82, 78, 0.55),
+    0 0 48px rgba(11, 11, 11, 0.28);
+  animation: retrospectivaHotspotBrilho 4s ease-in-out infinite;
 }
 
 .retrospectiva-hotspot-1 {
-  left: 48%;
+  left: 47%;
   top: 10%;
 }
 
@@ -901,125 +933,6 @@ strong{
   }
 }
 
-
-/* ============================================================
-   FOGUEIRA INTERATIVA / ACESSO AO BURNING DOWN
-============================================================ */
-
-.fogueira-interativa {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-
-  border: 0;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-
-  isolation: isolate;
-}
-
-.fogueira-interativa img {
-  width: min(260px, 100%);
-  object-fit: contain;
-
-  transition:
-    transform 0.25s ease,
-    filter 0.25s ease;
-
-  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55))
-    drop-shadow(0 0 10px rgba(255, 130, 20, 0.18));
-}
-
-.fogueira-interativa::before {
-  content: "";
-  position: absolute;
-  inset: 12% 8% 4%;
-  z-index: -1;
-
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 166, 40, 0.34),
-    rgba(255, 88, 16, 0.18) 38%,
-    transparent 68%
-  );
-
-  opacity: 0;
-  transform: scale(0.85);
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-
-  filter: blur(8px);
-}
-
-.fogueira-interativa:hover img,
-.fogueira-interativa:focus-visible img {
-  transform: translateY(-4px) scale(1.04);
-
-  filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.6))
-    drop-shadow(0 0 16px rgba(255, 170, 40, 0.65))
-    drop-shadow(0 0 34px rgba(255, 80, 10, 0.35));
-}
-
-.fogueira-interativa:hover::before,
-.fogueira-interativa:focus-visible::before {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.fogueira-tooltip {
-  position: absolute;
-  left: 50%;
-  bottom: -3.2rem;
-  transform: translateX(-50%) translateY(6px);
-
-  width: max-content;
-  max-width: min(320px, 80vw);
-  padding: 0.75rem 1rem;
-
-  color: #f7e6aa;
-  font-family: "Cinzel", serif;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  text-align: center;
-
-  background: rgba(8, 8, 8, 0.92);
-  border: 1px solid rgba(212, 175, 55, 0.55);
-  border-radius: 10px;
-
-  opacity: 0;
-  pointer-events: none;
-
-  transition:
-    opacity 0.22s ease,
-    transform 0.22s ease;
-
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
-}
-
-.fogueira-tooltip::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -7px;
-  transform: translateX(-50%) rotate(45deg);
-
-  width: 12px;
-  height: 12px;
-
-  background: rgba(8, 8, 8, 0.92);
-  border-left: 1px solid rgba(212, 175, 55, 0.55);
-  border-top: 1px solid rgba(212, 175, 55, 0.55);
-}
-
-.fogueira-interativa:hover .fogueira-tooltip,
-.fogueira-interativa:focus-visible .fogueira-tooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
 /* ============================================================
    UNIAO  
 ============================================================ */
@@ -1029,61 +942,66 @@ strong{
 }
 .uniao img{
    width: min(330px, 100%);
+   border-radius: 18px;
    filter: drop-shadow(0 0 12px rgba(255, 196, 46, 0.35));
    transform: translateX(-45px);
    transition: filter 0.3s ease, transform 0.3s ease;
 }
 
-.uniao img:hover{
-  filter: drop-shadow(0 0 18px rgba(255, 196, 46, 0.75))
-          drop-shadow(0 0 36px rgba(255, 196, 46, 0.5));
-  transform: translateX(-45px) scale(1.03);
-}
-
 #uniao .story-text p{
-  padding: 12px 0 0 0;
+  padding: 12px 0 12px 0;
 
 }
-
 
 /* ============================================================
    TERCEIRA PORTA / PORTAL DO TEMPO
 ============================================================ */
 
 #portal .story-text p{
-  padding: 12px 0 0 0;
+  padding: 12px 0 12px 0;
+}
+
+#portal > .story-art {
+  min-width: 0;
+  width: 100%;
 }
 
 .portal {
   position: relative;
-  width: min(330px, 100%);
+  width: min(450px, 100%);
+  max-width: 100%;
   display: grid;
   place-items: center;
   isolation: isolate;
-  transform: translateX(-45px);
 }
 
 .portal-img {
   width: 100%;
-  filter: drop-shadow(0 0 12px rgba(46, 119, 255, 0.35));
+  border-radius: 18px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 12px rgba(95, 46, 255, 0.35));
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 
 .portal:hover .portal-img{
-  filter: drop-shadow(0 0 18px rgba(46, 143, 255, 0.75))
-          drop-shadow(0 0 36px rgba(46, 137, 255, 0.5));
-  transform: scale(1.03);
+  filter: drop-shadow(0 0 18px rgba(149, 114, 237, 0.75))
+          drop-shadow(0 0 36px rgba(77, 25, 162, 0.5));
+
 }
 
 .ampulheta-link {
   position: absolute;
-  left: 54%;
-  top: 56%;
+  left: 50%;
+  top: 40%;
   z-index: 2;
-  width: clamp(45px, 17%, 80px);
+  width: clamp(70px, 54%, 255px);
+  aspect-ratio: 3 / 2;
+  padding: 0;
   display: grid;
   place-items: center;
   transform: translate(-50%, -50%);
+  box-sizing: border-box;
 }
 
 .ampulheta-link:focus-visible {
@@ -1092,32 +1010,85 @@ strong{
   border-radius: 50%;
 }
 
-.ampulheta-img {
+.ampulheta-img,
+.ampulheta2-img {
+  grid-area: 1 / 1;
   width: 100%;
+  height: 100%;
   display: block;
+  object-fit: contain;
   filter:
     drop-shadow(0 0 10px rgba(245, 213, 139, 0.72))
     drop-shadow(0 10px 16px rgba(0, 0, 0, 0.48));
   transform-origin: center;
   transition:
-    transform 0.55s ease,
+    transform 0.3s ease,
     filter 0.3s ease;
 }
 
 .ampulheta-link:hover .ampulheta-img,
 .ampulheta-link:focus-visible .ampulheta-img {
-  transform: rotate(360deg) scale(1.08);
-  filter:
-    drop-shadow(0 0 16px rgba(245, 213, 139, 0.95))
-    drop-shadow(0 0 30px rgba(214, 173, 53, 0.55))
-    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
+  animation: girarAmpulheta 3.0s linear infinite;
+}
+
+.ampulheta-link:hover .ampulheta2-img,
+.ampulheta-link:focus-visible .ampulheta2-img {
+  animation: girarAmpulhetaInversa 2.5s linear infinite;
+}
+
+@keyframes girarAmpulheta {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes girarAmpulhetaInversa {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 /* =========================================================
    MOBILE (SEM HOVER, SEM ZONA FIXA)
 ========================================================= */
-@media (max-width: 520px){
+@media (max-width: 680px){
+  html,
+  body,
   .capitulo-page {
+    background-color: #090908;
+    overflow-x: hidden;
+  }
+
+html {
+  scrollbar-color: rgba(214, 173, 53, 0.55) #090908;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #090908;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: rgba(214, 173, 53, 0.55);
+  border: 2px solid #090908;
+  border-radius: 999px;
+}
+
+.capitulo-page {
     padding-bottom: 96px;
   }
 
@@ -1139,6 +1110,7 @@ strong{
     gap: 1.25rem;
     margin: 2.5rem auto;
     padding: 5.75rem 1rem 1.25rem;
+    overflow: hidden;
   }
 
   .story-side-icon {
@@ -1165,6 +1137,7 @@ strong{
   }
 
   .story-art,
+  .fantasma,
   .bussola,
   .mesa-art,
   .incremento,
@@ -1173,6 +1146,10 @@ strong{
     grid-column: 1 / -1;
     width: 100%;
     justify-content: center;
+  }
+
+  .bussola {
+    transform: none;
   }
 
   #incremento,
@@ -1217,12 +1194,19 @@ strong{
   }
 
   .story-art img,
+  .fantasma img,
   .bussola img,
   .mesa-art img,
   .incremento img,
-  .uniao img,
+  .uniao img {
+    width: min(280px, 100%);
+    max-width: 100%;
+    height: auto;
+  }
+
   .portal {
-    max-width: 280px;
+    width: min(280px, 100%);
+    max-width: 100%;
   }
 
   .mesa-art,
@@ -1230,8 +1214,18 @@ strong{
     padding: 0;
   }
 
+  .mesa-hotspots {
+    width: min(280px, 100%);
+    margin: 0 auto;
+  }
+
   .daily-book {
     width: min(320px, 100%);
+    overflow: hidden;
+  }
+
+  .daily-book img {
+    padding-left: 0;
   }
 
   .retrospectiva-scroll {
@@ -1242,6 +1236,10 @@ strong{
   .uniao img:hover,
   .portal {
     transform: none;
+  }
+
+  .ampulheta-link {
+    width: clamp(64px, 28%, 82px);
   }
 
   .portal:hover .portal-img {
@@ -1287,12 +1285,23 @@ strong{
   }
 
   .story-art img,
+  .fantasma img,
   .bussola img,
   .mesa-art img,
   .incremento img,
-  .uniao img,
+  .uniao img {
+    width: min(240px, 100%);
+    max-width: 100%;
+    height: auto;
+  }
+
   .portal {
-    max-width: 240px;
+    width: min(240px, 100%);
+    max-width: 100%;
+  }
+
+  .mesa-hotspots {
+    width: min(240px, 100%);
   }
 
   .daily-book,
@@ -1303,5 +1312,92 @@ strong{
   .retrospectiva-hotspot {
     width: 36px;
     height: 36px;
+  }
+}
+@media (max-width: 768px) {
+#missao {
+    grid-template-columns: 1fr;
+  }
+
+  #missao > .story-text {
+    grid-column: 1 / -1;
+    order: 1;
+  }
+
+  #missao > .fantasma {
+    grid-column: 1 / -1;
+    order: 2;
+    justify-self: center;
+    width: 100%;
+    justify-content: center;
+  }
+
+  #missao > .fantasma img {
+    max-width: 280px;
+  }
+
+  #incremento {
+    grid-template-columns: 1fr;
+  }
+
+  #incremento > .story-text {
+    grid-column: 1 / -1;
+    order: 1;
+  }
+
+  #incremento > .incremento {
+    grid-column: 1 / -1;
+    order: 2;
+    justify-self: center;
+  }
+
+  #uniao {
+    grid-template-columns: 1fr;
+  }
+
+  #uniao > .story-text {
+    grid-column: 1 / -1;
+    order: 1;
+  }
+
+  #uniao > .uniao {
+    grid-column: 1 / -1;
+    order: 2;
+    justify-self: center;
+    justify-content: center;
+  }
+
+  #uniao .uniao img {
+    transform: none;
+  }
+
+  #uniao .uniao img:hover {
+    transform: scale(1.03);
+  }
+
+   #portal {
+    grid-template-columns: 1fr;
+  }
+
+  #portal > .story-text {
+    grid-column: 1 / -1;
+    order: 1;
+  }
+
+  #portal > .story-art {
+    grid-column: 1 / -1;
+    order: 2;
+    justify-self: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  #portal .portal {
+    transform: none;
+  }
+
+  #portal .portal:hover .portal-img {
+    transform: scale(1.03);
   }
 }
