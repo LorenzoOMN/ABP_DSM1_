@@ -19,6 +19,13 @@ CREATE TABLE IF NOT EXISTS public.questoes (
     ON DELETE NO ACTION
 );
 
+ALTER TABLE public.questoes
+  ADD COLUMN IF NOT EXISTS criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+UPDATE public.questoes
+SET criado_em = CURRENT_TIMESTAMP
+WHERE criado_em IS NULL;
+
 CREATE INDEX IF NOT EXISTS idx_questoes_modulo_grupo
   ON public.questoes (id_modulo, grupo);
 
