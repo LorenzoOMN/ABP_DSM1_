@@ -118,10 +118,7 @@ function atualizarAtalhos(modulos) {
 
   const primeiroModulo = modulos.find((modulo) => modulo.id_modulo === 1);
 
-  const artefatosLiberados =
-    primeiroModulo &&
-    primeiroModulo.historia_concluida &&
-    !primeiroModulo.desafio_atual;
+const artefatosLiberados = Boolean(primeiroModulo?.historia_concluida);
 
   if (!artefatosLiberados) {
     btnArtefatos.disabled = true;
