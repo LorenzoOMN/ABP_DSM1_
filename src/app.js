@@ -71,6 +71,11 @@ app.get("/capitulo2", function (_req, res) {
     res.render("capitulo2");
 });
 
+// Rota capítulo 2
+app.get("/capitulo2", function (_req, res) {
+    res.render("capitulo2");
+});
+
 // Rota capitulo 3
 app.get("/capitulo3", function (_req, res) {
     res.render("capitulo3");
