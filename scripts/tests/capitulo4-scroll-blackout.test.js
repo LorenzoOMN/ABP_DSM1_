@@ -5,6 +5,8 @@ const {
   calcularEstadoIntroNarrativa,
   calcularLimiaresLinhasIntro,
   calcularProgressoBlackoutHero,
+  calcularScrollParaAmpulheta,
+  deveManterAmpulhetaForcada,
 } = require("../../public/assets/js/capitulo4.js");
 
 assert.strictEqual(calcularProgressoBlackoutHero(0, 0, 600), 0);
@@ -14,6 +16,13 @@ assert.strictEqual(calcularProgressoBlackoutHero(900, 0, 600), 1);
 assert.strictEqual(calcularProgressoBlackoutHero(-100, 0, 600), 0);
 assert.strictEqual(calcularProgressoBlackoutHero(100, 100, 0), 0);
 assert.strictEqual(calcularProgressoBlackoutHero(101, 100, 0), 1);
+assert.strictEqual(calcularScrollParaAmpulheta(840), 840);
+assert.strictEqual(calcularScrollParaAmpulheta(568), 568);
+assert.strictEqual(calcularScrollParaAmpulheta(1084.4), 1085);
+assert.strictEqual(deveManterAmpulhetaForcada(true, 300, 700, 200), true);
+assert.strictEqual(deveManterAmpulhetaForcada(true, 700, 700, 650), false);
+assert.strictEqual(deveManterAmpulhetaForcada(true, 250, 700, 300), false);
+assert.strictEqual(deveManterAmpulhetaForcada(false, 300, 700, 200), false);
 
 const lineThresholds = calcularLimiaresLinhasIntro();
 assert.strictEqual(lineThresholds.length, 5);
@@ -33,6 +42,10 @@ assert.ok(calcularEstadoIntroNarrativa(0.92).introOpacity > 0);
 assert.ok(calcularEstadoIntroNarrativa(0.92).introOpacity < 1);
 assert.strictEqual(calcularEstadoIntroNarrativa(1).phase, "full");
 assert.strictEqual(calcularEstadoIntroNarrativa(1).showHourglass, true);
+assert.strictEqual(calcularEstadoIntroNarrativa(0, 0, true).phase, "full");
+assert.strictEqual(calcularEstadoIntroNarrativa(0, 0, true).showHourglass, true);
+assert.strictEqual(calcularEstadoIntroNarrativa(0.99, 0, true).phase, "full");
+assert.strictEqual(calcularEstadoIntroNarrativa(0.99, 0, true).showHourglass, true);
 assert.strictEqual(calcularEstadoIntroNarrativa(1, 0.06).showPrelude, true);
 assert.strictEqual(calcularEstadoIntroNarrativa(1, 0.12).showPrelude, true);
 assert.strictEqual(calcularEstadoIntroNarrativa(1, 0.77).showPrelude, true);

@@ -6,7 +6,8 @@
 
 .capitulo-hero {
   position: relative;
-  min-height: 72vh;
+  min-height: 100vh;
+  min-height: 100svh;
   display: grid;
   place-items: center;
   background-image: url("/assets/img/capitulo_4/hero-section.png");
@@ -78,7 +79,7 @@
   opacity: 0;
   transform: translateY(22px) scale(0.92);
   filter: blur(10px);
-  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+  transition: opacity 0s linear, transform 0.7s ease, filter 0.7s ease;
 }
 
 .capitulo4-intro.is-full .intro-hourglass-frame,
@@ -126,6 +127,26 @@
 .capitulo4-intro-line.is-active {
   opacity: 1;
   transform: translateY(0);
+}
+
+.intro-scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 4vh, 2rem);
+  margin: 0;
+  color: rgba(246, 230, 174, 0.58);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.capitulo4-intro.show-scroll-hint .intro-scroll-hint {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 .capitulo4-intro.is-outro {
@@ -193,7 +214,7 @@
   border: 0;
   background: transparent;
   color: #bfa875;
-  cursor: pointer;
+  cursor: default;
   transition: transform 0.2s ease, color 0.2s ease, filter 0.2s ease;
 }
 
@@ -1324,7 +1345,7 @@ blockquote {
 }
 
 .pipeline-panel--shake {
-  animation: pipeline-shake 0.42s ease-out;
+  animation: pipeline-shake 0.52s cubic-bezier(0.16, 0.84, 0.24, 1);
   border-color: rgba(237, 125, 84, 0.78);
   box-shadow:
     inset 0 0 24px rgba(237, 125, 84, 0.1),
@@ -1477,18 +1498,32 @@ blockquote {
   min-height: clamp(17rem, 42vw, 28rem);
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(4.8rem, 1fr));
   align-items: center;
   justify-items: center;
   gap: clamp(0.28rem, 1vw, 0.8rem);
   opacity: var(--pipeline-game-opacity);
   transform: translateY(calc((1 - var(--pipeline-game-opacity)) * 1.2rem));
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transition: opacity 0.42s ease, transform 0.48s cubic-bezier(0.18, 0.82, 0.22, 1);
 }
 
 .pipeline-neon-step {
   --step-hue: 190;
   --step-glow: 0, 210, 255;
   --step-warm: 246, 230, 174;
+  --piece-x: 0rem;
+  --piece-y: 0rem;
+  --piece-rot: 0deg;
+  --piece-start-x: 0rem;
+  --piece-start-y: 0rem;
+  --piece-start-rot: 0deg;
+  --assemble-x: 0%;
+  --assemble-y: 0%;
+  --assemble-rot: 0deg;
+  --slot-col: auto;
+  --slot-row: auto;
+  grid-column: var(--slot-col);
+  grid-row: var(--slot-row);
   position: relative;
   width: clamp(5.7rem, 15vw, 10.6rem);
   display: grid;
@@ -1503,8 +1538,21 @@ blockquote {
   font: inherit;
   text-align: center;
   isolation: isolate;
-  transform: translateZ(0);
-  transition: transform 0.22s ease, filter 0.22s ease;
+  transform: translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-rot)) translateZ(0);
+  transition:
+    transform 0.34s cubic-bezier(0.18, 0.82, 0.22, 1),
+    filter 0.34s ease,
+    opacity 0.34s ease;
+}
+
+.pipeline-neon-board--ready .pipeline-neon-step {
+  animation: pipeline-piece-enter 0.56s cubic-bezier(0.18, 0.82, 0.22, 1) both;
+  animation-delay: var(--entry-delay, 0s);
+}
+
+.pipeline-neon-step:nth-child(1) {
+  --step-hue: 190;
+  --step-glow: 0, 210, 255;
 }
 
 .pipeline-neon-step:nth-child(2) {
@@ -1543,21 +1591,28 @@ blockquote {
 .pipeline-neon-step::before {
   z-index: -2;
   background:
-    linear-gradient(180deg, rgba(var(--step-glow), 0.16), transparent 42%),
-    radial-gradient(circle at 50% 54%, rgba(var(--step-glow), 0.28), transparent 58%);
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(var(--step-glow), 0.2), transparent 42%),
+    radial-gradient(circle at 50% 54%, rgba(var(--step-glow), 0.32), transparent 58%);
   filter: blur(18px);
-  opacity: 0;
-  transform: scale(0.74);
-  transition: opacity 0.24s ease, transform 0.24s ease;
+  opacity: 0.22;
+  transform: scale(0.82);
+  transition: opacity 0.34s ease, transform 0.34s cubic-bezier(0.18, 0.82, 0.22, 1);
 }
 
 .pipeline-neon-step::after {
   z-index: 2;
-  border: 1px solid rgba(var(--step-glow), 0.18);
-  box-shadow: inset 0 0 18px rgba(var(--step-glow), 0.08);
-  opacity: 0;
-  transform: scale(0.86);
-  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 0 18px rgba(var(--step-glow), 0.1),
+    0 0 18px rgba(255, 255, 255, 0.04);
+  opacity: 0.34;
+  transform: scale(0.9);
+  transition:
+    opacity 0.32s ease,
+    transform 0.34s cubic-bezier(0.18, 0.82, 0.22, 1),
+    border-color 0.32s ease,
+    box-shadow 0.32s ease;
 }
 
 .pipeline-neon-orbit {
@@ -1573,9 +1628,9 @@ blockquote {
       rgba(var(--step-warm), 0.18) 62%,
       transparent 72% 100%);
   filter: blur(0.5px);
-  opacity: 0.14;
+  opacity: 0.22;
   transform: scale(0.88);
-  transition: opacity 0.22s ease, transform 0.22s ease, filter 0.22s ease;
+  transition: opacity 0.34s ease, transform 0.38s cubic-bezier(0.18, 0.82, 0.22, 1), filter 0.34s ease;
 }
 
 .pipeline-neon-glow {
@@ -1587,9 +1642,14 @@ blockquote {
     linear-gradient(180deg, rgba(var(--step-glow), 0.06), rgba(var(--step-glow), 0.22) 52%, rgba(var(--step-warm), 0.12) 100%),
     radial-gradient(ellipse at 50% 68%, rgba(var(--step-glow), 0.36) 0 13%, rgba(var(--step-glow), 0.16) 34%, transparent 72%);
   filter: blur(10px) saturate(1.25);
-  opacity: 0.18;
+  opacity: 0.3;
   transform: translateY(12%) scaleX(0.82) scaleY(0.74);
-  transition: opacity 0.22s ease, transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+  transition:
+    opacity 0.34s ease,
+    transform 0.38s cubic-bezier(0.18, 0.82, 0.22, 1),
+    background 0.34s ease,
+    box-shadow 0.34s ease,
+    filter 0.34s ease;
 }
 
 .pipeline-neon-icon {
@@ -1600,12 +1660,14 @@ blockquote {
   display: block;
   object-fit: contain;
   filter:
-    brightness(0.58)
-    contrast(1.08)
-    saturate(0.82)
+    brightness(0.86)
+    contrast(1.12)
+    saturate(0.94)
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.16))
+    drop-shadow(0 0 18px rgba(var(--step-glow), 0.16))
     drop-shadow(0 16px 24px rgba(0, 0, 0, 0.56));
-  opacity: 0.64;
-  transition: transform 0.22s ease, opacity 0.22s ease, filter 0.22s ease;
+  opacity: 0.84;
+  transition: transform 0.36s cubic-bezier(0.18, 0.82, 0.22, 1), opacity 0.34s ease, filter 0.34s ease;
 }
 
 .pipeline-neon-step strong {
@@ -1616,12 +1678,12 @@ blockquote {
   font-size: clamp(0.68rem, 1.5vw, 0.84rem);
   line-height: 1.12;
   text-shadow: 0 0 12px rgba(var(--step-glow), 0.14);
-  transition: color 0.22s ease, text-shadow 0.22s ease, transform 0.22s ease;
+  transition: color 0.34s ease, text-shadow 0.34s ease, transform 0.36s cubic-bezier(0.18, 0.82, 0.22, 1);
 }
 
 .pipeline-neon-step:hover:not(:disabled),
 .pipeline-neon-step:focus-visible:not(:disabled) {
-  transform: translateY(-0.18rem);
+  transform: translate(var(--piece-x), calc(var(--piece-y) - 0.18rem)) rotate(var(--piece-rot)) translateZ(0);
 }
 
 .pipeline-neon-step:hover:not(:disabled)::before,
@@ -1672,17 +1734,85 @@ blockquote {
 }
 
 .pipeline-neon-step:active:not(:disabled) {
-  transform: translateY(-0.04rem) scale(0.985);
+  transform: translate(var(--piece-x), calc(var(--piece-y) - 0.04rem)) rotate(var(--piece-rot)) scale(0.985);
+}
+
+.pipeline-neon-step.pipeline-action--press {
+  animation: pipeline-click-confirm 0.58s cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+
+.pipeline-neon-step.pipeline-action--press::before {
+  opacity: 0.74;
+  transform: scale(1.08);
+}
+
+.pipeline-neon-step.pipeline-action--press::after {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow:
+    inset 0 0 24px rgba(255, 255, 255, 0.12),
+    0 0 28px rgba(255, 255, 255, 0.12),
+    0 0 36px rgba(var(--step-glow), 0.22);
+  transform: scale(1);
+}
+
+.pipeline-neon-step.pipeline-action--press .pipeline-neon-glow {
+  opacity: 0.74;
+  filter: blur(8px) saturate(1.38);
+  transform: translateY(8%) scaleX(1) scaleY(1.04);
+}
+
+.pipeline-neon-step.pipeline-action--press .pipeline-neon-icon {
+  opacity: 0.96;
+  filter:
+    brightness(1.04)
+    contrast(1.16)
+    saturate(1.08)
+    drop-shadow(0 0 16px rgba(255, 255, 255, 0.22))
+    drop-shadow(0 0 28px rgba(var(--step-glow), 0.28))
+    drop-shadow(0 18px 34px rgba(0, 0, 0, 0.48));
+}
+
+.pipeline-neon-step.pipeline-action--correct {
+  animation: pipeline-correct-confirm 0.68s cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+
+.pipeline-neon-step.pipeline-action--correct::before {
+  opacity: 0.82;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.2), transparent 34%),
+    radial-gradient(circle at 50% 58%, rgba(169, 234, 126, 0.44), transparent 62%);
+  transform: scale(1.16);
+}
+
+.pipeline-neon-step.pipeline-action--correct::after {
+  opacity: 1;
+  border-color: rgba(169, 234, 126, 0.62);
+  box-shadow:
+    inset 0 0 24px rgba(169, 234, 126, 0.18),
+    0 0 22px rgba(169, 234, 126, 0.2),
+    0 0 34px rgba(255, 255, 255, 0.08);
+}
+
+.pipeline-neon-step.pipeline-action--correct .pipeline-neon-icon {
+  opacity: 0.98;
+  filter:
+    brightness(1.05)
+    contrast(1.14)
+    saturate(1.08)
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.18))
+    drop-shadow(0 0 28px rgba(169, 234, 126, 0.3))
+    drop-shadow(0 18px 34px rgba(0, 0, 0, 0.46));
 }
 
 .pipeline-neon-step.pipeline-action--flash {
-  animation: pipeline-step-lift 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: pipeline-step-lift 0.86s cubic-bezier(0.18, 0.82, 0.22, 1);
 }
 
 .pipeline-neon-step.pipeline-action--flash::before {
   opacity: 0.82;
   transform: scale(1.22);
-  animation: pipeline-underlight-bloom 0.7s ease-out;
+  animation: pipeline-underlight-bloom 0.86s ease-out;
 }
 
 .pipeline-neon-step.pipeline-action--flash::after {
@@ -1699,7 +1829,7 @@ blockquote {
   opacity: 0.94;
   filter: blur(0) saturate(1.5);
   transform: scale(1.06);
-  animation: pipeline-orbit-scan 0.7s linear;
+  animation: pipeline-orbit-scan 0.86s linear;
 }
 
 .pipeline-neon-step.pipeline-action--flash .pipeline-neon-glow {
@@ -1718,7 +1848,7 @@ blockquote {
     0 0 132px rgba(var(--step-warm), 0.22);
   filter: blur(8px) saturate(1.55);
   transform: translateY(5%) scaleX(1.05) scaleY(1.2);
-  animation: pipeline-core-pulse 0.7s ease-out;
+  animation: pipeline-core-pulse 0.86s ease-out;
 }
 
 .pipeline-neon-step.pipeline-action--flash .pipeline-neon-icon {
@@ -1774,22 +1904,27 @@ blockquote {
 }
 
 .pipeline-neon-step.pipeline-action--wrong {
-  animation: pipeline-action-wrong 0.42s ease-out;
+  animation: pipeline-action-wrong 0.62s cubic-bezier(0.16, 0.84, 0.24, 1);
 }
 
 .pipeline-neon-step.pipeline-action--wrong::before {
-  opacity: 0.62;
-  background: radial-gradient(circle at 50% 58%, rgba(255, 83, 83, 0.42), transparent 64%);
-  transform: scale(1.05);
+  opacity: 0.78;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.14), transparent 34%),
+    radial-gradient(circle at 50% 58%, rgba(255, 83, 83, 0.48), transparent 64%);
+  transform: scale(1.1);
 }
 
 .pipeline-neon-step.pipeline-action--wrong::after {
   opacity: 1;
   border-color: rgba(255, 105, 79, 0.6);
+  box-shadow:
+    inset 0 0 24px rgba(255, 105, 79, 0.18),
+    0 0 24px rgba(255, 105, 79, 0.24);
 }
 
 .pipeline-neon-step.pipeline-action--wrong .pipeline-neon-glow {
-  opacity: 0.9;
+  opacity: 0.96;
   background:
     linear-gradient(180deg, rgba(255, 226, 198, 0.64), rgba(237, 84, 84, 0.52), transparent 100%),
     radial-gradient(ellipse at 50% 72%, rgba(237, 84, 84, 0.8), rgba(237, 84, 84, 0.2) 54%, transparent 78%);
@@ -1797,9 +1932,11 @@ blockquote {
 
 .pipeline-neon-step.pipeline-action--wrong .pipeline-neon-icon {
   filter:
-    brightness(0.92)
-    saturate(0.95)
-    drop-shadow(0 0 34px rgba(237, 84, 84, 0.36));
+    brightness(1)
+    contrast(1.12)
+    saturate(0.98)
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.12))
+    drop-shadow(0 0 34px rgba(237, 84, 84, 0.42));
 }
 
 .pipeline-neon-step.pipeline-action--wrong strong {
@@ -1828,6 +1965,103 @@ blockquote {
 
 .pipeline-void.pipeline-panel--complete {
   box-shadow: inset 0 0 100px rgba(169, 213, 128, 0.1);
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-board {
+  grid-template-rows: minmax(7rem, 1fr);
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step {
+  --step-glow: 118, 255, 126;
+  --step-warm: 226, 255, 213;
+  --piece-x: 0rem;
+  --piece-y: 0rem;
+  --piece-rot: 0deg;
+  grid-row: 1;
+  animation: pipeline-bridge-assemble 1.15s cubic-bezier(0.18, 0.82, 0.22, 1) both,
+    pipeline-green-shine 1.8s ease-in-out 1.02s infinite;
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(1) {
+  --assemble-x: 208%;
+  --assemble-y: 0%;
+  --assemble-rot: 0deg;
+  grid-column: 1;
+  animation-delay: 0s, 1.02s;
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(2) {
+  --assemble-x: -104%;
+  --assemble-y: 108%;
+  --assemble-rot: 0deg;
+  grid-column: 2;
+  animation-delay: 0.06s, 1.08s;
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(3) {
+  --assemble-x: 208%;
+  --assemble-y: 108%;
+  --assemble-rot: 0deg;
+  grid-column: 3;
+  animation-delay: 0.12s, 1.14s;
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(4) {
+  --assemble-x: -208%;
+  --assemble-y: 216%;
+  --assemble-rot: 0deg;
+  grid-column: 4;
+  animation-delay: 0.18s, 1.2s;
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(5) {
+  --assemble-x: -104%;
+  --assemble-y: 216%;
+  --assemble-rot: 0deg;
+  grid-column: 5;
+  animation-delay: 0.24s, 1.26s;
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step::before {
+  opacity: 0.88;
+  transform: scale(1.18);
+  background:
+    linear-gradient(180deg, rgba(226, 255, 213, 0.34), transparent 44%),
+    radial-gradient(circle at 50% 54%, rgba(118, 255, 126, 0.54), transparent 60%);
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step::after {
+  opacity: 1;
+  border-color: rgba(118, 255, 126, 0.66);
+  box-shadow:
+    inset 0 0 28px rgba(118, 255, 126, 0.2),
+    0 0 28px rgba(118, 255, 126, 0.28);
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-glow {
+  opacity: 0.95;
+  background:
+    linear-gradient(180deg, rgba(226, 255, 213, 0.76), rgba(118, 255, 126, 0.58) 52%, transparent 100%),
+    radial-gradient(ellipse at 50% 68%, rgba(226, 255, 213, 0.82) 0 12%, rgba(118, 255, 126, 0.42) 42%, transparent 78%);
+  box-shadow:
+    0 0 38px rgba(118, 255, 126, 0.56),
+    0 0 94px rgba(118, 255, 126, 0.28);
+  transform: translateY(7%) scaleX(1.02) scaleY(1.08);
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-icon {
+  opacity: 1;
+  filter:
+    brightness(1.08)
+    contrast(1.18)
+    saturate(1.1)
+    drop-shadow(0 0 24px rgba(118, 255, 126, 0.42))
+    drop-shadow(0 18px 44px rgba(118, 255, 126, 0.2));
+}
+
+.pipeline-void.pipeline-panel--complete .pipeline-neon-step strong {
+  color: rgba(226, 255, 213, 0.96);
+  text-shadow: 0 0 18px rgba(118, 255, 126, 0.48);
 }
 
 .debt-scene {
@@ -2309,8 +2543,6 @@ blockquote {
   font-size: 0.7rem;
 }
 
-.oracle-instrument:hover,
-.oracle-instrument:focus-visible,
 .oracle-instrument--active {
   color: #f6e6ae;
   background: rgba(21, 37, 42, 0.92);
@@ -2503,37 +2735,79 @@ blockquote {
 
 @keyframes pipeline-shake {
   0% {
-    transform: translateX(0);
+    translate: 0 0;
   }
 
   25% {
-    transform: translateX(-5px);
+    translate: -0.32rem 0;
   }
 
   55% {
-    transform: translateX(5px);
+    translate: 0.32rem 0;
   }
 
   100% {
-    transform: translateX(0);
+    translate: 0 0;
   }
 }
 
 @keyframes pipeline-action-wrong {
   0% {
-    transform: translateX(0);
+    transform: translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-rot)) scale(1);
   }
 
-  25% {
-    transform: translateX(-4px);
+  22% {
+    transform: translate(calc(var(--piece-x) - 0.18rem), var(--piece-y)) rotate(calc(var(--piece-rot) - 1deg)) scale(1.012);
   }
 
-  55% {
-    transform: translateX(4px);
+  52% {
+    transform: translate(calc(var(--piece-x) + 0.18rem), var(--piece-y)) rotate(calc(var(--piece-rot) + 1deg)) scale(1.012);
   }
 
   100% {
-    transform: translateX(0);
+    transform: translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-rot)) scale(1);
+  }
+}
+
+@keyframes pipeline-click-confirm {
+  0% {
+    transform: translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-rot)) scale(1);
+  }
+
+  42% {
+    transform: translate(var(--piece-x), calc(var(--piece-y) - 0.22rem)) rotate(var(--piece-rot)) scale(1.035);
+  }
+
+  100% {
+    transform: translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-rot)) scale(1);
+  }
+}
+
+@keyframes pipeline-correct-confirm {
+  0% {
+    transform: translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-rot)) scale(1);
+  }
+
+  44% {
+    transform: translate(var(--piece-x), calc(var(--piece-y) - 0.28rem)) rotate(var(--piece-rot)) scale(1.04);
+  }
+
+  100% {
+    transform: translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-rot)) scale(1);
+  }
+}
+
+@keyframes pipeline-piece-enter {
+  0% {
+    opacity: 0.08;
+    filter: blur(5px) saturate(0.78);
+    transform: translate(var(--piece-x), calc(var(--piece-y) + 0.5rem)) rotate(var(--piece-rot)) scale(0.94);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0) saturate(1);
+    transform: translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-rot)) scale(1);
   }
 }
 
@@ -2602,6 +2876,41 @@ blockquote {
   }
 }
 
+@keyframes pipeline-bridge-assemble {
+  0% {
+    filter: saturate(0.82);
+    transform:
+      translate(var(--assemble-x), var(--assemble-y))
+      translate(var(--piece-start-x), var(--piece-start-y))
+      rotate(var(--assemble-rot))
+      scale(0.96);
+  }
+
+  72% {
+    filter: saturate(1.42);
+    transform:
+      translate(0, -0.18rem)
+      rotate(0deg)
+      scale(1.035);
+  }
+
+  100% {
+    filter: saturate(1.12);
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes pipeline-green-shine {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px rgba(118, 255, 126, 0.16));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 28px rgba(118, 255, 126, 0.42));
+  }
+}
+
 @keyframes debt-after-applied {
   0% {
     transform: scale(0.98);
@@ -2639,10 +2948,13 @@ blockquote {
 @media (prefers-reduced-motion: reduce) {
   .pipeline-panel--shake,
   .pipeline-action--wrong,
+  .pipeline-neon-board--ready .pipeline-neon-step,
+  .pipeline-neon-step.pipeline-action--press,
   .pipeline-neon-step.pipeline-action--flash,
   .pipeline-neon-step.pipeline-action--flash::before,
   .pipeline-neon-step.pipeline-action--flash .pipeline-neon-glow,
   .pipeline-neon-step.pipeline-action--flash .pipeline-neon-orbit,
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step,
   .debt-refactor-station--applied .debt-after,
   .oracle-calibration--wrong,
   .oracle-panel--distorted {
@@ -2682,6 +2994,60 @@ blockquote {
   transform: translateY(-2px);
   box-shadow: 0 0 18px rgba(214, 173, 53, 0.3);
   outline: none;
+}
+
+.btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  box-shadow: none;
+}
+
+.status-historia {
+  min-height: 1.4rem;
+  margin-top: 0.85rem;
+  color: #d9cda7;
+  font-size: 0.95rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.porta-boss-scene {
+  display: grid;
+  place-items: center;
+  gap: 0.65rem;
+  min-height: clamp(16rem, 36vw, 25rem);
+  border: 1px solid rgba(214, 173, 53, 0.45);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(214, 173, 53, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(18, 13, 9, 0.92), rgba(6, 5, 4, 0.96));
+  color: #d6ad35;
+  text-align: center;
+  box-shadow: inset 0 0 34px rgba(0, 0, 0, 0.48);
+}
+
+.porta-boss-scene strong {
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+.porta-boss-scene span {
+  color: #c9bfa4;
+}
+
+.porta-boss-scene.porta-liberada {
+  cursor: pointer;
+  border-color: #f2c84b;
+  box-shadow:
+    inset 0 0 34px rgba(0, 0, 0, 0.42),
+    0 0 24px rgba(214, 173, 53, 0.32);
+}
+
+.porta-boss-scene.porta-liberada span {
+  color: #f7e6aa;
 }
 
 @media (max-width: 768px) {
@@ -2779,6 +3145,7 @@ blockquote {
 
   .pipeline-neon-board {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(4.8rem, 1fr));
     align-content: center;
     min-height: clamp(22rem, 58vh, 34rem);
   }
@@ -2787,14 +3154,54 @@ blockquote {
     width: clamp(4.7rem, 24vw, 7rem);
   }
 
-  .pipeline-neon-step:nth-child(4) {
-    grid-column: 1 / 3;
-    justify-self: end;
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-board {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(5, minmax(4.2rem, auto));
+    min-height: clamp(26rem, 72vh, 35rem);
+    gap: 0.28rem;
   }
 
-  .pipeline-neon-step:nth-child(5) {
-    grid-column: 3 / 4;
-    justify-self: start;
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step {
+    width: clamp(4.2rem, 22vw, 6.2rem);
+    justify-self: center;
+  }
+
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(1),
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(2),
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(3),
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(4),
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(5) {
+    grid-column: 1;
+  }
+
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(1) {
+    --assemble-x: 104%;
+    --assemble-y: 0%;
+    grid-row: 1;
+  }
+
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(2) {
+    --assemble-x: 0%;
+    --assemble-y: 108%;
+    grid-row: 2;
+  }
+
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(3) {
+    --assemble-x: 208%;
+    --assemble-y: 108%;
+    grid-row: 3;
+  }
+
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(4) {
+    --assemble-x: 0%;
+    --assemble-y: 108%;
+    grid-row: 4;
+  }
+
+  .pipeline-void.pipeline-panel--complete .pipeline-neon-step:nth-child(5) {
+    --assemble-x: 208%;
+    --assemble-y: 108%;
+    grid-row: 5;
   }
 
   .debt-refactor-station {

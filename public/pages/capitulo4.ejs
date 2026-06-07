@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Capítulo 4 | Scrum Dungeon</title>
   <link rel="stylesheet" href="../assets/css/main.css" />
-  <link rel="stylesheet" href="../assets/css/capitulo4.css" />
+  <link rel="stylesheet" href="../assets/css/capitulo4.css?v=hourglass-force" />
 </head>
 
 <body>
@@ -45,6 +45,10 @@
         É na travessia do tempo quebrado que a quarta jornada começa.
       </p>
     </div>
+
+    <p class="intro-scroll-hint" id="introScrollHint" aria-hidden="true">
+      Role para continuar
+    </p>
   </section>
 
   <main class="capitulo-page" id="capitulo4">
@@ -59,7 +63,7 @@
           mas a areia não cai. O ciclo existe. O fluxo, ainda não.
         </p>
 
-        <button class="btn-primary" type="button" data-scroll-to="#introScrollSpace">
+        <button class="btn-primary" type="button" data-scroll-to-hourglass>
           Entrar na névoa
         </button>
       </div>
@@ -439,42 +443,39 @@
             </div>
             <div class="debt-caption">
               <span>Dívida técnica</span>
-              <strong id="debtTitle">Peso acumulado da Sprint</strong>
-              <p id="debtDescription">O time ainda entrega, mas cada atalho torna a próxima mudança mais lenta.</p>
+              <strong>Peso acumulado da Sprint</strong>
+              <p>O time ainda entrega, mas cada atalho torna a próxima mudança mais lenta.</p>
             </div>
           </div>
 
           <div class="debt-workbench" aria-label="Bancada de refatoração">
-            <span id="debtWorkbenchStep">Peso técnico: alto</span>
-            <strong id="debtWorkbenchTitle">Refatore sem mudar o comportamento</strong>
-            <p id="debtWorkbenchText">Transforme atalhos em melhorias internas. O usuário recebe o mesmo comportamento, mas o time ganha velocidade.</p>
+            <span>Peso técnico: alto</span>
+            <strong>Refatore sem mudar o comportamento</strong>
+            <p>Transforme atalhos em melhorias internas. O usuário recebe o mesmo comportamento, mas o time ganha velocidade.</p>
           </div>
 
           <div class="debt-progress" aria-hidden="true">
-            <span id="debtWeightBar"></span>
+            <span></span>
           </div>
 
           <div class="debt-refactor-station" aria-label="Transformação de dívida técnica em refatoração">
             <div class="debt-before" aria-label="Atalho técnico atual">
               <span>Atalho</span>
-              <strong id="debtBeforeTitle">Duplicamos para terminar rápido.</strong>
-              <p id="debtBeforeText">O código funciona, mas a mesma regra aparece em lugares diferentes.</p>
+              <strong>Duplicamos para terminar rápido.</strong>
+              <p>O código funciona, mas a mesma regra aparece em lugares diferentes.</p>
             </div>
             <div class="debt-transform" aria-hidden="true">
-              <span id="debtTransformStep">1/4</span>
+              <span>Refatorar</span>
             </div>
             <div class="debt-after" aria-label="Refatoração aplicada">
               <span>Refatoração</span>
-              <strong id="debtAfterTitle">Extrair função</strong>
-              <p id="debtAfterText">Uma função central mantém o comportamento e reduz manutenção.</p>
+              <strong>Extrair função</strong>
+              <p>Uma função central mantém o comportamento e reduz manutenção.</p>
             </div>
-            <button class="debt-refactor-button" id="btnAplicarRefatoracao" type="button">
-              Aplicar refatoração
-            </button>
           </div>
 
-          <p class="debt-status" id="debtStatus" aria-live="polite">
-            Aplique a refatoração indicada. O comportamento externo não muda.
+          <p class="debt-status">
+            Refatoração reduz dívida sem mudar o comportamento externo.
           </p>
 
           <div class="debt-evidence-trail" aria-label="Rastros deixados pela dívida técnica">
@@ -493,7 +494,7 @@
       </div>
     </section>
 
-    <section class="story-block reveal oracle-scene" id="cena-metricas" data-locked-by="divida-tecnica" aria-describedby="lock-cena-metricas">
+    <section class="story-block reveal oracle-scene" id="cena-metricas" data-locked-by="pipeline" aria-describedby="lock-cena-metricas">
       <div class="story-side-icon" aria-hidden="true">
         <span>06</span>
       </div>
@@ -535,52 +536,34 @@
           </div>
           <div class="oracle-chamber">
             <img src="/assets/img/capitulo_4/oraculo-metricas-pixel.png" alt="Sala circular do Oráculo das Métricas com relógios e gráficos">
-            <div class="oracle-orbit" aria-label="Instrumentos orbitais do Oráculo">
-              <button class="oracle-instrument" type="button" data-metric-focus="burndown">
+            <div class="oracle-orbit" aria-label="Instrumentos do Oráculo">
+              <div class="oracle-instrument">
                 <strong>Burndown</strong>
                 <span>Restante</span>
-              </button>
-              <button class="oracle-instrument" type="button" data-metric-focus="burnup">
+              </div>
+              <div class="oracle-instrument">
                 <strong>Burnup</strong>
                 <span>Concluído</span>
-              </button>
-              <button class="oracle-instrument" type="button" data-metric-focus="velocity">
+              </div>
+              <div class="oracle-instrument">
                 <strong>Velocity</strong>
                 <span>Previsão</span>
-              </button>
-              <button class="oracle-instrument" type="button" data-metric-focus="lead-time">
+              </div>
+              <div class="oracle-instrument">
                 <strong>Lead Time</strong>
                 <span>Pedido</span>
-              </button>
-              <button class="oracle-instrument" type="button" data-metric-focus="cycle-time">
+              </div>
+              <div class="oracle-instrument">
                 <strong>Cycle Time</strong>
                 <span>Execução</span>
-              </button>
+              </div>
             </div>
-            <div class="oracle-core" aria-live="polite">
-              <span id="oracleStep">Instrumento 1/5</span>
-              <strong id="oracleTitle">Burndown</strong>
-              <p id="oracleText">Acompanha o trabalho restante ao longo do tempo.</p>
-            </div>
-          </div>
-
-          <div class="oracle-controls" aria-label="Girar foco das métricas">
-            <button class="oracle-turn" type="button" data-oracle-turn="previous">Anterior</button>
-            <button class="oracle-turn" type="button" data-oracle-turn="next">Próximo instrumento</button>
-          </div>
-
-          <div class="oracle-calibration" aria-label="Calibrar uso das métricas">
-            <span>Calibração final</span>
-            <strong>Como o time deve usar estes números?</strong>
-            <div class="oracle-calibration-actions">
-              <button type="button" data-oracle-calibration="punir">Punir pessoas</button>
-              <button type="button" data-oracle-calibration="aprender">Aprender e melhorar</button>
+            <div class="oracle-core">
+              <span>Leitura final</span>
+              <strong>Métrica é bússola</strong>
+              <p>Os números servem para entender o fluxo, aprender e melhorar sem procurar culpados.</p>
             </div>
           </div>
-
-          <p class="oracle-status" id="metricStatus" aria-live="polite">
-            Gire o foco pelos cinco instrumentos antes de calibrar o Oráculo.
-          </p>
 
           <div class="oracle-warning" aria-label="Risco de uso incorreto das métricas">
             <strong>Próximo risco</strong>
@@ -592,7 +575,36 @@
       <div class="scene-lock" id="lock-cena-metricas" role="status" aria-live="polite">
         <span class="scene-lock__icon" aria-hidden="true"></span>
         <strong>Bloqueado</strong>
-        <p>Reduza a Dívida Técnica para liberar o Oráculo das Métricas.</p>
+        <p>Conclua a Ponte CI/CD para liberar o Oráculo das Métricas.</p>
+      </div>
+    </section>
+
+    <section class="story-block reveal final-block" id="cena-finalizar-historia">
+      <div class="story-side-icon" aria-hidden="true">
+        <span>07</span>
+      </div>
+
+      <div class="story-text">
+        <span class="section-number">Final</span>
+        <h2>Registrar conclusão</h2>
+        <p>
+          Use este card temporário para finalizar a história do capítulo 4 e testar o fluxo do site.
+        </p>
+
+        <button class="btn-primary" id="btnConcluirHistoria" type="button">
+          Finalizar história
+        </button>
+
+        <p class="status-historia" id="statusHistoria" aria-live="polite">
+          Use este botão temporário para testar a conclusão do capítulo.
+        </p>
+      </div>
+
+      <div class="story-art">
+        <div class="porta-boss-scene" id="portaBossScene" aria-label="Porta do desafio do módulo 4">
+          <strong>Quarta porta</strong>
+          <span>Desafio bloqueado</span>
+        </div>
       </div>
     </section>
   </main>
@@ -601,7 +613,7 @@
   <%- include('partials/footer') %>
 
   <script src="../assets/js/main.js"></script>
-  <script src="../assets/js/capitulo4.js"></script>
+  <script src="../assets/js/capitulo4.js?v=hourglass-scroll-hint"></script>
 </body>
 
 </html>

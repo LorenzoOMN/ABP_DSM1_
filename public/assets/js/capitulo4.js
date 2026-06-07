@@ -1,41 +1,14 @@
 const ID_MODULO = 4;
 const SCROLL_OFFSET = 88;
+const INTRO_SCROLL_HINT_DELAY = 2000;
 
 const kanbanFlow = ["todo", "doing", "test", "done"];
 const completedMinigames = new Set();
-let retrospectiveUnlocked = false;
+let introHourglassForced = false;
 
 if (typeof document !== "undefined") {
   document.documentElement.classList.add("capitulo4-motion");
 }
-
-const metrics = {
-  burndown: {
-    title: "Burndown mostra o restante",
-    text:
-      "Burndown Chart mostra quanto trabalho ainda falta ao longo do tempo. Ele ajuda a enxergar se a Sprint se aproxima do fim.",
-  },
-  burnup: {
-    title: "Burnup mostra o acumulado",
-    text:
-      "Burnup Chart mostra o trabalho concluido acumulado e deixa visivel como o escopo evolui.",
-  },
-  velocity: {
-    title: "Velocity e previsao interna",
-    text:
-      "Velocity ajuda a propria equipe a prever capacidade futura. Ela nao deve comparar equipes diferentes.",
-  },
-  "lead-time": {
-    title: "Lead Time comeca no pedido",
-    text:
-      "Lead Time mede o tempo total desde a solicitacao ate a entrega. Ele mostra a espera completa do ponto de vista do pedido.",
-  },
-  "cycle-time": {
-    title: "Cycle Time comeca no trabalho",
-    text:
-      "Cycle Time mede quanto tempo um item leva desde que comeca a ser desenvolvido ate ser concluido.",
-  },
-};
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -53,7 +26,7 @@ function calcularLimiaresLinhasIntro(totalLines = 5, firstThreshold = 0.15) {
   return Array.from({ length: totalLines }, (_, index) => firstThreshold * (index + 1));
 }
 
-function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0) {
+function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0, introStarted = false) {
   const progress = clamp(blackoutProgress, 0, 1);
   const intro = clamp(introProgress, 0, 1);
   const preludeStart = 0.86;
@@ -61,8 +34,9 @@ function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0) {
   const outroStart = 0.86;
   const outro = clamp((intro - outroStart) / (1 - outroStart), 0, 1);
   const lineThresholds = calcularLimiaresLinhasIntro();
+  const isIntroStarted = introStarted || intro > 0;
   const showPrelude = preludeOpacity > 0 && outro < 1;
-  const showHourglass = progress >= 1 && outro < 1;
+  const showHourglass = (progress >= 1 || isIntroStarted) && outro < 1;
   const visibleLines = showHourglass
     ? lineThresholds.filter((threshold) => intro >= threshold).length
     : 0;
@@ -70,7 +44,7 @@ function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0) {
 
   let phase = "hidden";
 
-  if (progress >= 1) {
+  if (progress >= 1 || isIntroStarted) {
     if (outro < 1) {
       phase = intro >= outroStart ? "outro" : "full";
     }
@@ -105,6 +79,31 @@ function rolarParaElemento(selector, offset = SCROLL_OFFSET) {
   if (!target) return;
 
   const top = target.getBoundingClientRect().top + window.scrollY - offset;
+
+  window.scrollTo({ top, behavior: "smooth" });
+}
+
+function calcularScrollParaAmpulheta(introSpaceTop) {
+  return Math.ceil(introSpaceTop);
+}
+
+function deveManterAmpulhetaForcada(forced, scrollY, introSpaceTop, previousScrollY) {
+  if (!forced) return false;
+  if (scrollY >= Math.floor(introSpaceTop)) return false;
+  if (scrollY < previousScrollY) return false;
+
+  return true;
+}
+
+function rolarAteAmpulhetaIntro() {
+  const introSpace = document.getElementById("introScrollSpace");
+
+  if (!introSpace) return;
+
+  introHourglassForced = true;
+
+  const rect = introSpace.getBoundingClientRect();
+  const top = calcularScrollParaAmpulheta(rect.top + window.scrollY);
 
   window.scrollTo({ top, behavior: "smooth" });
 }
@@ -172,6 +171,10 @@ function configurarScrollGuiado() {
       }
     });
   });
+
+  document.querySelectorAll("[data-scroll-to-hourglass]").forEach((button) => {
+    button.addEventListener("click", rolarAteAmpulhetaIntro);
+  });
 }
 
 function configurarBlackoutDaHero() {
@@ -180,6 +183,7 @@ function configurarBlackoutDaHero() {
   const blackout = document.getElementById("viewportBlackout");
   const intro = document.getElementById("capitulo4IntroNarrativa");
   const prelude = document.getElementById("introPrelude");
+  const scrollHint = document.getElementById("introScrollHint");
   const lines = Array.from(document.querySelectorAll("[data-intro-line]"));
 
   if (!hero || !blackout) return;
@@ -188,7 +192,38 @@ function configurarBlackoutDaHero() {
   let heroHeight = 0;
   let introSpaceTop = 0;
   let introSpaceHeight = 0;
+  let lastScrollY = window.scrollY;
+  let scrollHintTimer = null;
+  let scrollHintEligible = false;
   let ticking = false;
+
+  function esconderLegendaScrollIntro() {
+    if (!intro) return;
+
+    intro.classList.remove("show-scroll-hint");
+  }
+
+  function agendarLegendaScrollIntro() {
+    if (!scrollHint || !intro) return;
+
+    window.clearTimeout(scrollHintTimer);
+    esconderLegendaScrollIntro();
+
+    if (!scrollHintEligible) return;
+
+    scrollHintTimer = window.setTimeout(() => {
+      if (scrollHintEligible) {
+        intro.classList.add("show-scroll-hint");
+      }
+    }, INTRO_SCROLL_HINT_DELAY);
+  }
+
+  function atualizarElegibilidadeLegendaScrollIntro(eligible) {
+    if (scrollHintEligible === eligible) return;
+
+    scrollHintEligible = eligible;
+    agendarLegendaScrollIntro();
+  }
 
   function medirHero() {
     const rect = hero.getBoundingClientRect();
@@ -208,18 +243,27 @@ function configurarBlackoutDaHero() {
     const introProgress = introSpaceHeight > 0
       ? clamp(introScroll / introSpaceHeight, 0, 1)
       : 0;
+    const introReached = window.scrollY >= Math.floor(introSpaceTop);
+    introHourglassForced = deveManterAmpulhetaForcada(
+      introHourglassForced,
+      window.scrollY,
+      introSpaceTop,
+      lastScrollY,
+    );
+    const introStarted = introHourglassForced || introReached;
     const blackoutOutro = introProgress > 0.88
       ? clamp((introProgress - 0.88) / 0.12, 0, 1)
       : 0;
 
-    blackout.style.opacity = String(blackoutProgress >= 1
+    blackout.style.opacity = String(introStarted || blackoutProgress >= 1
       ? 1 - blackoutOutro
       : blackoutProgress);
 
     if (intro && prelude && lines.length > 0) {
       const introState = calcularEstadoIntroNarrativa(
-        blackoutProgress,
+        introStarted ? 1 : blackoutProgress,
         introProgress,
+        introStarted,
       );
 
       intro.classList.toggle("is-prelude", introState.phase === "prelude");
@@ -234,9 +278,13 @@ function configurarBlackoutDaHero() {
         line.classList.toggle("is-active", index === introState.activeLineIndex);
       });
 
+      atualizarElegibilidadeLegendaScrollIntro(
+        introState.phase === "full" || introState.phase === "outro",
+      );
     }
 
     ticking = false;
+    lastScrollY = window.scrollY;
   }
 
   function agendarAtualizacao() {
@@ -250,6 +298,7 @@ function configurarBlackoutDaHero() {
   aplicarBlackout();
 
   window.addEventListener("scroll", agendarAtualizacao, { passive: true });
+  window.addEventListener("scroll", agendarLegendaScrollIntro, { passive: true });
   window.addEventListener("resize", () => {
     medirHero();
     agendarAtualizacao();
@@ -532,116 +581,6 @@ function destacarCriteriosDodFaltantes(checks) {
   });
 }
 
-function configurarDividaTecnica() {
-  const panel = document.querySelector(".debt-panel");
-  const status = document.getElementById("debtStatus");
-  const title = document.getElementById("debtTitle");
-  const description = document.getElementById("debtDescription");
-  const workbenchStep = document.getElementById("debtWorkbenchStep");
-  const workbenchTitle = document.getElementById("debtWorkbenchTitle");
-  const workbenchText = document.getElementById("debtWorkbenchText");
-  const weightBar = document.getElementById("debtWeightBar");
-  const beforeTitle = document.getElementById("debtBeforeTitle");
-  const beforeText = document.getElementById("debtBeforeText");
-  const afterTitle = document.getElementById("debtAfterTitle");
-  const afterText = document.getElementById("debtAfterText");
-  const transformStep = document.getElementById("debtTransformStep");
-  const button = document.getElementById("btnAplicarRefatoracao");
-  const station = document.querySelector(".debt-refactor-station");
-  let currentStep = 0;
-  const refactorings = [
-    {
-      before: "Duplicamos para terminar rápido.",
-      beforeText: "O código funciona, mas a mesma regra aparece em lugares diferentes.",
-      after: "Extrair função",
-      afterText: "Uma função central mantém o comportamento e reduz manutenção.",
-    },
-    {
-      before: "Pulamos testes.",
-      beforeText: "A entrega parece rápida, mas qualquer mudança pode quebrar algo sem aviso.",
-      after: "Cobrir comportamento",
-      afterText: "O teste protege o resultado esperado sem mudar a entrega.",
-    },
-    {
-      before: "Deixamos para arrumar depois.",
-      beforeText: "A pendência vira custo invisível para a próxima Sprint.",
-      after: "Resolver pendência",
-      afterText: "O ajuste entra agora e reduz retrabalho futuro.",
-    },
-    {
-      before: "Aceitamos código frágil.",
-      beforeText: "O usuário vê a mesma tela, mas a estrutura interna dificulta evolução.",
-      after: "Organizar estrutura",
-      afterText: "A estrutura fica mais clara sem alterar o comportamento externo.",
-    },
-  ];
-
-  if (!panel || !button || !station) return;
-
-  const renderRefactoring = () => {
-    const refactoring = refactorings[currentStep];
-    const weight = Math.max(0, 100 - currentStep * 25);
-
-    if (!refactoring) return;
-
-    if (beforeTitle) beforeTitle.textContent = refactoring.before;
-    if (beforeText) beforeText.textContent = refactoring.beforeText;
-    if (afterTitle) afterTitle.textContent = refactoring.after;
-    if (afterText) afterText.textContent = refactoring.afterText;
-    if (transformStep) transformStep.textContent = `${currentStep + 1}/${refactorings.length}`;
-    if (weightBar) weightBar.style.width = `${weight}%`;
-    if (workbenchStep) {
-      workbenchStep.textContent = currentStep === 0
-        ? "Peso técnico: alto"
-        : `Peso técnico: ${refactorings.length - currentStep} pontos`;
-    }
-  };
-
-  button.addEventListener("click", () => {
-    station.classList.remove("debt-refactor-station--applied");
-    void station.offsetWidth;
-    station.classList.add("debt-refactor-station--applied");
-
-    currentStep += 1;
-    const remaining = refactorings.length - currentStep;
-
-    if (weightBar) {
-      weightBar.style.width = `${Math.max(0, 100 - currentStep * 25)}%`;
-    }
-
-    if (status) {
-      status.textContent = remaining === 0
-        ? "Dívida reduzida. As correntes caíram, mas deixaram rastros para investigar."
-        : `Refatoração aplicada. Restam ${remaining} ajustes internos.`;
-    }
-
-    if (title) {
-      title.textContent = remaining === 0 ? "Rastros revelados" : "Peso reduzido";
-    }
-
-    if (description) {
-      description.textContent = remaining === 0
-        ? "O comportamento continua igual. Agora o time consegue seguir as evidências do próprio fluxo."
-        : "O usuário recebe o mesmo resultado. Por dentro, o sistema ficou mais simples.";
-    }
-
-    if (currentStep >= refactorings.length) {
-      panel.classList.add("debt-panel--refactored");
-      button.disabled = true;
-      button.textContent = "Dívida reduzida";
-      if (workbenchStep) workbenchStep.textContent = "Peso técnico: baixo";
-      if (workbenchTitle) workbenchTitle.textContent = "Refatoração concluída";
-      if (workbenchText) workbenchText.textContent = "Atalhos viraram melhorias internas. Os rastros apontam para as métricas.";
-      concluirMinigame("divida-tecnica");
-      return;
-    }
-
-    window.setTimeout(renderRefactoring, 260);
-  });
-
-  renderRefactoring();
-}
-
 function configurarPipelineDecisoesAntigo() {
   const status = document.getElementById("pipelineStatus");
   const panel = document.querySelector(".pipeline-panel");
@@ -729,6 +668,9 @@ function configurarPipelineDecisoesAntigo() {
       panel.classList.remove("pipeline-panel--shake");
       void panel.offsetWidth;
       panel.classList.add("pipeline-panel--shake");
+      window.setTimeout(() => {
+        panel.classList.remove("pipeline-panel--shake");
+      }, 620);
     }
   }
 
@@ -746,7 +688,9 @@ function configurarPipelineDecisoesAntigo() {
     });
 
     setPipelineStatus("CI integrou e testou. CD automatizou a entrega. A ponte está estável.", "success");
-    concluirMinigame("pipeline", { scrollTo: "#cena-divida" });
+    window.setTimeout(() => {
+      concluirMinigame("pipeline", { scrollTo: "#cena-divida" });
+    }, 1600);
   }
 
   actionButtons.forEach((button) => {
@@ -792,6 +736,7 @@ function configurarPipelineDecisoes() {
   const replayButton = document.getElementById("btnRepetirPipeline");
   const progressBar = document.querySelector("[data-pipeline-progress]");
   const actionButtons = Array.from(document.querySelectorAll("[data-pipeline-step]"));
+  const board = document.querySelector(".pipeline-neon-board");
   const sequence = [
     {
       id: "codigo",
@@ -827,6 +772,7 @@ function configurarPipelineDecisoes() {
   let completed = false;
   let playbackToken = 0;
   let scrollTicking = false;
+  let layoutSeed = 0;
 
   if (!status || !stepLabel || !title || !description || actionButtons.length === 0) return;
 
@@ -861,11 +807,67 @@ function configurarPipelineDecisoes() {
     }
   }
 
+  function shuffleItems(items) {
+    const shuffled = [...items];
+
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const targetIndex = Math.floor(Math.random() * (index + 1));
+      [shuffled[index], shuffled[targetIndex]] = [shuffled[targetIndex], shuffled[index]];
+    }
+
+    return shuffled;
+  }
+
+  function setPipelineRandomLayout() {
+    const compactLayout = typeof window.matchMedia === "function"
+      && window.matchMedia("(max-width: 768px)").matches;
+    const slots = shuffleItems([
+      { col: 3, row: 1, compactCol: 2, compactRow: 1, x: "0.65rem", y: "0.2rem" },
+      { col: 1, row: 2, compactCol: 1, compactRow: 2, x: "-0.2rem", y: "-0.35rem" },
+      { col: 5, row: 2, compactCol: 3, compactRow: 2, x: "0.1rem", y: "0.45rem" },
+      { col: 2, row: 3, compactCol: 1, compactRow: 3, x: "-0.55rem", y: "-0.2rem" },
+      { col: 4, row: 3, compactCol: 3, compactRow: 3, x: "0.45rem", y: "-0.5rem" },
+    ]);
+
+    layoutSeed += 1;
+
+    actionButtons.forEach((button, index) => {
+      const slot = slots[index];
+      const finalColumn = index + 1;
+      const slotColumn = compactLayout ? slot.compactCol : slot.col;
+      const slotRow = compactLayout ? slot.compactRow : slot.row;
+      const assembleX = (slotColumn - finalColumn) * 104;
+      const assembleY = (slotRow - 1) * 108;
+
+      button.style.setProperty("--slot-col", String(slotColumn));
+      button.style.setProperty("--slot-row", String(slotRow));
+      button.style.setProperty("--piece-x", slot.x);
+      button.style.setProperty("--piece-y", slot.y);
+      button.style.setProperty("--piece-rot", "0deg");
+      button.style.setProperty("--piece-start-x", slot.x);
+      button.style.setProperty("--piece-start-y", slot.y);
+      button.style.setProperty("--piece-start-rot", "0deg");
+      button.style.setProperty("--assemble-x", `${assembleX}%`);
+      button.style.setProperty("--assemble-y", `${assembleY}%`);
+      button.style.setProperty("--assemble-rot", "0deg");
+      button.style.setProperty("--entry-delay", `${index * 0.055}s`);
+    });
+
+    if (board) {
+      board.classList.remove("pipeline-neon-board--ready");
+      board.dataset.layoutSeed = String(layoutSeed);
+      void board.offsetWidth;
+      board.classList.add("pipeline-neon-board--ready");
+    }
+  }
+
   function clearPickedAction() {
     actionButtons.forEach((button) => {
       button.classList.remove("pipeline-action--picked");
+      button.classList.remove("pipeline-action--correct");
       button.classList.remove("pipeline-action--wrong");
       button.classList.remove("pipeline-action--flash");
+      button.classList.remove("pipeline-action--press");
     });
   }
 
@@ -883,9 +885,9 @@ function configurarPipelineDecisoes() {
     title.textContent = step.title;
     description.textContent = step.message;
 
-    await wait(720);
+    await wait(860);
     button.classList.remove("pipeline-action--flash");
-    await wait(150);
+    await wait(180);
   }
 
   function shakeBridge(button) {
@@ -1026,7 +1028,9 @@ function configurarPipelineDecisoes() {
       scrollBlackout.style.opacity = "0";
     }
 
-    concluirMinigame("pipeline", { scrollTo: "#cena-divida" });
+    window.setTimeout(() => {
+      concluirMinigame("pipeline", { scrollTo: "#cena-divida" });
+    }, 1600);
   }
 
   actionButtons.forEach((button) => {
@@ -1052,6 +1056,15 @@ function configurarPipelineDecisoes() {
         }, 920);
         return;
       }
+
+      button.classList.remove("pipeline-action--press");
+      void button.offsetWidth;
+      button.classList.add("pipeline-action--press");
+      button.classList.add("pipeline-action--correct");
+      window.setTimeout(() => {
+        button.classList.remove("pipeline-action--press");
+        button.classList.remove("pipeline-action--correct");
+      }, 640);
 
       button.classList.add("pipeline-action--picked");
       inputIndex += 1;
@@ -1100,6 +1113,7 @@ function configurarPipelineDecisoes() {
   }
 
   setActionsDisabled(true);
+  setPipelineRandomLayout();
   atualizarEscuridaoPipeline();
   window.addEventListener("scroll", solicitarAtualizacaoEscuridao, { passive: true });
   window.addEventListener("resize", solicitarAtualizacaoEscuridao);
@@ -1122,256 +1136,6 @@ function configurarPipelineDecisoes() {
   }
 }
 
-function configurarMetricas() {
-  const status = document.getElementById("metricStatus");
-  const panel = document.querySelector(".oracle-panel");
-  const orbit = document.querySelector(".oracle-orbit");
-  const instruments = Array.from(document.querySelectorAll("[data-metric-focus]"));
-  const turnButtons = Array.from(document.querySelectorAll("[data-oracle-turn]"));
-  const calibrationButtons = Array.from(document.querySelectorAll("[data-oracle-calibration]"));
-  const step = document.getElementById("oracleStep");
-  const title = document.getElementById("oracleTitle");
-  const text = document.getElementById("oracleText");
-  let currentIndex = 0;
-  const seenMetrics = new Set();
-  const metricKeys = ["burndown", "burnup", "velocity", "lead-time", "cycle-time"];
-
-  if (!panel || !orbit || instruments.length === 0) return;
-
-  const metricCopy = {
-    burndown: {
-      title: "Burndown",
-      text: "Acompanha o trabalho restante ao longo do tempo.",
-    },
-    burnup: {
-      title: "Burnup",
-      text: "Mostra o progresso acumulado do trabalho concluído.",
-    },
-    velocity: {
-      title: "Velocity",
-      text: "Ajuda a própria equipe a prever capacidade futura. Não compara equipes.",
-    },
-    "lead-time": {
-      title: "Lead Time",
-      text: "Mede da solicitação até a entrega. Mostra a espera completa.",
-    },
-    "cycle-time": {
-      title: "Cycle Time",
-      text: "Mede do início do desenvolvimento até a conclusão.",
-    },
-  };
-
-  function renderOracle() {
-    const metricKey = metricKeys[currentIndex];
-    const metric = metricCopy[metricKey];
-
-    if (!metric) return;
-
-    seenMetrics.add(metricKey);
-    orbit.style.setProperty("--oracle-rotation", `${currentIndex * -72}deg`);
-
-    instruments.forEach((instrument) => {
-      const active = instrument.dataset.metricFocus === metricKey;
-      instrument.classList.toggle("oracle-instrument--active", active);
-      instrument.setAttribute("aria-pressed", String(active));
-    });
-
-    if (step) {
-      step.textContent = `Instrumento ${currentIndex + 1}/5`;
-    }
-
-    if (title) {
-      title.textContent = metric.title;
-    }
-
-    if (text) {
-      text.textContent = metric.text;
-    }
-
-    if (status) {
-      status.textContent = seenMetrics.size < metricKeys.length
-        ? `Foco calibrado. ${seenMetrics.size}/5 instrumentos observados.`
-        : "Todos os instrumentos foram observados. Agora decida se eles servem para aprender ou punir.";
-    }
-
-    panel.classList.toggle("oracle-panel--ready", seenMetrics.size === metricKeys.length);
-  }
-
-  function moveFocus(direction) {
-    currentIndex = (currentIndex + direction + metricKeys.length) % metricKeys.length;
-    renderOracle();
-  }
-
-  instruments.forEach((instrument) => {
-    instrument.addEventListener("click", () => {
-      const index = metricKeys.indexOf(instrument.dataset.metricFocus);
-
-      if (index < 0) return;
-
-      currentIndex = index;
-      renderOracle();
-    });
-  });
-
-  turnButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      moveFocus(button.dataset.oracleTurn === "previous" ? -1 : 1);
-    });
-  });
-
-  calibrationButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      button.classList.remove("oracle-calibration--wrong", "oracle-calibration--right");
-      void button.offsetWidth;
-
-      if (seenMetrics.size < metricKeys.length) {
-        button.classList.add("oracle-calibration--wrong");
-
-        if (status) {
-          status.textContent = "Observe as cinco evidências antes de calibrar o Oráculo.";
-        }
-
-        return;
-      }
-
-      if (button.dataset.oracleCalibration !== "aprender") {
-        button.classList.add("oracle-calibration--wrong");
-        panel.classList.remove("oracle-panel--distorted");
-        void panel.offsetWidth;
-        panel.classList.add("oracle-panel--distorted");
-
-        if (status) {
-          status.textContent = "Errado. Métrica usada para punir vira pressão, distorce os dados e destrói confiança.";
-        }
-
-        return;
-      }
-
-      button.classList.add("oracle-calibration--right");
-      panel.classList.add("oracle-panel--complete");
-      calibrationButtons.forEach((item) => {
-        item.disabled = true;
-      });
-
-      if (status) {
-        status.textContent = "Correto. Métrica é bússola: transforma rastros em aprendizado para o time.";
-      }
-
-      concluirMinigame("metricas");
-    });
-  });
-
-  renderOracle();
-}
-
-function atualizarStakeholders() {
-  const status = document.getElementById("stakeholderStatus");
-  const total = document.querySelectorAll(".stakeholder-request").length;
-  const resolved = document.querySelectorAll(".stakeholder-request--resolved").length;
-
-  if (status) {
-    status.textContent =
-      resolved === total
-        ? "Todos os pedidos foram tratados sem quebrar o foco da Sprint."
-        : `${resolved}/${total} pedidos tratados com decisao consciente.`;
-  }
-
-  if (total > 0 && resolved === total) {
-    concluirMinigame("stakeholders");
-  }
-}
-
-function configurarStakeholders() {
-  document.querySelectorAll("[data-stakeholder-action]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const request = button.closest(".stakeholder-request");
-
-      if (!request || request.classList.contains("stakeholder-request--resolved")) return;
-
-      if (button.dataset.stakeholderAction !== request.dataset.correctAction) {
-        request.classList.add("stakeholder-request--wrong");
-        setTimeout(() => request.classList.remove("stakeholder-request--wrong"), 420);
-
-        return;
-      }
-
-      request.classList.add("stakeholder-request--resolved");
-      request.querySelectorAll("button").forEach((item) => {
-        item.disabled = true;
-      });
-
-      atualizarStakeholders();
-
-    });
-  });
-
-  atualizarStakeholders();
-}
-
-function configurarRetrospectiva() {
-  const button = document.getElementById("btnAbrirBauMelhoria");
-  const status = document.getElementById("retroStatus");
-  const panel = document.querySelector(".retro-panel");
-  const chest = document.getElementById("bauMelhoria");
-
-  if (!button) return;
-
-  button.addEventListener("click", () => {
-    const answers = Array.from(document.querySelectorAll("[data-retro-answer]"));
-    const filled = answers.filter((answer) => answer.value.trim().length >= 4);
-
-    if (filled.length < answers.length) {
-      const missing = answers.length - filled.length;
-
-      if (status) {
-        status.textContent =
-          missing === 1
-            ? "Ainda falta uma resposta para transformar aprendizado em melhoria."
-            : `Ainda faltam ${missing} respostas para transformar aprendizado em melhoria.`;
-      }
-
-      return;
-    }
-
-    if (status) {
-      status.textContent = "Bau aberto. A retrospectiva virou melhoria concreta para a proxima Sprint.";
-    }
-
-    button.disabled = true;
-    button.textContent = "Bau aberto";
-    retrospectiveUnlocked = true;
-    concluirMinigame("retrospectiva");
-
-    if (panel) {
-      panel.classList.add("retro-panel--open");
-    }
-
-    if (chest) {
-      const label = chest.querySelector("strong");
-
-      if (label) {
-        label.textContent = "Bau aberto";
-      }
-    }
-
-    habilitarConclusaoHistoria();
-
-  });
-}
-
-function habilitarConclusaoHistoria() {
-  const button = document.getElementById("btnConcluirHistoria");
-  const status = document.getElementById("statusHistoria");
-
-  if (!button) return;
-
-  button.disabled = false;
-
-  if (status && !status.dataset.completed) {
-    status.textContent = "Retrospectiva completa. Agora registre a historia e libere a quarta porta.";
-  }
-}
-
 async function concluirHistoria() {
   const token = obterToken();
   const button = document.getElementById("btnConcluirHistoria");
@@ -1379,15 +1143,6 @@ async function concluirHistoria() {
   const status = document.getElementById("statusHistoria");
 
   if (!token) return;
-
-  if (!retrospectiveUnlocked) {
-    if (status) {
-      status.textContent = "Abra o Bau da Melhoria Continua antes de concluir a historia.";
-    }
-
-    rolarParaElemento("#cena-melhoria");
-    return;
-  }
 
   if (button) {
     button.disabled = true;
@@ -1534,10 +1289,6 @@ if (typeof document !== "undefined") {
     configurarKanban();
     configurarDod();
     configurarPipelineDecisoes();
-    configurarDividaTecnica();
-    configurarMetricas();
-    configurarStakeholders();
-    configurarRetrospectiva();
     configurarConclusaoHistoria();
     configurarPortaDesafio();
 
@@ -1552,5 +1303,7 @@ if (typeof module !== "undefined" && module.exports) {
     calcularEstadoIntroNarrativa,
     calcularLimiaresLinhasIntro,
     calcularProgressoBlackoutHero,
+    calcularScrollParaAmpulheta,
+    deveManterAmpulhetaForcada,
   };
 }
