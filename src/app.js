@@ -3,10 +3,10 @@
 // Importando as respectivas bibliotecas
 const express = require("express");
 const path = require("path");
-const cors = require("cors");
+const cors = require('cors');
 
 // Importando middlewares
-const authMiddleware = require("./shared/middlewares/auth.middleware");
+const authMiddleware = require('./shared/middlewares/auth.middleware');
 
 // Importando módulos (suas rotas agora estão aqui)
 const authModule = require('./modules/auth');
@@ -35,13 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 const publicPath = path.join(__dirname, "..", "public");
 const pagesPath = path.join(publicPath, "pages");
 const assetsPath = path.join(publicPath, "assets");
-const imagensQuestoesPath = path.join(
-  __dirname,
-  "infra",
-  "init",
-  "seed-data",
-  "imagens",
-);
+const imagensQuestoesPath = path.join(__dirname, "infra", "init", "seed-data", "imagens");
 
 // Libera a pasta public para arquivos estáticos
 app.use("/", express.static(publicPath));
@@ -56,7 +50,7 @@ app.use("/assets/img/artefatos", express.static(imagensQuestoesPath));
 // CONFIGURAÇÃO DO EJS
 // ==========================================
 app.set("view engine", "ejs"); // define o EJS como motor de template
-app.set("views", pagesPath); // define a pasta de views
+app.set("views", pagesPath);   // define a pasta de views
 
 // ==========================================
 // ROTAS DE PÁGINAS EJS (PÚBLICAS - SEM AUTH)
@@ -64,15 +58,15 @@ app.set("views", pagesPath); // define a pasta de views
 
 // Rota principal
 app.get("/", function (_req, res) {
-  res.render("index");
+    res.render("index");
 });
 
 // Rota capítulo 1
 app.get("/capitulo1", function (_req, res) {
-  res.render("capitulo1");
+    res.render("capitulo1");
 });
 
-// Rota capitulo 3
+// Rota capitulo 2
 app.get("/capitulo2", function (_req, res) {
     res.render("capitulo2");
 });
@@ -84,22 +78,23 @@ app.get("/capitulo2", function (_req, res) {
 
 // Rota capitulo 3
 app.get("/capitulo3", function (_req, res) {
-  res.render("capitulo3");
+    res.render("capitulo3");
 });
 
-// Rota capítulo 5
-app.get("/capitulo5", function (_req, res) {
-    res.render("capitulo5");
+// Rota capitulo 4
+app.get("/capitulo4", function (_req, res) {
+    res.render("capitulo4");
 });
+
 
 // Rota do mapa
 app.get("/mapa", function (_req, res) {
-  res.render("mapa");
+    res.render("mapa");
 });
 
 // Rota para burndown/progresso
 app.get("/burningdown", function (_req, res) {
-  res.render("burningdown");
+    res.render("burningdown");
 });
 
 app.get("/desafio1", function (_req, res) {
@@ -124,23 +119,19 @@ app.get("/desafio5", function (_req, res) {
 
 // Rota para questionário 1
 app.get("/questionario1", function (_req, res) {
-  res.render("questionario1");
+    res.render("questionario1");
 });
 
 app.get("/questionario", function (_req, res) {
-  res.render("questionario1");
-});
-
-app.get("/questionario3", function (_req, res) {
-  res.render("questionario3");
+    res.render("questionario1");
 });
 
 app.get("/resultado", function (_req, res) {
-  res.render("resultado");
+    res.render("resultado");
 });
 
 app.get("/artefatos", function (_req, res) {
-  res.render("artefatos");
+    res.render("artefatos");
 });
 
 app.get("/perfil", function (_req, res) {
@@ -149,12 +140,12 @@ app.get("/perfil", function (_req, res) {
 
 // Rota para certificado
 app.get("/certificado", function (_req, res) {
-  res.render("certificado");
+    res.render("certificado");
 });
 
 // Rota para admin de questões (CRUD)
 app.get("/admin", function (_req, res) {
-  res.render("admin_questoes");
+    res.render("admin_questoes");
 });
 
 // ==========================================
@@ -178,7 +169,7 @@ app.use('/api/perfil', authMiddleware, perfilModule);
 // ROTA 404 (SEMPRE POR ÚLTIMO)
 // ==========================================
 app.use(function (_req, res) {
-  res.status(404).render("not-found");
+    res.status(404).render("not-found");
 });
 
 module.exports = app;

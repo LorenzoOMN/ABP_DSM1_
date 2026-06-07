@@ -113,7 +113,7 @@ async function inserirRespostaQuestao(id_exame, id_questao, resposta, nota) {
     `
     INSERT INTO respostas (id_exame, id_questao, nota, resposta)
     VALUES ($1,$2,$3,$4)
-    RETURNING id_exame, id_questao, nota, id_resposta
+    RETURNING id_resposta, id_exame, id_questao, nota
    `,
     [id_exame, id_questao, nota, resposta],
   );
