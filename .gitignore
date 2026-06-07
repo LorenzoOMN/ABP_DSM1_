@@ -3,15 +3,11 @@ node_modules
 .superpowers/
 .vscode/
 
-# Roteiros locais
-resumo-historia-capitulos.md
-Roteiro Conteúdo Dungeon Scrum .md
-roteiro-capitulo4.md
+
 
 # Artefatos gerados pelo fluxo Superpowers
 docs/superpowers/plans/
 docs/superpowers/specs/
 
-# Roteiros locais adicionais
-roteiro-capitulo4-v2.md
+
 scripts/testes/
