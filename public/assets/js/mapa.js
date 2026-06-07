@@ -179,9 +179,25 @@ function criarTituloModulo(idModulo) {
   return titulos[idModulo] || `Capítulo ${idModulo}`;
 }
 
+function limparEstadoVisualCapitulo5() {
+  sessionStorage.removeItem("scrum_dungeon_capitulo5_estado");
+  sessionStorage.removeItem("scrum_dungeon_capitulo5_entrada");
+
+  localStorage.removeItem("scrum_dungeon_capitulo5_estado");
+  localStorage.removeItem("scrum_dungeon_capitulo5_entrada");
+}
+
 function abrirHistoria(idModulo) {
-  localStorage.setItem("moduloAtual", idModulo);
-  window.location.href = `/capitulo${idModulo}`;
+  const modulo = Number(idModulo);
+
+  localStorage.setItem("moduloAtual", modulo);
+
+  if (modulo === 5) {
+     sessionStorage.removeItem("scrum_dungeon_capitulo5_replay_temporal");
+    limparEstadoVisualCapitulo5();
+  }
+
+  window.location.href = `/capitulo${modulo}`;
 }
 
 function abrirDesafio(idModulo) {
