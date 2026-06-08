@@ -92,7 +92,7 @@
   font-size: clamp(0.78rem, 1.2vw, 0.95rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #1f3958;
+  color: #f4d03f;
   font-family: "Cinzel", serif;
 }
 
@@ -153,7 +153,7 @@
 }
 
 .dificuldade strong {
-  color: #0d1b2a;
+  color: #f4d03f;
 }
 
 .linha {

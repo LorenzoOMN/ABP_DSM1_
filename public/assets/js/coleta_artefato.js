@@ -345,15 +345,15 @@
     return null;
   }
 
-function obterDestinoFinal() {
-  const destinoSalvo = sessionStorage.getItem("destino_pos_coleta_artefato");
+  function obterDestinoFinal() {
+    const destinoSalvo = sessionStorage.getItem("destino_pos_coleta_artefato");
 
-  if (moduloEhFinal(artefatoAtual)) {
-    return "/certificado";
+    if (moduloEhFinal(artefatoAtual)) {
+      return "/certificado";
+    }
+
+    return destinoSalvo || "/mapa";
   }
-
-  return destinoSalvo || "/mapa";
-}
 
   function limparContextoColeta() {
     sessionStorage.removeItem("modulo_artefato_pendente");
@@ -387,6 +387,7 @@ function obterDestinoFinal() {
 
   function renderizarArtefato(artefato) {
     artefatoAtual = artefato;
+    reiniciarAnimacaoEntrada();
 
     document.body.classList.toggle("coleta-final", moduloEhFinal(artefato));
 
@@ -422,6 +423,7 @@ function obterDestinoFinal() {
       btnColetarArtefato.disabled = false;
       atualizarTextoBotao(artefato);
     }
+
     setTimeout(() => {
       animarEntradaColeta();
     }, 120);

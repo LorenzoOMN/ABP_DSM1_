@@ -11,11 +11,12 @@
   </head>
 
   <body class="corpo-coleta-artefato">
-    <%- include('partials/header') %> <%- include('partials/alert') %>
+    <%- include('partials/header') %>
+    <%- include('partials/alert') %>
 
     <main class="coleta-artefato-page">
-      <section class="coleta-artefato-card">
-        <p class="coleta-kicker">ARTEFATO DESBLOQUEADO</p>
+      <section class="coleta-artefato-card" aria-labelledby="coletaTitulo">
+        <p class="coleta-kicker">Artefato desbloqueado</p>
 
         <div class="coleta-layout coleta-layout--vertical">
           <div class="coleta-heading">
@@ -39,7 +40,7 @@
 
           <div class="coleta-copy">
             <p id="coletaDescricao" class="coleta-descricao">
-              A dungeon está revelando uma nova relíquia da sua jornada.
+              A Dungeon está revelando uma nova relíquia da sua jornada.
             </p>
 
             <div id="coletaNarrativa" class="coleta-narrativa">
@@ -62,37 +63,36 @@
             </div>
           </div>
         </div>
-
-        <div id="toastArtefato" class="toast-artefato" hidden>
-          <div class="toast-artefato-glow"></div>
-
-          <img
-            id="toastArtefatoIcone"
-            class="toast-artefato-icone"
-            src="/assets/img/artefatos/product-backlog-icon.png"
-            alt="Artefato coletado"
-          />
-
-          <div class="toast-artefato-copy">
-            <strong>Artefato coletado</strong>
-            <span id="toastArtefatoNome">Product Backlog</span>
-          </div>
-        </div>
-
-        <div id="coletaTransicao" class="coleta-transicao" hidden>
-  <div class="coleta-transicao-card">
-    <strong id="coletaTransicaoTitulo">Preparando próxima etapa...</strong>
-    <span id="coletaTransicaoTexto">
-      A Dungeon está registrando sua conquista.
-    </span>
-  </div>
-</div>
-
       </section>
     </main>
 
-    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
-    %>
+    <div id="toastArtefato" class="toast-artefato" hidden>
+      <div class="toast-artefato-glow"></div>
+
+      <img
+        id="toastArtefatoIcone"
+        class="toast-artefato-icone"
+        src="/assets/img/artefatos/product-backlog-icon.png"
+        alt="Artefato coletado"
+      />
+
+      <div class="toast-artefato-copy">
+        <strong>Artefato coletado</strong>
+        <span id="toastArtefatoNome">Product Backlog</span>
+      </div>
+    </div>
+
+    <div id="coletaTransicao" class="coleta-transicao" hidden>
+      <div class="coleta-transicao-card">
+        <strong id="coletaTransicaoTitulo">Preparando próxima etapa...</strong>
+        <span id="coletaTransicaoTexto">
+          A Dungeon está registrando sua conquista.
+        </span>
+      </div>
+    </div>
+
+   
+    <%- include('partials/footer') %>
 
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/coleta_artefato.js"></script>
