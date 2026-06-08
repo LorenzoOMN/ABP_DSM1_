@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const authMiddleware = require("../../shared/middlewares/auth.middleware");
 const adminMiddleware = require("../../shared/middlewares/admin.middleware");
 
 // Importa controllers admin
@@ -18,22 +17,22 @@ const router = Router();
 // ============================================================================
 
 // GET - Listar todas as questões (com filtros opcionais)
-router.get("/questoes", authMiddleware, adminMiddleware, getAdminQuestoes);
+router.get("/questoes", adminMiddleware, getAdminQuestoes);
 
 // GET - Buscar questão específica por ID
-router.get("/questoes/:id", authMiddleware, adminMiddleware, getAdminQuestaoById);
+router.get("/questoes/:id", adminMiddleware, getAdminQuestaoById);
 
 // POST - Criar nova questão
-router.post("/questoes", authMiddleware, adminMiddleware, createQuestao);
+router.post("/questoes", adminMiddleware, createQuestao);
 
 // PUT - Atualizar questão completa
-router.put("/questoes/:id", authMiddleware, adminMiddleware, updateQuestao);
+router.put("/questoes/:id", adminMiddleware, updateQuestao);
 
 // PATCH - Atualizar questão parcialmente
-router.patch("/questoes/:id", authMiddleware, adminMiddleware, updateQuestao);
+router.patch("/questoes/:id", adminMiddleware, updateQuestao);
 
 // DELETE - Deletar questão
-router.delete("/questoes/:id", authMiddleware, adminMiddleware, deleteQuestao);
+router.delete("/questoes/:id", adminMiddleware, deleteQuestao);
 
 // ============================================================================
 // EXPORTAÇÃO

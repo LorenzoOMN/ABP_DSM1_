@@ -1,9 +1,6 @@
 const { Router } = require("express");
 const authMiddleware = require("../../shared/middlewares/auth.middleware");
 const { hashController, desempenhoController } = require("./certificado.controller");
-const {
-  findDesempenhoCertificado,
-} = require("../certificado/certificado.repository");
 
 const router = Router();
 
