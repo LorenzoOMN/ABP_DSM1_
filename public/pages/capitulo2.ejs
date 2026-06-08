@@ -13,95 +13,82 @@
 
 <body>
   <%- include('partials/alert') %>
-
   <%- include('partials/header') %>
-
   <%- include('./partials/botao_voltar') %>
 
   <main class="capitulo-page capitulo2-page">
 
-    <section class="capitulo2-sinais reveal" id="sinais" data-step="sinais">
-      <div class="sinais-vozes" aria-label="Vozes ecoando no corredor">
-        <p class="voz-frase voz-frase-1">Vamos... o tempo está acabando...</p>
-        <p class="voz-frase voz-frase-2">Você não encontrou este caminho por acaso...</p>
-        <p class="voz-frase voz-frase-3">A masmorra sabe seu nome...</p>
-        <p class="voz-frase voz-frase-4">Sem você, tudo desmorona...</p>
-        <p class="voz-frase voz-frase-5">Três vozes ecoam na sala adiante...</p>
+    <section class="manga-intro" id="sinais" data-step="sinais" aria-label="Vozes no corredor">
+      <div class="manga-stage">
+        <p class="manga-frase manga-frase-1" data-manga-frase="0">Vamos... o tempo está acabando...</p>
+        <p class="manga-frase manga-frase-2" data-manga-frase="1">Você não encontrou este caminho por acaso...</p>
+        <p class="manga-frase manga-frase-3" data-manga-frase="2">A masmorra sabe seu nome...</p>
+        <p class="manga-frase manga-frase-4" data-manga-frase="3">Sem você, tudo desmorona...</p>
+        <p class="manga-frase manga-frase-5" data-manga-frase="4">Três vozes ecoam na sala adiante...</p>
       </div>
+    </section>
 
-      <div class="sinais-corredor">
-        <img
-          src="/assets/img/capitulo_2/heroi-corredor.jpeg"
-          alt="Herói avançando por um corredor escuro com uma lamparina"
-        />
+    <section class="corredor-wide reveal" id="corredor-imagem" data-step="sinais">
+      <img
+        src="/assets/img/capitulo_2/heroi-corredor-wide2.png"
+        alt="Herói avançando por um corredor escuro segurando uma lamparina"
+      />
+      <div class="corredor-wide-content" aria-label="Capitulo 2 - Os Guardioes do Fluxo">
+        <p class="chapter-kicker">Cap&iacute;tulo 2</p>
+        <h1>Os Guardi&otilde;es do Fluxo</h1>
+        <p>
+          Ap&oacute;s derrotar a Documenta&ccedil;&atilde;o Confusa e conquistar o Product
+          Backlog, uma passagem secreta se abre. Guiado por ecos e tochas, o
+          her&oacute;i avan&ccedil;a pela dungeon em busca de respostas.
+        </p>
       </div>
     </section>
 
     <section class="chapter-progress-wrap capitulo2-progress-wrap" aria-label="Navegação do Capítulo 2">
       <nav class="chapter-progress">
         <button class="progress-item active" data-step="sinais" data-scroll-to="#sinais" type="button">
-          <img src="/assets/img/capitulo_2/icones/corredor.png" alt="" />
+          <img src="/assets/img/capitulo_1/icones/porta.png" alt="" />
           <span>Corredor</span>
         </button>
 
-        <button class="progress-item" data-step="guardioes" data-scroll-to="#guardioes" type="button">
-          <img src="/assets/img/capitulo_2/icones/guardioes.png" alt="" />
-          <span>Guardiões</span>
-        </button>
-
-        <button class="progress-item" data-step="bardo" data-scroll-to="#bardo" type="button">
-          <img src="/assets/img/capitulo_2/icones/bardo.png" alt="" />
-          <span>Bardo</span>
-        </button>
-
-        <button class="progress-item" data-step="corvo" data-scroll-to="#corvo" type="button">
-          <img src="/assets/img/capitulo_2/icones/corvo.png" alt="" />
-          <span>Corvo</span>
-        </button>
-
-        <button class="progress-item" data-step="equipe" data-scroll-to="#equipe" type="button">
-          <img src="/assets/img/capitulo_2/icones/equipe.png" alt="" />
-          <span>Equipe</span>
-        </button>
-
-        <button class="progress-item" data-step="backlog2" data-scroll-to="#backlog2" type="button">
-          <img src="/assets/img/capitulo_2/icones/backlog.png" alt="" />
-          <span>Backlog</span>
-        </button>
-
-        <button class="progress-item" data-step="fluxo" data-scroll-to="#fluxo" type="button">
-          <img src="/assets/img/capitulo_2/icones/fluxo.png" alt="" />
+        <button class="progress-item" data-step="fluxo" data-scroll-to="#guardioes" type="button">
+          <img src="/assets/img/artefatos/medalhao-icon.png" alt="" />
           <span>Fluxo</span>
         </button>
 
+        <button class="progress-item" data-step="artefatos" data-scroll-to="#artefatos" type="button">
+          <img src="/assets/img/capitulo_2/icones/artefatos-icone.png" alt="" />
+          <span>Artefatos</span>
+        </button>
+
+        <button class="progress-item" data-step="dod" data-scroll-to="#definition-of-done" type="button">
+          <img src="/assets/img/capitulo_2/icones/Definition of Done.png" alt="" />
+          <span>DoD</span>
+        </button>
+
+        <button class="progress-item" data-step="mesa" data-scroll-to="#preparo-desafio" type="button">
+          <img src="/assets/img/artefatos/product-backlog-icon.png" alt="" />
+          <span>Mesa</span>
+        </button>
+
+        <button class="progress-item" data-step="conselho" data-scroll-to="#conselho-porta" type="button">
+          <img src="/assets/img/capitulo_2/icones/artefatos-icone.png" alt="" />
+          <span>Conselho</span>
+        </button>
+
         <button class="progress-item" data-step="porta2" data-scroll-to="#porta2" type="button">
-          <img src="/assets/img/capitulo_2/icones/encontro.png" alt="" />
+          <img src="/assets/img/capitulo_2/icones/desafio-icone.png" alt="" />
           <span>Desafio</span>
         </button>
       </nav>
     </section>
 
-    <section class="capitulo-hero capitulo2-hero reveal" id="inicio-capitulo2" data-step="sinais">
-      <div class="hero-overlay"></div>
-
-      <div class="hero-content">
-        <p class="chapter-kicker">Capítulo 2</p>
-        <h1>Os Guardiões do Fluxo</h1>
-        <p>
-          Após derrotar a Documentação Confusa e conquistar o Product Backlog,
-          uma passagem secreta se abre. Guiado por ecos e tochas, o herói avança
-          pela dungeon em busca de respostas.
-        </p>
-      </div>
-    </section>
-
     <section class="story-block reveal" id="corredor" data-step="sinais">
       <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/corredor.png" alt="">
+        <img src="/assets/img/capitulo_1/icones/porta.png" alt="">
       </div>
 
       <div class="story-text">
-        <span class="section-number">01</span>
         <h2>O Corredor Revelado</h2>
 
         <p>
@@ -122,273 +109,97 @@
 
       <div class="story-art">
         <img
-          src="/assets/img/capitulo_2/corredor-revelado.png"
-          alt="Corredor revelado por tochas antigas"
-        />
+          src="/assets/img/capitulo_2/heroi-corredor.png"
+          alt="Herói caminhando pelo corredor revelado"/>
       </div>
     </section>
 
-    <section class="story-block guardioes-block reveal" id="guardioes" data-step="guardioes">
+    <section class="story-block guardioes-block reveal" id="guardioes" data-step="fluxo">
       <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/guardioes.png" alt="">
+        <img src="/assets/img/artefatos/medalhao-icon.png" alt="">
       </div>
 
       <div class="guardioes-intro">
-        <span class="section-number">02</span>
-        <h2>Os Guardiões do Fluxo</h2>
+        <h2>Os Guardiões se Revelam...</h2>
 
         <p>
-          No fim do corredor, o herói encontra uma grande sala em penumbra.
-          Um bardo dedilha uma canção, um corvo vigia a cadeira vazia e um grupo de
-          aventureiros observa sem dizer uma palavra.
+          Ao entrar na sala, você se depara com três presenças antigas: o Bardo, o Corvo e uma Equipe de Aventureiros.
+         
         </p>
 
         <p>
-          Cada presença guarda uma parte essencial do fluxo do Scrum.
-          Aproxime-se e descubra quem são.
+          Clique diretamente em um guardião para se aproximar e compreender sua parte no fluxo do Scrum.
         </p>
       </div>
 
       <div class="guardioes-scene" aria-label="Sala dos Guardiões do Fluxo">
         <img
           class="guardioes-bg"
-          src="/assets/img/capitulo_2/sala-guardioes.JFIF"
-          alt="Bardo, corvo e equipe de aventureiros na sala dos guardiões"
+          src="/assets/img/capitulo_2/sala-guardioes-bg.png"
+          alt="Sala vazia dos Guardiões do Fluxo"
         />
 
         <button
-          class="guardiao-hotspot guardiao-hotspot-bardo"
+          class="guardiao-personagem guardiao-bardo"
           data-guardiao="bardo"
-          data-scroll-to="#bardo"
           type="button"
-          aria-label="Interagir com o Bardo Product Owner"
-        ></button>
+          aria-label="Interagir com o Bardo Product Owner">
+        </button>
 
         <button
-          class="guardiao-hotspot guardiao-hotspot-equipe"
+          class="guardiao-personagem guardiao-equipe"
           data-guardiao="equipe"
-          data-scroll-to="#equipe"
           type="button"
-          aria-label="Interagir com os Aventureiros Developers"
-        ></button>
+          aria-label="Interagir com os Aventureiros Developers">
+        </button>
 
         <button
-          class="guardiao-hotspot guardiao-hotspot-corvo"
+          class="guardiao-personagem guardiao-corvo"
           data-guardiao="corvo"
-          data-scroll-to="#corvo"
           type="button"
-          aria-label="Interagir com o Corvo do Scrum Master"
-        ></button>
+          aria-label="Interagir com o Corvo do Scrum Master">
+        </button>
       </div>
 
       <article class="info-card guardiao-info" id="guardiaoInfo">
-        <h3>Escolha um guardião</h3>
-        <p>Clique no bardo, no corvo ou nos aventureiros para revelar seu papel no Scrum.</p>
+        <p>Três guardiões observam...</p>
+        <p>Escolha um e aproxime-se.</p>
       </article>
     </section>
 
-    <section class="story-block personagem-block reveal" id="bardo" data-step="bardo">
+    <section class="story-block artefatos-block reveal" id="artefatos" data-step="artefatos">
       <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/bardo.jpeg" alt="">
-      </div>
-
-      <div class="story-text">
-        <span class="section-number">03</span>
-        <h2>O Bardo da Compreensão</h2>
-        <p class="papel-kicker">Product Owner</p>
-
-        <p>
-          O bardo sorri enquanto toca um alaúde cheio de marcações. Ele aponta para o Product Backlog
-          em sua mochila, como se reconhecesse a própria assinatura.
-        </p>
-
-        <blockquote>
-          “Uma lista sem ordem é apenas confusão. Meu papel é ouvir, organizar e priorizar
-          aquilo que entrega mais valor.”
-        </blockquote>
-
-        <p>
-          O Product Owner maximiza o valor do produto, mantém o Product Backlog claro e ordenado
-          e ajuda o time a entender o que deve vir primeiro.
-        </p>
-      </div>
-
-      <div class="story-art personagem-art">
-        <img src="/assets/img/capitulo_2/personagens/bardo.jpeg" alt="Bardo Product Owner">
-      </div>
-    </section>
-
-    <section class="story-block personagem-block reveal" id="corvo" data-step="corvo">
-      <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/corvo.jpeg" alt="">
-      </div>
-
-      <div class="story-text">
-        <span class="section-number">04</span>
-        <h2>O Corvo e a Cadeira Vazia</h2>
-        <p class="papel-kicker">Scrum Master</p>
-
-        <p>
-          O corvo observa a cadeira vazia. A ampulheta em seu peito brilha fraca,
-          como se o tempo estivesse escapando pelas frestas da dungeon.
-        </p>
-
-        <blockquote>
-          “O Scrum Master não comanda. Ele facilita, remove impedimentos e ajuda o time
-          a compreender o Scrum.”
-        </blockquote>
-
-        <p>
-          O Scrum Master protege o fluxo, ajuda o time a melhorar continuamente e garante
-          que o Scrum seja compreendido e aplicado corretamente.
-        </p>
-      </div>
-
-      <div class="story-art personagem-art">
-        <img src="/assets/img/capitulo_2/personagens/corvo.jpeg" alt="Corvo do Scrum Master">
-      </div>
-    </section>
-
-    <section class="story-block personagem-block reveal" id="equipe" data-step="equipe">
-      <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/equipe.jpeg" alt="">
-      </div>
-
-      <div class="story-text">
-        <span class="section-number">05</span>
-        <h2>Os Aventureiros</h2>
-        <p class="papel-kicker">Developers</p>
-
-        <p>
-          Um grupo de guerreiros, magos e arqueiros permanece em silêncio.
-          O aventureiro central dá um passo à frente.
-        </p>
-
-        <blockquote>
-          “Transformamos ideias em realidade, cada um com sua especialidade,
-          mas juntos temos o poder da multidisciplinaridade.”
-        </blockquote>
-
-        <p>
-          Os Developers planejam, constroem e entregam o Incremento. São um time multifuncional
-          e compartilham a responsabilidade pela qualidade do que entregam.
-        </p>
-      </div>
-
-      <div class="story-art personagem-art">
-        <img src="/assets/img/capitulo_2/personagens/aventureiros.png" alt="Aventureiros Developers">
-      </div>
-    </section>
-
-    <section class="story-block reveal" id="backlog2" data-step="backlog2">
-      <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/backlog.png" alt="">
-      </div>
-
-      <div class="story-text">
-        <span class="section-number">06</span>
-        <h2>O Product Backlog Vivo</h2>
-
-        <p>
-          O pergaminho conquistado na primeira porta começa a se reorganizar.
-          Alguns itens brilham no topo, outros descem, e alguns se dividem em partes menores.
-        </p>
-
-        <p>
-          O Product Backlog é uma lista viva e ordenada de tudo que é necessário no produto:
-          funcionalidades, melhorias, correções e requisitos.
-        </p>
-
-        <p>
-          Ele é mantido pelo Product Owner e evolui conforme novas informações surgem durante a jornada.
-        </p>
-      </div>
-
-      <div class="story-art">
-        <img src="/assets/img/capitulo_2/artefatos/product-backlog-vivo.png" alt="Product Backlog vivo">
-      </div>
-
-      <article class="info-card card-conceito">
-        <h3>Product Backlog</h3>
-        <p>
-          Uma lista sem prioridade é apenas ruído. Um Product Backlog bem ordenado guia o time
-          para aquilo que gera mais valor.
-        </p>
-      </article>
-    </section>
-
-    <section class="story-block fluxo-block reveal" id="fluxo" data-step="fluxo">
-      <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/fluxo.png" alt="">
+        <img src="/assets/img/capitulo_2/icones/artefatos-icone.png" alt="">
       </div>
 
       <div class="story-text story-text-full">
-        <span class="section-number">07</span>
-        <h2>O Fluxo se Revela</h2>
-
-        <p>
-          Quando você termina de ouvir os três guardiões, o círculo no chão começa a brilhar.
-          O bardo se levanta, o corvo observa a cadeira vazia e os aventureiros formam uma linha diante de você.
-        </p>
-      </div>
-
-      <div class="papeis-grid">
-        <article class="papel-card" data-papel="po">
-          <img src="/assets/img/capitulo_2/icones/product-owner.png" alt="">
-          <h3>Product Owner</h3>
-          <p>Valor e prioridade</p>
-        </article>
-
-        <article class="papel-card" data-papel="sm">
-          <img src="/assets/img/capitulo_2/icones/scrum-master.png" alt="">
-          <h3>Scrum Master</h3>
-          <p>Fluxo e impedimentos</p>
-        </article>
-
-        <article class="papel-card" data-papel="devs">
-          <img src="/assets/img/capitulo_2/icones/developers.png" alt="">
-          <h3>Developers</h3>
-          <p>Construção e entrega</p>
-        </article>
-      </div>
-
-      <article class="info-card" id="papelInfo">
-        <h3>Scrum Team</h3>
-        <p>
-          O Scrum Team é formado por Product Owner, Scrum Master e Developers.
-          No Scrum, o trabalho avança com colaboração, transparência e auto-organização.
-        </p>
-      </article>
-    </section>
-
-    <section class="story-block artefatos-block reveal" id="artefatos" data-step="fluxo">
-      <div class="story-text story-text-full">
-        <span class="section-number">08</span>
         <h2>A Lição dos Artefatos</h2>
 
         <p>
-          Três círculos de luz surgem no chão. Cada artefato existe para tornar visível
+          Cada artefato existe para tornar visível
           uma parte importante do trabalho.
         </p>
       </div>
 
       <div class="artefatos-grid">
         <article class="artefato-card" data-artefato="product-backlog">
-          <img src="/assets/img/capitulo_2/artefatos/product-backlog.png" alt="">
-          <h3>Product Backlog</h3>
+          <a class="artefato-card-link" href="/artefatos" aria-label="Abrir a pagina de artefatos no Product Backlog">
+            <img src="/assets/img/artefatos/product-backlog-icon.png" alt="">
+            <h3>Product Backlog</h3>
+          </a>
           <p>Lista viva do que é necessário no produto.</p>
           <span>Compromisso: Product Goal</span>
         </article>
 
         <article class="artefato-card" data-artefato="sprint-backlog">
-          <img src="/assets/img/capitulo_2/artefatos/sprint-backlog.png" alt="">
+          <img src="/assets/img/capitulo_1/icones/product-backlog.png" alt="">
           <h3>Sprint Backlog</h3>
           <p>Itens selecionados para a Sprint e o plano para entregá-los.</p>
           <span>Compromisso: Sprint Goal</span>
         </article>
 
         <article class="artefato-card" data-artefato="incremento">
-          <img src="/assets/img/capitulo_2/artefatos/incremento.png" alt="">
+          <img src="/assets/img/capitulo_2/icones/incremento-icone.png" alt="">
           <h3>Incremento</h3>
           <p>Conjunto de itens concluídos e utilizáveis.</p>
           <span>Compromisso: Definition of Done</span>
@@ -396,13 +207,12 @@
       </div>
     </section>
 
-    <section class="story-block dod-block reveal" id="definition-of-done" data-step="fluxo">
+    <section class="story-block dod-block reveal" id="definition-of-done" data-step="dod">
       <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/dod.png" alt="">
+        <img src="/assets/img/capitulo_2/icones/Definition of Done.png" alt="">
       </div>
 
       <div class="story-text">
-        <span class="section-number">09</span>
         <h2>O Alerta da Definition of Done</h2>
 
         <p>
@@ -419,7 +229,7 @@
       </div>
 
       <div class="story-art">
-        <img src="/assets/img/capitulo_2/definition-of-done.png" alt="Alerta da Definition of Done">
+        <img src="/assets/img/capitulo_2/icones/Definition of Done.png" alt="Alerta da Definition of Done">
       </div>
 
       <article class="info-card card-conceito lista-conceitos">
@@ -433,54 +243,184 @@
       </article>
     </section>
 
-    <section class="story-block reveal final-block porta2-block" id="porta2" data-step="porta2">
-      <div class="story-side-icon">
-        <img src="/assets/img/capitulo_2/icones/encontro.png" alt="">
-      </div>
-
-      <div class="story-text">
-        <span class="section-number">10</span>
-        <h2>A Segunda Porta</h2>
+    <section class="story-block pre-desafio-block pre-desafio-refinamento reveal" id="preparo-desafio" data-step="mesa">
+      <div class="mesa-refinamento-titulo">
+        <h2>Os Ensinamentos do Bardo</h2>
 
         <p>
-          A sala escurece. Uma porta surge ao fundo, marcada por três símbolos:
-          uma coroa, uma ampulheta e uma espada.
+          O Bardo lhe entrega um antigo pergaminho. Entre selos, anotações e prioridades cuidadosamente organizadas, estão registradas lições essenciais para quem deseja compreender o Scrum. Cada ensinamento revela como transformar ideias em valor, organizar o trabalho da equipe e conduzir uma Sprint com propósito.
         </p>
-
-        <p>
-          Apenas quem compreende valor, fluxo e entrega pode seguir adiante.
-        </p>
-
-        <button class="btn-primary" id="btnConcluirHistoriaCapitulo2" type="button">
-          Concluir história e encarar a segunda porta
-        </button>
-
-        <button class="btn-secondary hidden" id="btnIrDesafioCapitulo2" type="button">
-          Entrar no desafio
-        </button>
-
-        <p class="status-historia" id="statusHistoriaCapitulo2"></p>
       </div>
 
-      <div class="story-art porta2-art">
-        <button class="porta2-interativa" id="porta2Scene" type="button" aria-label="Segunda porta da dungeon">
-          <span class="porta2-glow"></span>
-          <img src="/assets/img/capitulo_2/segunda-porta.png" alt="Segunda porta da dungeon">
-          <span class="porta2-tooltip">A porta aguarda sua compreensão...</span>
-        </button>
+      <div class="mesa-refinamento-layout" data-pre-desafio="refinamento">
+        <div class="pre-desafio-tabs" role="tablist" aria-label="Conceitos da Mesa do Refinamento">
+          <button class="pre-desafio-tab is-active" type="button" data-conceito="framework">Framework</button>
+          <button class="pre-desafio-tab" type="button" data-conceito="refinamento">Refinamento</button>
+          <button class="pre-desafio-tab" type="button" data-conceito="planning">Sprint Planning</button>
+          <button class="pre-desafio-tab" type="button" data-conceito="sprintBacklog">Sprint Backlog</button>
+        </div>
+
+        <figure class="pre-desafio-imagem mesa-refinamento-imagem">
+          <img src="/assets/img/capitulo_2/pre_desafio/heroi-recebendo.png" alt="Mesa mistica com Product Backlog, cartas e bussola da Sprint Planning">
+        </figure>
+
+        <article class="pre-desafio-painel" id="painelRefinamento" aria-live="polite">
+          <span class="pre-desafio-numero">I</span>
+          <h3>Scrum &eacute; um framework</h3>
+          <p>
+            Ele n&atilde;o &eacute; uma lista r&iacute;gida de etapas. O Scrum organiza pap&eacute;is,
+            eventos, artefatos e compromissos para lidar com produtos complexos.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="story-block pre-desafio-block pre-desafio-conselho reveal" id="conselho-porta" data-step="conselho">
+      <div class="story-text story-text-full">
+        <h2>O Conselho do Corvo</h2>
+
+        <p>
+          Nem toda sabedoria vem dos livros. O Corvo compartilha fragmentos de conhecimento acumulados ao longo de inúmeras Sprints. Decifre seus conselhos e fortaleça sua compreensão do Scrum.
+        </p>
+      </div>
+
+      <div class="pre-desafio-experiencia pre-desafio-experiencia-reversa" data-pre-desafio="conselho">
+        <figure class="pre-desafio-imagem">
+          <img src="/assets/img/capitulo_2/pre_desafio/corvo-explicando.png" alt="Camara mistica com altar, coroa, cristal de qualidade e porta selada">
+        </figure>
+
+        <div class="conselho-selos" aria-label="Selos do Conselho da Segunda Porta">
+          <button class="conselho-selo is-active" type="button" data-conselho="po">
+            <span>PO</span>
+            Product Owner presente
+          </button>
+
+          <button class="conselho-selo" type="button" data-conselho="cancelamento">
+            <span>!</span>
+            Cancelar Sprint
+          </button>
+
+          <button class="conselho-selo" type="button" data-conselho="qualidade">
+            <span>Q</span>
+            Qualidade do Incremento
+          </button>
+
+          <button class="conselho-selo" type="button" data-conselho="auto">
+            <span>A</span>
+            Auto-organiza&ccedil;&atilde;o
+          </button>
+        </div>
+
+        <article class="pre-desafio-painel conselho-painel" id="painelConselho" aria-live="polite">
+          <span class="pre-desafio-numero">V</span>
+          <h3>Product Owner presente</h3>
+          <p>
+            Um Product Owner ausente prejudica a transpar&ecirc;ncia, enfraquece a
+            prioriza&ccedil;&atilde;o e compromete a maximiza&ccedil;&atilde;o de valor.
+          </p>
+        </article>
+      </div>
+    </section>
+    <section class="guardioes-final-scroll final-block" id="porta2" data-step="porta2" data-final-index="0" aria-label="O chamado final dos Guardioes">
+      <div class="guardioes-final-curtain" aria-hidden="true">
+        <p>Os Guardioes te desafiam a um teste...</p>
+      </div>
+
+      <div class="guardioes-final-stage">
+        <div class="guardioes-final-bg" aria-hidden="true"></div>
+
+        <article class="guardioes-final-slice guardioes-final-bardo is-active" data-final-panel="0">
+          <div class="guardioes-final-image-wrap">
+            <img
+              src="/assets/img/capitulo_2/personagens/bardo-cena.png"
+              alt="Bardo encarando o heroi com expressao seria"
+            />
+          </div>
+
+          <div class="guardioes-final-dialogo">
+            <p class="porta2-kicker">O Bardo interrompe o silencio</p>
+            <h2>Valor antes de movimento.</h2>
+            <blockquote>
+              "Uma Sprint sem prioridade e apenas ruido vestido de plano."
+            </blockquote>
+          </div>
+        </article>
+
+        <article class="guardioes-final-slice guardioes-final-equipe" data-final-panel="1">
+          <div class="guardioes-final-image-wrap">
+            <img
+              src="/assets/img/capitulo_2/personagens/equipe-cena.png"
+              alt="Equipe de aventureiros encarando o heroi com expressao seria"
+            />
+          </div>
+
+          <div class="guardioes-final-dialogo">
+            <p class="porta2-kicker">A Equipe avanca um passo</p>
+            <h2>Entrega e compromisso.</h2>
+            <blockquote>
+              "Ideia sem incremento nao atravessa masmorra nenhuma."
+            </blockquote>
+          </div>
+        </article>
+
+        <article class="guardioes-final-slice guardioes-final-corvo" data-final-panel="2">
+          <div class="guardioes-final-image-wrap">
+            <img
+              src="/assets/img/capitulo_2/personagens/corvo-cena.png"
+              alt="Corvo encarando o heroi com expressao seria"
+            />
+          </div>
+
+          <div class="guardioes-final-dialogo">
+            <p class="porta2-kicker">O Corvo sela o conselho</p>
+            <h2>Fluxo exige verdade.</h2>
+            <blockquote>
+              "O bloqueio ignorado sempre volta maior."
+            </blockquote>
+          </div>
+        </article>
+
+        <article class="guardioes-final-portal" data-final-panel="3">
+          <div class="guardioes-final-portal-core" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="guardioes-final-dialogo guardioes-final-dialogo-portal">
+            <p class="porta2-kicker">O portal desperta</p>
+            <h2>O Teste dos Guardioes</h2>
+            <blockquote>
+              "Muitos aprendem os nomes. Poucos compreendem o fluxo."
+            </blockquote>
+          </div>
+
+          <button class="guardioes-final-portal-button porta2-interativa" id="porta2Scene" type="button" aria-label="Portal para o desafio dos Guardioes">
+            <span class="porta2-tooltip">Conclua a historia para atravessar.</span>
+          </button>
+        </article>
+
+        <div class="porta2-actions">
+          <button class="btn-primary" id="btnConcluirHistoriaCapitulo2" type="button">
+            Invocar o portal
+          </button>
+
+          <button class="btn-secondary hidden" id="btnIrDesafioCapitulo2" type="button">
+            Atravessar para o desafio
+          </button>
+
+          <p class="status-historia" id="statusHistoriaCapitulo2"></p>
+        </div>
       </div>
     </section>
 
   </main>
 
   <%- include('partials/navegacao_inferior') %>
-
   <%- include('partials/footer') %>
 
   <script src="../assets/js/main.js"></script>
-  <script src="/js/capitulo2.js"></script>
+  <script src="../assets/js/capitulo2.js"></script>
 </body>
 
-</html>
->
 </html>

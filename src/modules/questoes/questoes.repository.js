@@ -113,7 +113,7 @@ async function inserirRespostaQuestao(id_exame, id_questao, resposta, nota) {
     `
     INSERT INTO respostas (id_exame, id_questao, nota, resposta)
     VALUES ($1,$2,$3,$4)
-    RETURNING id_exame, id_questao, nota, id_resposta
+    RETURNING id_resposta, id_exame, id_questao, nota
    `,
     [id_exame, id_questao, nota, resposta],
   );
@@ -742,7 +742,8 @@ async function findTodasQuestoesDoExame(idUsuario) {
       q.alternativa_c,
       q.alternativa_d,
       q.imagem,
-      r.resposta AS resposta_salva
+      r.resposta AS resposta_salva,
+      r.nota AS nota_salva
     FROM exame_atual e
     INNER JOIN questoes q
       ON q.id_modulo = e.id_modulo

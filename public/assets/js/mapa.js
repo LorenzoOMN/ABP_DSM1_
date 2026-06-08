@@ -28,12 +28,28 @@ async function carregarMapa() {
       return;
     }
 
+    bloquearMapaAntesDoDesafio1(data.modulos);
+
     renderizarMapa(data.modulos);
     atualizarAtalhos(data.modulos);
   } catch (error) {
     console.error(error);
     mostrarAlerta("Erro de conexão ao carregar mapa", "erro");
   }
+}
+//função para bloquear o acesso ao mapa antes de concluir o desafio 1, garantindo que os usuários sigam a ordem correta da jornada. Se o usuário estiver no módulo 1 e ainda não tiver concluído a história, ele será redirecionado para a página do capítulo 1. Se já tiver concluído a história, será redirecionado para o desafio 1. Caso contrário, o mapa permanecerá bloqueado.
+function bloquearMapaAntesDoDesafio1(modulos) {
+  const moduloAtual = modulos.find((modulo) => modulo.desafio_atual);
+
+  if (!moduloAtual) return;
+
+  const estaNoModulo1 = Number(moduloAtual.id_modulo) === 1;
+
+  if (!estaNoModulo1) return;
+
+  if (moduloAtual.historia_concluida) return;
+
+  window.location.href = "/capitulo1";
 }
 
 function renderizarMapa(modulos) {
@@ -102,20 +118,16 @@ function atualizarAtalhos(modulos) {
 
   const primeiroModulo = modulos.find((modulo) => modulo.id_modulo === 1);
 
-  const artefatosLiberados =
-    primeiroModulo &&
-    primeiroModulo.historia_concluida &&
-    !primeiroModulo.desafio_atual;
+  const artefatosLiberados = Boolean(primeiroModulo?.historia_concluida);
 
-  if (!artefatosLiberados) {
-    btnArtefatos.disabled = true;
-    btnArtefatos.classList.add("bloqueado");
-  } else {
-    btnArtefatos.disabled = false;
-    btnArtefatos.classList.remove("bloqueado");
+  if (btnArtefatos) {
+    btnArtefatos.disabled = !artefatosLiberados;
+    btnArtefatos.classList.toggle("bloqueado", !artefatosLiberados);
   }
 
-  const certificadoLiberado = modulos.some((modulo) => modulo.certificado_liberado);
+  const certificadoLiberado = modulos.some(
+    (modulo) => modulo.certificado_liberado,
+  );
 
   if (btnCertificado) {
     btnCertificado.disabled = !certificadoLiberado;
@@ -161,9 +173,25 @@ function criarTituloModulo(idModulo) {
   return titulos[idModulo] || `Capítulo ${idModulo}`;
 }
 
+function limparEstadoVisualCapitulo5() {
+  sessionStorage.removeItem("scrum_dungeon_capitulo5_estado");
+  sessionStorage.removeItem("scrum_dungeon_capitulo5_entrada");
+
+  localStorage.removeItem("scrum_dungeon_capitulo5_estado");
+  localStorage.removeItem("scrum_dungeon_capitulo5_entrada");
+}
+
 function abrirHistoria(idModulo) {
-  localStorage.setItem("moduloAtual", idModulo);
-  window.location.href = `/capitulo${idModulo}`;
+  const modulo = Number(idModulo);
+
+  localStorage.setItem("moduloAtual", modulo);
+
+  if (modulo === 5) {
+     sessionStorage.removeItem("scrum_dungeon_capitulo5_replay_temporal");
+    limparEstadoVisualCapitulo5();
+  }
+
+  window.location.href = `/capitulo${modulo}`;
 }
 
 function abrirDesafio(idModulo) {

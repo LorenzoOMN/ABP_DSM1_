@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/coleta_artefato.css" />
+
+    <title>Artefato Desbloqueado | Scrum Dungeon</title>
+  </head>
+
+  <body class="corpo-coleta-artefato">
+    <%- include('partials/header') %>
+    <%- include('partials/alert') %>
+
+    <main class="coleta-artefato-page">
+      <section class="coleta-artefato-card" aria-labelledby="coletaTitulo">
+        <p class="coleta-kicker">Artefato desbloqueado</p>
+
+        <div class="coleta-layout coleta-layout--vertical">
+          <div class="coleta-heading">
+            <span id="coletaModulo" class="coleta-modulo">Módulo --</span>
+
+            <h1 id="coletaTitulo" class="coleta-titulo-principal">
+              Carregando artefato...
+            </h1>
+          </div>
+
+          <div class="coleta-visual">
+            <div class="coleta-image-frame">
+              <img
+                id="coletaArtefatoImagem"
+                class="coleta-artefato-imagem"
+                src="/assets/img/conclusoes/conclusao-modulo-1.png"
+                alt="Conclusão da batalha"
+              />
+            </div>
+          </div>
+
+          <div class="coleta-copy">
+            <p id="coletaDescricao" class="coleta-descricao">
+              A Dungeon está revelando uma nova relíquia da sua jornada.
+            </p>
+
+            <div id="coletaNarrativa" class="coleta-narrativa">
+              <p>
+                Ao vencer este desafio, uma nova memória da jornada se acende.
+                Um artefato surge diante de você, carregando uma lição essencial
+                para dominar o Scrum.
+              </p>
+            </div>
+
+            <div class="coleta-actions">
+              <button
+                id="btnColetarArtefato"
+                class="btn-coletar-artefato"
+                type="button"
+                disabled
+              >
+                Coletar artefato
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toastArtefato" class="toast-artefato" hidden>
+      <div class="toast-artefato-glow"></div>
+
+      <img
+        id="toastArtefatoIcone"
+        class="toast-artefato-icone"
+        src="/assets/img/artefatos/product-backlog-icon.png"
+        alt="Artefato coletado"
+      />
+
+      <div class="toast-artefato-copy">
+        <strong>Artefato coletado</strong>
+        <span id="toastArtefatoNome">Product Backlog</span>
+      </div>
+    </div>
+
+    <div id="coletaTransicao" class="coleta-transicao" hidden>
+      <div class="coleta-transicao-card">
+        <strong id="coletaTransicaoTitulo">Preparando próxima etapa...</strong>
+        <span id="coletaTransicaoTexto">
+          A Dungeon está registrando sua conquista.
+        </span>
+      </div>
+    </div>
+
+   
+    <%- include('partials/footer') %>
+
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/coleta_artefato.js"></script>
+  </body>
+</html>

@@ -18,16 +18,46 @@
 
   const TOTAL_TENTATIVAS = 2;
 
-  const RESULTADO_IMAGENS = {
-    vitoria: "/assets/img/capitulo_1/resultado_venceu.png",
-    perdeu: "/assets/img/capitulo_1/resultado_perdeu.png",
-    esgotou: "/assets/img/capitulo_1/resultado_esgotou_tentativas.png",
+  // ============================================================================
+  // DICIONÁRIO DE IMAGENS POR CAPÍTULO
+  // ============================================================================
+
+  const RESULTADOS_POR_CAPITULO = {
+    1: {
+      vitoria: "/assets/img/capitulo_1/resultado_venceu.png",
+      perdeu: "/assets/img/capitulo_1/resultado_perdeu.png",
+      esgotou: "/assets/img/capitulo_1/resultado_esgotou_tentativas.png",
+    },
+    2: {
+      vitoria: "/assets/img/capitulo_2/resultado_venceu.png",
+      perdeu: "/assets/img/capitulo_2/resultado_perdeu.png",
+      esgotou: "/assets/img/capitulo_2/resultado_esgotou_tentativas.png",
+    },
+    3: {
+      vitoria: "/assets/img/capitulo_3/resultado_venceu.png",
+      perdeu: "/assets/img/capitulo_3/resultado_perdeu.png",
+      esgotou: "/assets/img/capitulo_3/resultado_esgotou_tentativas.png",
+    },
+    4: {
+      vitoria: "/assets/img/capitulo_4/resultado_venceu.png",
+      perdeu: "/assets/img/capitulo_4/resultado_perdeu.png",
+      esgotou: "/assets/img/capitulo_4/resultado_esgotou_tentativas.png",
+    },
+    5: {
+      vitoria: "/assets/img/capitulo_5/resultado_venceu.png",
+      perdeu: "/assets/img/capitulo_5/resultado_perdeu.png",
+      esgotou: "/assets/img/capitulo_5/resultado_esgotou_tentativas.png",
+    },
   };
+
+  // Mantém referência para fallback (capítulo 1)
+  const RESULTADO_IMAGENS_PADRAO = RESULTADOS_POR_CAPITULO[1];
 
   const VIDA_IMAGEM = "/assets/img/vida-icon.png";
   const VIDA_PERDIDA_IMAGEM = "/assets/img/vida-icon-perdeu.png";
 
   let resultadoAtual = null;
+  let moduloAtual = 1;
 
   function obterToken() {
     const token = localStorage.getItem("token");
@@ -117,11 +147,19 @@
     }
   }
 
+  // ============================================================================
+  // FUNÇÃO : usa o módulo atual para selecionar imagens
+  // ============================================================================
+
   function configurarImagemResultado(resultado) {
     if (!resultadoImagemArea || !resultadoImagem || !resultadoHoverTexto)
       return;
 
     const estado = obterEstadoResultado(resultado);
+
+    // Seleciona as imagens baseadas no módulo atual
+    const imagensModulo =
+      RESULTADOS_POR_CAPITULO[moduloAtual] || RESULTADO_IMAGENS_PADRAO;
 
     resultadoImagemArea.classList.remove(
       "estado-vitoria",
@@ -130,7 +168,7 @@
     );
 
     resultadoImagemArea.classList.add(`estado-${estado}`);
-    resultadoImagem.src = RESULTADO_IMAGENS[estado];
+    resultadoImagem.src = imagensModulo[estado];
 
     if (estado === "vitoria") {
       resultadoImagem.alt = "Aventureiro venceu a batalha";
@@ -154,7 +192,8 @@
 
     btnAcaoResultado.disabled = false;
 
-    const aprovadoGeral = resultado.aprovado || resultado.aprovado_por_melhor_nota;
+    const aprovadoGeral =
+      resultado.aprovado || resultado.aprovado_por_melhor_nota;
     const tentativaAtual = Number(resultado.tentativa) || 1;
     const percentual = Number(resultado.percentual) || 0;
 
@@ -163,10 +202,11 @@
       resultado.aprovado === true &&
       tentativaAtual === 1 &&
       resultado.pode_tentar_melhorar === true &&
-      percentual < 100;  // ← Nova verificação
+      percentual < 100;
 
-    btnAcaoResultado.querySelector(".texto-botao").textContent =
-      aprovadoGeral ? "Avançar" : "Tentar novamente";
+    btnAcaoResultado.querySelector(".texto-botao").textContent = aprovadoGeral
+      ? "Avançar"
+      : "Tentar novamente";
 
     if (btnMelhorarNota) {
       btnMelhorarNota.hidden = !podeMelhorarNota;
@@ -214,6 +254,60 @@
     }
 
     atualizarBotaoAcao(resultado);
+  }
+
+  // ============================================================================
+  //  FUNÇÃO: Carrega o módulo atual antes de carregar o resultado
+  // ============================================================================
+
+  async function carregarModuloAtual() {
+    const token = obterToken();
+    if (!token) return 1;
+
+    try {
+      const response = await fetch("/api/progresso/mapa", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        console.warn(
+          "⚠️ Não foi possível carregar progresso do mapa, usando módulo 1",
+        );
+        return 1;
+      }
+
+      const data = await response.json();
+      console.log("📦 Dados do mapa:", data);
+
+      let moduloDoBanco = null;
+
+      if (Array.isArray(data)) {
+        const primeiroItem = data[0];
+        moduloDoBanco = primeiroItem?.modulo_desafio_atual;
+      } else if (data.modulos && Array.isArray(data.modulos)) {
+        const moduloAtual = data.modulos.find((m) => m.desafio_atual);
+        if (moduloAtual) {
+          moduloDoBanco =
+            moduloAtual.id_modulo ||
+            moduloAtual.numero ||
+            moduloAtual.modulo_desafio_atual;
+        }
+        if (!moduloDoBanco && data.modulos[0]?.modulo_desafio_atual) {
+          moduloDoBanco = data.modulos[0].modulo_desafio_atual;
+        }
+      }
+
+      const moduloFinal =
+        moduloDoBanco && moduloDoBanco >= 1 && moduloDoBanco <= 5
+          ? moduloDoBanco
+          : 1;
+
+      console.log("✅ Módulo atual detectado:", moduloFinal);
+      return moduloFinal;
+    } catch (error) {
+      console.error("❌ Erro ao carregar módulo atual:", error);
+      return 1;
+    }
   }
 
   async function carregarResultado() {
@@ -295,7 +389,10 @@
       const data = await response.json();
 
       if (!response.ok) {
-        mostrarAlerta(data.message || "Não foi possível criar nova tentativa.", "erro");
+        mostrarAlerta(
+          data.message || "Não foi possível criar nova tentativa.",
+          "erro",
+        );
 
         btnMelhorarNota.disabled = false;
         btnMelhorarNota.querySelector(".texto-botao").textContent =
@@ -319,18 +416,35 @@
   // Guarda a resposta do proximo-modulo para não chamar duas vezes
   let progressaoJaAplicada = false;
 
+  function obterModuloConcluido() {
+    return Number(resultadoAtual?.id_modulo) || Number(moduloAtual) || 1;
+  }
+
+  function irParaColetaArtefato(moduloConcluido, destinoFinal) {
+    sessionStorage.setItem("modulo_artefato_pendente", String(moduloConcluido));
+    sessionStorage.setItem(
+      "destino_pos_coleta_artefato",
+      destinoFinal || "/mapa",
+    );
+
+    window.location.href = `/coleta-artefato?modulo=${encodeURIComponent(
+      moduloConcluido,
+    )}`;
+  }
+
   async function aplicarProgressao() {
     const token = obterToken();
     if (!token || !resultadoAtual || !btnAcaoResultado) return;
 
-    // 🔥 SEMPRE chamar a API, independente de aprovado ou não
+    //  SEMPRE chama a API, independente de aprovado ou não
     // O backend decide a lógica de avançar/resetar/nova tentativa
 
     if (progressaoJaAplicada) return;
     progressaoJaAplicada = true;
 
     btnAcaoResultado.disabled = true;
-    const textoOriginal = btnAcaoResultado.querySelector(".texto-botao").textContent;
+    const textoOriginal =
+      btnAcaoResultado.querySelector(".texto-botao").textContent;
     btnAcaoResultado.querySelector(".texto-botao").textContent = "Aguarde...";
 
     try {
@@ -342,7 +456,9 @@
         },
         body: JSON.stringify({
           // Prioriza id_exame salvo pelo questionário (evita problemas pós-reset)
-          id_exame: sessionStorage.getItem('ultimo_id_exame') || resultadoAtual.id_exame,
+          id_exame:
+            sessionStorage.getItem("ultimo_id_exame") ||
+            resultadoAtual.id_exame,
         }),
       });
 
@@ -352,36 +468,46 @@
         mostrarAlerta(data.message || "Erro ao atualizar progresso.", "erro");
         progressaoJaAplicada = false;
         btnAcaoResultado.disabled = false;
-        btnAcaoResultado.querySelector(".texto-botao").textContent = textoOriginal;
+        btnAcaoResultado.querySelector(".texto-botao").textContent =
+          textoOriginal;
         return;
       }
 
-      // ✅ Caso 1: Run resetada (falhou 2 vezes no módulo 1)
+      //  Caso 1: Run resetada (falhou 2 vezes no módulo 1)
       if (data.resetou_run === true) {
-        sessionStorage.removeItem('ultimo_id_exame');
+        sessionStorage.removeItem("ultimo_id_exame");
         mostrarAlerta("Sua run foi reiniciada. Retorne ao Módulo 1.", "info");
         window.location.href = "/mapa";
         return;
       }
 
-      // ✅ Caso 2: Aprovado e há próximo módulo → backend retornou novo exame
+      // Caso 2: Aprovado e há próximo módulo
       if (data.aprovado && data.exame?.id_exame) {
-        // Salva contexto do novo exame para o questionário usar
-        sessionStorage.setItem('ultimo_id_exame', String(data.exame.id_exame));
-        mostrarAlerta("Módulo concluído! Avançando para o próximo...", "sucesso");
-        window.location.href = "/questionario"; // ← Use a rota genérica
+        const moduloConcluido = obterModuloConcluido();
+
+        sessionStorage.setItem("ultimo_id_exame", String(data.exame.id_exame));
+        mostrarAlerta("Módulo concluído! Artefato desbloqueado.", "sucesso");
+
+        irParaColetaArtefato(moduloConcluido, "/mapa");
         return;
       }
 
-      // ✅ Caso 3: Aprovado e SEM próximo módulo (concluiu tudo)
+      // Caso 3: Aprovado e SEM próximo módulo
       if (data.aprovado && data.certificado_liberado) {
-        window.location.href = "/certificado"; // ou "/mapa" se não tiver certificado
+        const moduloConcluido = obterModuloConcluido();
+
+        mostrarAlerta(
+          "Jornada concluída! Artefato final desbloqueado.",
+          "sucesso",
+        );
+
+        irParaColetaArtefato(moduloConcluido, "/certificado");
         return;
       }
 
-      // ✅ Caso 4: Reprovado com tentativas restantes → nova tentativa no mesmo módulo
+      //  Caso 4: Reprovado com tentativas restantes → nova tentativa no mesmo módulo
       if (!data.aprovado && data.exame?.id_exame) {
-        sessionStorage.setItem('ultimo_id_exame', String(data.exame.id_exame));
+        sessionStorage.setItem("ultimo_id_exame", String(data.exame.id_exame));
         mostrarAlerta("Nova tentativa disponível. Boa sorte!", "info");
         window.location.href = "/questionario";
         return;
@@ -389,13 +515,13 @@
 
       // Fallback seguro
       window.location.href = "/mapa";
-
     } catch (error) {
       console.error("Erro ao aplicar progressão:", error);
       mostrarAlerta("Erro de conexão ao atualizar progresso.", "erro");
       progressaoJaAplicada = false;
       btnAcaoResultado.disabled = false;
-      btnAcaoResultado.querySelector(".texto-botao").textContent = textoOriginal;
+      btnAcaoResultado.querySelector(".texto-botao").textContent =
+        textoOriginal;
     }
   }
 
@@ -407,5 +533,16 @@
     btnMelhorarNota.addEventListener("click", refazerParaMelhorarNota);
   }
 
-  carregarResultado();
+  // ============================================================================
+  // INICIALIZAÇÃO MODIFICADA: Carrega módulo primeiro, depois resultado
+  // ============================================================================
+
+  (async function iniciar() {
+    // Primeiro detecta o módulo atual
+    moduloAtual = await carregarModuloAtual();
+    console.log("🎯 Módulo configurado para imagens:", moduloAtual);
+
+    // Depois carrega o resultado
+    await carregarResultado();
+  })();
 })();

@@ -1,3 +1,15 @@
+/* =========================================================
+   CAPÍTULO 5 — O MESTRE DO FLUXO
+   JS ORGANIZADO POR RESPONSABILIDADE
+========================================================= */
+
+/* =========================================================
+   1. CONFIGURAÇÕES GLOBAIS, ESTADO E DADOS
+========================================================= */
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
 const ID_MODULO = 5;
 
 const ETAPAS_CAPITULO_5 = [
@@ -11,144 +23,216 @@ const ETAPAS_CAPITULO_5 = [
 const etapasConcluidas = new Set();
 
 const ENCONTROS_CAPITULO_5 = {
-  duplo: {
-  stageId: "encounter-duplo",
-  titulo: "O Duplo",
-  descricao:
-  "Vocês começam a andar sobre a ponte e, de repente, tudo parece ficar mais escuro. Sombras surgem por toda parte. A distância da porta aumenta. Algo impede o caminho.",
-  artefato: "Medalhão dos Papéis",
-  imagem: "/assets/img/capitulo_5/encontro-duplo.png",
-  imagemAlt: "Encontro com o Duplo na ponte",
-},
-
-  stakeholder: {
-    stageId: "encounter-stakeholder",
-    titulo: "Stakeholder Selvagem",
-    descricao:
-  "A travessia continua, mas vozes começam a ecoar da escuridão. Exigências, mudanças e pedidos impossíveis se acumulam no ar. O caminho à frente se contorce com o ruído.",
-    artefato: "Product Backlog",
-    imagem: "/assets/img/capitulo_5/carta_stakeholder-selvagem.png",
-    imagemAlt: "Carta do encontro Stakeholder Selvagem",
-  },
-
-  necrobranch: {
-    stageId: "encounter-necrobranch",
-    titulo: "Necrobranch Commitada",
-    descricao:
-  "Mais adiante, a ponte range sob os pés do grupo. Estruturas antigas surgem entre as pedras, como se algo esquecido tentasse voltar e tomar o caminho para si.",
-    artefato: "Ampulheta da Sprint",
-    imagem: "/assets/img/capitulo_5/carta-necrobranch-commitada.png",
-    imagemAlt: "Carta do encontro Necrobranch Commitada",
-  },
-
-  "bug-infernal": {
-    stageId: "encounter-bug",
-    titulo: "Bug Infernal",
-    descricao:
-  "Um zumbido incômodo cresce na escuridão. A travessia vacila, falhas se acumulam ao redor e cada passo parece acionar um novo erro no caminho.",
-    artefato: "Baú da Melhoria",
-    imagem: "/assets/img/capitulo_5/carta-bug-infernal.png",
-    imagemAlt: "Carta do encontro Bug Infernal",
-  },
-
-  "forja-mvp": {
-    stageId: "encounter-forja",
-    titulo: "A Forja do MVP",
-   descricao:
-  "Depois dos impedimentos, a travessia leva o grupo a um ponto de decisão. Tudo o que foi conquistado precisa agora ser unido com clareza para que a jornada faça sentido.",
-    artefato: "MVP",
-    imagem: "/assets/img/capitulo_5/base-artefato-bau.png",
-    imagemAlt: "Forja do MVP",
-  },
-
-  "porta-final": {
-    stageId: "encounter-porta",
-    titulo: "A Porta Final",
-    descricao:
-      "A grande porta observa a jornada. Só avança quem concluiu os encontros, forjou o MVP e compreendeu o fluxo.",
-    artefato: "Travessia Final",
-    imagem: "/assets/img/capitulo_1/icones/porta.png",
-    imagemAlt: "A Porta Final",
-  },
+  duplo: { stageId: "encounter-duplo" },
+  stakeholder: { stageId: "encounter-stakeholder" },
+  necrobranch: { stageId: "encounter-necrobranch" },
+  "bug-infernal": { stageId: "encounter-bug" },
+  "forja-mvp": { stageId: "encounter-forja" },
+  "porta-final": { stageId: "encounter-porta" },
 };
 
 let etapaAtualCapitulo5 = "duplo";
+let chaveMvpUsadaNaPorta = false;
+let historia5ConcluidaNoBackend = false;
 
-const RESPOSTAS_DUPLO = {
-  "po-caotico": "priorizar-backlog",
-  "time-silencioso": "expor-impedimentos",
-  "falso-scrum-master": "facilitar-autonomia",
-};
+const STORAGE_CAPITULO5 = "scrum_dungeon_capitulo5_estado";
+const STORAGE_CAPITULO5_ENTRADA = "scrum_dungeon_capitulo5_entrada";
+const STORAGE_CAPITULO5_REPLAY = "scrum_dungeon_capitulo5_replay_temporal";
 
-const respostasDuplo = {};
-
-const RESPOSTAS_STAKEHOLDER = {
-  "pedido-confuso": "entender-necessidade",
-  "mudanca-sprint": "avaliar-impacto",
-  feedback: "adaptar-backlog",
-  acordo: "formalizar-aval",
-};
-
-const respostasStakeholder = {};
-
-const RESPOSTAS_NECROBRANCH = {
-  "branch-desconhecida": "inspecionar-estado",
-  "quadro-valor": "priorizar-impacto",
-  "main-risco": "proteger-main",
-  "integracao-final": "testar-integrar",
-};
-
-const respostasNecrobranch = {};
-
-const RESPOSTAS_BUG = {
-  "comportamento-esperado": "definir-esperado",
-  "comportamento-atual": "registrar-atual",
-  reproducao: "definir-passos",
-  validacao: "validar-correcao",
-};
-
-const respostasBug = {};
-
-const RESPOSTAS_FORJA = {
-  "time-alinhado": "medalhao-papeis",
-  "valor-validado": "aval-aprovacao",
-  "incremento-funcionando": "main-funcional",
-  "ciclo-encerrado": "ampulheta-quebrada",
-  "produto-testado": "escudo-magico",
-};
-
-const respostasForja = {};
-
-const impedimentosResolvidos = new Set();
-const respostasImpedimentos = {};
-
-function obterToken() {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    window.location.href = "/";
-    return null;
-  }
-
-  return token;
+function estaEmReplayTemporalCapitulo5() {
+  return sessionStorage.getItem(STORAGE_CAPITULO5_REPLAY) === "true";
 }
 
-function configurarRevealNoScroll() {
-  const elementos = document.querySelectorAll(".reveal");
+function encerrarReplayTemporalCapitulo5() {
+  sessionStorage.removeItem(STORAGE_CAPITULO5_REPLAY);
+}
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("visible");
-      });
-    },
-    {
-      threshold: 0.18,
-    },
+function limparEstadoLegadoCapitulo5() {
+  localStorage.removeItem(STORAGE_CAPITULO5);
+  localStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
+}
+
+const estadoForja = {
+  slots: {
+    aval: false,
+    ampulheta: false,
+    bau: false,
+  },
+  concluida: false,
+};
+
+const stakeholderTurnos = [
+  {
+    titulo: "Turno 1 — Ruído sem prioridade",
+    imagem: "/assets/img/capitulo_5/stake-holder-selvagem-icon.png",
+    pergunta:
+      "O Stakeholder Selvagem rosna: “Quero tudo. Agora. Não me importa a ordem. Só entreguem.” O Bardo sente as cordas do alaúde desafinarem. Como o grupo deve responder?",
+    opcoes: [
+      "Aceitar tudo de imediato para reduzir a tensão.",
+      "Organizar e priorizar as demandas no Product Backlog, deixando claro o que gera mais valor agora.",
+      "Deixar o time decidir sozinho, sem alinhamento com ninguém.",
+    ],
+    correta: 1,
+    feedback:
+      "A resposta devolve ritmo ao grupo. O Bardo reorganiza as primeiras exigências em uma melodia compreensível.",
+  },
+  {
+    titulo: "Turno 2 — Pressão sem transparência",
+    imagem: "/assets/img/capitulo_5/stakeholder-transformation1.png",
+    pergunta:
+      "A criatura insiste: “Não quero contexto. Não quero explicações. Só quero velocidade.” As vozes atingem o Bardo outra vez. Como responder?",
+    opcoes: [
+      "Remover alinhamento e seguir mais rápido, mesmo sem clareza.",
+      "Explicar com transparência o impacto das mudanças e mostrar que velocidade sem clareza gera mais caos.",
+      "Ignorar a cobrança e continuar sem responder.",
+    ],
+    correta: 1,
+    feedback:
+      "A música muda. O Bardo encontra firmeza na transparência, e o Stakeholder perde parte da sua ferocidade.",
+  },
+  {
+    titulo: "Turno 3 — Expectativa sem alinhamento",
+    imagem: "/assets/img/capitulo_5/stake-holder-icon.png",
+    pergunta:
+      "A criatura já parece menos feroz, mas ainda hesita: “E se eu mudar de ideia amanhã? Como saberei que vocês entenderam o que eu preciso?” Como responder?",
+    opcoes: [
+      "Explicar que o alinhamento contínuo e a organização das prioridades permitem adaptação sem cair no caos.",
+      "Prometer que qualquer mudança será aceita sem impacto nenhum.",
+      "Pedir que o Stakeholder pare de opinar no produto.",
+    ],
+    correta: 0,
+    feedback:
+      "O grupo devolve ordem à ponte. O Bardo toca uma melodia segura, guiada por entendimento, valor e alinhamento.",
+  },
+];
+
+const bugPontosAnalise = {
+  esperado: {
+    titulo: "Comportamento esperado",
+    texto:
+      "O primeiro passo é entender o que deveria acontecer. Sem clareza sobre o comportamento esperado, o time corre o risco de corrigir algo sem saber se o resultado faz sentido.",
+  },
+  atual: {
+    titulo: "Comportamento atual",
+    texto:
+      "Agora o grupo observa o que realmente está acontecendo. Registrar o comportamento atual ajuda a separar suposição de evidência e impede que o bug continue se escondendo.",
+  },
+  validacao: {
+    titulo: "Validação da correção",
+    texto:
+      "Não basta alterar o código. É preciso validar se a correção resolveu o problema sem causar novos danos, garantindo segurança antes de seguir em frente.",
+  },
+};
+
+/* =========================================================
+   2. PERSISTÊNCIA LOCAL E BACKEND
+   funções que definem e mexem no armazenamento local
+========================================================= */
+
+function salvarEstadoCapitulo5Local() {
+  sessionStorage.setItem(
+    STORAGE_CAPITULO5,
+    JSON.stringify({
+      etapaAtualCapitulo5,
+      etapasConcluidas: [...etapasConcluidas],
+      estadoForja,
+      chaveMvpUsadaNaPorta,
+    }),
   );
+}
 
-  elementos.forEach((el) => observer.observe(el));
+function restaurarEstadoCapitulo5Local() {
+  const bruto = sessionStorage.getItem(STORAGE_CAPITULO5);
+  if (!bruto) return;
+
+  try {
+    const estado = JSON.parse(bruto);
+
+    if (Array.isArray(estado.etapasConcluidas)) {
+      etapasConcluidas.clear();
+      estado.etapasConcluidas.forEach((etapa) => etapasConcluidas.add(etapa));
+    }
+
+    if (typeof estado.etapaAtualCapitulo5 === "string") {
+      etapaAtualCapitulo5 = estado.etapaAtualCapitulo5;
+    }
+
+    if (estado.estadoForja?.slots) {
+      estadoForja.slots.aval = !!estado.estadoForja.slots.aval;
+      estadoForja.slots.ampulheta = !!estado.estadoForja.slots.ampulheta;
+      estadoForja.slots.bau = !!estado.estadoForja.slots.bau;
+    }
+
+    estadoForja.concluida = !!estado.estadoForja?.concluida;
+    chaveMvpUsadaNaPorta = !!estado.chaveMvpUsadaNaPorta;
+  } catch (erro) {
+    console.error("Erro ao restaurar estado local do capítulo 5:", erro);
+  }
+}
+
+function resetarJornadaCapitulo5() {
+  sessionStorage.setItem(STORAGE_CAPITULO5_REPLAY, "true");
+
+  sessionStorage.removeItem(STORAGE_CAPITULO5);
+  sessionStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
+
+  localStorage.removeItem(STORAGE_CAPITULO5);
+  localStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
+
+  etapaAtualCapitulo5 = "duplo";
+  etapasConcluidas.clear();
+
+  estadoForja.slots.aval = false;
+  estadoForja.slots.ampulheta = false;
+  estadoForja.slots.bau = false;
+  estadoForja.concluida = false;
+
+  chaveMvpUsadaNaPorta = false;
+
+  window.location.reload();
+}
+
+function aplicarEstadoCapitulo5ConcluidoPeloBackend() {
+  historia5ConcluidaNoBackend = true;
+
+  etapasConcluidas.clear();
+  ETAPAS_CAPITULO_5.forEach((etapa) => etapasConcluidas.add(etapa));
+
+  etapaAtualCapitulo5 = "porta-final";
+
+  estadoForja.slots.aval = true;
+  estadoForja.slots.ampulheta = true;
+  estadoForja.slots.bau = true;
+  estadoForja.concluida = true;
+
+  chaveMvpUsadaNaPorta = true;
+
+  salvarEstadoCapitulo5Local();
+  salvarEntradaCapitulo5();
+}
+
+function salvarEntradaCapitulo5() {
+  sessionStorage.setItem(STORAGE_CAPITULO5_ENTRADA, "true");
+}
+
+function restaurarEntradaCapitulo5() {
+  const capitulo5Page = document.getElementById("capitulo5Page");
+  const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
+
+  const entrou = sessionStorage.getItem(STORAGE_CAPITULO5_ENTRADA) === "true";
+
+  if (!entrou) return;
+
+  if (capitulo5Page) {
+    capitulo5Page.classList.remove("capitulo5-page--locked");
+    capitulo5Page.classList.add("capitulo5-page--entered");
+  }
+
+  if (btnEntrarNaPonte) {
+    btnEntrarNaPonte.disabled = false;
+    btnEntrarNaPonte.classList.add("concluida");
+    btnEntrarNaPonte.classList.remove("ativando");
+  }
 }
 
 async function concluirHistoria() {
@@ -237,6 +321,27 @@ async function carregarEstadoHistoria() {
 
     if (!modulo || !modulo.historia_concluida) return;
 
+    historia5ConcluidaNoBackend = true;
+
+    if (estaEmReplayTemporalCapitulo5()) {
+      if (btnConcluir) {
+        btnConcluir.classList.add("hidden");
+      }
+
+      if (btnEntrarDesafio) {
+        btnEntrarDesafio.classList.add("hidden");
+      }
+
+      if (status) {
+        status.textContent =
+          "História já registrada no sistema. Replay temporal ativo.";
+      }
+
+      return;
+    }
+
+    aplicarEstadoCapitulo5ConcluidoPeloBackend();
+
     if (btnConcluir) {
       btnConcluir.classList.add("hidden");
     }
@@ -246,51 +351,196 @@ async function carregarEstadoHistoria() {
     }
 
     if (status) {
-      status.textContent = "História concluída. A porta final foi liberada.";
+      status.textContent =
+        "História já registrada no sistema. A porta final está liberada.";
     }
   } catch (error) {
     console.error(error);
   }
 }
 
-function configurarConclusaoHistoria() {
-  const btnConcluir = document.getElementById("btnConcluirHistoria");
+/* =========================================================
+   3. UTILITÁRIOS GERAIS
+   Aqui deixei as funções pequenas e reutilizaveis
+========================================================= */
 
-  if (btnConcluir) {
-    btnConcluir.addEventListener("click", concluirHistoria);
+function obterToken() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/";
+    return null;
   }
+
+  return token;
 }
 
-function configurarEntradaDesafio() {
-  const btnEntrarDesafio = document.getElementById("btnEntrarDesafio");
+function consumirArtefatoDaMochila(chaveArtefato) {
+  const item = document.querySelector(
+    `.mochila-item[data-artefato="${chaveArtefato}"]`,
+  );
 
-  if (!btnEntrarDesafio) return;
+  if (!item) return;
 
-  btnEntrarDesafio.addEventListener("click", () => {
-    localStorage.setItem("moduloAtual", ID_MODULO);
-    window.location.href = "/desafio1";
+  item.classList.add("hidden");
+  item.classList.remove("ativo", "destacado", "convocado", "is-over");
+  item.removeAttribute("draggable");
+}
+
+function obterIndiceEtapa(step) {
+  if (step === "porta-final") return ETAPAS_CAPITULO_5.length;
+  return ETAPAS_CAPITULO_5.indexOf(step);
+}
+
+function etapaEstaLiberada(step) {
+  if (step === "duplo") return true;
+
+  if (step === "porta-final") {
+    return etapasConcluidas.has("forja-mvp") || estadoForja.concluida;
+  }
+
+  const indice = ETAPAS_CAPITULO_5.indexOf(step);
+  if (indice <= 0) return true;
+
+  const etapaAnterior = ETAPAS_CAPITULO_5[indice - 1];
+
+  return etapasConcluidas.has(etapaAnterior);
+}
+
+/* =========================================================
+   4. ANIMAÇÕES GLOBAIS E ENTRADA DO CAPÍTULO
+   efeitos de "cutscenes"
+========================================================= */
+function configurarRevealNoScroll() {
+  const elementos = document.querySelectorAll(".reveal");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("visible");
+      });
+    },
+    {
+      threshold: 0.18,
+    },
+  );
+
+  elementos.forEach((el) => observer.observe(el));
+}
+
+function reiniciarSequenciaIntro(introCard) {
+  if (!introCard) return;
+
+  introCard.classList.remove("intro-sequencia-ativa");
+
+  // Força o navegador a recalcular o estado sem a classe.
+  // Isso permite reiniciar a animação quando clicamos no mesmo desafio.
+  void introCard.offsetWidth;
+
+  introCard.classList.add("intro-sequencia-ativa");
+}
+
+function ativarSequenciaIntroDoStage(stage) {
+  if (!stage) return;
+
+  const introCard = stage.querySelector(".intro-sequencia");
+  reiniciarSequenciaIntro(introCard);
+}
+
+function configurarSequenciaIntroNoScroll() {
+  const cards = document.querySelectorAll(".intro-sequencia");
+
+  if (!cards.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        const card = entry.target;
+
+        if (card.dataset.sequenciaVista === "true") return;
+
+        reiniciarSequenciaIntro(card);
+        card.dataset.sequenciaVista = "true";
+      });
+    },
+    {
+      threshold: 0.35,
+    },
+  );
+
+  cards.forEach((card) => observer.observe(card));
+}
+
+function configurarEntradaNaPonte() {
+  const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
+
+  if (!btnEntrarNaPonte) return;
+
+  btnEntrarNaPonte.addEventListener("click", () => {
+    const capitulo5Page = document.getElementById("capitulo5Page");
+    const mapa = document.getElementById("mapaPonte");
+
+    if (capitulo5Page) {
+      capitulo5Page.classList.remove("capitulo5-page--locked");
+      capitulo5Page.classList.add("capitulo5-page--entered");
+    }
+
+    salvarEntradaCapitulo5();
+
+    btnEntrarNaPonte.disabled = false;
+    btnEntrarNaPonte.classList.add("concluida");
+    btnEntrarNaPonte.classList.add("ativando");
+
+    setTimeout(() => {
+      if (mapa) {
+        mapa.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+
+      setTimeout(() => {
+        btnEntrarNaPonte.classList.remove("ativando");
+      }, 900);
+    }, 520);
   });
 }
 
+/* =========================================================
+   5. MAPA, NAVEGAÇÃO E PROGRESSO
+========================================================= */
 function atualizarProgressoCapitulo() {
-  const totalConcluidas = etapasConcluidas.size;
+  const totalConcluidas = ETAPAS_CAPITULO_5.filter((etapa) =>
+    etapasConcluidas.has(etapa),
+  ).length;
+
   const totalEtapas = ETAPAS_CAPITULO_5.length;
 
   const portaBloqueada = document.getElementById("portaBloqueada");
   const btnConcluirHistoria = document.getElementById("btnConcluirHistoria");
 
-  const todasConcluidas = totalConcluidas === totalEtapas;
+  const todasConcluidas = ETAPAS_CAPITULO_5.every((etapa) =>
+    etapasConcluidas.has(etapa),
+  );
 
   if (portaBloqueada) {
     portaBloqueada.textContent = todasConcluidas
-      ? "O MVP foi forjado. A porta reconhece que o time está pronto para o desafio final."
+      ? "O MVP foi forjado. A porta reconhece que o time está pronto, mas ainda espera a Chave MVP tocar sua fechadura."
       : `A porta ainda observa sua jornada. Resolva os obstáculos e forje o MVP. Progresso: ${totalConcluidas}/${totalEtapas}.`;
 
     portaBloqueada.classList.toggle("liberada", todasConcluidas);
   }
 
+  /*
+    Importante:
+    este botão agora só aparece depois da interação da fechadura,
+    dentro da função abrirPortaFinal().
+  */
   if (btnConcluirHistoria) {
-    btnConcluirHistoria.classList.toggle("hidden", !todasConcluidas);
+    btnConcluirHistoria.classList.add("hidden");
   }
 
   atualizarNavegacaoCapitulo5();
@@ -312,576 +562,34 @@ function concluirEtapaCapitulo5(step) {
 
   if (proximaEtapa && etapaEstaLiberada(proximaEtapa)) {
     etapaAtualCapitulo5 = proximaEtapa;
-    atualizarCardEncontroAtual(proximaEtapa);
   }
 
   atualizarProgressoCapitulo();
-  atualizarMochila();
+  salvarEstadoCapitulo5Local();
 }
 
-function configurarDesafioDuplo() {
-  const botoesOpcao = document.querySelectorAll(".duplo-opcao");
-  const btnResolver = document.getElementById("btnResolverDuplo");
-  const feedback = document.getElementById("duploFeedback");
-  const desafio = document.getElementById("duploDesafio");
+function animarAvancoNoMapa(proximaEtapa, abrirStageDepois = true) {
+  const mapa = document.getElementById("mapaPonte");
 
-  if (!botoesOpcao.length || !btnResolver) return;
-
-  botoesOpcao.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const cenario = botao.dataset.cenario;
-      const resposta = botao.dataset.resposta;
-
-      if (!cenario || !resposta) return;
-
-      respostasDuplo[cenario] = resposta;
-
-      document
-        .querySelectorAll(`.duplo-opcao[data-cenario="${cenario}"]`)
-        .forEach((opcao) => {
-          opcao.classList.remove("ativo");
-        });
-
-      botao.classList.add("ativo");
-
-      const totalRespondidas = Object.keys(respostasDuplo).length;
-      const totalCenarios = Object.keys(RESPOSTAS_DUPLO).length;
-
-      if (feedback) {
-        feedback.textContent = `Memórias analisadas: ${totalRespondidas}/${totalCenarios}.`;
-        feedback.className = "duplo-feedback";
-      }
+  if (mapa) {
+    mapa.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
     });
-  });
+  }
 
-  btnResolver.addEventListener("click", () => {
-    const cenarios = Object.keys(RESPOSTAS_DUPLO);
-    const respondeuTudo = cenarios.every((cenario) => respostasDuplo[cenario]);
-
-    if (!respondeuTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "O Duplo ainda se multiplica. Analise todas as memórias antes de usar o Medalhão.";
-        feedback.className = "duplo-feedback erro";
-      }
-
-      return;
-    }
-
-    const acertouTudo = cenarios.every(
-      (cenario) => respostasDuplo[cenario] === RESPOSTAS_DUPLO[cenario],
-    );
-
-    if (!acertouTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "A maldição resiste. Algumas escolhas ainda reforçam o Anti-Time. Revise as atitudes do Scrum Master.";
-        feedback.className = "duplo-feedback erro";
-      }
-
-      return;
-    }
-
-    if (feedback) {
-      feedback.textContent =
-        "O Medalhão brilha. O Duplo perde sua forma sombria e se revela como um Dev Lendário perdido.";
-      feedback.className = "duplo-feedback sucesso";
-    }
-
-    if (desafio) {
-      desafio.classList.add("resolvido");
-    }
-
-    botoesOpcao.forEach((botao) => {
-      botao.disabled = true;
-
-      const cenario = botao.dataset.cenario;
-      const respostaCorreta = RESPOSTAS_DUPLO[cenario];
-
-      if (botao.dataset.resposta === respostaCorreta) {
-        botao.classList.add("correta");
-      }
-    });
-
-    btnResolver.disabled = true;
-btnResolver.classList.add("concluida");
-btnResolver.textContent = "Duplo enfraquecido";
-
-const duploCena = document.getElementById("duploCena");
-const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
-
-if (duploCena) {
-  duploCena.src = "/assets/img/capitulo_5/batalha-duplo.png";
-  duploCena.alt = "O Duplo enfraquecido após a batalha";
-}
-
-if (btnMedalhaoDuplo) {
-  btnMedalhaoDuplo.classList.remove("hidden");
-}
-atualizarMochila();
-  });
-}
-
-function configurarTransformacaoDuplo() {
-  const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
-  const duploCena = document.getElementById("duploCena");
-
-  if (!btnMedalhaoDuplo || !duploCena) return;
-
-  btnMedalhaoDuplo.addEventListener("click", () => {
-    duploCena.src = "/assets/img/capitulo_5/paladina-lendaria.png";
-    duploCena.alt = "A Paladina Lendária libertada da maldição";
-
-    btnMedalhaoDuplo.disabled = true;
-    btnMedalhaoDuplo.classList.add("concluida");
-    btnMedalhaoDuplo.textContent = "Paladina libertada";
-
-    const itemDuplo = document.querySelector('.progress-item[data-step="duplo"] img');
-    if (itemDuplo) {
-      itemDuplo.src = "/assets/img/capitulo_5/paladina-icon.png";
-      itemDuplo.alt = "Paladina Lendária";
-    }
-
-    const ponteNodeDuplo = document.querySelector('.ponte-node[data-step="duplo"] img');
-    if (ponteNodeDuplo) {
-      ponteNodeDuplo.src = "/assets/img/capitulo_5/paladina-icon.png";
-      ponteNodeDuplo.alt = "Paladina Lendária";
-    }
-
-    const encontroImagem = document.getElementById("encontroImagem");
-    if (encontroImagem && etapaAtualCapitulo5 === "duplo") {
-      encontroImagem.src = "/assets/img/capitulo_5/paladina-lendaria.png";
-      encontroImagem.alt = "Paladina Lendária";
-    }
-
-    const feedback = document.getElementById("duploFeedback");
-    if (feedback) {
-      feedback.textContent =
-        "A maldição foi quebrada. O Duplo revela sua verdadeira forma: uma Paladina Lendária que agora jura sua espada à causa do time.";
-      feedback.className = "duplo-feedback sucesso";
-    }
+  setTimeout(() => {
+    etapaAtualCapitulo5 = proximaEtapa;
+    atualizarNavegacaoCapitulo5();
+    atualizarMapaPonte();
+    atualizarPreviewsPonte();
     atualizarMochila();
-    concluirEtapaCapitulo5("duplo");
-  });
-}
-
-function configurarDesafioStakeholder() {
-  const botoesOpcao = document.querySelectorAll(".stakeholder-opcao");
-  const btnResolver = document.getElementById("btnResolverStakeholder");
-  const feedback = document.getElementById("stakeholderFeedback");
-  const desafio = document.getElementById("stakeholderDesafio");
-
-  if (!botoesOpcao.length || !btnResolver) return;
-
-  botoesOpcao.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const cenario = botao.dataset.cenario;
-      const resposta = botao.dataset.resposta;
-
-      if (!cenario || !resposta) return;
-
-      respostasStakeholder[cenario] = resposta;
-
-      document
-        .querySelectorAll(`.stakeholder-opcao[data-cenario="${cenario}"]`)
-        .forEach((opcao) => {
-          opcao.classList.remove("ativo");
-        });
-
-      botao.classList.add("ativo");
-
-      const totalRespondidas = Object.keys(respostasStakeholder).length;
-      const totalCenarios = Object.keys(RESPOSTAS_STAKEHOLDER).length;
-
-      if (feedback) {
-        feedback.textContent = `Caminhos alinhados: ${totalRespondidas}/${totalCenarios}.`;
-        feedback.className = "stakeholder-feedback";
-      }
-    });
-  });
-
-  btnResolver.addEventListener("click", () => {
-    const cenarios = Object.keys(RESPOSTAS_STAKEHOLDER);
-    const respondeuTudo = cenarios.every(
-      (cenario) => respostasStakeholder[cenario],
-    );
-
-    if (!respondeuTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "As vozes ainda estão confusas. Percorra todos os caminhos antes de entregar o Backlog.";
-        feedback.className = "stakeholder-feedback erro";
-      }
-
-      return;
-    }
-
-    const acertouTudo = cenarios.every(
-      (cenario) =>
-        respostasStakeholder[cenario] === RESPOSTAS_STAKEHOLDER[cenario],
-    );
-
-    if (!acertouTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "O Stakeholder Selvagem ainda resiste. Algumas escolhas criam mais ruído do que alinhamento.";
-        feedback.className = "stakeholder-feedback erro";
-      }
-
-      return;
-    }
-
-    if (feedback) {
-      feedback.textContent =
-        "O Backlog brilha. As vozes se organizam, o Stakeholder se acalma e entrega o Aval de Aprovação.";
-      feedback.className = "stakeholder-feedback sucesso";
-    }
-
-    if (desafio) {
-      desafio.classList.add("resolvido");
-    }
-
-    botoesOpcao.forEach((botao) => {
-      botao.disabled = true;
-
-      const cenario = botao.dataset.cenario;
-      const respostaCorreta = RESPOSTAS_STAKEHOLDER[cenario];
-
-      if (botao.dataset.resposta === respostaCorreta) {
-        botao.classList.add("correta");
-      }
-    });
-
-    btnResolver.disabled = true;
-    btnResolver.classList.add("concluida");
-    btnResolver.textContent = "Aval de Aprovação obtido";
-
-    concluirEtapaCapitulo5("stakeholder");
-  });
-}
-
-function configurarDesafioNecrobranch() {
-  const botoesOpcao = document.querySelectorAll(".necrobranch-opcao");
-  const btnResolver = document.getElementById("btnResolverNecrobranch");
-  const feedback = document.getElementById("necrobranchFeedback");
-  const desafio = document.getElementById("necrobranchDesafio");
-
-  if (!botoesOpcao.length || !btnResolver) return;
-
-  botoesOpcao.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const cenario = botao.dataset.cenario;
-      const resposta = botao.dataset.resposta;
-
-      if (!cenario || !resposta) return;
-
-      respostasNecrobranch[cenario] = resposta;
-
-      document
-        .querySelectorAll(`.necrobranch-opcao[data-cenario="${cenario}"]`)
-        .forEach((opcao) => {
-          opcao.classList.remove("ativo");
-        });
-
-      botao.classList.add("ativo");
-
-      const totalRespondidas = Object.keys(respostasNecrobranch).length;
-      const totalCenarios = Object.keys(RESPOSTAS_NECROBRANCH).length;
-
-      if (feedback) {
-        feedback.textContent = `Raízes estabilizadas: ${totalRespondidas}/${totalCenarios}.`;
-        feedback.className = "necrobranch-feedback";
-      }
-    });
-  });
-
-  btnResolver.addEventListener("click", () => {
-    const cenarios = Object.keys(RESPOSTAS_NECROBRANCH);
-    const respondeuTudo = cenarios.every(
-      (cenario) => respostasNecrobranch[cenario],
-    );
-
-    if (!respondeuTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "A Necrobranch ainda está instável. Analise todas as raízes antes de girar a Ampulheta.";
-        feedback.className = "necrobranch-feedback erro";
-      }
-
-      return;
-    }
-
-    const acertouTudo = cenarios.every(
-      (cenario) =>
-        respostasNecrobranch[cenario] === RESPOSTAS_NECROBRANCH[cenario],
-    );
-
-    if (!acertouTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "A Necrobranch reage violentamente. Algumas escolhas aumentam risco, retrabalho ou instabilidade.";
-        feedback.className = "necrobranch-feedback erro";
-      }
-
-      return;
-    }
-
-    if (feedback) {
-      feedback.textContent =
-        "A Ampulheta gira. O tempo da Sprint se dobra por um instante, a Main Funcional é recuperada e o Dev Lendário segura a Necrobranch até desaparecer na luz.";
-      feedback.className = "necrobranch-feedback sucesso";
-    }
-
-    if (desafio) {
-      desafio.classList.add("resolvido");
-    }
-
-    botoesOpcao.forEach((botao) => {
-      botao.disabled = true;
-
-      const cenario = botao.dataset.cenario;
-      const respostaCorreta = RESPOSTAS_NECROBRANCH[cenario];
-
-      if (botao.dataset.resposta === respostaCorreta) {
-        botao.classList.add("correta");
-      }
-    });
-
-    btnResolver.disabled = true;
-    btnResolver.classList.add("concluida");
-    btnResolver.textContent = "Main Funcional recuperada";
-
-    concluirEtapaCapitulo5("necrobranch");
-  });
-}
-
-function configurarDesafioBugInfernal() {
-  const botoesOpcao = document.querySelectorAll(".bug-opcao");
-  const btnResolver = document.getElementById("btnResolverBug");
-  const feedback = document.getElementById("bugFeedback");
-  const desafio = document.getElementById("bugDesafio");
-
-  if (!botoesOpcao.length || !btnResolver) return;
-
-  botoesOpcao.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const cenario = botao.dataset.cenario;
-      const resposta = botao.dataset.resposta;
-
-      if (!cenario || !resposta) return;
-
-      respostasBug[cenario] = resposta;
-
-      document
-        .querySelectorAll(`.bug-opcao[data-cenario="${cenario}"]`)
-        .forEach((opcao) => {
-          opcao.classList.remove("ativo");
-        });
-
-      botao.classList.add("ativo");
-
-      const totalRespondidas = Object.keys(respostasBug).length;
-      const totalCenarios = Object.keys(RESPOSTAS_BUG).length;
-
-      if (feedback) {
-        feedback.textContent = `Rastros investigados: ${totalRespondidas}/${totalCenarios}.`;
-        feedback.className = "bug-feedback";
-      }
-    });
-  });
-
-  btnResolver.addEventListener("click", () => {
-    const cenarios = Object.keys(RESPOSTAS_BUG);
-    const respondeuTudo = cenarios.every((cenario) => respostasBug[cenario]);
-
-    if (!respondeuTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "O Bug Infernal ainda escapa. Investigue todos os rastros antes de usar o Baú.";
-        feedback.className = "bug-feedback erro";
-      }
-
-      return;
-    }
-
-    const acertouTudo = cenarios.every(
-      (cenario) => respostasBug[cenario] === RESPOSTAS_BUG[cenario],
-    );
-
-    if (!acertouTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "O Bug Infernal se fortalece. Algumas escolhas pulam investigação, teste ou validação.";
-        feedback.className = "bug-feedback erro";
-      }
-
-      return;
-    }
-
-    if (feedback) {
-      feedback.textContent =
-        "O Baú da Melhoria se abre. O bug é isolado, validado e aprisionado. O baú se transforma em um Escudo Mágico.";
-      feedback.className = "bug-feedback sucesso";
-    }
-
-    if (desafio) {
-      desafio.classList.add("resolvido");
-    }
-
-    botoesOpcao.forEach((botao) => {
-      botao.disabled = true;
-
-      const cenario = botao.dataset.cenario;
-      const respostaCorreta = RESPOSTAS_BUG[cenario];
-
-      if (botao.dataset.resposta === respostaCorreta) {
-        botao.classList.add("correta");
-      }
-    });
-
-    btnResolver.disabled = true;
-    btnResolver.classList.add("concluida");
-    btnResolver.textContent = "Escudo Mágico obtido";
-
-    concluirEtapaCapitulo5("bug-infernal");
-  });
-}
-
-function configurarForjaMvp() {
-  const botoesOpcao = document.querySelectorAll(".forja-opcao");
-  const btnForjar = document.getElementById("btnForjarMvp");
-  const feedback = document.getElementById("forjaFeedback");
-  const desafio = document.getElementById("forjaDesafio");
-
-  if (!botoesOpcao.length || !btnForjar) return;
-
-  botoesOpcao.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const cenario = botao.dataset.cenario;
-      const resposta = botao.dataset.resposta;
-
-      if (!cenario || !resposta) return;
-
-      respostasForja[cenario] = resposta;
-
-      document
-        .querySelectorAll(`.forja-opcao[data-cenario="${cenario}"]`)
-        .forEach((opcao) => {
-          opcao.classList.remove("ativo");
-        });
-
-      botao.classList.add("ativo");
-
-      const totalRespondidas = Object.keys(respostasForja).length;
-      const totalCenarios = Object.keys(RESPOSTAS_FORJA).length;
-
-      if (feedback) {
-        feedback.textContent = `Artefatos posicionados: ${totalRespondidas}/${totalCenarios}.`;
-        feedback.className = "forja-feedback";
-      }
-    });
-  });
-
-  btnForjar.addEventListener("click", () => {
-    const cenarios = Object.keys(RESPOSTAS_FORJA);
-    const respondeuTudo = cenarios.every((cenario) => respostasForja[cenario]);
-
-    if (!respondeuTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "A forja ainda não responde. Posicione todos os artefatos antes de tentar criar o MVP.";
-        feedback.className = "forja-feedback erro";
-      }
-
-      return;
-    }
-
-    const acertouTudo = cenarios.every(
-      (cenario) => respostasForja[cenario] === RESPOSTAS_FORJA[cenario],
-    );
-
-    if (!acertouTudo) {
-      if (feedback) {
-        feedback.textContent =
-          "Os artefatos vibram fora de ordem. Revise o que cada item representa para uma entrega ágil.";
-        feedback.className = "forja-feedback erro";
-      }
-
-      return;
-    }
-
-    if (feedback) {
-      feedback.textContent =
-        "A forja desperta. Os artefatos se unem e formam o MVP, uma entrega mínima, funcional, validada e testada.";
-      feedback.className = "forja-feedback sucesso";
-    }
-
-    if (desafio) {
-      desafio.classList.add("resolvido");
-    }
-
-    botoesOpcao.forEach((botao) => {
-      botao.disabled = true;
-
-      const cenario = botao.dataset.cenario;
-      const respostaCorreta = RESPOSTAS_FORJA[cenario];
-
-      if (botao.dataset.resposta === respostaCorreta) {
-        botao.classList.add("correta");
-      }
-    });
-
-    btnForjar.disabled = true;
-    btnForjar.classList.add("concluida");
-    btnForjar.textContent = "MVP Forjado";
-
-    concluirEtapaCapitulo5("forja-mvp");
-  });
-}
-
-function obterIndiceEtapa(step) {
-  if (step === "porta-final") return ETAPAS_CAPITULO_5.length;
-  return ETAPAS_CAPITULO_5.indexOf(step);
-}
-
-function etapaEstaLiberada(step) {
-  if (step === "duplo") return true;
-
-  if (step === "porta-final") {
-    return ETAPAS_CAPITULO_5.every((etapa) => etapasConcluidas.has(etapa));
-  }
-
-  const indice = ETAPAS_CAPITULO_5.indexOf(step);
-  if (indice <= 0) return true;
-
-  const etapaAnterior = ETAPAS_CAPITULO_5[indice - 1];
-  return etapasConcluidas.has(etapaAnterior);
-}
-
-function atualizarCardEncontroAtual(step) {
-  const encontro = ENCONTROS_CAPITULO_5[step];
-  if (!encontro) return;
-
-  const titulo = document.getElementById("encontroTitulo");
-  const descricao = document.getElementById("encontroDescricao");
-  const artefato = document.getElementById("encontroArtefato");
-  const imagem = document.getElementById("encontroImagem");
-  const encontroArte = document.querySelector(".encontro-arte");
-
-  if (titulo) titulo.textContent = encontro.titulo;
-  if (descricao) descricao.textContent = encontro.descricao;
-  if (artefato) artefato.textContent = encontro.artefato;
-
-  if (imagem) {
-    imagem.src = encontro.imagem;
-    imagem.alt = encontro.imagemAlt || encontro.titulo;
-  }
-
-  if (encontroArte) {
-    encontroArte.classList.toggle(
-      "encontro-arte--card",
-      Boolean(encontro.imagem && encontro.imagem.includes("carta"))
-    );
+  }, 700);
+
+  if (abrirStageDepois) {
+    setTimeout(() => {
+      abrirStageCapitulo5(proximaEtapa);
+    }, 1600);
   }
 }
 
@@ -895,20 +603,6 @@ function atualizarBridgeViews() {
 }
 
 function atualizarNavegacaoCapitulo5() {
-  document.querySelectorAll(".progress-item").forEach((item) => {
-    const step = item.dataset.step;
-    if (!step) return;
-
-    const liberada = etapaEstaLiberada(step);
-    const ativa = etapaAtualCapitulo5 === step;
-    const concluida = etapasConcluidas.has(step);
-
-    item.disabled = !liberada;
-    item.classList.toggle("locked", !liberada);
-    item.classList.toggle("active", ativa);
-    item.classList.toggle("concluida", concluida);
-  });
-
   document.querySelectorAll(".ponte-node").forEach((node) => {
     const step = node.dataset.step;
     if (!step) return;
@@ -926,6 +620,66 @@ function atualizarNavegacaoCapitulo5() {
   atualizarBridgeViews();
 }
 
+function atualizarMapaPonte() {
+  const ponteImg = document.querySelector(".ponte-mapa-img");
+  const nodeDuplo = document.querySelector(
+    '.ponte-node[data-step="duplo"] img',
+  );
+  const nodeStakeholder = document.querySelector(
+    '.ponte-node[data-step="stakeholder"] img',
+  );
+  const nodeForja = document.querySelector(
+    '.ponte-node[data-step="forja-mvp"] img',
+  );
+
+  if (ponteImg) {
+    const necrobranchAtivo =
+      etapaAtualCapitulo5 === "necrobranch" &&
+      !etapasConcluidas.has("necrobranch");
+
+    ponteImg.src = necrobranchAtivo
+      ? "/assets/img/capitulo_5/ponte-mapa-quebrada.png"
+      : "/assets/img/capitulo_5/ponte-mapa.png";
+  }
+
+  if (nodeDuplo) {
+    if (etapasConcluidas.has("duplo") && !etapasConcluidas.has("necrobranch")) {
+      nodeDuplo.src = "/assets/img/capitulo_5/paladina-icon.png";
+      nodeDuplo.alt = "Dev Lendária";
+    } else if (etapasConcluidas.has("necrobranch")) {
+      nodeDuplo.classList.add("sumido");
+      nodeDuplo.alt = "";
+    } else {
+      nodeDuplo.src = "/assets/img/capitulo_5/duplo-icon.png";
+      nodeDuplo.alt = "Duplo";
+      nodeDuplo.classList.remove("sumido");
+    }
+  }
+
+  if (nodeStakeholder) {
+    if (etapasConcluidas.has("stakeholder")) {
+      nodeStakeholder.src = "/assets/img/capitulo_5/stake-holder-icon.png";
+      nodeStakeholder.alt = "Stakeholder Amigável";
+    } else {
+      nodeStakeholder.src =
+        "/assets/img/capitulo_5/stake-holder-selvagem-icon.png";
+      nodeStakeholder.alt = "Stakeholder Selvagem";
+    }
+  }
+
+  if (nodeForja) {
+    if (etapasConcluidas.has("forja-mvp")) {
+      nodeForja.src = "/assets/img/capitulo_5/mvp-icon.png";
+      nodeForja.alt = "MVP";
+    } else {
+      nodeForja.src = "/assets/img/capitulo_5/forja-icon.png";
+      nodeForja.alt = "Forja do MVP";
+    }
+  }
+
+  atualizarPosicaoJogador();
+}
+
 function abrirStageCapitulo5(step) {
   const encontro = ENCONTROS_CAPITULO_5[step];
   if (!encontro) return;
@@ -938,16 +692,63 @@ function abrirStageCapitulo5(step) {
   if (!stageAtivo) return;
 
   stageAtivo.classList.remove("hidden");
-  stageAtivo.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  stageAtivo.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+
+  setTimeout(() => {
+    ativarSequenciaIntroDoStage(stageAtivo);
+  }, 120);
+}
+
+function configurarCliquePreviewsPonte() {
+  const previews = document.querySelectorAll(".bridge-view");
+  if (!previews.length) return;
+
+  previews.forEach((preview) => {
+    preview.addEventListener("click", () => {
+      const step = preview.dataset.step;
+
+      if (!step) return;
+      if (preview.disabled) return;
+      if (preview.classList.contains("is-locked")) return;
+      if (!etapaEstaLiberada(step)) return;
+
+      selecionarEtapaCapitulo5(step, true);
+    });
+  });
+}
+
+function atualizarPreviewsPonte() {
+  const previews = document.querySelectorAll(".bridge-view");
+  if (!previews.length) return;
+
+  previews.forEach((preview) => {
+    const step = preview.dataset.step;
+    if (!step) return;
+
+    const liberado = etapaEstaLiberada(step);
+    const ativo = etapaAtualCapitulo5 === step;
+
+    preview.classList.toggle("is-unlocked", liberado);
+    preview.classList.toggle("is-locked", !liberado);
+    preview.classList.toggle("active", ativo);
+
+    preview.disabled = !liberado;
+    preview.setAttribute("aria-disabled", String(!liberado));
+  });
 }
 
 function selecionarEtapaCapitulo5(step, abrirStage = false) {
   if (!etapaEstaLiberada(step)) return;
 
   etapaAtualCapitulo5 = step;
-  atualizarCardEncontroAtual(step);
   atualizarNavegacaoCapitulo5();
   atualizarMochila();
+  atualizarMapaPonte();
+  atualizarPreviewsPonte();
 
   if (abrirStage) {
     abrirStageCapitulo5(step);
@@ -955,52 +756,52 @@ function selecionarEtapaCapitulo5(step, abrirStage = false) {
 }
 
 function configurarNavegacaoCapitulo5() {
- document
-  .querySelectorAll(".progress-item, .ponte-node")
-  .forEach((botao) => {
+  document.querySelectorAll(".ponte-node").forEach((botao) => {
     botao.addEventListener("click", () => {
       const step = botao.dataset.step;
+
       if (!step) return;
+
       selecionarEtapaCapitulo5(step, true);
     });
   });
+}
+function atualizarPosicaoJogador() {
+  const pontePlayer = document.getElementById("pontePlayer");
+  if (!pontePlayer) return;
 
-  const btnAbrirDesafioAtual = document.getElementById("btnAbrirDesafioAtual");
-  if (btnAbrirDesafioAtual) {
-    btnAbrirDesafioAtual.addEventListener("click", () => {
-      abrirStageCapitulo5(etapaAtualCapitulo5);
-    });
+  pontePlayer.className = "ponte-player";
+
+  const necrobranchQuebrada =
+    etapaAtualCapitulo5 === "necrobranch" &&
+    !etapasConcluidas.has("necrobranch");
+
+  if (necrobranchQuebrada) {
+    pontePlayer.classList.add("ponte-player--necrobranch-quebrada");
+    return;
   }
 
- const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
-if (btnEntrarNaPonte) {
-  btnEntrarNaPonte.addEventListener("click", () => {
-    const capitulo5Page = document.getElementById("capitulo5Page");
-    const mapa = document.getElementById("mapaPonte");
+  const mapaClasse = {
+    duplo: "ponte-player--duplo",
+    stakeholder: "ponte-player--stakeholder",
+    necrobranch: "ponte-player--necrobranch",
+    "bug-infernal": "ponte-player--bug-infernal",
+    "forja-mvp": "ponte-player--forja-mvp",
+    "porta-final": "ponte-player--porta-final",
+  };
 
-    if (capitulo5Page) {
-      capitulo5Page.classList.remove("capitulo5-page--locked");
-      capitulo5Page.classList.add("capitulo5-page--entered");
-    }
+  const classeAtual = mapaClasse[etapaAtualCapitulo5] || "ponte-player--duplo";
+  pontePlayer.classList.add(classeAtual);
+}
 
-    btnEntrarNaPonte.disabled = true;
-    btnEntrarNaPonte.classList.add("concluida");
-    btnEntrarNaPonte.classList.add("ativando");
-    setTimeout(() => {
-      if (mapa) {
-        mapa.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, 220);
-  });
-}
-}
+/* =========================================================
+   6. MOCHILA E ARTEFATOS
+========================================================= */
 
 function configurarMochila() {
   const btnMochila = document.getElementById("btnMochila");
   const mochilaPainel = document.getElementById("mochilaPainel");
+  const mochilaCallout = document.getElementById("mochilaCallout");
 
   if (!btnMochila || !mochilaPainel) return;
 
@@ -1009,122 +810,298 @@ function configurarMochila() {
 
     mochilaPainel.classList.toggle("hidden", aberta);
     btnMochila.setAttribute("aria-expanded", String(!aberta));
+
+    if (mochilaCallout && !aberta) {
+      mochilaCallout.classList.add("hidden");
+    }
   });
 }
 
-
 function atualizarMochila() {
   const backlog = document.querySelector('[data-artefato="backlog"]');
+  const aval = document.querySelector('[data-artefato="aval"]');
   const medalhao = document.querySelector('[data-artefato="medalhao"]');
   const ampulheta = document.querySelector('[data-artefato="ampulheta"]');
   const bau = document.querySelector('[data-artefato="bau"]');
 
-  const todos = [backlog, medalhao, ampulheta, bau].filter(Boolean);
+  const todos = [backlog, aval, medalhao, ampulheta, bau].filter(Boolean);
 
- todos.forEach((item) => {
-  item.classList.remove("ativo", "destacado", "convocado");
-});
+  const btnMochila = document.getElementById("btnMochila");
+  const mochilaPainel = document.getElementById("mochilaPainel");
 
+  todos.forEach((item) => {
+    item.classList.remove("ativo", "destacado", "convocado", "flash-artefato");
+    item.classList.remove("hidden");
+  });
+
+  if (btnMochila) {
+    btnMochila.classList.remove("destacada-forja");
+  }
+
+  if (mochilaPainel && etapaAtualCapitulo5 !== "forja-mvp") {
+    mochilaPainel.classList.add("hidden");
+    if (btnMochila) btnMochila.setAttribute("aria-expanded", "false");
+  }
+
+  // Estado base
   if (backlog) {
     const img = backlog.querySelector("img");
+    const tooltip = backlog.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/artefatos/product-backlog-icon.png";
       img.alt = "Product Backlog";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Product Backlog — organiza prioridades e orienta o que gera mais valor.";
+    }
+    backlog.classList.add("ativo");
+  }
+
+  if (aval) {
+    const img = aval.querySelector("img");
+    const tooltip = aval.querySelector(".mochila-item-tooltip");
+
+    if (img) {
+      img.src = "/assets/img/capitulo_5/aval-aprovacao-icon.png";
+      img.alt = "Aval de Aprovação";
+    }
+
+    if (tooltip) {
+      tooltip.textContent =
+        "Aval de Aprovação — símbolo de que o valor foi compreendido e as expectativas foram alinhadas.";
+    }
+
+    aval.classList.add("hidden");
   }
 
   if (medalhao) {
     const img = medalhao.querySelector("img");
+    const tooltip = medalhao.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/artefatos/medalhao-icon.png";
       img.alt = "Medalhão dos Papéis";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Medalhão dos Papéis — revela e organiza responsabilidades do time.";
+    }
+    medalhao.classList.add("ativo");
   }
 
   if (ampulheta) {
     const img = ampulheta.querySelector("img");
+    const tooltip = ampulheta.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/artefatos/ampulheta-icon.png";
       img.alt = "Ampulheta da Sprint";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Ampulheta da Sprint — representa ciclos curtos, foco e adaptação.";
+    }
+    ampulheta.classList.add("ativo");
   }
 
   if (bau) {
     const img = bau.querySelector("img");
+    const tooltip = bau.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/artefatos/bau-iteracao-icon.png";
-      img.alt = "Baú da Melhoria";
+      img.alt = "Baú da Iteração";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Baú da Iteração — guarda aprendizados e reforça a evolução contínua.";
+    }
+    bau.classList.add("ativo");
   }
 
-  if (backlog) backlog.classList.add("ativo");
-  if (medalhao) medalhao.classList.add("ativo");
-  if (ampulheta) ampulheta.classList.add("ativo");
-  if (bau) bau.classList.add("ativo");
-
+  // Duplo concluído -> medalhão vira paladina
   if (etapasConcluidas.has("duplo") && medalhao) {
-    const img = medalhao.querySelector("img");
-    if (img) {
-      img.src = "/assets/img/capitulo_5/paladina-icon.png";
-      img.alt = "Paladina Lendária";
+    medalhao.classList.add("hidden");
+    medalhao.removeAttribute("draggable");
+  }
+
+  if (etapasConcluidas.has("stakeholder")) {
+    if (backlog) {
+      backlog.classList.add("hidden");
+    }
+
+    if (aval) {
+      const img = aval.querySelector("img");
+      const tooltip = aval.querySelector(".mochila-item-tooltip");
+
+      aval.classList.remove("hidden");
+      aval.classList.add("ativo");
+
+      if (img) {
+        img.src = "/assets/img/capitulo_5/aval-aprovacao-icon.png";
+        img.alt = "Aval de Aprovação";
+      }
+
+      if (tooltip) {
+        tooltip.textContent =
+          "Aval de Aprovação — símbolo de que o valor foi compreendido e as expectativas foram alinhadas.";
+      }
     }
   }
 
-  if (etapasConcluidas.has("stakeholder") && backlog) {
-    const img = backlog.querySelector("img");
-    if (img) {
-      img.src = "/assets/img/capitulo_5/aval-icon.png";
-      img.alt = "Aval de Aprovação";
+  // Necrobranch concluído -> a Dev Lendária cai com o medalhão; a ampulheta se transforma em Orb Main Funcional
+  if (etapasConcluidas.has("necrobranch")) {
+    if (medalhao) {
+      medalhao.classList.add("hidden");
+      medalhao.removeAttribute("draggable");
+    }
+
+    if (ampulheta) {
+      const img = ampulheta.querySelector("img");
+      const tooltip = ampulheta.querySelector(".mochila-item-tooltip");
+
+      if (img) {
+        img.src = "/assets/img/capitulo_5/orb-main-funcional-icon.png";
+        img.alt = "Orb Main Funcional";
+      }
+
+      if (tooltip) {
+        tooltip.textContent =
+          "Orb Main Funcional — representa a recuperação do fluxo e da versão estável.";
+      }
     }
   }
 
-  if (etapasConcluidas.has("necrobranch") && ampulheta) {
-    const img = ampulheta.querySelector("img");
-    if (img) {
-      img.src = "/assets/img/capitulo_5/main-funcional-icon.png";
-      img.alt = "Main Funcional";
-    }
-  }
-
+  // Bug concluído -> baú vira escudo mágico
   if (etapasConcluidas.has("bug-infernal") && bau) {
     const img = bau.querySelector("img");
+    const tooltip = bau.querySelector(".mochila-item-tooltip");
     if (img) {
       img.src = "/assets/img/capitulo_5/escudo-magico-icon.png";
       img.alt = "Escudo Mágico";
     }
+    if (tooltip) {
+      tooltip.textContent =
+        "Escudo Mágico — símbolo de um incremento testado e protegido.";
+    }
   }
 
-  if (etapaAtualCapitulo5 === "duplo" && medalhao) {
-    medalhao.classList.add("destacado");
+  // Destaques por etapa
+  const duploMedalhaoStage = document.getElementById("duploMedalhaoStage");
+
+  if (
+    etapaAtualCapitulo5 === "duplo" &&
+    duploMedalhaoStage &&
+    !duploMedalhaoStage.classList.contains("hidden") &&
+    medalhao &&
+    !etapasConcluidas.has("duplo")
+  ) {
+    medalhao.classList.add("convocado");
   }
-
-  if (etapaAtualCapitulo5 === "stakeholder" && backlog) {
-    backlog.classList.add("destacado");
-  }
-
-  if (etapaAtualCapitulo5 === "necrobranch" && ampulheta) {
-    ampulheta.classList.add("destacado");
-  }
-
-  if (etapaAtualCapitulo5 === "bug-infernal" && bau) {
-    bau.classList.add("destacado");
-  }
-
-  const btnMedalhaoDuplo = document.getElementById("btnMedalhaoDuplo");
-
-if (
-  etapaAtualCapitulo5 === "duplo" &&
-  btnMedalhaoDuplo &&
-  !btnMedalhaoDuplo.classList.contains("hidden") &&
-  medalhao &&
-  !etapasConcluidas.has("duplo")
-) {
-  medalhao.classList.remove("destacado");
-  medalhao.classList.add("convocado");
-}
 
   if (etapaAtualCapitulo5 === "forja-mvp") {
-    todos.forEach((item) => item.classList.add("destacado"));
+    if (btnMochila) {
+      btnMochila.classList.add("destacada-forja");
+      btnMochila.setAttribute("aria-expanded", "false");
+    }
+
+    if (mochilaPainel) {
+      mochilaPainel.classList.add("hidden");
+    }
+
+    if (backlog) backlog.classList.add("hidden");
+    if (medalhao) medalhao.classList.add("hidden");
+
+    if (aval) {
+      aval.classList.remove("hidden");
+      aval.classList.add("destacado");
+      aval.setAttribute("draggable", estadoForja.slots.aval ? "false" : "true");
+      if (estadoForja.slots.aval) aval.classList.add("hidden");
+    }
+
+    if (ampulheta) {
+      const img = ampulheta.querySelector("img");
+      const tooltip = ampulheta.querySelector(".mochila-item-tooltip");
+
+      if (img) {
+        img.src = "/assets/img/capitulo_5/orb-main-funcional-icon.png";
+        img.alt = "Orb Main Funcional";
+      }
+
+      if (tooltip) {
+        tooltip.textContent =
+          "Orb Main Funcional — representa um incremento funcional e utilizável.";
+      }
+
+      ampulheta.classList.add("destacado");
+      ampulheta.setAttribute(
+        "draggable",
+        estadoForja.slots.ampulheta ? "false" : "true",
+      );
+      if (estadoForja.slots.ampulheta) ampulheta.classList.add("hidden");
+    }
+
+    if (bau) {
+      const img = bau.querySelector("img");
+      const tooltip = bau.querySelector(".mochila-item-tooltip");
+
+      if (img) {
+        img.src = "/assets/img/capitulo_5/escudo-magico-icon.png";
+        img.alt = "Escudo Mágico";
+      }
+
+      if (tooltip) {
+        tooltip.textContent =
+          "Escudo Mágico — protege a entrega e reforça sua confiabilidade.";
+      }
+
+      bau.classList.add("destacado");
+      bau.setAttribute("draggable", estadoForja.slots.bau ? "false" : "true");
+      if (estadoForja.slots.bau) bau.classList.add("hidden");
+    }
+  }
+  // Após concluir a Forja -> só resta a Chave MVP,
+  // a menos que ela já tenha sido usada na porta final.
+  if (etapasConcluidas.has("forja-mvp")) {
+    if (backlog) backlog.classList.add("hidden");
+    if (aval) aval.classList.add("hidden");
+    if (medalhao) medalhao.classList.add("hidden");
+    if (ampulheta) ampulheta.classList.add("hidden");
+
+    if (bau) {
+      if (chaveMvpUsadaNaPorta) {
+        bau.classList.add("hidden");
+        bau.classList.remove("ativo", "destacado", "convocado", "is-over");
+        bau.removeAttribute("draggable");
+        return;
+      }
+
+      bau.classList.remove("hidden", "ativo", "destacado", "convocado");
+      bau.classList.add("destacado");
+
+      bau.dataset.artefato = "chave-mvp";
+      bau.setAttribute("draggable", "true");
+
+      const img = bau.querySelector("img");
+      const tooltip = bau.querySelector(".mochila-item-tooltip");
+
+      if (img) {
+        img.src = "/assets/img/capitulo_5/chave-mvp.png";
+        img.alt = "Chave MVP";
+      }
+
+      if (tooltip) {
+        tooltip.textContent =
+          "Chave MVP — a menor versão funcional de uma entrega que já gera valor real e pode abrir a última porta.";
+      }
+    }
+
+    if (btnMochila) {
+      btnMochila.classList.add("destacada-forja");
+      btnMochila.setAttribute("aria-expanded", "false");
+    }
+
+    if (mochilaPainel) {
+      mochilaPainel.classList.add("hidden");
+    }
   }
 }
 
@@ -1152,29 +1129,1846 @@ function configurarCliqueArtefatosMochila() {
   });
 }
 
+function esconderArtefatoDaMochila(chaveArtefato) {
+  const item = document.querySelector(
+    `.mochila-item[data-artefato="${chaveArtefato}"]`,
+  );
+
+  if (!item) return;
+
+  item.classList.add("hidden");
+  item.classList.remove("destacado", "convocado", "is-over");
+  item.removeAttribute("draggable");
+}
+
+function destacarArtefatoTemporariamente(nomeArtefato) {
+  if (!nomeArtefato) return;
+
+  const item = document.querySelector(`[data-artefato="${nomeArtefato}"]`);
+  if (!item) return;
+
+  item.classList.remove("flash-artefato");
+  void item.offsetWidth;
+  item.classList.add("flash-artefato");
+}
+
+/* =========================================================
+   7. DESAFIO 1 — O DUPLO
+========================================================= */
+
+const duploRolesData = {
+  po: {
+    titulo: "Product Owner Caótico",
+    texto:
+      "Na presença do Duplo, o Product Owner muda prioridades a cada conversa, aceita pedidos soltos e o time nunca sabe o que realmente precisa entregar. O que fazer?",
+    opcoes: [
+      {
+        texto:
+          "Organizar e priorizar o backlog com clareza, alinhando o que realmente gera valor.",
+        correta: true,
+      },
+      {
+        texto:
+          "Aceitar todas as mudanças imediatamente para agradar todo mundo.",
+        correta: false,
+      },
+      {
+        texto:
+          "Deixar o time decidir sozinho o que é prioridade sem alinhamento.",
+        correta: false,
+      },
+    ],
+  },
+
+  sm: {
+    titulo: "Falso Scrum Master",
+    texto:
+      "Diante do Duplo, o Scrum Master apenas observa a confusão crescer. Os papéis ficam nebulosos, os impedimentos não são tratados e o time perde o foco. O que fazer?",
+    opcoes: [
+      {
+        texto:
+          "Facilitar o alinhamento, reforçar os papéis e ajudar o time a remover a confusão.",
+        correta: true,
+      },
+      {
+        texto: "Tomar todas as decisões sozinho para acelerar o processo.",
+        correta: false,
+      },
+      {
+        texto:
+          "Ignorar a situação porque cada integrante deve se virar sozinho.",
+        correta: false,
+      },
+    ],
+  },
+
+  dev: {
+    titulo: "Time Silencioso",
+    texto:
+      "Sob o efeito do Duplo, o time de desenvolvimento trabalha em silêncio, sem coordenação e sem clareza sobre responsabilidades. Cada um anda para um lado. O que fazer?",
+    opcoes: [
+      {
+        texto:
+          "Distribuir responsabilidades com clareza e colaborar em torno de um objetivo comum.",
+        correta: true,
+      },
+      {
+        texto:
+          "Cada pessoa pega qualquer tarefa, mesmo sem alinhamento com o restante do grupo.",
+        correta: false,
+      },
+      {
+        texto:
+          "Esperar que apenas o Product Owner resolva toda a organização do trabalho.",
+        correta: false,
+      },
+    ],
+  },
+};
+
+const duploRoleProgress = {
+  po: false,
+  sm: false,
+  dev: false,
+};
+
+function configurarDesafioDuplo() {
+  const btnMostrarDesafioDuplo = document.getElementById(
+    "btnMostrarDesafioDuplo",
+  );
+  const duploDesafioWrap = document.getElementById("duploDesafioWrap");
+  const duploRoleCards = document.querySelectorAll(".duplo-role-card");
+  const duploRoleTitulo = document.getElementById("duploRoleTitulo");
+  const duploRoleTexto = document.getElementById("duploRoleTexto");
+  const duploRoleOpcoes = document.getElementById("duploRoleOpcoes");
+
+  const duploMedalhaoStage = document.getElementById("duploMedalhaoStage");
+  const btnConcluirDuploNarrativa = document.getElementById(
+    "btnConcluirDuploNarrativa",
+  );
+
+  function marcarRoleResolvida(roleKey) {
+    if (duploRoleProgress[roleKey]) return;
+
+    duploRoleProgress[roleKey] = true;
+
+    const card = document.querySelector(
+      `.duplo-role-card[data-role="${roleKey}"]`,
+    );
+    const status = document.getElementById(`status-${roleKey}`);
+
+    if (card) card.classList.add("resolvido");
+    if (status) status.textContent = "Resolvido";
+
+    const concluiuTudo = Object.values(duploRoleProgress).every(Boolean);
+
+    if (concluiuTudo && duploMedalhaoStage) {
+      duploMedalhaoStage.classList.remove("hidden");
+
+      duploMedalhaoStage.classList.add("energizado");
+
+      document.body.classList.add("mochila-highlight-medalhao");
+
+      const mochilaCallout = document.getElementById("mochilaCallout");
+      if (mochilaCallout) {
+        mochilaCallout.classList.remove("hidden");
+      }
+
+      const medalhao = document.querySelector('[data-artefato="medalhao"]');
+      if (medalhao) {
+        medalhao.classList.add("convocado");
+        medalhao.setAttribute("draggable", "true");
+        medalhao.id = "artefatoMedalhao";
+      }
+
+      setTimeout(() => {
+        duploMedalhaoStage.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 250);
+    }
+  }
+
+  if (btnMostrarDesafioDuplo && duploDesafioWrap) {
+    btnMostrarDesafioDuplo.addEventListener("click", () => {
+      duploDesafioWrap.classList.remove("hidden");
+      duploDesafioWrap.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
+
+  if (duploRoleCards.length) {
+    duploRoleCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        duploRoleCards.forEach((item) => item.classList.remove("active"));
+        card.classList.add("active");
+
+        const roleKey = card.dataset.role;
+        renderizarRoleDuplo(
+          roleKey,
+          duploRoleTitulo,
+          duploRoleTexto,
+          duploRoleOpcoes,
+          marcarRoleResolvida,
+        );
+      });
+    });
+
+    renderizarRoleDuplo(
+      "po",
+      duploRoleTitulo,
+      duploRoleTexto,
+      duploRoleOpcoes,
+      marcarRoleResolvida,
+    );
+  }
+
+  if (btnConcluirDuploNarrativa) {
+    btnConcluirDuploNarrativa.addEventListener("click", () => {
+      concluirEtapaCapitulo5("duplo");
+      animarAvancoNoMapa("stakeholder", true);
+    });
+  }
+}
+
+function configurarDropMedalhaoDuplo() {
+  const duploMedalhaoDropzone = document.getElementById(
+    "duploMedalhaoDropzone",
+  );
+  const duploRevelacaoStage = document.getElementById("duploRevelacaoStage");
+  const duploMedalhaoStage = document.getElementById("duploMedalhaoStage");
+
+  if (!duploMedalhaoDropzone) return;
+
+  function obterMedalhaoAtual() {
+    return document.getElementById("artefatoMedalhao");
+  }
+
+  document.addEventListener("dragstart", (event) => {
+    const medalhao = obterMedalhaoAtual();
+    if (!medalhao) return;
+    if (event.target !== medalhao && !medalhao.contains(event.target)) return;
+
+    event.dataTransfer.setData("text/plain", "medalhao");
+  });
+
+  duploMedalhaoDropzone.addEventListener("dragenter", () => {
+    duploMedalhaoDropzone.classList.add("is-over");
+  });
+  duploMedalhaoDropzone.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    duploMedalhaoDropzone.classList.add("is-over");
+  });
+
+  duploMedalhaoDropzone.addEventListener("dragleave", () => {
+    duploMedalhaoDropzone.classList.remove("is-over");
+  });
+
+  duploMedalhaoDropzone.addEventListener("drop", (event) => {
+    event.preventDefault();
+    duploMedalhaoDropzone.classList.remove("is-over");
+
+    const artefato = event.dataTransfer.getData("text/plain");
+    if (artefato !== "medalhao") return;
+
+    const medalhao = obterMedalhaoAtual();
+    if (medalhao) {
+      medalhao.classList.add("hidden");
+      medalhao.removeAttribute("draggable");
+      medalhao.removeAttribute("id");
+    }
+
+    document.body.classList.remove("mochila-highlight-medalhao");
+    if (duploMedalhaoStage) {
+      duploMedalhaoStage.classList.remove("energizado");
+    }
+
+    const itemMedalhao = document.querySelector('[data-artefato="medalhao"]');
+    if (itemMedalhao) {
+      itemMedalhao.classList.remove("destacado", "convocado");
+    }
+
+    if (duploRevelacaoStage) {
+      const duploRevealCopy = document.getElementById("duploRevealCopy");
+      const btnConcluirDuploNarrativa = document.getElementById(
+        "btnConcluirDuploNarrativa",
+      );
+
+      duploRevelacaoStage.classList.remove("hidden");
+
+      setTimeout(() => {
+        duploRevelacaoStage.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 260);
+
+      setTimeout(() => {
+        duploRevelacaoStage.classList.add("revealed");
+      }, 520);
+
+      setTimeout(() => {
+        if (duploRevealCopy) {
+          duploRevealCopy.classList.add("show");
+        }
+      }, 1200);
+
+      setTimeout(() => {
+        if (btnConcluirDuploNarrativa) {
+          btnConcluirDuploNarrativa.classList.remove("hidden");
+        }
+      }, 1750);
+    }
+  });
+}
+
+function renderizarRoleDuplo(
+  roleKey,
+  duploRoleTitulo,
+  duploRoleTexto,
+  duploRoleOpcoes,
+  onAcerto,
+) {
+  const role = duploRolesData[roleKey];
+  if (!role || !duploRoleTitulo || !duploRoleTexto || !duploRoleOpcoes) return;
+
+  duploRoleTitulo.textContent = role.titulo;
+  duploRoleTexto.textContent = role.texto;
+  duploRoleOpcoes.innerHTML = "";
+
+  role.opcoes.forEach((opcao) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "duplo-opcao-btn";
+    btn.textContent = opcao.texto;
+
+    btn.addEventListener("click", () => {
+      duploRoleOpcoes.querySelectorAll(".duplo-opcao-btn").forEach((b) => {
+        b.classList.remove("correta", "errada");
+      });
+
+      if (opcao.correta) {
+        btn.classList.add("correta");
+        if (typeof onAcerto === "function") {
+          onAcerto(roleKey);
+        }
+      } else {
+        btn.classList.add("errada");
+      }
+    });
+
+    duploRoleOpcoes.appendChild(btn);
+  });
+}
+
+/* =========================================================
+   8. DESAFIO 2 — STAKEHOLDER SELVAGEM (*Pode ser melhor desenvolvido futuramente)
+========================================================= */
+
+function configurarDesafioStakeholder() {
+  const btnIniciarStakeholder = document.getElementById(
+    "btnIniciarStakeholder",
+  );
+  const stakeholderTurnosWrap = document.getElementById(
+    "stakeholderTurnosWrap",
+  );
+  const stakeholderBacklogStage = document.getElementById(
+    "stakeholderBacklogStage",
+  );
+  const stakeholderRevelacaoStage = document.getElementById(
+    "stakeholderRevelacaoStage",
+  );
+  const stakeholderTurnoImagem = document.getElementById(
+    "stakeholderTurnoImagem",
+  );
+  const stakeholderTurnoLabel = document.getElementById(
+    "stakeholderTurnoLabel",
+  );
+  const stakeholderTurnoTitulo = document.getElementById(
+    "stakeholderTurnoTitulo",
+  );
+  const stakeholderTurnoPergunta = document.getElementById(
+    "stakeholderTurnoPergunta",
+  );
+  const stakeholderTurnoOpcoes = document.getElementById(
+    "stakeholderTurnoOpcoes",
+  );
+  const stakeholderFeedback = document.getElementById("stakeholderFeedback");
+  const btnConcluirStakeholderNarrativa = document.getElementById(
+    "btnConcluirStakeholderNarrativa",
+  );
+
+  if (
+    !btnIniciarStakeholder ||
+    !stakeholderTurnosWrap ||
+    !stakeholderBacklogStage ||
+    !stakeholderRevelacaoStage ||
+    !stakeholderTurnoImagem ||
+    !stakeholderTurnoLabel ||
+    !stakeholderTurnoTitulo ||
+    !stakeholderTurnoPergunta ||
+    !stakeholderTurnoOpcoes ||
+    !stakeholderFeedback
+  ) {
+    return;
+  }
+
+  let turnoAtual = 0;
+
+  function trocarTurnoStakeholder(callbackAtualizacao) {
+    const content = document.getElementById("stakeholderTurnoContent");
+
+    if (!content) {
+      callbackAtualizacao();
+      return;
+    }
+
+    content.classList.add("is-switching");
+
+    setTimeout(() => {
+      callbackAtualizacao();
+
+      requestAnimationFrame(() => {
+        content.classList.remove("is-switching");
+      });
+    }, 220);
+  }
+
+  function renderizarTurnoStakeholder() {
+    const turno = stakeholderTurnos[turnoAtual];
+    if (!turno) return;
+
+    stakeholderTurnoImagem.src = turno.imagem;
+    stakeholderTurnoLabel.textContent = `Turno ${turnoAtual + 1} de ${stakeholderTurnos.length}`;
+    stakeholderTurnoTitulo.textContent = turno.titulo;
+    stakeholderTurnoPergunta.textContent = turno.pergunta;
+    stakeholderTurnoOpcoes.innerHTML = "";
+    stakeholderFeedback.className = "stakeholder-feedback hidden";
+    stakeholderFeedback.textContent = "";
+
+    turno.opcoes.forEach((opcao, index) => {
+      const botao = document.createElement("button");
+      botao.type = "button";
+      botao.className = "stakeholder-opcao-btn";
+      botao.textContent = opcao;
+
+      botao.addEventListener("click", () => {
+        const botoes = stakeholderTurnoOpcoes.querySelectorAll(
+          ".stakeholder-opcao-btn",
+        );
+        botoes.forEach((b) => (b.disabled = true));
+
+        if (index === turno.correta) {
+          botao.classList.add("correta");
+          stakeholderFeedback.className = "stakeholder-feedback sucesso";
+          stakeholderFeedback.textContent = turno.feedback;
+          stakeholderFeedback.classList.remove("hidden");
+
+          setTimeout(() => {
+            turnoAtual += 1;
+
+            if (turnoAtual < stakeholderTurnos.length) {
+              trocarTurnoStakeholder(() => {
+                renderizarTurnoStakeholder();
+              });
+            } else {
+              stakeholderTurnosWrap.classList.add("hidden");
+              stakeholderBacklogStage.classList.remove("hidden");
+              document.body.classList.add("mochila-highlight-backlog");
+
+              const backlogItem = document.querySelector(
+                '[data-artefato="backlog"]',
+              );
+              if (backlogItem) {
+                backlogItem.classList.add("convocado");
+                backlogItem.setAttribute("draggable", "true");
+              }
+
+              stakeholderBacklogStage.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          }, 1400);
+        } else {
+          botao.classList.add("errada");
+          stakeholderFeedback.className = "stakeholder-feedback erro";
+          stakeholderFeedback.textContent =
+            "Essa resposta mantém o caos. O grupo precisa proteger o Bardo com clareza, transparência e prioridade.";
+          stakeholderFeedback.classList.remove("hidden");
+
+          setTimeout(() => {
+            botoes.forEach((b) => {
+              b.disabled = false;
+              b.classList.remove("errada");
+            });
+          }, 1200);
+        }
+      });
+
+      stakeholderTurnoOpcoes.appendChild(botao);
+    });
+  }
+
+  btnIniciarStakeholder.addEventListener("click", () => {
+    stakeholderTurnosWrap.classList.remove("hidden");
+    stakeholderTurnosWrap.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+    renderizarTurnoStakeholder();
+  });
+
+  if (btnConcluirStakeholderNarrativa) {
+    btnConcluirStakeholderNarrativa.addEventListener("click", () => {
+      concluirEtapaCapitulo5("stakeholder");
+      animarAvancoNoMapa("necrobranch", true);
+    });
+  }
+}
+
+function configurarDropBacklogStakeholder() {
+  const dropzone = document.getElementById("stakeholderBacklogDropzone");
+  const stakeholderBacklogStage = document.getElementById(
+    "stakeholderBacklogStage",
+  );
+  const stakeholderRevelacaoStage = document.getElementById(
+    "stakeholderRevelacaoStage",
+  );
+
+  if (!dropzone || !stakeholderBacklogStage || !stakeholderRevelacaoStage)
+    return;
+
+  document.addEventListener("dragstart", (event) => {
+    const backlog = document.querySelector(
+      '[data-artefato="backlog"][draggable="true"]',
+    );
+    if (!backlog) return;
+    if (event.target !== backlog && !backlog.contains(event.target)) return;
+
+    event.dataTransfer.setData("text/plain", "backlog");
+  });
+
+  dropzone.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    dropzone.classList.add("is-over");
+  });
+
+  dropzone.addEventListener("dragleave", () => {
+    dropzone.classList.remove("is-over");
+  });
+
+  dropzone.addEventListener("drop", (event) => {
+    event.preventDefault();
+    dropzone.classList.remove("is-over");
+
+    const artefato = event.dataTransfer.getData("text/plain");
+    if (artefato !== "backlog") return;
+
+    const backlog = document.querySelector(
+      '.mochila-item[data-artefato="backlog"]',
+    );
+    const aval = document.querySelector('.mochila-item[data-artefato="aval"]');
+
+    if (backlog) {
+      backlog.classList.add("hidden");
+      backlog.classList.remove("convocado", "destacado", "ativo");
+      backlog.removeAttribute("draggable");
+    }
+
+    if (aval) {
+      aval.classList.remove("hidden");
+      aval.classList.add("flash-artefato");
+      setTimeout(() => aval.classList.remove("flash-artefato"), 1200);
+    }
+
+    document.body.classList.remove("mochila-highlight-backlog");
+
+    stakeholderBacklogStage.classList.add("hidden");
+    stakeholderRevelacaoStage.classList.remove("hidden");
+
+    const stakeholderRevealCopy = document.getElementById(
+      "stakeholderRevealCopy",
+    );
+    if (stakeholderRevealCopy) {
+      setTimeout(() => stakeholderRevealCopy.classList.add("show"), 250);
+    }
+
+    stakeholderRevelacaoStage.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+}
+
+/* =========================================================
+   9. DESAFIO 3 — NECROBRANCH (*o desafio pode ser melhor desenvolvido futuramente)
+========================================================= */
+
+function configurarDesafioNecrobranch() {
+  const btnIniciarNecrobranch = document.getElementById(
+    "btnIniciarNecrobranch",
+  );
+  const necroAnaliseWrap = document.getElementById("necroAnaliseWrap");
+  const necroAnaliseFeedback = document.getElementById("necroAnaliseFeedback");
+  const necroRitualStage = document.getElementById("necroRitualStage");
+  const necroAmpulhetaDropzone = document.getElementById(
+    "necroAmpulhetaDropzone",
+  );
+  const necroAmpulhetaAtivacao = document.getElementById(
+    "necroAmpulhetaAtivacao",
+  );
+  const necroAmpulhetaIcon = document.getElementById("necroAmpulhetaIcon");
+  const necroRevelacaoStage = document.getElementById("necroRevelacaoStage");
+  const btnSelarNecrobranch = document.getElementById("btnSelarNecrobranch");
+  const btnConcluirNecrobranchNarrativa = document.getElementById(
+    "btnConcluirNecrobranchNarrativa",
+  );
+
+  const botoesCausa = document.querySelectorAll(".necro-causa-btn");
+
+  if (
+    !btnIniciarNecrobranch ||
+    !necroAnaliseWrap ||
+    !necroAnaliseFeedback ||
+    !necroRitualStage ||
+    !necroRevelacaoStage ||
+    !btnSelarNecrobranch ||
+    !btnConcluirNecrobranchNarrativa ||
+    !botoesCausa.length
+  ) {
+    return;
+  }
+
+  const causasRegistradas = new Set();
+
+  document.addEventListener("dragstart", (event) => {
+    const ampulhetaItem = document.querySelector(
+      '[data-artefato="ampulheta"][draggable="true"]',
+    );
+    if (!ampulhetaItem) return;
+
+    if (
+      event.target !== ampulhetaItem &&
+      !ampulhetaItem.contains(event.target)
+    ) {
+      return;
+    }
+
+    event.dataTransfer.setData("text/plain", "ampulheta");
+  });
+
+  if (necroAmpulhetaDropzone) {
+    necroAmpulhetaDropzone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      necroAmpulhetaDropzone.classList.add("is-over");
+    });
+
+    necroAmpulhetaDropzone.addEventListener("dragleave", () => {
+      necroAmpulhetaDropzone.classList.remove("is-over");
+    });
+
+    necroAmpulhetaDropzone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      necroAmpulhetaDropzone.classList.remove("is-over");
+
+      const artefato = event.dataTransfer.getData("text/plain");
+      if (artefato !== "ampulheta") return;
+
+      necroAmpulhetaDropzone.classList.add("hidden");
+
+      if (necroAmpulhetaAtivacao) {
+        necroAmpulhetaAtivacao.classList.remove("hidden");
+      }
+
+      document.body.classList.remove("mochila-highlight-ampulheta");
+
+      const ampulhetaItem = document.querySelector(
+        '[data-artefato="ampulheta"]',
+      );
+      if (ampulhetaItem) {
+        ampulhetaItem.classList.remove("convocado");
+      }
+    });
+  }
+
+  btnIniciarNecrobranch.addEventListener("click", () => {
+    necroAnaliseWrap.classList.remove("hidden");
+    necroAnaliseWrap.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+
+  botoesCausa.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const causa = botao.dataset.causaBtn;
+      if (!causa) return;
+
+      causasRegistradas.add(causa);
+      botao.disabled = true;
+      botao.classList.add("registrado");
+
+      const card = botao.closest(".necro-causa-card");
+      if (card) {
+        card.classList.add("resolvida");
+      }
+
+      necroAnaliseFeedback.classList.remove("hidden");
+      necroAnaliseFeedback.textContent = `Causas analisadas: ${causasRegistradas.size}/3.`;
+
+      if (causasRegistradas.size === 3) {
+        necroAnaliseFeedback.className = "necro-analise-feedback sucesso";
+        necroAnaliseFeedback.textContent =
+          "O grupo compreende a origem do colapso: é possível restaurar a ponte com segurança.";
+
+        setTimeout(() => {
+          document.body.classList.add("mochila-highlight-ampulheta");
+
+          const ampulhetaItem = document.querySelector(
+            '[data-artefato="ampulheta"]',
+          );
+          if (ampulhetaItem) {
+            ampulhetaItem.classList.add("convocado");
+            ampulhetaItem.setAttribute("draggable", "true");
+          }
+
+          necroRitualStage.classList.remove("hidden");
+          necroRitualStage.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 900);
+      }
+    });
+  });
+
+  btnSelarNecrobranch.addEventListener("click", () => {
+    if (necroAmpulhetaIcon) {
+      necroAmpulhetaIcon.classList.add("girando");
+    }
+
+    setTimeout(() => {
+      necroRitualStage.classList.add("hidden");
+      necroRevelacaoStage.classList.remove("hidden");
+
+      const necroRevealCopy = document.getElementById("necroRevealCopy");
+      if (necroRevealCopy) {
+        setTimeout(() => {
+          necroRevealCopy.classList.add("show");
+        }, 250);
+      }
+
+      necroRevelacaoStage.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 850);
+  });
+
+  btnConcluirNecrobranchNarrativa.addEventListener("click", () => {
+    concluirEtapaCapitulo5("necrobranch");
+    animarAvancoNoMapa("bug-infernal", true);
+  });
+}
+
+/* =========================================================
+   10. DESAFIO 4 — BUG INFERNAL
+========================================================= */
+
+function configurarDesafioBugInfernal() {
+  const btnIniciarBug = document.getElementById("btnIniciarBug");
+  const bugAnaliseWrap = document.getElementById("bugAnaliseWrap");
+  const bugAnaliseTitulo = document.getElementById("bugAnaliseTitulo");
+  const bugAnaliseTexto = document.getElementById("bugAnaliseTexto");
+  const bugAnaliseProgresso = document.getElementById("bugAnaliseProgresso");
+  const bugRevelacaoStage = document.getElementById("bugRevelacaoStage");
+  const bugCreatureWrap = document.getElementById("bugCreatureWrap");
+  const bugArrasteWrap = document.getElementById("bugArrasteWrap");
+  const bugResumoAnalise = document.getElementById("bugResumoAnalise");
+  const bugDicaBauCreature = document.getElementById("bugDicaBauCreature");
+  const bauItem = document.querySelector('[data-artefato="bau"]');
+  const bugFlipCard = document.getElementById("bugFlipCard");
+
+  const bugMiniaturaArrastavel = document.getElementById(
+    "bugMiniaturaArrastavel",
+  );
+
+  const btnConcluirBugNarrativa = document.getElementById(
+    "btnConcluirBugNarrativa",
+  );
+
+  const hotspots = document.querySelectorAll(".bug-hotspot");
+  const bugBubbles = document.querySelectorAll("[data-bug-bubble]");
+
+  if (
+    !btnIniciarBug ||
+    !bugAnaliseWrap ||
+    !bugAnaliseTitulo ||
+    !bugAnaliseTexto ||
+    !bugAnaliseProgresso ||
+    !bugRevelacaoStage ||
+    !bugCreatureWrap ||
+    !bugArrasteWrap ||
+    !bugResumoAnalise ||
+    !bugMiniaturaArrastavel ||
+    !btnConcluirBugNarrativa ||
+    !hotspots.length
+  ) {
+    console.warn("Algum elemento do desafio Bug Infernal não foi encontrado.");
+    return;
+  }
+
+  const pontosLidos = new Set();
+
+  function esconderCaixasSuspensasBug() {
+    bugBubbles.forEach((bubble) => {
+      bubble.classList.add("hidden");
+    });
+  }
+
+  function resetarArenaBug() {
+    pontosLidos.clear();
+
+    delete bugCreatureWrap.dataset.etapaBug;
+
+    bugCreatureWrap.classList.remove("estado-final");
+    bugArrasteWrap.classList.add("hidden");
+
+    bugMiniaturaArrastavel.classList.remove("hidden");
+    bugMiniaturaArrastavel.setAttribute("draggable", "true");
+
+    hotspots.forEach((hotspot) => {
+      hotspot.classList.remove("analisado");
+    });
+
+    esconderCaixasSuspensasBug();
+
+    bugResumoAnalise.classList.add("hidden");
+
+    bugAnaliseProgresso.classList.remove("is-completo");
+    bugAnaliseProgresso.setAttribute("aria-expanded", "false");
+    bugAnaliseProgresso.textContent = "Pontos analisados: 0/3";
+
+    document.body.classList.remove("mochila-highlight-bau");
+
+    const bauItem = document.querySelector('[data-artefato="bau"]');
+
+    if (bauItem) {
+      bauItem.classList.remove("convocado");
+      bauItem.classList.remove("is-over");
+    }
+
+    bugAnaliseTitulo.textContent = "Selecione um ponto da criatura";
+    bugAnaliseTexto.textContent =
+      "Cada parte analisada revela como o time pode investigar melhor o bug, reduzir incerteza e conter a ameaça com segurança.";
+  }
+
+  function revelarCaixaSuspensaBug(chave) {
+    esconderCaixasSuspensasBug();
+
+    const bubble = document.querySelector(`[data-bug-bubble="${chave}"]`);
+
+    if (!bubble) return;
+
+    bubble.classList.remove("hidden");
+  }
+
+  function concluirAnaliseBug() {
+    bugCreatureWrap.classList.add("estado-final");
+    bugArrasteWrap.classList.remove("hidden");
+
+    bugMiniaturaArrastavel.classList.remove("hidden");
+    bugMiniaturaArrastavel.setAttribute("draggable", "true");
+
+    document.body.classList.add("mochila-highlight-bau");
+
+    const bauItem = document.querySelector('[data-artefato="bau"]');
+
+    if (bauItem) {
+      bauItem.classList.add("convocado");
+    }
+
+    bugAnaliseTitulo.textContent = "Criatura reduzida";
+    bugAnaliseTexto.textContent =
+      "Após identificar os códigos que davam força ao bug, o grupo conseguiu enfraquecê-lo. Agora ele pode ser contido no Baú da Iteração.";
+
+    setTimeout(() => {
+      esconderCaixasSuspensasBug();
+
+      bugAnaliseProgresso.classList.add("is-completo");
+      bugAnaliseProgresso.textContent = "Análise concluída";
+      bugAnaliseProgresso.setAttribute("aria-expanded", "false");
+    }, 1200);
+  }
+
+  if (bugFlipCard) {
+    bugFlipCard.classList.remove("is-flipped");
+    bugFlipCard.setAttribute("aria-pressed", "false");
+  }
+
+  btnIniciarBug.addEventListener("click", () => {
+    resetarArenaBug();
+
+    bugAnaliseWrap.classList.remove("hidden");
+
+    bugAnaliseWrap.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+
+  hotspots.forEach((hotspot) => {
+    hotspot.addEventListener("click", () => {
+      const chave = hotspot.dataset.bugHotspot;
+      const ponto = bugPontosAnalise[chave];
+
+      if (!chave || !ponto || pontosLidos.has(chave)) return;
+
+      pontosLidos.add(chave);
+      hotspot.classList.add("analisado");
+
+      revelarCaixaSuspensaBug(chave);
+
+      bugAnaliseTitulo.textContent = ponto.titulo;
+      bugAnaliseTexto.textContent = ponto.texto;
+      bugAnaliseProgresso.textContent = `Pontos analisados: ${pontosLidos.size}/3`;
+
+      bugCreatureWrap.dataset.etapaBug = String(pontosLidos.size);
+
+      if (pontosLidos.size === 3) {
+        setTimeout(() => {
+          concluirAnaliseBug();
+        }, 400);
+      }
+    });
+  });
+
+  bugAnaliseProgresso.addEventListener("click", () => {
+    if (!bugAnaliseProgresso.classList.contains("is-completo")) return;
+
+    const resumoEstaAberto = !bugResumoAnalise.classList.contains("hidden");
+
+    if (resumoEstaAberto) {
+      bugResumoAnalise.classList.add("hidden");
+      bugAnaliseProgresso.setAttribute("aria-expanded", "false");
+      return;
+    }
+
+    bugResumoAnalise.classList.remove("hidden");
+    bugAnaliseProgresso.setAttribute("aria-expanded", "true");
+  });
+
+  bugMiniaturaArrastavel.addEventListener("dragstart", (event) => {
+    event.dataTransfer.setData("text/plain", "bug-infernal");
+  });
+
+  if (bugFlipCard) {
+    bugFlipCard.addEventListener("click", () => {
+      const cartaVirada = bugFlipCard.classList.toggle("is-flipped");
+
+      bugFlipCard.setAttribute("aria-pressed", String(cartaVirada));
+    });
+  }
+
+  btnConcluirBugNarrativa.addEventListener("click", () => {
+    concluirEtapaCapitulo5("bug-infernal");
+    animarAvancoNoMapa("forja-mvp", true);
+  });
+
+  if (bauItem && bugDicaBauCreature) {
+    bauItem.setAttribute("draggable", "true");
+
+    bauItem.addEventListener("dragstart", (event) => {
+      event.dataTransfer.setData("text/plain", "bau");
+    });
+
+    bugCreatureWrap.addEventListener("dragover", (event) => {
+      event.preventDefault();
+    });
+
+    bugCreatureWrap.addEventListener("drop", (event) => {
+      event.preventDefault();
+
+      const tipoArrastado = event.dataTransfer.getData("text/plain");
+
+      if (tipoArrastado !== "bau") return;
+
+      bugDicaBauCreature.classList.remove("hidden");
+
+      setTimeout(() => {
+        bugDicaBauCreature.classList.add("hidden");
+      }, 3200);
+    });
+  }
+}
+function configurarDropBugNoBau() {
+  const bugMiniaturaArrastavel = document.getElementById(
+    "bugMiniaturaArrastavel",
+  );
+
+  const bugArrasteWrap = document.getElementById("bugArrasteWrap");
+  const bugRevelacaoStage = document.getElementById("bugRevelacaoStage");
+  const bugRevealCopy = document.querySelector(".bug-reveal-copy");
+  const bauItem = document.querySelector('[data-artefato="bau"]');
+
+  if (
+    !bugMiniaturaArrastavel ||
+    !bugArrasteWrap ||
+    !bugRevelacaoStage ||
+    !bauItem
+  ) {
+    return;
+  }
+
+  bugMiniaturaArrastavel.addEventListener("dragstart", (event) => {
+    event.dataTransfer.setData("text/plain", "bug-infernal");
+    bugMiniaturaArrastavel.classList.add("is-dragging");
+  });
+
+  bugMiniaturaArrastavel.addEventListener("dragend", () => {
+    bugMiniaturaArrastavel.classList.remove("is-dragging");
+    bauItem.classList.remove("is-over");
+  });
+
+  bauItem.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    bauItem.classList.add("is-over");
+  });
+
+  bauItem.addEventListener("dragleave", () => {
+    bauItem.classList.remove("is-over");
+  });
+
+  bauItem.addEventListener("drop", (event) => {
+    event.preventDefault();
+
+    const tipoArrastado = event.dataTransfer.getData("text/plain");
+
+    if (tipoArrastado !== "bug-infernal") return;
+
+    bauItem.classList.remove("is-over");
+    bauItem.classList.remove("convocado");
+    document.body.classList.remove("mochila-highlight-bau");
+
+    bugArrasteWrap.classList.add("hidden");
+
+    bugRevelacaoStage.classList.remove("hidden");
+
+    setTimeout(() => {
+      if (bugRevealCopy) {
+        bugRevealCopy.classList.add("show");
+      }
+
+      bugRevelacaoStage.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 250);
+  });
+}
+
+/* =========================================================
+   11. DESAFIO 5 — FORJA DO MVP
+========================================================= */
+
+function configurarFornalhasDaForja() {
+  const fornalhas = document.querySelectorAll(".forja-fornalha");
+  const btnLiberarMontagemForja = document.getElementById(
+    "btnLiberarMontagemForja",
+  );
+  const forjaDropStage = document.getElementById("forjaDropStage");
+  const forjaDicaFinal = document.getElementById("forjaDicaFinal");
+
+  if (!fornalhas.length || !btnLiberarMontagemForja || !forjaDropStage) {
+    return;
+  }
+
+  const fornalhasAcesas = new Set();
+
+  function atualizarEstadoFornalhas(fornalhaAtiva) {
+    fornalhas.forEach((btn) => {
+      btn.classList.toggle("is-ativa", btn === fornalhaAtiva);
+    });
+  }
+
+  fornalhas.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const chave = btn.dataset.fornalha;
+      if (!chave) return;
+
+      atualizarEstadoFornalhas(btn);
+
+      fornalhasAcesas.add(chave);
+      btn.classList.add("is-acesa");
+
+      if (fornalhasAcesas.size === 3) {
+        btnLiberarMontagemForja.classList.remove("hidden");
+
+        if (forjaDicaFinal) {
+          forjaDicaFinal.classList.remove("hidden");
+        }
+      }
+    });
+  });
+
+  btnLiberarMontagemForja.addEventListener("click", () => {
+    forjaDropStage.classList.remove("hidden");
+    forjaDropStage.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+}
+
+function configurarForjaMvp() {
+  const btnIniciarForja = document.getElementById("btnIniciarForja");
+  const forjaAulaWrap = document.getElementById("forjaAulaWrap");
+  const forjaDropStage = document.getElementById("forjaDropStage");
+  const forjaRevelacaoStage = document.getElementById("forjaRevelacaoStage");
+  const forjaFeedback = document.getElementById("forjaFeedback");
+  const btnForjarMvp = document.getElementById("btnForjarMvp");
+
+  const slotAval = document.getElementById("forjaSlotAval");
+  const slotOrb = document.getElementById("forjaSlotOrb");
+  const slotEscudo = document.getElementById("forjaSlotEscudo");
+
+  if (
+    !btnIniciarForja ||
+    !forjaAulaWrap ||
+    !forjaDropStage ||
+    !forjaRevelacaoStage ||
+    !forjaFeedback ||
+    !btnForjarMvp ||
+    !slotAval ||
+    !slotOrb ||
+    !slotEscudo
+  ) {
+    return;
+  }
+
+  const ordemForja = ["aval", "ampulheta", "bau"];
+
+  const artefatosForja = {
+    aval: {
+      nome: "Aval de Aprovação",
+      slot: slotAval,
+      slotPai: slotAval.closest(".forja-slot"),
+      sucesso:
+        "O Selo do Valor foi aceso. Antes de construir, o time precisa saber qual valor será entregue.",
+      dicaErro:
+        "O primeiro receptáculo pede o Aval de Aprovação: ele representa valor validado, prioridade e alinhamento.",
+    },
+
+    ampulheta: {
+      nome: "Orb Main Funcional",
+      slot: slotOrb,
+      slotPai: slotOrb.closest(".forja-slot"),
+      sucesso:
+        "O Núcleo do Incremento despertou. Agora existe uma entrega funcional que pode ser observada e melhorada.",
+      dicaErro:
+        "O segundo receptáculo pede o Orb Main Funcional: ele representa uma entrega funcionando, validável e pronta para gerar aprendizado.",
+    },
+
+    bau: {
+      nome: "Escudo Mágico",
+      slot: slotEscudo,
+      slotPai: slotEscudo.closest(".forja-slot"),
+      sucesso:
+        "A Guarda da Qualidade foi erguida. O time protege o aprendizado, valida a solução e reduz novos impedimentos.",
+      dicaErro:
+        "O terceiro receptáculo pede o Escudo Mágico: ele representa proteção da entrega, qualidade e remoção de impedimentos.",
+    },
+  };
+
+  function definirFeedbackForja(mensagem, tipo = "neutro") {
+    forjaFeedback.className = "forja-feedback forja-feedback--epico";
+
+    if (tipo === "erro") {
+      forjaFeedback.classList.add("erro");
+    }
+
+    if (tipo === "sucesso") {
+      forjaFeedback.classList.add("sucesso");
+    }
+
+    forjaFeedback.textContent = mensagem;
+  }
+
+  function contarArtefatosPosicionados() {
+    return Object.values(estadoForja.slots).filter(Boolean).length;
+  }
+
+  function obterProximoArtefatoEsperado() {
+    return ordemForja.find((artefato) => !estadoForja.slots[artefato]);
+  }
+
+  function criarMarcadorForja(nomeArtefato) {
+    const marcador = document.createElement("div");
+
+    marcador.className = "forja-slot-preenchido";
+    marcador.textContent = nomeArtefato;
+
+    return marcador;
+  }
+
+  function renderizarSlotForja(chaveArtefato) {
+    const config = artefatosForja[chaveArtefato];
+
+    if (!config) return;
+
+    config.slot.innerHTML = "";
+
+    if (!estadoForja.slots[chaveArtefato]) {
+      config.slot.removeAttribute("aria-label");
+
+      if (config.slotPai) {
+        config.slotPai.classList.remove("forja-slot--concluido");
+      }
+
+      return;
+    }
+
+    const marcador = criarMarcadorForja(config.nome);
+
+    config.slot.appendChild(marcador);
+    config.slot.setAttribute(
+      "aria-label",
+      `Receptáculo preenchido com ${config.nome}`,
+    );
+
+    if (config.slotPai) {
+      config.slotPai.classList.add("forja-slot--concluido");
+      config.slotPai.classList.remove("forja-slot--proximo");
+    }
+  }
+
+  function atualizarDestaqueProximoSlot() {
+    const proximoArtefato = obterProximoArtefatoEsperado();
+
+    ordemForja.forEach((chaveArtefato) => {
+      const config = artefatosForja[chaveArtefato];
+
+      if (!config?.slotPai) return;
+
+      config.slotPai.classList.toggle(
+        "forja-slot--proximo",
+        chaveArtefato === proximoArtefato,
+      );
+    });
+  }
+
+  function atualizarInterfaceForja() {
+    ordemForja.forEach((chaveArtefato) => {
+      renderizarSlotForja(chaveArtefato);
+    });
+
+    atualizarDestaqueProximoSlot();
+
+    const totalPreenchidos = contarArtefatosPosicionados();
+
+    if (totalPreenchidos === 0) {
+      definirFeedbackForja(
+        "Arraste os artefatos transformados da mochila para os receptáculos da Forja.",
+      );
+    }
+
+    if (totalPreenchidos > 0 && totalPreenchidos < 3) {
+      const proximoArtefato = obterProximoArtefatoEsperado();
+      const nomeProximo = artefatosForja[proximoArtefato]?.nome;
+
+      definirFeedbackForja(
+        `Artefatos posicionados: ${totalPreenchidos}/3. Próximo artefato esperado: ${nomeProximo}.`,
+        "sucesso",
+      );
+    }
+
+    if (totalPreenchidos === 3) {
+      btnForjarMvp.disabled = false;
+      btnForjarMvp.classList.add("is-pronto");
+
+      definirFeedbackForja(
+        "A Forja reconhece a sequência correta. O MVP pode ser criado.",
+        "sucesso",
+      );
+    } else {
+      btnForjarMvp.disabled = true;
+      btnForjarMvp.classList.remove("is-pronto");
+    }
+  }
+
+  function obterMensagemErroForja(artefatoArrastado, artefatoAceito) {
+    const configAceito = artefatosForja[artefatoAceito];
+    const configArrastado = artefatosForja[artefatoArrastado];
+
+    if (!configArrastado) {
+      return "Esse item não faz parte da montagem final do MVP. A Forja espera apenas os artefatos transformados da jornada.";
+    }
+
+    if (configAceito) {
+      return configAceito.dicaErro;
+    }
+
+    return "A ordem da Forja importa. Observe qual receptáculo está pedindo cada artefato.";
+  }
+
+  function tentarPosicionarArtefato(artefatoArrastado, artefatoAceito) {
+    const configAceito = artefatosForja[artefatoAceito];
+
+    if (!configAceito) return;
+
+    if (estadoForja.slots[artefatoAceito]) {
+      definirFeedbackForja(
+        "Esse receptáculo já foi aceso. Procure o próximo ponto da Forja.",
+      );
+      return;
+    }
+
+    const proximoArtefatoEsperado = obterProximoArtefatoEsperado();
+
+    if (artefatoArrastado !== artefatoAceito) {
+      definirFeedbackForja(
+        obterMensagemErroForja(artefatoArrastado, artefatoAceito),
+        "erro",
+      );
+      return;
+    }
+
+    if (artefatoArrastado !== proximoArtefatoEsperado) {
+      const nomeEsperado = artefatosForja[proximoArtefatoEsperado]?.nome;
+
+      definirFeedbackForja(
+        `A Forja segue uma sequência. Antes deste artefato, posicione: ${nomeEsperado}.`,
+        "erro",
+      );
+      return;
+    }
+
+    estadoForja.slots[artefatoAceito] = true;
+
+    esconderArtefatoDaMochila(artefatoAceito);
+
+    renderizarSlotForja(artefatoAceito);
+    atualizarMochila();
+    atualizarInterfaceForja();
+
+    definirFeedbackForja(configAceito.sucesso, "sucesso");
+
+    salvarEstadoCapitulo5Local();
+  }
+
+  btnIniciarForja.addEventListener("click", () => {
+    forjaAulaWrap.classList.remove("hidden");
+    forjaDropStage.classList.add("hidden");
+
+    atualizarMochila();
+    atualizarInterfaceForja();
+
+    forjaAulaWrap.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+
+  document.addEventListener("dragstart", (event) => {
+    const itemArrastavel = event.target.closest(
+      ".mochila-item[draggable='true']",
+    );
+
+    if (!itemArrastavel) return;
+
+    const artefato = itemArrastavel.dataset.artefato;
+
+    if (!artefato) return;
+
+    event.dataTransfer.setData("text/plain", artefato);
+    event.dataTransfer.effectAllowed = "move";
+  });
+
+  Object.entries(artefatosForja).forEach(([artefatoAceito, config]) => {
+    const slot = config.slot;
+
+    slot.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      slot.classList.add("is-over");
+    });
+
+    slot.addEventListener("dragleave", () => {
+      slot.classList.remove("is-over");
+    });
+
+    slot.addEventListener("drop", (event) => {
+      event.preventDefault();
+
+      slot.classList.remove("is-over");
+
+      const artefatoArrastado = event.dataTransfer.getData("text/plain");
+
+      tentarPosicionarArtefato(artefatoArrastado, artefatoAceito);
+    });
+  });
+
+  btnForjarMvp.addEventListener("click", () => {
+    const totalPreenchidos = contarArtefatosPosicionados();
+
+    if (totalPreenchidos < 3) {
+      definirFeedbackForja(
+        "A Forja ainda não está completa. Acenda os três receptáculos antes de criar o MVP.",
+        "erro",
+      );
+      return;
+    }
+
+    estadoForja.concluida = true;
+
+    forjaDropStage.classList.add("hidden");
+    forjaRevelacaoStage.classList.remove("hidden");
+
+    const forjaRevealCopy = document.getElementById("forjaRevealCopy");
+
+    if (forjaRevealCopy) {
+      setTimeout(() => {
+        forjaRevealCopy.classList.add("show");
+      }, 250);
+    }
+
+    atualizarMochila();
+    salvarEstadoCapitulo5Local();
+
+    forjaRevelacaoStage.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+
+  atualizarInterfaceForja();
+
+  if (estadoForja.concluida) {
+    forjaRevelacaoStage.classList.remove("hidden");
+
+    const forjaRevealCopy = document.getElementById("forjaRevealCopy");
+
+    if (forjaRevealCopy) {
+      forjaRevealCopy.classList.add("show");
+    }
+  }
+}
+
+/* =========================================================
+   12. DESFECHO — PORTA FINAL
+========================================================= */
+
+function configurarPortaFinal() {
+  const btnIrPortaFinal = document.getElementById("btnIrPortaFinal");
+  const portaFinalStage = document.getElementById("encounter-porta");
+  const portaFinalLockZone = document.getElementById("portaFinalLockZone");
+  const portaFinalImgFechada = document.getElementById("portaFinalImgFechada");
+  const portaFinalImgAberta = document.getElementById("portaFinalImgAberta");
+  const portaFinalFeedback = document.getElementById("portaFinalFeedback");
+  const portaBloqueada = document.getElementById("portaBloqueada");
+  const btnConcluirHistoria = document.getElementById("btnConcluirHistoria");
+  const btnEntrarDesafio = document.getElementById("btnEntrarDesafio");
+  const statusHistoria = document.getElementById("statusHistoria");
+  const portaFinalScene = document.querySelector(
+    "#encounter-porta .porta-final-scene",
+  );
+
+  if (!portaFinalStage) return;
+
+  let portaFoiAberta = chaveMvpUsadaNaPorta;
+
+  function mostrarFeedbackPorta(mensagem) {
+    if (!portaFinalFeedback) return;
+
+    portaFinalFeedback.textContent = mensagem;
+    portaFinalFeedback.classList.remove("hidden");
+  }
+
+  function aplicarVisualPortaFechada() {
+    portaFoiAberta = false;
+
+    portaFinalStage.classList.remove("porta-final-aberta");
+    portaFinalStage.classList.remove("is-unlocked");
+
+    document.body.classList.remove("porta-final-destravada");
+
+    if (portaFinalImgFechada) {
+      portaFinalImgFechada.classList.remove("hidden");
+    }
+
+    if (portaFinalImgAberta) {
+      portaFinalImgAberta.classList.add("hidden");
+    }
+
+    if (portaFinalLockZone) {
+      portaFinalLockZone.classList.remove("hidden");
+    }
+
+    if (btnEntrarDesafio) {
+      btnEntrarDesafio.classList.add("hidden");
+    }
+
+    if (portaBloqueada) {
+      portaBloqueada.textContent =
+        "O MVP foi forjado. A porta reconhece que o time está pronto, mas ainda espera a Chave MVP tocar sua fechadura.";
+      portaBloqueada.classList.add("liberada");
+    }
+
+    mostrarFeedbackPorta(
+      "Arraste a Chave MVP da mochila até a fechadura para abrir a última porta.",
+    );
+  }
+
+  function aplicarVisualPortaAberta() {
+    portaFoiAberta = true;
+
+    portaFinalStage.classList.add("porta-final-aberta");
+    portaFinalStage.classList.add("is-unlocked");
+
+    document.body.classList.add("porta-final-destravada");
+
+    if (portaFinalImgFechada) {
+      portaFinalImgFechada.classList.add("hidden");
+    }
+
+    if (portaFinalImgAberta) {
+      portaFinalImgAberta.classList.remove("hidden");
+    }
+
+    if (portaFinalLockZone) {
+      portaFinalLockZone.classList.add("hidden");
+    }
+
+    if (portaBloqueada) {
+      portaBloqueada.textContent =
+        "A porta reconhece o fluxo. Clique na porta aberta para encarar o desafio final.";
+      portaBloqueada.classList.add("liberada");
+    }
+
+    if (btnEntrarDesafio) {
+      btnEntrarDesafio.classList.remove("hidden");
+    }
+
+    mostrarFeedbackPorta(
+      "A porta está aberta. Clique nela para encarar o desafio final.",
+    );
+  }
+
+  function abrirSalaDaPortaFinal() {
+    if (!etapasConcluidas.has("forja-mvp")) {
+      etapasConcluidas.add("forja-mvp");
+
+      const stageForja = document.querySelector(
+        '.encounter-stage[data-step="forja-mvp"]',
+      );
+
+      if (stageForja) {
+        stageForja.classList.add("etapa-concluida");
+      }
+    }
+
+    etapaAtualCapitulo5 = "porta-final";
+
+    atualizarProgressoCapitulo();
+    salvarEstadoCapitulo5Local();
+
+    document.querySelectorAll(".encounter-stage").forEach((stage) => {
+      stage.classList.add("hidden");
+    });
+
+    portaFinalStage.classList.remove("hidden");
+    portaFinalStage.classList.add("visible");
+
+    atualizarNavegacaoCapitulo5();
+    atualizarMapaPonte();
+    atualizarPreviewsPonte();
+    atualizarMochila();
+
+    if (chaveMvpUsadaNaPorta) {
+      aplicarVisualPortaAberta();
+    } else {
+      aplicarVisualPortaFechada();
+    }
+
+    portaFinalStage.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
+  function historia5ProntaParaConclusao() {
+    return etapasConcluidas.has("forja-mvp") || estadoForja.concluida;
+  }
+
+  function entrarNoDesafioFinalPelaPorta() {
+    if (!portaFoiAberta) {
+      mostrarFeedbackPorta(
+        "A porta ainda está fechada. Use a Chave MVP na fechadura para liberar o desafio final.",
+      );
+      return;
+    }
+
+    if (btnEntrarDesafio) {
+      btnEntrarDesafio.click();
+    }
+  }
+
+  async function abrirPortaFinal() {
+    aplicarVisualPortaAberta();
+
+    chaveMvpUsadaNaPorta = true;
+    consumirArtefatoDaMochila("chave-mvp");
+    salvarEstadoCapitulo5Local();
+
+    mostrarFeedbackPorta(
+      "A fechadura aceita a Chave MVP. A história está sendo registrada automaticamente.",
+    );
+
+    if (btnConcluirHistoria) {
+      btnConcluirHistoria.classList.add("hidden");
+    }
+
+    if (statusHistoria) {
+      statusHistoria.textContent =
+        "A dungeon está registrando sua jornada final...";
+    }
+
+    if (historia5ConcluidaNoBackend) {
+      if (statusHistoria) {
+        statusHistoria.textContent =
+          "História já registrada no sistema. A porta final foi liberada.";
+      }
+    } else {
+      await concluirHistoria();
+      historia5ConcluidaNoBackend = true;
+    }
+
+    encerrarReplayTemporalCapitulo5();
+
+    if (btnEntrarDesafio) {
+      btnEntrarDesafio.classList.remove("hidden");
+    }
+
+    mostrarFeedbackPorta(
+      "História concluída. Clique na porta aberta para encarar o desafio final.",
+    );
+  }
+
+  if (btnIrPortaFinal) {
+    btnIrPortaFinal.addEventListener("click", abrirSalaDaPortaFinal);
+  }
+
+  if (portaFinalLockZone) {
+    portaFinalLockZone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+
+      if (portaFoiAberta) return;
+
+      portaFinalLockZone.classList.add("is-over");
+    });
+
+    portaFinalLockZone.addEventListener("dragleave", () => {
+      portaFinalLockZone.classList.remove("is-over");
+    });
+
+    portaFinalLockZone.addEventListener("drop", (event) => {
+      event.preventDefault();
+
+      portaFinalLockZone.classList.remove("is-over");
+
+      if (portaFoiAberta) return;
+
+      if (!historia5ProntaParaConclusao()) {
+        mostrarFeedbackPorta(
+          "A porta permanece imóvel. Antes de abri-la, a Forja precisa reconhecer o MVP.",
+        );
+        return;
+      }
+
+      const artefatoRecebido = event.dataTransfer.getData("text/plain");
+
+      if (artefatoRecebido !== "chave-mvp") {
+        mostrarFeedbackPorta(
+          "A fechadura não responde. Apenas a Chave MVP pode abrir esta porta.",
+        );
+        return;
+      }
+
+      abrirPortaFinal();
+    });
+  }
+
+  if (portaFinalScene) {
+    portaFinalScene.addEventListener("click", entrarNoDesafioFinalPelaPorta);
+  }
+
+  if (portaFinalImgAberta) {
+    portaFinalImgAberta.addEventListener(
+      "click",
+      entrarNoDesafioFinalPelaPorta,
+    );
+  }
+}
+
+function configurarConclusaoHistoria() {
+  const btnConcluir = document.getElementById("btnConcluirHistoria");
+
+  if (btnConcluir) {
+    btnConcluir.addEventListener("click", concluirHistoria);
+  }
+}
+
+function configurarEntradaDesafio() {
+  const btnEntrarDesafio = document.getElementById("btnEntrarDesafio");
+
+  if (!btnEntrarDesafio) return;
+
+  btnEntrarDesafio.addEventListener("click", () => {
+    localStorage.setItem("moduloAtual", ID_MODULO);
+    window.location.href = "/desafio1";
+  });
+}
+
+function configurarResetTempoCapitulo5() {
+  const btnResetTempo = document.getElementById("btnResetTempoCapitulo5");
+  const tempoResetModal = document.getElementById("tempoResetModal");
+  const btnConfirmarResetTempo = document.getElementById(
+    "btnConfirmarResetTempo",
+  );
+  const btnCancelarResetTempo = document.getElementById(
+    "btnCancelarResetTempo",
+  );
+
+  if (!btnResetTempo || !tempoResetModal) return;
+
+  btnResetTempo.addEventListener("click", () => {
+    btnResetTempo.classList.add("is-girando");
+
+    setTimeout(() => {
+      btnResetTempo.classList.remove("is-girando");
+      tempoResetModal.classList.remove("hidden");
+    }, 650);
+  });
+
+  if (btnCancelarResetTempo) {
+    btnCancelarResetTempo.addEventListener("click", () => {
+      tempoResetModal.classList.add("hidden");
+    });
+  }
+
+  if (btnConfirmarResetTempo) {
+    btnConfirmarResetTempo.addEventListener("click", () => {
+      resetarJornadaCapitulo5();
+    });
+  }
+}
+
+function sincronizarVisualInicialPortaFinal() {
+  const portaFinalStage = document.getElementById("encounter-porta");
+  const portaFinalImgFechada = document.getElementById("portaFinalImgFechada");
+  const portaFinalImgAberta = document.getElementById("portaFinalImgAberta");
+  const portaFinalLockZone = document.getElementById("portaFinalLockZone");
+  const portaFinalFeedback = document.getElementById("portaFinalFeedback");
+  const portaBloqueada = document.getElementById("portaBloqueada");
+  const btnEntrarDesafio = document.getElementById("btnEntrarDesafio");
+
+  if (!portaFinalStage) return;
+  if (etapaAtualCapitulo5 !== "porta-final") return;
+  if (!chaveMvpUsadaNaPorta) return;
+
+  portaFinalStage.classList.add("porta-final-aberta");
+  portaFinalStage.classList.add("is-unlocked");
+
+  document.body.classList.add("porta-final-destravada");
+
+  if (portaFinalImgFechada) {
+    portaFinalImgFechada.classList.add("hidden");
+  }
+
+  if (portaFinalImgAberta) {
+    portaFinalImgAberta.classList.remove("hidden");
+  }
+
+  if (portaFinalLockZone) {
+    portaFinalLockZone.classList.add("hidden");
+  }
+
+  if (portaBloqueada) {
+    portaBloqueada.textContent =
+      "A porta reconhece o fluxo. Clique na porta aberta para encarar o desafio final.";
+    portaBloqueada.classList.add("liberada");
+  }
+
+  if (btnEntrarDesafio) {
+    btnEntrarDesafio.classList.remove("hidden");
+  }
+
+  if (portaFinalFeedback) {
+    portaFinalFeedback.textContent =
+      "A porta está aberta. Clique nela para encarar o desafio final.";
+    portaFinalFeedback.classList.remove("hidden");
+  }
+}
+
+/* =========================================================
+   13. INICIALIZAÇÃO
+========================================================= */
+
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
+  limparEstadoLegadoCapitulo5();
+  restaurarEstadoCapitulo5Local();
+  restaurarEntradaCapitulo5();
 
- 
   await carregarEstadoHistoria();
 
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "auto",
+  });
+
   configurarRevealNoScroll();
+  configurarSequenciaIntroNoScroll();
+
+  configurarEntradaNaPonte();
   configurarNavegacaoCapitulo5();
 
   configurarDesafioDuplo();
+  configurarDropMedalhaoDuplo();
   configurarDesafioStakeholder();
+  configurarDropBacklogStakeholder();
   configurarDesafioNecrobranch();
   configurarDesafioBugInfernal();
+  configurarDropBugNoBau();
+  configurarFornalhasDaForja();
   configurarForjaMvp();
-  configurarTransformacaoDuplo();
   configurarMochila();
   atualizarMochila();
   configurarCliqueArtefatosMochila();
-
-
+  configurarResetTempoCapitulo5();
+  configurarPortaFinal();
   configurarConclusaoHistoria();
   configurarEntradaDesafio();
 
-  atualizarCardEncontroAtual(etapaAtualCapitulo5);
   atualizarProgressoCapitulo();
+  atualizarMapaPonte();
+  configurarCliquePreviewsPonte();
+  atualizarPreviewsPonte();
+
+  document.querySelectorAll(".encounter-stage").forEach((stage) => {
+    stage.classList.add("hidden");
+  });
+
+  const stageInicial = document.getElementById(
+    ENCONTROS_CAPITULO_5[etapaAtualCapitulo5]?.stageId,
+  );
+
+  if (stageInicial) {
+    stageInicial.classList.remove("hidden");
+  }
+  sincronizarVisualInicialPortaFinal();
 });

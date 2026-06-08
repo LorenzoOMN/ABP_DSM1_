@@ -2,39 +2,131 @@ const ID_MODULO = 2;
 const ROTA_DESAFIO_CAPITULO2 = "/desafio1";
 const SCROLL_OFFSET_CAPITULO2 = 150;
 
-const guardioesData = {
+const guardioesDetalhesData = {
   bardo: {
-    titulo: "O Bardo da Compreensão",
-    texto:
-      "Product Owner: maximiza o valor do produto, mantém o Product Backlog claro e ordenado e ajuda o time a entender o que deve vir primeiro.",
+    titulo: "O Bardo da Compreens&atilde;o",
+    papel: "Product Owner",
+    banner: "/assets/img/capitulo_2/banners/bardo-banner.png",
+    alt: "Bardo Product Owner em sua sala",
+    conteudo: `
+      <p>
+        O bardo sorri enquanto toca um ala&uacute;de cheio de marca&ccedil;&otilde;es.
+        Ele aponta para o <button class="texto-azul texto-link" data-scroll-to="#artefatos" type="button">Product Backlog</button> em sua mochila, como se reconhecesse a pr&oacute;pria assinatura.
+      </p>
+
+      <blockquote>
+        &ldquo;Uma lista sem ordem &eacute; apenas confus&atilde;o. Meu papel &eacute; ouvir,
+        organizar e priorizar aquilo que entrega mais valor.&rdquo;
+      </blockquote>
+
+      <p>
+        O Product Owner maximiza o valor do produto, mant&eacute;m o Product Backlog claro e ordenado
+        e ajuda o time a entender o que deve vir primeiro.
+      </p>
+    `,
   },
   corvo: {
     titulo: "O Corvo e a Cadeira Vazia",
-    texto:
-      "Scrum Master: facilita o Scrum, remove impedimentos e ajuda todos a compreenderem e aplicarem o framework corretamente.",
+    papel: "Scrum Master",
+    banner: "/assets/img/capitulo_2/banners/corvo-banner.png",
+    alt: "Corvo diante da cadeira vazia do Scrum Master",
+    conteudo: `
+      <p>
+        O corvo observa a cadeira vazia. A ampulheta brilha fraca,
+        como se o tempo estivesse escapando pelas frestas da dungeon.
+      </p>
+
+      <blockquote>
+        "N&atilde;o... n&atilde;o est&aacute; certo. O Mago do Fluxo desapareceu..."
+      </blockquote>
+
+      <p>
+        O Scrum Master garante que o Scrum seja compreendido e aplicado.
+        Ele facilita o trabalho do time, remove impedimentos, ajuda o time a melhorar seu fluxo
+        e apoia a auto-organiza&ccedil;&atilde;o.
+      </p>
+
+      <p>
+        Sem ele, todos ainda podem lutar... mas ningu&eacute;m percebe o que bloqueia a jornada.
+      </p>
+    `,
   },
   equipe: {
-    titulo: "Os Aventureiros",
-    texto:
-      "Developers: planejam, constroem e entregam Incrementos utilizáveis. São multifuncionais e compartilham a responsabilidade pela qualidade.",
+    titulo: "A Equipe",
+    papel: "Developers",
+    banner: "/assets/img/capitulo_2/banners/equipe-banner.jpeg",
+    alt: "Equipe de aventureiros na escurid&atilde;o",
+    conteudo: `
+      <p>
+        Um grupo de guerreiros, magos e arqueiros permanece em sil&ecirc;ncio.
+        O aventureiro central d&aacute; um passo &agrave; frente.
+      </p>
+
+      <blockquote>
+        &ldquo;Transformamos ideias em realidade, cada um com sua especialidade,
+        mas juntos temos o poder da multidisciplinaridade.&rdquo;
+      </blockquote>
+
+      <p>
+        Os Developers planejam, constroem e entregam o Incremento. S&atilde;o um time multifuncional
+        e compartilham a responsabilidade pela qualidade do que entregam.
+      </p>
+    `,
   },
 };
 
-const papeisData = {
-  po: {
-    titulo: "Product Owner",
-    texto:
-      "Responsável por maximizar o valor do produto e ordenar o Product Backlog conforme prioridade e valor.",
+const preparoDesafioData = {
+  refinamento: {
+    framework: {
+      numero: "I",
+      titulo: "Scrum é um framework",
+      texto:
+        "Ele não é uma lista rígida de etapas. O Scrum organiza papéis, eventos, artefatos e compromissos para lidar com produtos complexos.",
+    },
+    refinamento: {
+      numero: "II",
+      titulo: "Refinamento do Product Backlog",
+      texto:
+        "O Product Backlog precisa ser continuamente detalhado, esclarecido e reordenado para que o time entenda o que gera mais valor.",
+    },
+    planning: {
+      numero: "III",
+      titulo: "Sprint Planning",
+      texto:
+        "Quando o Product Backlog não está claro ou ordenado, a Sprint Planning perde direção e o time tem dificuldade para escolher o trabalho certo.",
+    },
+    sprintBacklog: {
+      numero: "IV",
+      titulo: "Sprint Backlog",
+      texto:
+        "Os Developers são responsáveis pelo Sprint Backlog: os itens escolhidos para a Sprint e o plano para transformá-los em Incremento.",
+    },
   },
-  sm: {
-    titulo: "Scrum Master",
-    texto:
-      "Responsável por garantir que o Scrum seja compreendido e aplicado, além de ajudar o time removendo impedimentos.",
-  },
-  devs: {
-    titulo: "Developers",
-    texto:
-      "Responsáveis por planejar, construir e entregar o Incremento durante a Sprint.",
+  conselho: {
+    po: {
+      numero: "V",
+      titulo: "Product Owner presente",
+      texto:
+        "Um Product Owner ausente prejudica a transparência, enfraquece a priorização e compromete a maximização de valor.",
+    },
+    cancelamento: {
+      numero: "VI",
+      titulo: "Cancelar uma Sprint",
+      texto:
+        "Se o objetivo da Sprint deixar de fazer sentido, o unico que pode cancelá-la é o Product Owner.",
+    },
+    qualidade: {
+      numero: "VII",
+      titulo: "Qualidade compartilhada",
+      texto:
+        "A qualidade do Incremento não pertence a uma pessoa isolada. Ela é responsabilidade de todo o Scrum Team.",
+    },
+    auto: {
+      numero: "VIII",
+      titulo: "Auto-organização",
+      texto:
+        "O Scrum não depende de um gerente de projetos tradicional distribuindo tarefas. O time se organiza para cumprir seus compromissos.",
+    },
   },
 };
 
@@ -63,10 +155,12 @@ function rolarParaElementoCapitulo2(seletor, offset = SCROLL_OFFSET_CAPITULO2) {
 }
 
 function configurarScrollCapitulo2() {
-  document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
-    botao.addEventListener("click", () => {
-      rolarParaElementoCapitulo2(botao.dataset.scrollTo);
-    });
+  document.addEventListener("click", (event) => {
+    const botao = event.target.closest("[data-scroll-to]");
+
+    if (!botao) return;
+
+    rolarParaElementoCapitulo2(botao.dataset.scrollTo);
   });
 }
 
@@ -99,6 +193,57 @@ function configurarMangaIntroCapitulo2() {
   atualizarFrases();
   window.addEventListener("scroll", atualizarFrases, { passive: true });
   window.addEventListener("resize", atualizarFrases);
+}
+
+function configurarMangaFinalCapitulo2() {
+  const secao = document.querySelector(".guardioes-final-scroll");
+  const palco = secao?.querySelector(".guardioes-final-stage");
+  const barraProgresso = document.querySelector(".capitulo2-progress-wrap");
+  const paineis = Array.from(document.querySelectorAll("[data-final-panel]"));
+  const imagens = document.querySelectorAll(".guardioes-final-image-wrap img");
+
+  if (!secao || !palco || paineis.length === 0) return;
+
+  imagens.forEach((imagem) => {
+    imagem.addEventListener("error", () => {
+      imagem.closest(".guardioes-final-image-wrap")?.classList.add("is-missing");
+    });
+  });
+
+  function atualizarPaineis() {
+    const rect = secao.getBoundingClientRect();
+    const viewportAltura = window.innerHeight;
+    const topoNaturalPalco = rect.top + palco.offsetTop;
+    const entradaPalco = viewportAltura - topoNaturalPalco;
+    const alturaRolavel = secao.offsetHeight - window.innerHeight;
+    const progresso = Math.min(1, Math.max(0, -rect.top / Math.max(alturaRolavel, 1)));
+    const indiceAtual = Math.min(paineis.length - 1, Math.floor(progresso * paineis.length));
+    const escurecerEntrada = Math.min(1, Math.max(0, entradaPalco / (viewportAltura * 0.42)));
+    const revelarCena = Math.min(1, Math.max(0, (entradaPalco - viewportAltura * 0.72) / (viewportAltura * 0.24)));
+    const opacidadeCortina = revelarCena > 0 ? 1 - revelarCena : escurecerEntrada;
+    const opacidadeCena = revelarCena;
+    const opacidadeTexto = Math.min(1, Math.max(0, (opacidadeCortina - 0.58) / 0.34)) * (1 - revelarCena);
+
+    paineis.forEach((painel, index) => {
+      painel.classList.toggle("is-active", index === indiceAtual);
+      painel.classList.toggle("is-past", index < indiceAtual);
+    });
+
+    secao.dataset.finalIndex = String(indiceAtual);
+    secao.style.setProperty("--guardioes-final-curtain", String(opacidadeCortina));
+    secao.style.setProperty("--guardioes-final-stage-opacity", String(opacidadeCena));
+    secao.style.setProperty("--guardioes-final-text-opacity", String(opacidadeTexto));
+    secao.classList.toggle("is-at-portal", indiceAtual === paineis.length - 1);
+
+    if (barraProgresso) {
+      const deveOcultarBarra = topoNaturalPalco < viewportAltura * 0.82 && rect.bottom > viewportAltura * 0.18;
+      barraProgresso.classList.toggle("is-hidden-for-final", deveOcultarBarra);
+    }
+  }
+
+  atualizarPaineis();
+  window.addEventListener("scroll", atualizarPaineis, { passive: true });
+  window.addEventListener("resize", atualizarPaineis);
 }
 
 function configurarRevealCapitulo2() {
@@ -141,34 +286,59 @@ function configurarProgressoCapitulo2() {
 
 function configurarGuardioes() {
   const card = document.getElementById("guardiaoInfo");
+  const botoes = document.querySelectorAll(".guardiao-personagem");
 
-  document.querySelectorAll(".guardiao-personagem").forEach((botao) => {
+  botoes.forEach((botao) => {
     botao.addEventListener("click", () => {
-      const guardiao = guardioesData[botao.dataset.guardiao];
+      const guardiao = guardioesDetalhesData[botao.dataset.guardiao];
 
       if (!guardiao || !card) return;
 
+      botoes.forEach((botaoGuardiao) => {
+        botaoGuardiao.classList.toggle("is-selected", botaoGuardiao === botao);
+      });
+
       card.innerHTML = `
-        <h3>${guardiao.titulo}</h3>
-        <p>${guardiao.texto}</p>
+        <div class="personagem-banner guardiao-banner">
+          <img src="${guardiao.banner}" alt="${guardiao.alt}">
+        </div>
+
+        <div class="story-text personagem-texto guardiao-texto">
+          <h2>${guardiao.titulo}</h2>
+          <p class="papel-kicker">${guardiao.papel}</p>
+          ${guardiao.conteudo}
+        </div>
       `;
+
+      card.classList.add("guardiao-info-aberto");
+      rolarParaElementoCapitulo2("#guardiaoInfo", 110);
     });
   });
 }
 
-function configurarCardsDePapeis() {
-  const card = document.getElementById("papelInfo");
+function configurarPreparoDesafio() {
+  const experiencias = document.querySelectorAll("[data-pre-desafio]");
 
-  document.querySelectorAll(".papel-card").forEach((papelCard) => {
-    papelCard.addEventListener("click", () => {
-      const papel = papeisData[papelCard.dataset.papel];
+  experiencias.forEach((experiencia) => {
+    const tipo = experiencia.dataset.preDesafio;
+    const painel = experiencia.querySelector(".pre-desafio-painel");
+    const botoes = experiencia.querySelectorAll("[data-conceito], [data-conselho]");
 
-      if (!papel || !card) return;
+    botoes.forEach((botao) => {
+      botao.addEventListener("click", () => {
+        const chave = botao.dataset.conceito || botao.dataset.conselho;
+        const conceito = preparoDesafioData[tipo]?.[chave];
 
-      card.innerHTML = `
-        <h3>${papel.titulo}</h3>
-        <p>${papel.texto}</p>
-      `;
+        if (!conceito || !painel) return;
+
+        botoes.forEach((item) => item.classList.toggle("is-active", item === botao));
+
+        painel.innerHTML = `
+          <span class="pre-desafio-numero">${conceito.numero}</span>
+          <h3>${conceito.titulo}</h3>
+          <p>${conceito.texto}</p>
+        `;
+      });
     });
   });
 }
@@ -210,7 +380,7 @@ async function concluirHistoriaCapitulo2() {
     localStorage.setItem("moduloAtual", String(ID_MODULO));
 
     if (status) {
-      status.textContent = "História concluída. A segunda porta foi liberada.";
+      status.textContent = "Os tres guardioes responderam. O portal esta aberto.";
     }
 
     if (btnConcluir) {
@@ -226,7 +396,7 @@ async function concluirHistoriaCapitulo2() {
     }
 
     if (tooltip) {
-      tooltip.textContent = "A porta se abriu... os guardiões chamam pelo seu teste.";
+      tooltip.textContent = "Atravesse. O Julgamento dos Guardioes comeca do outro lado.";
     }
   } catch (error) {
     console.error(error);
@@ -293,11 +463,12 @@ function configurarDesbloqueioNavbarCapitulo2() {
 
 document.addEventListener("DOMContentLoaded", () => {
   configurarMangaIntroCapitulo2();
+  configurarMangaFinalCapitulo2();
   configurarScrollCapitulo2();
   configurarRevealCapitulo2();
   configurarProgressoCapitulo2();
   configurarGuardioes();
-  configurarCardsDePapeis();
+  configurarPreparoDesafio();
   configurarConclusaoCapitulo2();
   configurarDesbloqueioNavbarCapitulo2();
   ajustarHashInicialCapitulo2();
