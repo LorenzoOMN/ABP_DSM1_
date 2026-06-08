@@ -118,17 +118,11 @@ function atualizarAtalhos(modulos) {
 
   const primeiroModulo = modulos.find((modulo) => modulo.id_modulo === 1);
 
-  const artefatosLiberados =
-    primeiroModulo &&
-    primeiroModulo.historia_concluida &&
-    !primeiroModulo.desafio_atual;
+  const artefatosLiberados = Boolean(primeiroModulo?.historia_concluida);
 
-  if (!artefatosLiberados) {
-    btnArtefatos.disabled = true;
-    btnArtefatos.classList.add("bloqueado");
-  } else {
-    btnArtefatos.disabled = false;
-    btnArtefatos.classList.remove("bloqueado");
+  if (btnArtefatos) {
+    btnArtefatos.disabled = !artefatosLiberados;
+    btnArtefatos.classList.toggle("bloqueado", !artefatosLiberados);
   }
 
   const certificadoLiberado = modulos.some(
