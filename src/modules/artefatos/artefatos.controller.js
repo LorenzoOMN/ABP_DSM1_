@@ -1,9 +1,5 @@
-// importando o repositório de artefatos.
 const artefatosService = require("./artefatos.service");
 
-// ============================================================================
-// CONTROLLER: LISTAR ARTEFATOS - API (GET /api/artefatos) - Retorna JSON
-// ============================================================================
 async function listarArtefatosController(req, res) {
   const idUsuario = req.usuario?.id_usuario;
 
@@ -20,23 +16,23 @@ async function listarArtefatosController(req, res) {
   }
 }
 
-// ============================================================================
-// CONTROLLER: DETALHE DO ARTEFATO - API (GET /api/artefatos/:id) - Retorna JSON
-// ============================================================================
 async function detalheArtefatoController(req, res) {
   const idUsuario = req.usuario?.id_usuario;
-  const idArtefato = parseInt(req.params.id);
+  const idArtefato = Number(req.params.id);
 
   if (!idUsuario) {
     return res.status(401).json({ message: "Usuário não autenticado" });
   }
 
-  if (!idArtefato || isNaN(idArtefato)) {
+  if (!Number.isInteger(idArtefato) || idArtefato <= 0) {
     return res.status(400).json({ message: "ID inválido" });
   }
 
   try {
-    const artefato = await artefatosService.obterArtefato(idUsuario, idArtefato);
+    const artefato = await artefatosService.obterArtefato(
+      idUsuario,
+      idArtefato,
+    );
 
     if (!artefato) {
       return res.status(404).json({ message: "Artefato não encontrado" });
@@ -49,10 +45,74 @@ async function detalheArtefatoController(req, res) {
   }
 }
 
-// ============================================================================
-// EXPORTAÇÕES (ATUALIZADAS)
-// ============================================================================
+async function detalheArtefatoPorModuloController(req, res) {
+  const idUsuario = req.usuario?.id_usuario;
+  const idModulo = Number(req.params.idModulo);
+
+  if (!idUsuario) {
+    return res.status(401).json({ message: "Usuário não autenticado" });
+  }
+
+  if (!Number.isInteger(idModulo) || idModulo <= 0) {
+    return res.status(400).json({ message: "ID do módulo inválido" });
+  }
+
+  try {
+    const artefato = await artefatosService.obterArtefatoPorModulo(
+      idUsuario,
+      idModulo,
+    );
+
+    if (!artefato) {
+      return res.status(404).json({ message: "Artefato não encontrado" });
+    }
+
+    return res.status(200).json({ success: true, data: artefato });
+  } catch (error) {
+    console.error("Erro em detalheArtefatoPorModuloController:", error);
+    return res.status(500).json({ success: false, message: "Erro interno" });
+  }
+}
+
+async function coletarArtefatoController(req, res) {
+  const idUsuario = req.usuario?.id_usuario;
+  const idArtefato = Number(req.params.id);
+
+  if (!idUsuario) {
+    return res.status(401).json({ message: "Usuário não autenticado" });
+  }
+
+  if (!Number.isInteger(idArtefato) || idArtefato <= 0) {
+    return res.status(400).json({ message: "ID inválido" });
+  }
+
+  try {
+    const artefato = await artefatosService.coletarArtefatoDoUsuario(
+      idUsuario,
+      idArtefato,
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Artefato coletado com sucesso",
+      data: artefato,
+    });
+  } catch (error) {
+    if (error.statusCode) {
+      return res.status(error.statusCode).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    console.error("Erro em coletarArtefatoController:", error);
+    return res.status(500).json({ success: false, message: "Erro interno" });
+  }
+}
+
 module.exports = {
   listarArtefatosController,
   detalheArtefatoController,
+  detalheArtefatoPorModuloController,
+  coletarArtefatoController,
 };

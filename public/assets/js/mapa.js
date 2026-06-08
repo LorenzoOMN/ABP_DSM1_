@@ -118,17 +118,11 @@ function atualizarAtalhos(modulos) {
 
   const primeiroModulo = modulos.find((modulo) => modulo.id_modulo === 1);
 
-  const artefatosLiberados =
-    primeiroModulo &&
-    primeiroModulo.historia_concluida &&
-    !primeiroModulo.desafio_atual;
+  const artefatosLiberados = Boolean(primeiroModulo?.historia_concluida);
 
-  if (!artefatosLiberados) {
-    btnArtefatos.disabled = true;
-    btnArtefatos.classList.add("bloqueado");
-  } else {
-    btnArtefatos.disabled = false;
-    btnArtefatos.classList.remove("bloqueado");
+  if (btnArtefatos) {
+    btnArtefatos.disabled = !artefatosLiberados;
+    btnArtefatos.classList.toggle("bloqueado", !artefatosLiberados);
   }
 
   const certificadoLiberado = modulos.some(
@@ -179,9 +173,25 @@ function criarTituloModulo(idModulo) {
   return titulos[idModulo] || `Capítulo ${idModulo}`;
 }
 
+function limparEstadoVisualCapitulo5() {
+  sessionStorage.removeItem("scrum_dungeon_capitulo5_estado");
+  sessionStorage.removeItem("scrum_dungeon_capitulo5_entrada");
+
+  localStorage.removeItem("scrum_dungeon_capitulo5_estado");
+  localStorage.removeItem("scrum_dungeon_capitulo5_entrada");
+}
+
 function abrirHistoria(idModulo) {
-  localStorage.setItem("moduloAtual", idModulo);
-  window.location.href = `/capitulo${idModulo}`;
+  const modulo = Number(idModulo);
+
+  localStorage.setItem("moduloAtual", modulo);
+
+  if (modulo === 5) {
+     sessionStorage.removeItem("scrum_dungeon_capitulo5_replay_temporal");
+    limparEstadoVisualCapitulo5();
+  }
+
+  window.location.href = `/capitulo${modulo}`;
 }
 
 function abrirDesafio(idModulo) {

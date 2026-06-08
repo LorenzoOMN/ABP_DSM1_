@@ -1,29 +1,48 @@
-// importando o repositório de artefatos.
 const artefatosRepository = require("./artefatos.repository");
 
-// Orquestra a busca de artefatos aplicando regras de negócio (se houver)
-// @param {number} idUsuario - ID do usuário logado
-// @returns {Promise<Array>} - Lista de artefatos processada
 async function listarArtefatosDoUsuario(idUsuario) {
-  // Aqui você poderia filtrar, ordenar ou transformar os dados
-  // Antes de enviar para o controller.
-  // Exemplo: if (artefato.desbloqueado) { ... }
-  
-  const artefatos = await artefatosRepository.buscarArtefatosPorUsuario(idUsuario);
-  
-  return artefatos;
+  return await artefatosRepository.buscarArtefatosPorUsuario(idUsuario);
 }
 
-// Orquestra a busca de um artefato específico
-// @param {number} idUsuario 
-// @param {number} idArtefato 
-// @returns {Promise<Object|null>} 
 async function obterArtefato(idUsuario, idArtefato) {
   return await artefatosRepository.buscarArtefatoPorId(idUsuario, idArtefato);
 }
 
-// exportando as funções para outros arquivos.
+async function obterArtefatoPorModulo(idUsuario, idModulo) {
+  return await artefatosRepository.buscarArtefatoPorModulo(idUsuario, idModulo);
+}
+
+async function coletarArtefatoDoUsuario(idUsuario, idArtefato) {
+  const artefato = await artefatosRepository.buscarArtefatoPorId(
+    idUsuario,
+    idArtefato,
+  );
+
+  if (!artefato) {
+    const error = new Error("Artefato não encontrado");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const podeColetar = await artefatosRepository.usuarioPodeColetarArtefato(
+    idUsuario,
+    idArtefato,
+  );
+
+  if (!podeColetar) {
+    const error = new Error("Artefato ainda não pode ser coletado");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  await artefatosRepository.coletarArtefato(idUsuario, idArtefato);
+
+  return await artefatosRepository.buscarArtefatoPorId(idUsuario, idArtefato);
+}
+
 module.exports = {
   listarArtefatosDoUsuario,
   obterArtefato,
+  obterArtefatoPorModulo,
+  coletarArtefatoDoUsuario,
 };

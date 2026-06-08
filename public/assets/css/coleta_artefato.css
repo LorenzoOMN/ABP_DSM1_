@@ -1,0 +1,417 @@
+/* =========================================================
+   COLETA DE ARTEFATO — BASE
+========================================================= */
+
+.corpo-coleta-artefato {
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: #f7e5bd;
+  background:
+    radial-gradient(circle at top, rgba(214, 177, 92, 0.12), transparent 34rem),
+    linear-gradient(180deg, #130b08 0%, #070403 100%);
+}
+
+.coleta-artefato-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+}
+
+.coleta-artefato-card {
+  width: min(1120px, 100%);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid rgba(214, 177, 92, 0.32);
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(37, 23, 14, 0.95), rgba(12, 7, 5, 0.98)),
+    rgba(0, 0, 0, 0.72);
+  box-shadow:
+    0 0 32px rgba(214, 177, 92, 0.12),
+    0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.coleta-kicker {
+  margin: 0 0 1.5rem;
+  color: #d6b15c;
+  font-family: "Cinzel", serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   COLETA DE ARTEFATO — LAYOUT CINEMATOGRÁFICO
+========================================================= */
+
+.coleta-layout--vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.coleta-heading {
+  width: min(900px, 100%);
+  text-align: center;
+}
+
+.coleta-modulo {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: #cfae72;
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.coleta-titulo-principal {
+  margin: 0;
+  color: #ffe8b7;
+  font-family: "Cinzel", serif;
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 0.96;
+  text-shadow:
+    0 0 18px rgba(214, 177, 92, 0.24),
+    0 8px 22px rgba(0, 0, 0, 0.55);
+}
+
+.coleta-visual {
+  width: min(980px, 100%);
+  display: flex;
+  justify-content: center;
+}
+
+.coleta-image-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(214, 177, 92, 0.5);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at center, rgba(214, 177, 92, 0.18), transparent 62%),
+    rgba(0, 0, 0, 0.42);
+  box-shadow:
+    0 0 42px rgba(214, 177, 92, 0.2),
+    0 30px 70px rgba(0, 0, 0, 0.62),
+    inset 0 0 32px rgba(255, 232, 183, 0.07);
+}
+
+.coleta-artefato-imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.coleta-copy {
+  width: min(820px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.coleta-descricao {
+  max-width: 720px;
+  margin: 0 auto 1.25rem;
+  color: #f4d99d;
+  font-size: 1.12rem;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.coleta-narrativa {
+  max-width: 760px;
+  margin: 0 auto 1.6rem;
+  color: rgba(255, 239, 205, 0.9);
+  font-size: 1.02rem;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.coleta-narrativa p {
+  margin: 0 0 1rem;
+}
+
+.coleta-narrativa p:last-child {
+  margin-bottom: 0;
+}
+
+.coleta-narrativa strong {
+  color: #ffe8b7;
+}
+
+.coleta-narrativa blockquote {
+  margin: 1.15rem 0;
+  padding: 1rem 1.2rem;
+  border-left: 3px solid rgba(214, 177, 92, 0.72);
+  border-radius: 16px;
+  background:
+    linear-gradient(90deg, rgba(214, 177, 92, 0.12), rgba(214, 177, 92, 0.03));
+  color: #ffe8b7;
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  text-align: left;
+}
+
+.coleta-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 0.6rem;
+}
+
+/* =========================================================
+   COLETA DE ARTEFATO — BOTÃO
+========================================================= */
+
+.btn-coletar-artefato {
+  min-width: 260px;
+  padding: 0.95rem 1.5rem;
+  border: 1px solid rgba(214, 177, 92, 0.58);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(118, 72, 24, 0.96),
+    rgba(48, 28, 10, 0.98)
+  );
+  color: #ffe8b7;
+  font-family: "Cinzel", serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 0 18px rgba(214, 177, 92, 0.18),
+    0 14px 28px rgba(0, 0, 0, 0.32);
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.btn-coletar-artefato:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 26px rgba(214, 177, 92, 0.25),
+    0 18px 36px rgba(0, 0, 0, 0.4);
+}
+
+.btn-coletar-artefato:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+/* =========================================================
+   COLETA DE ARTEFATO — ENTRADA EM SEQUÊNCIA
+========================================================= */
+
+.coleta-heading,
+.coleta-visual,
+.coleta-descricao,
+.coleta-narrativa,
+.coleta-actions {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(10px);
+}
+
+.coleta-heading.is-visible,
+.coleta-visual.is-visible,
+.coleta-descricao.is-visible,
+.coleta-narrativa.is-visible,
+.coleta-actions.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease,
+    filter 0.7s ease;
+}
+
+/* =========================================================
+   COLETA DE ARTEFATO — TOAST DE COLETA
+========================================================= */
+
+.toast-artefato {
+  position: fixed;
+  left: 50%;
+  bottom: 5.5rem;
+  z-index: 9999;
+  width: min(420px, calc(100% - 2rem));
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  overflow: hidden;
+  border: 1px solid rgba(214, 177, 92, 0.52);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(36, 22, 12, 0.98), rgba(8, 5, 4, 0.98)),
+    rgba(0, 0, 0, 0.9);
+  box-shadow:
+    0 0 28px rgba(214, 177, 92, 0.2),
+    0 22px 48px rgba(0, 0, 0, 0.58),
+    inset 0 1px 0 rgba(255, 236, 188, 0.08);
+  transform: translate(-50%, 24px) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+}
+
+.toast-artefato.show {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.toast-artefato-glow {
+  position: absolute;
+  inset: auto -20% -70% -20%;
+  height: 120px;
+  background: radial-gradient(circle, rgba(214, 177, 92, 0.28), transparent 68%);
+  pointer-events: none;
+}
+
+.toast-artefato-icone {
+  position: relative;
+  z-index: 1;
+  width: 68px;
+  height: 68px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  padding: 0.45rem;
+  border: 1px solid rgba(214, 177, 92, 0.38);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle, rgba(214, 177, 92, 0.2), transparent 68%),
+    rgba(0, 0, 0, 0.38);
+  filter: drop-shadow(0 0 16px rgba(214, 177, 92, 0.32));
+}
+
+.toast-artefato-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.toast-artefato-copy strong {
+  color: #d6b15c;
+  font-family: "Cinzel", serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.toast-artefato-copy span {
+  color: #ffe8b7;
+  font-family: "Cinzel", serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* =========================================================
+   COLETA DE ARTEFATO — TRANSIÇÃO DE SAÍDA
+========================================================= */
+
+.coleta-transicao {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background:
+    radial-gradient(circle at center, rgba(214, 177, 92, 0.18), transparent 34rem),
+    rgba(5, 3, 2, 0.92);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.65s ease;
+}
+
+.coleta-transicao.show {
+  opacity: 1;
+}
+
+.coleta-transicao-card {
+  width: min(460px, 100%);
+  padding: 2rem;
+  border: 1px solid rgba(214, 177, 92, 0.45);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(36, 22, 12, 0.98), rgba(8, 5, 4, 0.98));
+  text-align: center;
+  box-shadow:
+    0 0 34px rgba(214, 177, 92, 0.22),
+    0 22px 50px rgba(0, 0, 0, 0.58);
+}
+
+.coleta-transicao-card strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #ffe8b7;
+  font-family: "Cinzel", serif;
+  font-size: 1.35rem;
+}
+
+.coleta-transicao-card span {
+  color: rgba(255, 239, 205, 0.82);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   COLETA DE ARTEFATO — SEGURANÇA DE NAVEGAÇÃO
+========================================================= */
+
+.corpo-coleta-artefato .btn-voltar,
+.corpo-coleta-artefato .botao-voltar,
+.corpo-coleta-artefato .back-button,
+.corpo-coleta-artefato [data-voltar] {
+  display: none !important;
+}
+
+/* =========================================================
+   COLETA DE ARTEFATO — RESPONSIVO
+========================================================= */
+
+@media (max-width: 680px) {
+  .coleta-artefato-page {
+    padding: 2rem 1rem 5.5rem;
+  }
+
+  .coleta-artefato-card {
+    padding: 1.2rem;
+    border-radius: 22px;
+  }
+
+  .coleta-image-frame {
+    aspect-ratio: 4 / 5;
+    border-radius: 24px;
+  }
+
+  .coleta-narrativa,
+  .coleta-narrativa blockquote {
+    text-align: left;
+  }
+
+  .btn-coletar-artefato {
+    width: 100%;
+  }
+
+  .toast-artefato {
+    bottom: 5rem;
+  }
+}

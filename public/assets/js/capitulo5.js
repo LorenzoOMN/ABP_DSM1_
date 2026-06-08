@@ -37,6 +37,20 @@ let historia5ConcluidaNoBackend = false;
 
 const STORAGE_CAPITULO5 = "scrum_dungeon_capitulo5_estado";
 const STORAGE_CAPITULO5_ENTRADA = "scrum_dungeon_capitulo5_entrada";
+const STORAGE_CAPITULO5_REPLAY = "scrum_dungeon_capitulo5_replay_temporal";
+
+function estaEmReplayTemporalCapitulo5() {
+  return sessionStorage.getItem(STORAGE_CAPITULO5_REPLAY) === "true";
+}
+
+function encerrarReplayTemporalCapitulo5() {
+  sessionStorage.removeItem(STORAGE_CAPITULO5_REPLAY);
+}
+
+function limparEstadoLegadoCapitulo5() {
+  localStorage.removeItem(STORAGE_CAPITULO5);
+  localStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
+}
 
 const estadoForja = {
   slots: {
@@ -110,14 +124,13 @@ const bugPontosAnalise = {
   },
 };
 
-
 /* =========================================================
    2. PERSISTÊNCIA LOCAL E BACKEND
    funções que definem e mexem no armazenamento local
 ========================================================= */
 
 function salvarEstadoCapitulo5Local() {
-  localStorage.setItem(
+  sessionStorage.setItem(
     STORAGE_CAPITULO5,
     JSON.stringify({
       etapaAtualCapitulo5,
@@ -129,7 +142,7 @@ function salvarEstadoCapitulo5Local() {
 }
 
 function restaurarEstadoCapitulo5Local() {
-  const bruto = localStorage.getItem(STORAGE_CAPITULO5);
+  const bruto = sessionStorage.getItem(STORAGE_CAPITULO5);
   if (!bruto) return;
 
   try {
@@ -158,21 +171,55 @@ function restaurarEstadoCapitulo5Local() {
 }
 
 function resetarJornadaCapitulo5() {
+  sessionStorage.setItem(STORAGE_CAPITULO5_REPLAY, "true");
+
+  sessionStorage.removeItem(STORAGE_CAPITULO5);
+  sessionStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
+
   localStorage.removeItem(STORAGE_CAPITULO5);
   localStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
+
+  etapaAtualCapitulo5 = "duplo";
+  etapasConcluidas.clear();
+
+  estadoForja.slots.aval = false;
+  estadoForja.slots.ampulheta = false;
+  estadoForja.slots.bau = false;
+  estadoForja.concluida = false;
+
+  chaveMvpUsadaNaPorta = false;
+
   window.location.reload();
 }
 
+function aplicarEstadoCapitulo5ConcluidoPeloBackend() {
+  historia5ConcluidaNoBackend = true;
+
+  etapasConcluidas.clear();
+  ETAPAS_CAPITULO_5.forEach((etapa) => etapasConcluidas.add(etapa));
+
+  etapaAtualCapitulo5 = "porta-final";
+
+  estadoForja.slots.aval = true;
+  estadoForja.slots.ampulheta = true;
+  estadoForja.slots.bau = true;
+  estadoForja.concluida = true;
+
+  chaveMvpUsadaNaPorta = true;
+
+  salvarEstadoCapitulo5Local();
+  salvarEntradaCapitulo5();
+}
 
 function salvarEntradaCapitulo5() {
-  localStorage.setItem(STORAGE_CAPITULO5_ENTRADA, "true");
+  sessionStorage.setItem(STORAGE_CAPITULO5_ENTRADA, "true");
 }
 
 function restaurarEntradaCapitulo5() {
   const capitulo5Page = document.getElementById("capitulo5Page");
   const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
 
-  const entrou = localStorage.getItem(STORAGE_CAPITULO5_ENTRADA) === "true";
+  const entrou = sessionStorage.getItem(STORAGE_CAPITULO5_ENTRADA) === "true";
 
   if (!entrou) return;
 
@@ -276,23 +323,36 @@ async function carregarEstadoHistoria() {
 
     historia5ConcluidaNoBackend = true;
 
+    if (estaEmReplayTemporalCapitulo5()) {
+      if (btnConcluir) {
+        btnConcluir.classList.add("hidden");
+      }
+
+      if (btnEntrarDesafio) {
+        btnEntrarDesafio.classList.add("hidden");
+      }
+
+      if (status) {
+        status.textContent =
+          "História já registrada no sistema. Replay temporal ativo.";
+      }
+
+      return;
+    }
+
+    aplicarEstadoCapitulo5ConcluidoPeloBackend();
+
     if (btnConcluir) {
       btnConcluir.classList.add("hidden");
     }
 
-    /*
-      Importante:
-      Mesmo que a história já esteja concluída no backend,
-      a porta final desta cena não abre sozinha.
-      O jogador precisa usar a Chave MVP localmente para repetir o fluxo.
-    */
     if (btnEntrarDesafio) {
-      btnEntrarDesafio.classList.add("hidden");
+      btnEntrarDesafio.classList.remove("hidden");
     }
 
     if (status) {
       status.textContent =
-        "História já registrada no sistema. Para repetir a cena, use a Chave MVP na fechadura.";
+        "História já registrada no sistema. A porta final está liberada.";
     }
   } catch (error) {
     console.error(error);
@@ -346,7 +406,6 @@ function etapaEstaLiberada(step) {
 
   return etapasConcluidas.has(etapaAnterior);
 }
-
 
 /* =========================================================
    4. ANIMAÇÕES GLOBAIS E ENTRADA DO CAPÍTULO
@@ -449,7 +508,6 @@ function configurarEntradaNaPonte() {
     }, 520);
   });
 }
-
 
 /* =========================================================
    5. MAPA, NAVEGAÇÃO E PROGRESSO
@@ -735,7 +793,6 @@ function atualizarPosicaoJogador() {
   const classeAtual = mapaClasse[etapaAtualCapitulo5] || "ponte-player--duplo";
   pontePlayer.classList.add(classeAtual);
 }
-
 
 /* =========================================================
    6. MOCHILA E ARTEFATOS
@@ -1073,15 +1130,15 @@ function configurarCliqueArtefatosMochila() {
 }
 
 function esconderArtefatoDaMochila(chaveArtefato) {
-    const item = document.querySelector(
-      `.mochila-item[data-artefato="${chaveArtefato}"]`,
-    );
+  const item = document.querySelector(
+    `.mochila-item[data-artefato="${chaveArtefato}"]`,
+  );
 
-    if (!item) return;
+  if (!item) return;
 
-    item.classList.add("hidden");
-    item.classList.remove("destacado", "convocado", "is-over");
-    item.removeAttribute("draggable");
+  item.classList.add("hidden");
+  item.classList.remove("destacado", "convocado", "is-over");
+  item.removeAttribute("draggable");
 }
 
 function destacarArtefatoTemporariamente(nomeArtefato) {
@@ -1098,8 +1155,6 @@ function destacarArtefatoTemporariamente(nomeArtefato) {
 /* =========================================================
    7. DESAFIO 1 — O DUPLO
 ========================================================= */
-
-
 
 const duploRolesData = {
   po: {
@@ -1176,7 +1231,6 @@ const duploRoleProgress = {
   sm: false,
   dev: false,
 };
-
 
 function configurarDesafioDuplo() {
   const btnMostrarDesafioDuplo = document.getElementById(
@@ -1650,7 +1704,6 @@ function configurarDropBacklogStakeholder() {
   });
 }
 
-
 /* =========================================================
    9. DESAFIO 3 — NECROBRANCH (*o desafio pode ser melhor desenvolvido futuramente)
 ========================================================= */
@@ -1825,7 +1878,6 @@ function configurarDesafioNecrobranch() {
 /* =========================================================
    10. DESAFIO 4 — BUG INFERNAL
 ========================================================= */
-
 
 function configurarDesafioBugInfernal() {
   const btnIniciarBug = document.getElementById("btnIniciarBug");
@@ -2309,46 +2361,46 @@ function configurarForjaMvp() {
     });
   }
 
-function atualizarInterfaceForja() {
-  ordemForja.forEach((chaveArtefato) => {
-    renderizarSlotForja(chaveArtefato);
-  });
+  function atualizarInterfaceForja() {
+    ordemForja.forEach((chaveArtefato) => {
+      renderizarSlotForja(chaveArtefato);
+    });
 
-  atualizarDestaqueProximoSlot();
+    atualizarDestaqueProximoSlot();
 
-  const totalPreenchidos = contarArtefatosPosicionados();
+    const totalPreenchidos = contarArtefatosPosicionados();
 
-  if (totalPreenchidos === 0) {
-    definirFeedbackForja(
-      "Arraste os artefatos transformados da mochila para os receptáculos da Forja.",
-    );
+    if (totalPreenchidos === 0) {
+      definirFeedbackForja(
+        "Arraste os artefatos transformados da mochila para os receptáculos da Forja.",
+      );
+    }
+
+    if (totalPreenchidos > 0 && totalPreenchidos < 3) {
+      const proximoArtefato = obterProximoArtefatoEsperado();
+      const nomeProximo = artefatosForja[proximoArtefato]?.nome;
+
+      definirFeedbackForja(
+        `Artefatos posicionados: ${totalPreenchidos}/3. Próximo artefato esperado: ${nomeProximo}.`,
+        "sucesso",
+      );
+    }
+
+    if (totalPreenchidos === 3) {
+      btnForjarMvp.disabled = false;
+      btnForjarMvp.classList.add("is-pronto");
+
+      definirFeedbackForja(
+        "A Forja reconhece a sequência correta. O MVP pode ser criado.",
+        "sucesso",
+      );
+    } else {
+      btnForjarMvp.disabled = true;
+      btnForjarMvp.classList.remove("is-pronto");
+    }
   }
 
-  if (totalPreenchidos > 0 && totalPreenchidos < 3) {
-    const proximoArtefato = obterProximoArtefatoEsperado();
-    const nomeProximo = artefatosForja[proximoArtefato]?.nome;
-
-    definirFeedbackForja(
-      `Artefatos posicionados: ${totalPreenchidos}/3. Próximo artefato esperado: ${nomeProximo}.`,
-      "sucesso",
-    );
-  }
-
-  if (totalPreenchidos === 3) {
-    btnForjarMvp.disabled = false;
-    btnForjarMvp.classList.add("is-pronto");
-
-    definirFeedbackForja(
-      "A Forja reconhece a sequência correta. O MVP pode ser criado.",
-      "sucesso",
-    );
-  } else {
-    btnForjarMvp.disabled = true;
-    btnForjarMvp.classList.remove("is-pronto");
-  }
-}
-
-   function obterMensagemErroForja(artefatoArrastado, artefatoAceito) {
+  function obterMensagemErroForja(artefatoArrastado, artefatoAceito) {
     const configAceito = artefatosForja[artefatoAceito];
     const configArrastado = artefatosForja[artefatoArrastado];
 
@@ -2459,38 +2511,38 @@ function atualizarInterfaceForja() {
     });
   });
 
- btnForjarMvp.addEventListener("click", () => {
-  const totalPreenchidos = contarArtefatosPosicionados();
+  btnForjarMvp.addEventListener("click", () => {
+    const totalPreenchidos = contarArtefatosPosicionados();
 
-  if (totalPreenchidos < 3) {
-    definirFeedbackForja(
-      "A Forja ainda não está completa. Acenda os três receptáculos antes de criar o MVP.",
-      "erro",
-    );
-    return;
-  }
+    if (totalPreenchidos < 3) {
+      definirFeedbackForja(
+        "A Forja ainda não está completa. Acenda os três receptáculos antes de criar o MVP.",
+        "erro",
+      );
+      return;
+    }
 
-  estadoForja.concluida = true;
+    estadoForja.concluida = true;
 
-  forjaDropStage.classList.add("hidden");
-  forjaRevelacaoStage.classList.remove("hidden");
+    forjaDropStage.classList.add("hidden");
+    forjaRevelacaoStage.classList.remove("hidden");
 
-  const forjaRevealCopy = document.getElementById("forjaRevealCopy");
+    const forjaRevealCopy = document.getElementById("forjaRevealCopy");
 
-  if (forjaRevealCopy) {
-    setTimeout(() => {
-      forjaRevealCopy.classList.add("show");
-    }, 250);
-  }
+    if (forjaRevealCopy) {
+      setTimeout(() => {
+        forjaRevealCopy.classList.add("show");
+      }, 250);
+    }
 
-  atualizarMochila();
-  salvarEstadoCapitulo5Local();
+    atualizarMochila();
+    salvarEstadoCapitulo5Local();
 
-  forjaRevelacaoStage.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
+    forjaRevelacaoStage.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   });
-});
 
   atualizarInterfaceForja();
 
@@ -2505,11 +2557,9 @@ function atualizarInterfaceForja() {
   }
 }
 
-
 /* =========================================================
    12. DESFECHO — PORTA FINAL
 ========================================================= */
-
 
 function configurarPortaFinal() {
   const btnIrPortaFinal = document.getElementById("btnIrPortaFinal");
@@ -2686,9 +2736,17 @@ function configurarPortaFinal() {
         "A dungeon está registrando sua jornada final...";
     }
 
-    await concluirHistoria();
+    if (historia5ConcluidaNoBackend) {
+      if (statusHistoria) {
+        statusHistoria.textContent =
+          "História já registrada no sistema. A porta final foi liberada.";
+      }
+    } else {
+      await concluirHistoria();
+      historia5ConcluidaNoBackend = true;
+    }
 
-    historia5ConcluidaNoBackend = true;
+    encerrarReplayTemporalCapitulo5();
 
     if (btnEntrarDesafio) {
       btnEntrarDesafio.classList.remove("hidden");
@@ -2861,8 +2919,11 @@ function sincronizarVisualInicialPortaFinal() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
+  limparEstadoLegadoCapitulo5();
   restaurarEstadoCapitulo5Local();
   restaurarEntradaCapitulo5();
+
+  await carregarEstadoHistoria();
 
   window.scrollTo({
     top: 0,
@@ -2870,11 +2931,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     behavior: "auto",
   });
 
-  await carregarEstadoHistoria();
-
   configurarRevealNoScroll();
   configurarSequenciaIntroNoScroll();
-  
+
   configurarEntradaNaPonte();
   configurarNavegacaoCapitulo5();
 
@@ -2911,5 +2970,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (stageInicial) {
     stageInicial.classList.remove("hidden");
   }
-   sincronizarVisualInicialPortaFinal();
+  sincronizarVisualInicialPortaFinal();
 });

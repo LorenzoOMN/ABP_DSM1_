@@ -1,7 +1,7 @@
 // src/modules/questoes/questoes.routes.js
 
 const { Router } = require("express");
-const authMiddleware = require("../../shared/middlewares/auth.middleware");
+
 
 // Importa TODOS os controllers
 const {
@@ -21,25 +21,25 @@ const router = Router();
 // ============================================================================
 
 // GET /api/questoes/proxima-questao
-router.get("/proxima-questao", authMiddleware, getProximaQuestao);
+router.get("/proxima-questao", getProximaQuestao);
 
 // POST /api/questoes/responder
-router.post("/responder", authMiddleware, responderQuestao);
+router.post("/responder", responderQuestao);
 
 // PATCH /api/questoes/proxima-tentativa
-router.patch("/proxima-tentativa", authMiddleware, getProximaTentativa);
+router.patch("/proxima-tentativa", getProximaTentativa);
 
 // PATCH /api/questoes/proximo-modulo ← CORRIGIDO!
-router.patch("/proximo-modulo", authMiddleware, getProximoModulo);
+router.patch("/proximo-modulo", getProximoModulo);
 
 // GET /api/questoes/modulos-respondidos
-router.get("/modulos-respondidos", authMiddleware, getModulosRespondidos);
+router.get("/modulos-respondidos", getModulosRespondidos);
 
 // GET /api/questoes/resultado-atual
-router.get("/resultado-atual", authMiddleware, getResultadoAtual);
+router.get("/resultado-atual", getResultadoAtual);
 
 // GET /api/questoes/todas
-router.get("/todas", authMiddleware, getTodasQuestoes);
+router.get("/todas", getTodasQuestoes);
 
 // ============================================================================
 // EXPORTAÇÃO
