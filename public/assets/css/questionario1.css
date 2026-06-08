@@ -30,6 +30,12 @@
   padding: 1rem 0 180px;
   background: transparent;
   color: var(--cor-texto-claro);
+/* bloqueia o usuario copiar a pargunta pra pesquisar */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
 }
 
 .tela {
