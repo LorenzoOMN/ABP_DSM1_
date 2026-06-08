@@ -1,5 +1,54 @@
 (function () {
   // ============================================================================
+  // BLOQUEIO DE CÓPIA E ATALHOS
+  // ============================================================================
+
+  // Bloquear seleção de texto via teclado
+  document.addEventListener('keydown', function(e) {
+    // Bloqueia Ctrl+C, Ctrl+V, Ctrl+A, Ctrl+X, Ctrl+U (ver código fonte)
+    if ((e.ctrlKey || e.metaKey) && 
+        ['c', 'v', 'a', 'x', 'u'].includes(e.key.toLowerCase())) {
+      e.preventDefault();
+      return false;
+    }
+    
+    // Bloqueia F12 (DevTools)
+    if (e.key === 'F12') {
+      e.preventDefault();
+      return false;
+    }
+    
+    // Bloqueia Ctrl+Shift+I/J/C (DevTools)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && 
+        ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // Bloquear menu de contexto (botão direito)
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  // Bloquear arrastar/copiar
+  document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  // Detectar mudança de aba (opcional - para monitoramento)
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      console.warn('⚠️ Usuário mudou de aba ou minimizou a janela');
+      // Aqui você pode adicionar lógica de penalidade se quiser
+    }
+  });
+
+  
+  
+  // ============================================================================
   // CONSTANTES
   // ============================================================================
 
