@@ -47,13 +47,7 @@ async function authMiddleware(req, res, next) {
   return res.status(500).json({
     message: "erro interno do servidor",
   });
+ }
 }
-
-    console.error(e);
-
-    return res.status(500).json({
-      message: "erro interno do servidor",
-    });
-  }
 
 module.exports = authMiddleware;

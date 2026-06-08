@@ -21,11 +21,44 @@
         <img src="/assets/img/perfil_icon.png" alt="" class="navegacao-inferior__icone" />
         <span>Perfil</span>
       </a>
+
     </nav>
   </section>
 </div>
 
-<!-- Botão isolado e fixado no canto direito absoluto da janela -->
-<button type="button" class="navbar-toggle-btn" id="btnToggleNavbar" data-tooltip="Menu" aria-label="Alternar menu de navegação">
+<button
+  type="button"
+  class="navbar-toggle-btn"
+  id="btnToggleNavbar"
+  data-tooltip="Menu"
+  aria-label="Alternar menu de navegação"
+>
   <span class="toggle-icon">⚔️</span>
 </button>
+
+<div class="navbar-unlock-modal hidden" id="navbarUnlockModal">
+  <div class="navbar-unlock-card">
+    <img
+      class="navbar-unlock-icon"
+      src="/assets/img/espadas_icon.png"
+      alt="Duas espadas cruzadas"
+    />
+
+    <div class="navbar-unlock-content">
+      <h2>Barra de navegação</h2>
+
+      <p>
+        Barra de navegação desbloqueada com sucesso! Clique no ícone abaixo
+        para acessar as novas funcionalidades.
+      </p>
+
+      <button
+        type="button"
+        class="navbar-unlock-btn"
+        id="btnContinuarAventura"
+      >
+        Continuar aventura
+      </button>
+    </div>
+  </div>
+</div>
