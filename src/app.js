@@ -70,11 +70,6 @@ app.get("/capitulo2", function (_req, res) {
     res.render("capitulo2");
 });
 
-// Rota capítulo 2
-app.get("/capitulo2", function (_req, res) {
-    res.render("capitulo2");
-});
-
 // Rota capitulo 3
 app.get("/capitulo3", function (_req, res) {
     res.render("capitulo3");
@@ -164,7 +159,7 @@ app.get("/admin", function (_req, res) {
 app.use("/api/auth", authModule);
 
 // TODAS as outras rotas da API precisam de autenticação
-app.use("/api/certificados", authMiddleware, certificadosModule);
+app.use("/api/certificados", certificadosModule);
 app.use("/api/usuarios", authMiddleware, usuariosModule);
 app.use("/api/questoes", authMiddleware, questoesModule);
 app.use("/api/progresso", authMiddleware, progressoModule);
