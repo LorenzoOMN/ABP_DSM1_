@@ -13,7 +13,7 @@
 
   "principio-agil": "É uma diretriz que orienta equipes a desenvolver software com colaboração, adaptação e entrega contínua.",
 
-  "burning-down": "É um gráfico usado no Scrum para acompanhar o progresso das tarefas ao longo do tempo.",
+  "burning-down": "Também conhecido como Burndown Chart, é um gráfico que mostra quanto trabalho ainda resta em uma sprint.",
 
   "backlog": "É a lista de tarefas, funcionalidades e objetivos que precisam ser desenvolvidos no projeto.",
 
@@ -58,4 +58,5 @@
   "cycle-time": "É o tempo que a equipe leva para concluir uma tarefa a partir do momento em que o trabalho nela realmente começou.",
 
   "artefatos": "São os elementos principais do Scrum (Product Backlog, Sprint Backlog e Incremento) que servem para dar transparência ao trabalho."
+  
 }
