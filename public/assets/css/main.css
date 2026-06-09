@@ -92,7 +92,7 @@ header {
 }
 
 .botao_logout {
-  margin-left: auto;
+  margin-left: 1rem;
   background: transparent;
   border: none;
   color: #fff;
@@ -111,6 +111,42 @@ header {
     0px 0px 10px #f4d03f,
     0px 0px 15px #f4d03f,
     0px 0px 20px #f4d03f;
+}
+
+.botao-audio {
+  margin-left: auto;
+  border: 0;
+  background-color: transparent;
+  background-image: url("/assets/img/som_on.PNG");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 28px 28px;
+  color: #f4d03f;
+  border-radius: 8px;
+  width: 42px;
+  height: 38px;
+  padding: 0;
+  cursor: pointer;
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.botao-audio:hover {
+  background-color: rgba(244, 208, 63, 0.12);
+  box-shadow: 0 0 10px rgba(244, 208, 63, 0.45);
+}
+
+.botao-audio.audio-desligado {
+  background-image: url("/assets/img/som_off.PNG");
+  border-color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .menu_toggle {
