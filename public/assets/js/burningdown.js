@@ -14,7 +14,7 @@ function tocarSomFogueira() {
 
   const som = new Audio("/assets/audio/fogueira.mp3");
 
-  som.volume = 0.3;
+  som.volume = 0.02;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
