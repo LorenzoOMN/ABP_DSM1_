@@ -352,15 +352,10 @@ async function concluirHistoriaCapitulo2() {
   const btnDesafio = document.getElementById("btnIrDesafioCapitulo2");
   const porta = document.getElementById("porta2Scene");
   const portal = document.querySelector(".guardioes-final-portal");
-  const status = document.getElementById("statusHistoriaCapitulo2");
 
   if (btnConcluir) {
     btnConcluir.disabled = true;
     btnConcluir.textContent = "Registrando progresso...";
-  }
-
-  if (status) {
-    status.textContent = "A dungeon está registrando sua jornada...";
   }
 
   try {
@@ -379,10 +374,6 @@ async function concluirHistoriaCapitulo2() {
 
     localStorage.setItem("moduloAtual", String(ID_MODULO));
 
-    if (status) {
-      status.textContent = "Os tres guardioes responderam. O portal esta aberto.";
-    }
-
     if (btnConcluir) {
       btnConcluir.classList.add("hidden");
     }
@@ -400,10 +391,6 @@ async function concluirHistoriaCapitulo2() {
     }
   } catch (error) {
     console.error(error);
-
-    if (status) {
-      status.textContent = "Erro ao registrar progresso. Tente novamente.";
-    }
 
     if (btnConcluir) {
       btnConcluir.disabled = false;
