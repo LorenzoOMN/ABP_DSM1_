@@ -5,6 +5,20 @@
 }
 
 :root {
+  --sd-bg: #090908;
+  --sd-bg-deep: #050504;
+  --sd-surface: rgba(18, 15, 12, 0.92);
+  --sd-surface-2: rgba(31, 24, 17, 0.95);
+  --sd-gold: #d6ad35;
+  --sd-gold-soft: rgba(214, 173, 53, 0.55);
+  --sd-gold-muted: #996b0f;
+  --sd-text: #f4efe2;
+  --sd-muted: #d8c7a3;
+  --sd-purple: #8b4dff;
+  --sd-purple-soft: rgba(139, 77, 255, 0.28);
+  --sd-fire: #ff8a1f;
+  --sd-border: rgba(214, 173, 53, 0.32);
+  --sd-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
   --mapa-bg: #0d0b09;
   --mapa-surface: rgba(18, 15, 12, 0.94);
   --mapa-surface-2: rgba(35, 28, 19, 0.92);
@@ -21,7 +35,7 @@
 
 body {
   margin: 0;
-  background: var(--mapa-bg);
+  background: var(--sd-bg);
   color: var(--mapa-text);
   font-family: "Source Serif 4", serif;
 }
@@ -29,7 +43,13 @@ body {
 .pagina-mapa header {
   background:
     linear-gradient(180deg, rgba(13, 10, 7, 0.82), rgba(6, 5, 4, 0.68)),
-    linear-gradient(90deg, rgba(214, 137, 31, 0.1), transparent 34%, transparent 66%, rgba(214, 137, 31, 0.1));
+    linear-gradient(
+      90deg,
+      rgba(214, 137, 31, 0.1),
+      transparent 34%,
+      transparent 66%,
+      rgba(214, 137, 31, 0.1)
+    );
   border-bottom-color: rgba(214, 173, 53, 0.34);
   box-shadow:
     0 8px 18px rgba(0, 0, 0, 0.2),
@@ -39,15 +59,24 @@ body {
 .pagina-mapa footer {
   background:
     linear-gradient(180deg, rgba(7, 6, 5, 0.62), rgba(6, 5, 4, 0.82)),
-    linear-gradient(90deg, rgba(214, 137, 31, 0.08), transparent 38%, transparent 62%, rgba(214, 137, 31, 0.08));
+    linear-gradient(
+      90deg,
+      rgba(214, 137, 31, 0.08),
+      transparent 38%,
+      transparent 62%,
+      rgba(214, 137, 31, 0.08)
+    );
   border-top: 1px solid rgba(214, 173, 53, 0.24);
   box-shadow: 0 -8px 18px rgba(0, 0, 0, 0.16);
 }
 
 .pagina-mapa .navegacao-inferior,
 .pagina-mapa .navbar-toggle-btn {
-  background:
-    linear-gradient(180deg, rgba(24, 18, 12, 0.78), rgba(8, 7, 6, 0.86));
+  background: linear-gradient(
+    180deg,
+    rgba(24, 18, 12, 0.78),
+    rgba(8, 7, 6, 0.86)
+  );
   border-color: rgba(214, 173, 53, 0.32);
   box-shadow:
     0 8px 18px rgba(0, 0, 0, 0.24),
@@ -64,11 +93,32 @@ button {
   min-height: calc(100vh - 140px);
   padding: clamp(88px, 11vw, 124px) clamp(14px, 3vw, 28px) 112px;
   background:
-    radial-gradient(900px 520px at 50% 34%, rgba(245, 210, 122, 0.045), transparent 72%),
-    linear-gradient(180deg, rgba(5, 4, 3, 0.82) 0%, rgba(7, 6, 5, 0.78) 34%, rgba(7, 6, 5, 0.84) 70%, rgba(5, 4, 3, 0.92)),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.24) 28%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0.6)),
+    radial-gradient(
+      760px 460px at 50% 36%,
+      rgba(139, 77, 255, 0.1),
+      transparent 74%
+    ),
+    radial-gradient(
+      900px 520px at 50% 34%,
+      rgba(245, 210, 122, 0.07),
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 4, 3, 0.9) 0%,
+      rgba(7, 6, 5, 0.8) 34%,
+      rgba(7, 6, 5, 0.88) 70%,
+      rgba(5, 4, 3, 0.96)
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.64),
+      rgba(0, 0, 0, 0.26) 28%,
+      rgba(0, 0, 0, 0.34) 70%,
+      rgba(0, 0, 0, 0.66)
+    ),
     url("/assets/img/fundo_mapa_cartografia.png") center top / cover no-repeat,
-    var(--mapa-bg);
+    var(--sd-bg);
 }
 
 .mapa-custom-2-page::before {
@@ -77,9 +127,17 @@ button {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(620px 360px at 18% 18%, rgba(214, 137, 31, 0.07), transparent 68%),
-    radial-gradient(620px 360px at 84% 18%, rgba(214, 137, 31, 0.06), transparent 68%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.12));
+    radial-gradient(
+      620px 360px at 18% 18%,
+      rgba(255, 138, 31, 0.08),
+      transparent 68%
+    ),
+    radial-gradient(
+      620px 360px at 84% 18%,
+      rgba(139, 77, 255, 0.08),
+      transparent 68%
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.16));
   opacity: 1;
   filter: none;
   pointer-events: none;
@@ -92,8 +150,18 @@ button {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(900px 460px at 50% 26%, transparent 34%, rgba(0, 0, 0, 0.5) 100%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.18)),
+    radial-gradient(
+      900px 460px at 50% 26%,
+      transparent 34%,
+      rgba(0, 0, 0, 0.58) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.18),
+      transparent 18%,
+      transparent 82%,
+      rgba(0, 0, 0, 0.18)
+    ),
     linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.22));
 }
 
@@ -116,8 +184,8 @@ button {
   max-width: 100%;
   margin: 0;
   padding: 0.95rem 1.35rem;
-  border: 1px solid var(--mapa-line);
-  border-radius: 12px;
+  border: 1px solid var(--sd-border);
+  border-radius: 8px;
   outline: 0;
   color: #f7eed9;
   font-family: "Cinzel", serif;
@@ -128,12 +196,12 @@ button {
     0 2px 0 rgba(0, 0, 0, 0.26),
     0 10px 24px rgba(0, 0, 0, 0.48);
   background:
-    linear-gradient(180deg, rgba(28, 23, 18, 0.68), rgba(12, 10, 8, 0.82)),
-    radial-gradient(circle at top, rgba(214, 173, 53, 0.12), transparent 58%);
+    linear-gradient(180deg, rgba(30, 23, 16, 0.84), rgba(8, 7, 5, 0.94)),
+    radial-gradient(circle at top, rgba(214, 173, 53, 0.16), transparent 58%);
   box-shadow:
     inset 0 1px 0 rgba(255, 244, 220, 0.1),
-    0 14px 34px rgba(0, 0, 0, 0.36),
-    0 0 24px rgba(214, 173, 53, 0.08);
+    0 14px 34px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(214, 173, 53, 0.12);
 }
 
 .mapa-custom-2-header p {
@@ -153,7 +221,12 @@ button {
   left: 0;
   width: min(520px, 100%);
   height: 1px;
-  background: linear-gradient(90deg, rgba(214, 173, 53, 0.72), rgba(126, 176, 255, 0.18), transparent);
+  background: linear-gradient(
+    90deg,
+    rgba(214, 173, 53, 0.72),
+    rgba(126, 176, 255, 0.18),
+    transparent
+  );
 }
 
 .mapa-shell {
@@ -169,17 +242,25 @@ button {
 
 .mapa-stage,
 .mapa-actions-panel {
-  border: 1px solid var(--mapa-line-muted);
-  border-radius: 14px;
+  border: 1px solid var(--sd-border);
+  border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(24, 20, 16, 0.48), rgba(10, 9, 8, 0.66)),
-    radial-gradient(circle at 18% 10%, rgba(255, 191, 91, 0.08), transparent 42%),
-    radial-gradient(circle at 90% 14%, rgba(126, 176, 255, 0.035), transparent 36%);
+    linear-gradient(180deg, rgba(24, 20, 16, 0.62), rgba(7, 6, 5, 0.82)),
+    radial-gradient(
+      circle at 18% 10%,
+      rgba(255, 138, 31, 0.1),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 90% 14%,
+      rgba(139, 77, 255, 0.08),
+      transparent 36%
+    );
   box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.18),
+    var(--sd-shadow),
     inset 0 1px 0 rgba(255, 244, 220, 0.1),
     inset 0 0 0 1px rgba(245, 210, 122, 0.06),
-    inset 0 0 18px rgba(0, 0, 0, 0.16);
+    inset 0 0 34px rgba(0, 0, 0, 0.32);
 }
 
 .mapa-stage {
@@ -189,16 +270,57 @@ button {
   overflow: visible;
 }
 
+.mapa-stage::before {
+  content: "";
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 8%;
+  height: 22%;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 138, 31, 0.14),
+      transparent 62%
+    ),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.1), transparent 76%);
+  filter: blur(16px);
+  opacity: 0.78;
+  pointer-events: none;
+}
+
+.mapa-stage::after {
+  content: "";
+  position: absolute;
+  left: clamp(18px, 3vw, 34px);
+  right: clamp(18px, 3vw, 34px);
+  bottom: clamp(18px, 3vw, 34px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(214, 173, 53, 0.48),
+    transparent
+  );
+  box-shadow: 0 0 18px rgba(214, 173, 53, 0.22);
+  pointer-events: none;
+}
+
 .mapa-stage-grid {
   position: absolute;
   inset: 20px;
-  border: 1px solid rgba(245, 210, 122, 0.08);
-  border-radius: 10px;
+  border: 1px solid rgba(245, 210, 122, 0.1);
+  border-radius: 6px;
   pointer-events: none;
   overflow: hidden;
   background:
-    radial-gradient(640px 280px at 50% 18%, rgba(214, 173, 53, 0.09), transparent 68%),
-    linear-gradient(180deg, rgba(245, 210, 122, 0.035), transparent 28%),
+    radial-gradient(
+      640px 280px at 50% 18%,
+      rgba(214, 173, 53, 0.09),
+      transparent 68%
+    ),
+    linear-gradient(180deg, rgba(245, 210, 122, 0.045), transparent 28%),
     rgba(0, 0, 0, 0.045);
 }
 
@@ -251,12 +373,16 @@ button {
   display: grid;
   justify-items: center;
   gap: 0.35rem;
-  border: 1px solid rgba(214, 173, 53, 0.26);
-  border-radius: 10px;
+  border: 1px solid rgba(214, 173, 53, 0.3);
+  border-radius: 8px;
   padding: 0.85rem;
   background:
-    radial-gradient(circle at center top, rgba(255, 191, 91, 0.1), transparent 46%),
-    linear-gradient(180deg, rgba(31, 25, 18, 0.66), rgba(11, 10, 8, 0.84));
+    radial-gradient(
+      circle at center top,
+      rgba(255, 138, 31, 0.13),
+      transparent 48%
+    ),
+    linear-gradient(180deg, rgba(31, 25, 18, 0.82), rgba(8, 7, 6, 0.92));
   color: var(--mapa-text);
   text-align: center;
   cursor: pointer;
@@ -277,10 +403,16 @@ button {
   position: absolute;
   inset: 4px;
   border: 1px solid rgba(245, 210, 122, 0.16);
-  border-radius: 7px;
+  border-radius: 5px;
   background:
     linear-gradient(180deg, rgba(255, 244, 220, 0.035), transparent 34%),
-    linear-gradient(90deg, rgba(214, 137, 31, 0.04), transparent 36%, transparent 64%, rgba(214, 137, 31, 0.04));
+    linear-gradient(
+      90deg,
+      rgba(214, 137, 31, 0.04),
+      transparent 36%,
+      transparent 64%,
+      rgba(214, 137, 31, 0.04)
+    );
   pointer-events: none;
 }
 
@@ -290,7 +422,8 @@ button {
   border-color: var(--mapa-accent);
   box-shadow:
     0 0 0 1px rgba(245, 210, 122, 0.22),
-    0 14px 28px rgba(214, 173, 53, 0.16);
+    0 14px 28px rgba(214, 173, 53, 0.16),
+    0 0 26px rgba(139, 77, 255, 0.08);
 }
 
 .atalho-mapa:focus-visible,
@@ -321,8 +454,7 @@ button {
 .atalho-imagem {
   width: 104px;
   height: 104px;
-  filter:
-    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.42))
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.42))
     drop-shadow(0 0 14px rgba(244, 211, 94, 0.22));
 }
 
@@ -380,8 +512,7 @@ button {
 
 #btnCertificado.liberado .certificado-imagem {
   background-image: url("/assets/img/certificado_liberado.png");
-  filter:
-    drop-shadow(0 0 12px rgba(255, 244, 220, 0.72))
+  filter: drop-shadow(0 0 12px rgba(255, 244, 220, 0.72))
     drop-shadow(0 0 28px rgba(244, 211, 94, 0.56));
 }
 
@@ -407,13 +538,38 @@ button {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 1.35rem;
-  width: 58%;
-  height: 8px;
+  bottom: 1.15rem;
+  width: 72%;
+  height: 15px;
   transform: translateX(-50%);
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.16);
-  opacity: 0.46;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.58),
+    rgba(0, 0, 0, 0.08) 68%,
+    transparent 74%
+  );
+  opacity: 0.68;
+  pointer-events: none;
+}
+
+.porta-card::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 1.45rem;
+  z-index: -1;
+  width: 68%;
+  height: 34%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(139, 77, 255, 0.12),
+    transparent 68%
+  );
+  filter: blur(16px);
+  opacity: 0.55;
   pointer-events: none;
 }
 
@@ -455,7 +611,10 @@ button {
 .porta-botao::after {
   content: "";
   display: block;
-  margin-top: 5px;
+  margin-top: 3px;
+  padding: 0.16rem 0.52rem;
+  border: 1px solid rgba(214, 173, 53, 0.24);
+  border-radius: 999px;
   color: var(--mapa-text);
   font-family: "Cinzel", serif;
   font-size: 0.88rem;
@@ -463,6 +622,8 @@ button {
   letter-spacing: 0;
   line-height: 1.1;
   text-align: center;
+  background: rgba(7, 6, 5, 0.64);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.32);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.82);
 }
 
@@ -493,18 +654,22 @@ button {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter:
-    drop-shadow(0 12px 14px rgba(0, 0, 0, 0.44));
+  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58));
   transition:
-    transform 200ms ease;
+    transform 200ms ease,
+    filter 200ms ease;
 }
 
 .porta-card.bloqueado::after {
   content: "Bloqueada";
   position: absolute;
   left: 50%;
+  right: auto;
   top: calc(100% + 0.3rem);
+  bottom: auto;
   z-index: 3;
+  width: auto;
+  height: auto;
   transform: translateX(-50%);
   padding: 0.18rem 0.45rem;
   border: 1px solid rgba(147, 136, 118, 0.26);
@@ -516,9 +681,10 @@ button {
   line-height: 1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  box-shadow:
-    0 6px 12px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.24);
   pointer-events: none;
+  filter: none;
+  opacity: 1;
 }
 
 .porta-card:hover .porta-imagem {
@@ -566,29 +732,24 @@ button {
 }
 
 .porta-card.estado-incompleto .porta-imagem {
-  filter:
-    drop-shadow(0 12px 14px rgba(0, 0, 0, 0.44))
-    drop-shadow(0 0 10px rgba(255, 115, 104, 0.22));
+  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 11px rgba(255, 138, 31, 0.2));
 }
 
 .porta-card.estado-historia .porta-imagem {
-  filter:
-    drop-shadow(0 12px 14px rgba(0, 0, 0, 0.44))
-    drop-shadow(0 0 10px rgba(245, 210, 122, 0.28));
+  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 13px rgba(255, 138, 31, 0.32));
 }
 
 .porta-card.estado-completo .porta-imagem {
-  filter:
-    drop-shadow(0 12px 14px rgba(0, 0, 0, 0.44))
-    drop-shadow(0 0 10px rgba(126, 176, 255, 0.3));
+  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 13px rgba(139, 77, 255, 0.32))
+    drop-shadow(0 0 18px rgba(214, 173, 53, 0.22));
 }
 
 .porta-card.bloqueado .porta-imagem {
-  filter:
-    grayscale(1)
-    brightness(0.5)
-    contrast(1.08)
-    drop-shadow(0 10px 12px rgba(0, 0, 0, 0.44));
+  filter: grayscale(1) brightness(0.45) contrast(1.12)
+    drop-shadow(0 14px 15px rgba(0, 0, 0, 0.54));
 }
 
 .porta-card.bloqueado .porta-botao::after,
@@ -598,8 +759,11 @@ button {
 
 .porta-card.bloqueado .porta-info {
   border-color: rgba(147, 136, 118, 0.24);
-  background:
-    linear-gradient(180deg, rgba(16, 14, 12, 0.98), rgba(8, 8, 7, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(16, 14, 12, 0.98),
+    rgba(8, 8, 7, 0.98)
+  );
   color: #938876;
 }
 
@@ -614,9 +778,24 @@ button {
 }
 
 .porta-card.desafio-atual .porta-imagem {
-  filter:
-    drop-shadow(0 12px 14px rgba(0, 0, 0, 0.46))
-    drop-shadow(0 0 14px rgba(245, 210, 122, 0.42));
+  filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 16px rgba(255, 138, 31, 0.5))
+    drop-shadow(0 0 30px rgba(139, 77, 255, 0.24));
+}
+
+.porta-card.desafio-atual::after {
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 138, 31, 0.22),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(139, 77, 255, 0.18),
+      transparent 74%
+    );
+  opacity: 0.9;
 }
 
 .porta-info {
@@ -626,10 +805,15 @@ button {
   top: calc(100% - 2px);
   left: 50%;
   padding: 0 12px;
-  border: 1px solid var(--mapa-line);
-  border-radius: 10px;
+  border: 1px solid var(--sd-border);
+  border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(24, 20, 16, 0.98), rgba(10, 9, 8, 0.98));
+    radial-gradient(
+      circle at center top,
+      rgba(214, 173, 53, 0.12),
+      transparent 48%
+    ),
+    linear-gradient(180deg, rgba(28, 22, 15, 0.98), rgba(8, 7, 6, 0.98));
   text-align: center;
   opacity: 0;
   visibility: hidden;
@@ -654,7 +838,8 @@ button {
   transform-origin: bottom center;
 }
 
-.porta-card:hover .porta-info {
+.porta-card:hover .porta-info,
+.porta-card:focus-within .porta-info {
   opacity: 1;
   visibility: visible;
   max-height: 150px;
@@ -672,7 +857,7 @@ button {
 
 .porta-info h2 {
   margin: 0 0 5px;
-  color: var(--mapa-text);
+  color: #f7e6aa;
   font-family: "Cinzel", serif;
   font-size: 0.9rem;
 }
@@ -699,10 +884,10 @@ button {
 
 .porta-acoes button,
 .porta-mobile-acoes button {
-  border: 1px solid var(--mapa-line);
+  border: 1px solid var(--sd-border);
   border-radius: 999px;
   padding: 6px 10px;
-  background: var(--mapa-surface-2);
+  background: rgba(31, 24, 17, 0.94);
   color: var(--mapa-text);
   cursor: pointer;
   font-size: 0.78rem;
@@ -722,7 +907,7 @@ button {
 .porta-acoes button:hover:not(:disabled),
 .porta-mobile-acoes button:hover:not(:disabled) {
   border-color: var(--mapa-accent);
-  background: var(--mapa-accent);
+  background: linear-gradient(180deg, #f5d27a, #d6ad35);
   color: #17100a;
 }
 
@@ -963,4 +1148,540 @@ button {
     width: 108px;
     height: 154px;
   }
+}
+
+/* =========================================================
+   REFINO VISUAL DO MAPA - SALA MAIS VIVA
+========================================================= */
+
+.mapa-custom-2-page {
+  background:
+    radial-gradient(900px 560px at 50% 28%, rgba(255, 214, 125, 0.08), transparent 72%),
+    linear-gradient(180deg, rgba(5, 4, 3, 0.12), rgba(5, 4, 3, 0.42) 72%, rgba(5, 4, 3, 0.72)),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.08) 28%, rgba(0, 0, 0, 0.14) 70%, rgba(0, 0, 0, 0.52)),
+    url("/assets/img/fundo_mapa_dungeon_v2.jpg") center top / cover no-repeat,
+    var(--sd-bg);
+}
+
+.mapa-custom-2-page::before {
+  background:
+    radial-gradient(620px 360px at 18% 52%, rgba(255, 138, 31, 0.12), transparent 70%),
+    radial-gradient(620px 360px at 82% 20%, rgba(139, 77, 255, 0.14), transparent 70%),
+    linear-gradient(115deg, transparent 0 43%, rgba(214, 173, 53, 0.025) 44% 45%, transparent 46% 100%);
+  opacity: 0.78;
+}
+
+.mapa-custom-2-page::after {
+  background:
+    radial-gradient(980px 520px at 50% 34%, transparent 48%, rgba(0, 0, 0, 0.32) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.12), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.16));
+}
+
+.mapa-shell {
+  width: min(1320px, 100%);
+}
+
+.mapa-stage {
+  min-height: clamp(600px, 54vw, 720px);
+}
+
+.mapa-stage::before {
+  bottom: 7%;
+  height: 28%;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.2), transparent 58%),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.16), transparent 74%);
+  filter: blur(18px);
+  opacity: 0.88;
+}
+
+.mapa-stage-grid {
+  background:
+    radial-gradient(720px 360px at 50% 18%, rgba(214, 173, 53, 0.1), transparent 70%),
+    radial-gradient(620px 300px at 62% 64%, rgba(139, 77, 255, 0.08), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(214, 173, 53, 0.024) 0 1px, transparent 1px 92px),
+    repeating-linear-gradient(0deg, rgba(214, 173, 53, 0.018) 0 1px, transparent 1px 86px),
+    rgba(0, 0, 0, 0.025);
+}
+
+#mapaModulos {
+  grid-template-columns: repeat(5, minmax(112px, 172px));
+  gap: clamp(30px, 4.2vw, 56px) clamp(18px, 2.5vw, 30px);
+}
+
+.porta-card {
+  width: clamp(176px, 18vw, 226px);
+}
+
+.porta-card::before {
+  bottom: 1.05rem;
+  width: 80%;
+  height: 18px;
+}
+
+.porta-card::after {
+  bottom: 1.35rem;
+  width: 78%;
+  height: 42%;
+}
+
+.porta-botao {
+  position: relative;
+}
+
+.porta-botao::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  z-index: -1;
+  width: 150%;
+  height: 110%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.15), transparent 55%),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.16), transparent 72%);
+  filter: blur(12px);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.porta-imagem {
+  position: relative;
+  z-index: 1;
+  width: clamp(136px, 10vw, 176px);
+  height: clamp(194px, 14vw, 250px);
+}
+
+.porta-card.bloqueado::after {
+  top: calc(100% + 0.18rem);
+}
+
+.porta-card.estado-incompleto .porta-imagem {
+  filter:
+    drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 10px rgba(255, 138, 31, 0.18));
+}
+
+.porta-card.estado-historia .porta-imagem {
+  filter:
+    drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 11px rgba(255, 138, 31, 0.26));
+}
+
+.porta-card.estado-completo .porta-imagem {
+  filter:
+    drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 12px rgba(139, 77, 255, 0.28))
+    drop-shadow(0 0 16px rgba(214, 173, 53, 0.18));
+}
+
+.porta-card.estado-completo .porta-imagem::after {
+  content: "✓";
+  position: absolute;
+  right: 4%;
+  top: 6%;
+  width: clamp(24px, 2.4vw, 34px);
+  height: clamp(24px, 2.4vw, 34px);
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(245, 210, 122, 0.84);
+  border-radius: 50%;
+  color: #f8e7aa;
+  background:
+    radial-gradient(circle, rgba(255, 138, 31, 0.24), transparent 64%),
+    linear-gradient(180deg, rgba(41, 31, 16, 0.95), rgba(8, 7, 6, 0.96));
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.82rem, 1.35vw, 1.08rem);
+  font-weight: 800;
+  line-height: 1;
+  box-shadow:
+    0 0 12px rgba(214, 173, 53, 0.36),
+    0 0 20px rgba(139, 77, 255, 0.16),
+    inset 0 0 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 0 8px rgba(245, 210, 122, 0.42);
+}
+
+.porta-card.estado-completo .porta-botao::after {
+  border-color: rgba(245, 210, 122, 0.58);
+  color: #f8e7aa;
+  box-shadow:
+    inset 0 0 10px rgba(0, 0, 0, 0.32),
+    0 0 12px rgba(214, 173, 53, 0.22);
+}
+
+.porta-card.bloqueado .porta-imagem {
+  filter:
+    grayscale(1)
+    brightness(0.68)
+    contrast(1.08)
+    opacity(0.72)
+    drop-shadow(0 14px 15px rgba(0, 0, 0, 0.54));
+}
+
+.porta-card.bloqueado .porta-botao::before {
+  background:
+    radial-gradient(ellipse at center, rgba(214, 173, 53, 0.08), transparent 56%),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.08), transparent 74%);
+  opacity: 0.46;
+}
+
+.porta-card.desafio-atual .porta-imagem {
+  filter:
+    drop-shadow(0 18px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 14px rgba(255, 138, 31, 0.42))
+    drop-shadow(0 0 24px rgba(139, 77, 255, 0.22));
+}
+
+#btnCertificado:not(.liberado) .certificado-imagem {
+  filter:
+    grayscale(1)
+    brightness(0.72)
+    contrast(1.04)
+    drop-shadow(0 10px 14px rgba(0, 0, 0, 0.42));
+}
+
+@media (max-width: 1180px) {
+  .mapa-shell {
+    width: min(980px, 100%);
+  }
+}
+
+@media (max-width: 900px) {
+  .mapa-stage {
+    min-height: auto;
+  }
+
+  #mapaModulos {
+    grid-template-columns: repeat(5, minmax(64px, 112px));
+    gap: 18px 10px;
+  }
+
+  .porta-card,
+  .porta-card.porta-1,
+  .porta-card.porta-2,
+  .porta-card.porta-3,
+  .porta-card.porta-4,
+  .porta-card.porta-5 {
+    width: min(178px, 100%);
+  }
+
+  .porta-imagem {
+    width: clamp(100px, 18vw, 126px);
+    height: clamp(142px, 26vw, 178px);
+  }
+}
+
+@media (max-width: 720px) {
+  #mapaModulos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  #mapaModulos {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .porta-imagem {
+    width: 116px;
+    height: 164px;
+  }
+}
+
+/* =========================================================
+   PERFORMANCE DO MAPA
+   Mantem o visual, mas evita filtros caros durante o scroll.
+========================================================= */
+
+.mapa-stage::before,
+.porta-card::after,
+.porta-botao::before {
+  filter: none;
+}
+
+.mapa-stage::before {
+  opacity: 0.5;
+}
+
+.porta-card::after {
+  opacity: 0.34;
+}
+
+.porta-botao::before {
+  opacity: 0.46;
+}
+
+.porta-imagem,
+.porta-card.estado-incompleto .porta-imagem,
+.porta-card.estado-historia .porta-imagem,
+.porta-card.estado-completo .porta-imagem,
+.porta-card.desafio-atual .porta-imagem {
+  filter: drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54));
+}
+
+.porta-card.bloqueado .porta-imagem {
+  filter:
+    grayscale(1)
+    brightness(0.68)
+    contrast(1.08)
+    opacity(0.72)
+    drop-shadow(0 12px 12px rgba(0, 0, 0, 0.5));
+}
+
+.atalho-imagem,
+#btnCertificado.liberado .certificado-imagem,
+#btnCertificado:not(.liberado) .certificado-imagem {
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.42));
+}
+
+.porta-card.estado-completo .porta-imagem::after {
+  box-shadow:
+    0 0 10px rgba(214, 173, 53, 0.28),
+    inset 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================================================
+   SOMBRAS LEVES DE MOLDURA
+   Charme de UI de RPG sem filtros custosos no scroll.
+========================================================= */
+
+.mapa-stage,
+.mapa-actions-panel {
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(214, 173, 53, 0.18),
+    0 0 28px rgba(214, 173, 53, 0.1),
+    inset 0 1px 0 rgba(255, 238, 190, 0.08),
+    inset 0 0 42px rgba(0, 0, 0, 0.42);
+}
+
+.mapa-stage-grid {
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 210, 122, 0.08),
+    inset 0 0 48px rgba(0, 0, 0, 0.3),
+    0 0 18px rgba(214, 173, 53, 0.08);
+}
+
+.atalho-mapa,
+.certificado-botao {
+  box-shadow:
+    0 10px 18px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(214, 173, 53, 0.12),
+    inset 0 1px 0 rgba(255, 238, 190, 0.08),
+    inset 0 0 24px rgba(0, 0, 0, 0.34);
+}
+
+.atalho-mapa:hover:not(:disabled),
+.certificado-botao:hover:not(:disabled) {
+  box-shadow:
+    0 12px 22px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(245, 210, 122, 0.22),
+    0 0 18px rgba(214, 173, 53, 0.18),
+    inset 0 1px 0 rgba(255, 238, 190, 0.1),
+    inset 0 0 24px rgba(0, 0, 0, 0.3);
+}
+
+.porta-botao::after {
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(214, 173, 53, 0.08),
+    inset 0 0 10px rgba(0, 0, 0, 0.38);
+}
+
+.porta-card.estado-completo .porta-botao::after,
+.porta-card.desafio-atual .porta-botao::after {
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.36),
+    0 0 12px rgba(214, 173, 53, 0.26),
+    inset 0 0 10px rgba(0, 0, 0, 0.38);
+}
+
+/* =========================================================
+   AJUSTE DE PORTAS
+   Aproxima o grid e troca sombra de chao por aura discreta.
+========================================================= */
+
+#mapaModulos {
+  grid-template-columns: repeat(5, minmax(96px, 148px));
+  gap: clamp(14px, 2.4vw, 30px) clamp(6px, 1.2vw, 14px);
+}
+
+.porta-card {
+  width: clamp(154px, 15vw, 194px);
+  gap: 4px;
+}
+
+.porta-card::before {
+  display: none;
+}
+
+.porta-card::after {
+  bottom: 18%;
+  width: 78%;
+  height: 58%;
+  background:
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.18), transparent 58%),
+    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.1), transparent 72%);
+  opacity: 0.44;
+}
+
+.porta-card:hover {
+  transform: translateY(-2px);
+}
+
+.porta-card:hover .porta-imagem {
+  transform: translateY(-2px);
+}
+
+.porta-botao::before {
+  top: 44%;
+  width: 128%;
+  height: 92%;
+  background:
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.2), transparent 58%),
+    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.12), transparent 72%);
+  opacity: 0.62;
+}
+
+.porta-imagem {
+  width: clamp(126px, 9vw, 158px);
+  height: clamp(180px, 13vw, 224px);
+}
+
+.porta-botao::after {
+  margin-top: 0;
+}
+
+.porta-card.bloqueado::after {
+  top: calc(100% - 0.05rem);
+}
+
+.porta-card.bloqueado .porta-botao::before {
+  background: radial-gradient(ellipse at center, rgba(139, 77, 255, 0.1), transparent 68%);
+  opacity: 0.28;
+}
+
+.porta-card.liberado .porta-botao::before {
+  opacity: 0.72;
+}
+
+.porta-card.desafio-atual .porta-botao::before,
+.porta-card.estado-completo .porta-botao::before {
+  background:
+    radial-gradient(ellipse at center, rgba(255, 194, 74, 0.28), transparent 50%),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.24), transparent 72%);
+  opacity: 0.86;
+}
+
+.porta-card.estado-completo::after {
+  bottom: 20%;
+  width: 92%;
+  height: 72%;
+  background:
+    radial-gradient(ellipse at center, rgba(245, 210, 122, 0.2), transparent 48%),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.24), transparent 68%);
+  opacity: 0.82;
+}
+
+.porta-card.estado-completo .porta-imagem {
+  filter:
+    drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54))
+    drop-shadow(0 0 10px rgba(214, 173, 53, 0.32))
+    drop-shadow(0 0 14px rgba(139, 77, 255, 0.18));
+}
+
+.porta-card.estado-completo .porta-botao::before {
+  width: 144%;
+  height: 112%;
+  background:
+    radial-gradient(ellipse at center, rgba(245, 210, 122, 0.24), transparent 48%),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.28), transparent 72%);
+  opacity: 0.92;
+}
+
+@media (max-width: 900px) {
+  #mapaModulos {
+    grid-template-columns: repeat(5, minmax(58px, 104px));
+    gap: 16px 8px;
+  }
+
+  .porta-card,
+  .porta-card.porta-1,
+  .porta-card.porta-2,
+  .porta-card.porta-3,
+  .porta-card.porta-4,
+  .porta-card.porta-5 {
+    width: min(164px, 100%);
+  }
+
+  .porta-imagem {
+    width: clamp(94px, 17vw, 120px);
+    height: clamp(134px, 25vw, 170px);
+  }
+}
+
+@media (max-width: 720px) {
+  #mapaModulos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .porta-imagem {
+    width: 112px;
+    height: 158px;
+  }
+}
+
+/* Destaque quente para a porta atual */
+.porta-card.desafio-atual::after {
+  bottom: 18%;
+  width: 96%;
+  height: 72%;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 177, 54, 0.26), transparent 52%),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.16), transparent 74%);
+  opacity: 0.82;
+}
+
+.porta-card.desafio-atual .porta-botao::before {
+  width: 146%;
+  height: 112%;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 177, 54, 0.3), transparent 50%),
+    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.18), transparent 72%);
+  opacity: 0.92;
+}
+
+.porta-card.desafio-atual .porta-imagem {
+  filter:
+    drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54))
+    drop-shadow(0 0 12px rgba(255, 138, 31, 0.34));
+}
+
+.porta-card.desafio-atual .porta-botao::after {
+  border-color: rgba(255, 177, 54, 0.72);
+  color: #ffe4a3;
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.36),
+    0 0 14px rgba(255, 138, 31, 0.24),
+    inset 0 0 10px rgba(0, 0, 0, 0.38);
+}
+
+/* Remove a mancha central do palco; deixa o fundo gerado respirar. */
+.mapa-stage::before {
+  opacity: 0.18;
+  background: radial-gradient(ellipse at center, rgba(255, 138, 31, 0.12), transparent 64%);
+}
+
+.mapa-stage-grid {
+  background:
+    radial-gradient(720px 320px at 50% 18%, rgba(214, 173, 53, 0.08), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(214, 173, 53, 0.018) 0 1px, transparent 1px 92px),
+    repeating-linear-gradient(0deg, rgba(214, 173, 53, 0.014) 0 1px, transparent 1px 86px),
+    rgba(0, 0, 0, 0.018);
 }
