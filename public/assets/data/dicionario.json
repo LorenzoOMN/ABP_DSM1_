@@ -45,5 +45,15 @@
 
   "review": "É a reunião realizada ao final da sprint onde a equipe apresenta as funcionalidades concluídas para validação e feedback.",
 
-  "retrospectiva": "É a reunião realizada após a sprint onde a equipe avalia o próprio processo de trabalho para identificar melhorias contínuas."
+  "retrospectiva": "É a reunião realizada após a sprint onde a equipe avalia o próprio processo de trabalho para identificar melhorias contínuas.",
+
+  "sprint-backlog": "É a lista de tarefas selecionadas do product backlog que a equipe se compromete a entregar durante uma sprint específica.",
+
+  "product-backlog": "É a lista principal e priorizada de todas as funcionalidades, melhorias e requisitos necessários para o produto a longo prazo.",
+
+  "burnup": "É um gráfico que mostra o progresso do projeto ao longo do tempo, comparando o trabalho concluído com o escopo total planejado.",
+
+  "lead-time": "É o tempo total decorrido desde o momento em que uma tarefa é solicitada pelo cliente até a sua entrega final.",
+
+  "cycle-time": "É o tempo que a equipe leva para concluir uma tarefa a partir do momento em que o trabalho nela realmente começou."
 }
