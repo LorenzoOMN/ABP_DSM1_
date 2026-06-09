@@ -6,7 +6,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     background-color: #1a1008;
-    background-image: url("/assets/img/fundo_perfil.jpg");
+    background-image: url("/assets/img/perfil/fundo_perfil.jpg");
     background-size: cover;
     background-position: center;
     font-family: "Cinzel", serif;
@@ -15,7 +15,7 @@ body {
 
 .perfil-container {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,14 +24,15 @@ body {
 }
 
 /* =========================================
-   O LIVRO (CONTAINER) - MAIOR NO DESKTOP
+   O LIVRO - ALTURA CONTROLADA
    ========================================= */
 .livro-perfil {
     display: flex;
-    width: 95vw;
-    max-width: 1400px; /* AUMENTADO de 1000px para 1400px */
-    aspect-ratio: 1.8 / 1; /* Proporção mais próxima de livro aberto */
-    background-color: #6b2f1a; /* Capa mais escura e rica */
+    width: 90vw;
+    max-width: 1600px;
+    max-height: 90vh;
+    height: auto;
+    background-color: #6b2f1a;
     border-radius: 12px;
     box-shadow: 
         0 20px 60px rgba(0, 0, 0, 0.7),
@@ -39,18 +40,19 @@ body {
         inset 0 0 30px rgba(0,0,0,0.5);
     position: relative;
     overflow: hidden;
-    padding: 25px;
-    gap: 6px;
+    padding: 30px;
+    gap: 8px;
+    margin: 0 auto;
 }
 
-/* Lombada do livro (Centro) */
+/* Lombada do livro */
 .livro-perfil::before {
     content: '';
     position: absolute;
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 10px;
+    width: 12px;
     background: linear-gradient(to right, #2a0f08, #4a1f16, #2a0f08);
     transform: translateX(-50%);
     box-shadow: 0 0 15px rgba(0,0,0,0.8);
@@ -58,38 +60,52 @@ body {
 }
 
 /* =========================================
-   PÁGINAS COM TEXTURA DE PERGAMINHO
+   PÁGINAS COM SCROLL
    ========================================= */
 .pagina-esquerda,
 .pagina-direita {
     flex: 1;
-    
-    /* TEXTURA DE PERGAMINHO REALISTA */
     background-color: #f4e4c1;
     background-image: 
-        /* Manchas de envelhecimento */
         radial-gradient(ellipse at 20% 30%, rgba(139, 90, 43, 0.15) 0%, transparent 50%),
         radial-gradient(ellipse at 80% 70%, rgba(139, 90, 43, 0.12) 0%, transparent 50%),
         radial-gradient(ellipse at 50% 50%, rgba(160, 120, 60, 0.08) 0%, transparent 60%),
-        /* Bordas envelhecidas (vinheta) */
         radial-gradient(ellipse at center, transparent 60%, rgba(101, 67, 33, 0.3) 100%),
-        /* Textura de papel via SVG */
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
     
-    padding: 30px;
+    padding: 35px;
     position: relative;
     display: flex;
     flex-direction: column;
-    
-    /* Borda interna da página */
     border: 2px solid #d4c4a1;
     border-radius: 4px;
     box-shadow: 
         inset 0 0 30px rgba(101, 67, 33, 0.2),
         inset 0 0 10px rgba(0,0,0,0.1);
+    
+    min-height: auto;
+    max-height: calc(90vh - 60px);
+    overflow-y: auto;
 }
 
-/* Efeito de página curvada (sombra interna) */
+/* Scrollbar das páginas */
+.pagina-esquerda::-webkit-scrollbar,
+.pagina-direita::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pagina-esquerda::-webkit-scrollbar-track,
+.pagina-direita::-webkit-scrollbar-track {
+    background: rgba(139, 90, 43, 0.1);
+    border-radius: 4px;
+}
+
+.pagina-esquerda::-webkit-scrollbar-thumb,
+.pagina-direita::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #8b5a2b, #6b2f1a);
+    border-radius: 4px;
+}
+
 .pagina-esquerda {
     box-shadow: 
         inset -15px 0 30px -10px rgba(0,0,0,0.15),
@@ -107,13 +123,14 @@ body {
    ========================================= */
 .titulo-pagina {
     text-align: center;
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    margin-bottom: 20px;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    margin: 0 0 25px 0;
     color: #4a1f16;
     text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
     border-bottom: 2px solid #8b5a2b;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
     letter-spacing: 2px;
+    flex-shrink: 0;
 }
 
 .area-perfil {
@@ -121,22 +138,22 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    flex-grow: 1;
+    margin-bottom: 25px;
+    flex-shrink: 0;
 }
 
-/* Avatar com Borda CSS */
 .avatar-wrapper {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .avatar-img {
-    width: 110px;
-    height: 110px;
+    width: 130px;
+    height: 130px;
     object-fit: cover;
     border-radius: 8px;
     z-index: 2;
@@ -149,11 +166,10 @@ body {
     transform: scale(1.05);
 }
 
-/* Borda decorativa simulando frame de pedra */
 .avatar-border {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    border: 8px solid #5c2b00;
+    border: 10px solid #5c2b00;
     border-radius: 12px;
     box-shadow: 
         0 0 15px rgba(0,0,0,0.5),
@@ -169,12 +185,12 @@ body {
 
 .dados-usuario h3 {
     margin: 5px 0;
-    font-size: clamp(1.1rem, 2vw, 1.8rem);
+    font-size: clamp(1.3rem, 2.2vw, 2rem);
     color: #2b1708;
 }
 
 .dados-usuario span {
-    font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
     opacity: 0.8;
     color: #4a2f1a;
 }
@@ -182,42 +198,178 @@ body {
 .modulo-box {
     margin-top: 20px;
     background: rgba(139, 90, 43, 0.1);
-    padding: 12px 20px;
+    padding: 15px 25px;
     border-radius: 8px;
     border: 2px solid #8b5a2b;
-    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
     color: #4a1f16;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Botão ADM */
-.botao-adm {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    width: 70px;
-    height: 70px;
-    transition: transform 0.2s;
-}
-
-.botao-adm:hover {
-    transform: scale(1.1);
-}
-
-.botao-adm-img {
+/* Estatísticas */
+.stats-box {
+    margin: 20px 0;
+    background: rgba(139, 90, 43, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #8b5a2b;
     width: 100%;
-    height: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.stats-titulo {
+    margin: 0 0 15px 0;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    color: #4a1f16;
+    text-align: center;
+    border-bottom: 1px dashed #8b5a2b;
+    padding-bottom: 10px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    border: 1px solid rgba(139, 90, 43, 0.3);
+}
+
+.stat-valor {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+    font-weight: bold;
+    color: #6b2f1a;
+}
+
+.stat-label {
+    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+    color: #4a2f1a;
+    opacity: 0.8;
+}
+
+/* ========================================= */
+/* Botão ADM - Selo Medieval */
+/* ========================================= */
+/* Botão ADM Integrado - Link na aba Ajustes */
+.adm-link-container {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed #8b5a2b;
+}
+
+.adm-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(107, 47, 26, 0.1));
+    border: 2px solid #8b0000;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #4a1f16;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.adm-link:hover {
+    background: linear-gradient(135deg, rgba(139, 0, 0, 0.2), rgba(107, 47, 26, 0.2));
+    border-color: #dc143c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+}
+
+.adm-icon {
+    font-size: 1.5rem;
+    margin-right: 12px;
+}
+
+.adm-texto {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.adm-seta {
+    font-size: 1.3rem;
+    transition: transform 0.3s;
+}
+
+.adm-link:hover .adm-seta {
+    transform: translateX(5px);
 }
 
 /* =========================================
-   ELEMENTOS DA PÁGINA DIREITA
+   PÁGINA DIREITA - ABAS
    ========================================= */
+.abas-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.abas-header {
+    display: flex;
+    gap: 8px;
+    border-bottom: 2px solid #8b5a2b;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+    flex-shrink: 0;
+}
+
+.aba-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px 10px;
+    font-family: "Cinzel", serif;
+    font-size: clamp(0.85rem, 1.3vw, 1rem);
+    font-weight: bold;
+    color: #4a2f1a;
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.2s;
+    opacity: 0.6;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+}
+
+.aba-btn:hover {
+    opacity: 0.9;
+    background: rgba(139, 90, 43, 0.1);
+}
+
+.aba-btn.ativa {
+    opacity: 1;
+    color: #6b2f1a;
+    background: rgba(139, 90, 43, 0.15);
+    border-bottom: 3px solid #6b2f1a;
+}
+
+.aba-conteudo {
+    display: none;
+    flex-grow: 1;
+}
+
+.aba-conteudo.ativa {
+    display: block;
+}
+
+/* Configurações */
 .lista-configuracoes {
     display: flex;
     flex-direction: column;
     gap: 30px;
     padding: 20px 0;
-    align-items: flex-start;
 }
 
 .item-config {
@@ -225,31 +377,32 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
     font-weight: bold;
     border-bottom: 2px dashed #8b5a2b;
-    padding-bottom: 12px;
+    padding-bottom: 15px;
     color: #4a1f16;
 }
 
-/* Toggles Customizados */
+/* Toggles */
 .toggle {
-    width: 60px;
-    height: 30px;
+    width: 65px;
+    height: 32px;
     background-color: #2ECC71;
-    border-radius: 15px;
+    border-radius: 16px;
     position: relative;
     cursor: pointer;
     border: 3px solid #168042;
     transition: all 0.3s;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    flex-shrink: 0;
 }
 
 .toggle::after {
     content: '';
     position: absolute;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     background: white;
     border-radius: 50%;
     top: 1px;
@@ -264,7 +417,245 @@ body {
 }
 
 .toggle.desativado::after {
-    left: 30px;
+    left: 32px;
+}
+
+/* Ranking */
+.ranking-box {
+    padding: 10px 0;
+}
+
+.ranking-destaque {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.1));
+    padding: 18px;
+    border-radius: 10px;
+    border: 2px solid #d4a017;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.ranking-posicao {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: bold;
+    color: #d4a017;
+    min-width: 80px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.ranking-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.ranking-info strong {
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    color: #4a1f16;
+}
+
+.ranking-info span {
+    font-size: clamp(0.8rem, 1.3vw, 1rem);
+    color: #4a2f1a;
+}
+
+.ranking-top h4 {
+    margin: 0 0 12px 0;
+    color: #4a1f16;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    border-bottom: 1px dashed #8b5a2b;
+    padding-bottom: 10px;
+}
+
+.ranking-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ranking-lista li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    border-left: 4px solid #8b5a2b;
+    font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+}
+
+.ranking-lista li.top-1 { border-left-color: #ffd700; background: rgba(255, 215, 0, 0.15); }
+.ranking-lista li.top-2 { border-left-color: #c0c0c0; background: rgba(192, 192, 192, 0.15); }
+.ranking-lista li.top-3 { border-left-color: #cd7f32; background: rgba(205, 127, 50, 0.15); }
+
+.ranking-nome {
+    font-weight: bold;
+    color: #4a1f16;
+}
+
+.ranking-pontos {
+    color: #6b2f1a;
+    font-weight: bold;
+}
+
+/* Histórico - COM SCROLLBAR ESTILIZADA */
+.historico-box {
+    padding: 10px 0;
+}
+
+.historico-box h4 {
+    margin: 0 0 18px 0;
+    color: #4a1f16;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    border-bottom: 1px dashed #8b5a2b;
+    padding-bottom: 10px;
+}
+
+.historico-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+/* Scrollbar estilizada */
+.historico-lista::-webkit-scrollbar {
+    width: 10px;
+}
+
+.historico-lista::-webkit-scrollbar-track {
+    background: rgba(139, 90, 43, 0.1);
+    border-radius: 5px;
+}
+
+.historico-lista::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #8b5a2b, #6b2f1a);
+    border-radius: 5px;
+    border: 2px solid rgba(139, 90, 43, 0.1);
+}
+
+.historico-lista::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #a0683a, #8b3a2a);
+}
+
+/* Firefox scrollbar */
+.historico-lista {
+    scrollbar-width: thin;
+    scrollbar-color: #8b5a2b rgba(139, 90, 43, 0.1);
+}
+
+.historico-lista li {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    border-left: 4px solid #8b5a2b;
+    font-size: clamp(0.85rem, 1.3vw, 1rem);
+    position: relative;
+    padding-right: 100px;
+}
+
+.historico-lista li.acerto { border-left-color: #2ECC71; }
+.historico-lista li.erro { border-left-color: #E74C3C; }
+
+.historico-titulo {
+    font-weight: bold;
+    color: #4a1f16;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.historico-data {
+    font-size: 0.85em;
+    color: #4a2f1a;
+    opacity: 0.8;
+}
+
+.historico-resultado {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
+.historico-resultado.acerto {
+    background: rgba(46, 204, 113, 0.2);
+    color: #168042;
+}
+
+.historico-resultado.erro {
+    background: rgba(231, 76, 60, 0.2);
+    color: #c0392b;
+}
+
+/* Aba Conta */
+.conta-box-aba {
+    padding: 20px 10px;
+}
+
+.conta-info-aba {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.conta-item-aba {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    border: 2px solid rgba(139, 90, 43, 0.3);
+    transition: all 0.2s;
+}
+
+.conta-item-aba:hover {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(139, 90, 43, 0.5);
+    transform: translateX(5px);
+}
+
+.conta-icon {
+    font-size: 1.8rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(139, 90, 43, 0.1);
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.conta-detalhes {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.conta-label {
+    font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+    color: #4a2f1a;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.conta-valor {
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    color: #6b2f1a;
+    font-weight: 600;
 }
 
 /* =========================================
@@ -347,24 +738,20 @@ body {
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* =========================================
-   RESPONSIVIDADE (MOBILE)
+   RESPONSIVIDADE - MOBILE
    ========================================= */
 @media (max-width: 768px) {
     .perfil-container {
-        align-items: flex-start;
         padding: 10px;
-        height: auto;
-        min-height: 100vh;
+        align-items: flex-start;
     }
 
     .livro-perfil {
         flex-direction: column;
-        aspect-ratio: auto;
+        max-height: none;
         height: auto;
-        min-height: 80vh;
         gap: 20px;
         padding: 15px;
-        overflow-y: auto;
         width: 98vw;
         max-width: none;
     }
@@ -377,6 +764,8 @@ body {
     .pagina-direita {
         padding: 20px 15px;
         min-height: auto;
+        max-height: none;
+        overflow-y: visible;
     }
 
     .titulo-pagina {
@@ -411,9 +800,40 @@ body {
         left: 22px;
     }
 
-    .botao-adm {
-        width: 55px;
-        height: 55px;
+    .adm-link {
+        padding: 12px 15px;
+        font-size: 1rem;
+    }
+    
+    .adm-icon {
+        font-size: 1.2rem;
+    }
+    
+    .abas-header {
+        gap: 2px;
+        flex-wrap: wrap;
+    }
+    
+    .aba-btn {
+        padding: 8px 4px;
+        font-size: 0.75rem;
+        flex: 1 1 45%;
+    }
+    
+    .ranking-destaque {
+        padding: 12px;
+    }
+    
+    .ranking-posicao {
+        min-width: 50px;
+    }
+    
+    .historico-lista {
+        padding-right: 10px;
+    }
+    
+    .historico-lista li {
+        padding-right: 90px;
     }
 }
 
@@ -430,5 +850,19 @@ body {
     
     .titulo-pagina {
         font-size: 1.2rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .aba-btn {
+        flex: 1 1 100%;
+        font-size: 0.75rem;
+        padding: 10px 5px;
+    }
+    
+    .historico-lista li {
+        padding-right: 85px;
     }
 }

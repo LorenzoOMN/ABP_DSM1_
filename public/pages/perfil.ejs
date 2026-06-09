@@ -1,75 +1,180 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
   <link rel="stylesheet" href="/assets/css/perfil.css" />
   <title>Perfil</title>
 </head>
+
 <body>
   <%- include('./partials/header') %>
-  <%- include('./partials/botao_voltar') %>
-  <%- include('./partials/alert') %>
+    <%- include('./partials/botao_voltar') %>
+      <%- include('./partials/alert') %>
 
-  <main class="perfil-container">
-    <!-- O LIVRO (Container Principal) -->
-    <section class="livro-perfil">
-      
-      <!-- PÁGINA ESQUERDA: Perfil -->
-      <div class="pagina-esquerda">
-        <h1 class="titulo-pagina">Perfil do Jogador</h1>
+        <main class="perfil-container">
+          <section class="livro-perfil">
 
-        <div class="area-perfil">
-          <!-- Avatar -->
-          <div class="avatar-wrapper" id="avatarContainer">
-            <img id="avatarImg" src="/assets/img/avatares/default.png" alt="Avatar" class="avatar-img">
-            <div class="avatar-border"></div> <!-- Borda decorativa CSS -->
-          </div>
+            <!-- PÁGINA ESQUERDA: Perfil + Estatísticas -->
+            <div class="pagina-esquerda">
+              <h1 class="titulo-pagina">Perfil do Jogador</h1>
 
-          <!-- Dados do Usuário -->
-          <div class="dados-usuario">
-            <h3 id="nomeUsuario">Carregando...</h3>
-            <span id="emailUsuario">Carregando...</span>
-            
-            <div class="modulo-box">
-              <span>Módulo Atual:</span>
-              <strong id="capituloAtual">-</strong>
+              <!-- Avatar e Dados Básicos -->
+              <div class="area-perfil">
+                <div class="avatar-wrapper" id="avatarContainer">
+                  <img id="avatarImg" src="/assets/img/avatares/default.png" alt="Avatar" class="avatar-img">
+                  <div class="avatar-border"></div>
+                </div>
+
+                <div class="dados-usuario">
+                  <h3 id="nomeUsuario">Carregando...</h3>
+                  <span id="emailUsuario">Carregando...</span>
+
+                  <div class="modulo-box">
+                    <span>Módulo Atual:</span>
+                    <strong id="capituloAtual">-</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Estatísticas Principais -->
+              <div class="stats-box">
+                <h4 class="stats-titulo">📊 Suas Estatísticas</h4>
+                <div class="stats-grid">
+                  <div class="stat-item">
+                    <span class="stat-valor" id="totalQuestoes">0</span>
+                    <span class="stat-label">Questões</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-valor" id="taxaAcerto">0%</span>
+                    <span class="stat-label">Acertos</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-valor" id="streakDias">0</span>
+                    <span class="stat-label">Dias Seguidos</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-valor" id="tempoMedio">0s</span>
+                    <span class="stat-label">Tempo Médio</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Botão ADM (Canto inferior) -->
-        <a id="botaoDev" class="botao-adm" href="/admin">
-          <img src="/assets/img/botao_adm.png" alt="ADM" class="botao-adm-img">
-        </a>
-      </div>
+            <!-- PÁGINA DIREITA: Abas -->
+            <div class="pagina-direita">
+              <h1 class="titulo-pagina">Jornada</h1>
 
-      <!-- PÁGINA DIREITA: Configurações -->
-      <div class="pagina-direita">
-        <h1 class="titulo-pagina">Configurações</h1>
+              <!-- Sistema de Abas -->
+              <div class="abas-container">
+                <div class="abas-header">
+                  <button class="aba-btn ativa" data-aba="configuracoes">⚙️ Ajustes</button>
+                  <button class="aba-btn" data-aba="ranking">🏆 Ranking</button>
+                  <button class="aba-btn" data-aba="historico">📜 Histórico</button>
+                  <button class="aba-btn" data-aba="conta">📋 Conta</button>
+                </div>
 
-        <div class="lista-configuracoes">
-          <!-- Música -->
-          <div class="item-config">
-            <span>Música</span>
-            <div id="toggleMusica" class="toggle"></div>
-          </div>
+                <!-- ABA: Configurações -->
+                <div class="aba-conteudo ativa" id="aba-configuracoes">
+                  <div class="lista-configuracoes">
+                    <div class="item-config">
+                      <span>Música</span>
+                      <div id="toggleMusica" class="toggle"></div>
+                    </div>
+                    <div class="item-config">
+                      <span>Efeitos Sonoros</span>
+                      <div id="toggleEfeitos" class="toggle"></div>
+                    </div>
+                    <div class="">
+                      <a id="botaoDev" class="adm-link" href="/admin">
+                        <span class="adm-icon">⚙️</span>
+                        <span class="adm-texto">Painel Administrativo</span>
+                        <span class="adm-seta">→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
 
-          <!-- Efeitos -->
-          <div class="item-config">
-            <span>Efeitos Sonoros</span>
-            <div id="toggleEfeitos" class="toggle"></div>
-          </div>
-        </div>
-      </div>
+                <!-- ABA: Ranking -->
+                <div class="aba-conteudo" id="aba-ranking">
+                  <div class="ranking-box">
+                    <div class="ranking-destaque">
+                      <div class="ranking-posicao" id="minhaPosicao">#-</div>
+                      <div class="ranking-info">
+                        <strong>Sua Posição</strong>
+                        <span id="rankingTotal">de - jogadores</span>
+                      </div>
+                    </div>
+                    <div class="ranking-top">
+                      <h4>🏅 Top 5 Aventureiros</h4>
+                      <ul id="listaRanking" class="ranking-lista">
+                        <!-- Preenchido via JS -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
 
-    </section>
-  </main>
+                <!-- ABA: Histórico -->
+                <div class="aba-conteudo" id="aba-historico">
+                  <div class="historico-box">
+                    <h4>📜 Atividades Recentes</h4>
+                    <ul id="listaHistorico" class="historico-lista">
+                      <!-- Preenchido via JS -->
+                    </ul>
+                  </div>
+                </div>
 
-  <script src="../assets/js/audio.js"></script>
-  <script src="../assets/js/main.js"></script>
-  <script src="../assets/js/perfil.js"></script>
-  <%- include('./partials/navegacao_inferior') %>
+                <!-- ABA: Conta (NOVA) -->
+                <div class="aba-conteudo" id="aba-conta">
+                  <div class="conta-box-aba">
+                    <h4 class="stats-titulo">📋 Dados da Conta</h4>
+                    <div class="conta-info-aba">
+                      <div class="conta-item-aba">
+                        <div class="conta-icon">📅</div>
+                        <div class="conta-detalhes">
+                          <span class="conta-label">Membro desde</span>
+                          <span class="conta-valor" id="dataCadastro">-</span>
+                        </div>
+                      </div>
+
+                      <div class="conta-item-aba">
+                        <div class="conta-icon">🕐</div>
+                        <div class="conta-detalhes">
+                          <span class="conta-label">Último acesso</span>
+                          <span class="conta-valor" id="ultimoAcesso">-</span>
+                        </div>
+                      </div>
+
+                      <div class="conta-item-aba">
+                        <div class="conta-icon">⏱️</div>
+                        <div class="conta-detalhes">
+                          <span class="conta-label">Tempo total na plataforma</span>
+                          <span class="conta-valor" id="tempoTotal">-</span>
+                        </div>
+                      </div>
+
+                      <div class="conta-item-aba">
+                        <div class="conta-icon">📧</div>
+                        <div class="conta-detalhes">
+                          <span class="conta-label">E-mail cadastrado</span>
+                          <span class="conta-valor" id="emailConta">-</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+        </main>
+
+        <script src="/assets/js/audio.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/perfil.js"></script>
+        <%- include('./partials/navegacao_inferior') %>
 </body>
+
 </html>

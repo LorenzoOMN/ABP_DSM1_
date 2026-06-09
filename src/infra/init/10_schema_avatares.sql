@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS public.avatares (
     nome VARCHAR(100) NOT NULL,
     caminho_imagem VARCHAR(255) NOT NULL,
     descricao TEXT,
-    modulo_desbloqueio INTEGER DEFAULT 1,  -- módulo necessário para desbloquear
+    modulo_desbloqueio INTEGER DEFAULT 1,
     eh_padrao BOOLEAN DEFAULT false
 );
 
@@ -25,17 +25,11 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_avatar_equipado
     ON public.usuario_avatares (id_usuario)
     WHERE equipado = true;
 
--- Inserir avatares padrão
+-- Inserir avatares padrão (ignora se já existir)
 INSERT INTO public.avatares (nome, caminho_imagem, descricao, modulo_desbloqueio, eh_padrao) VALUES
     ('Guerreiro', 'guerreiro.png', 'Avatar básico do guerreiro', 1, true),
     ('Mago', 'mago.png', 'Avatar do mago arcano', 2, false),
     ('Arqueiro', 'arqueiro.png', 'Avatar do arqueiro élfico', 3, false),
     ('Ladino', 'ladino.png', 'Avatar do ladino sombrio', 4, false),
-    ('Paladino', 'paladino.png', 'Avatar do paladino sagrado', 5, false);
-
--- Dar avatar padrão ao usuário admin (id=1, ajuste conforme necessário)
-INSERT INTO public.usuario_avatares (id_usuario, id_avatar, equipado)
-SELECT 1, id_avatar, true
-FROM public.avatares
-WHERE eh_padrao = true
-ON CONFLICT (id_usuario, id_avatar) DO NOTHING;
+    ('Paladino', 'paladino.png', 'Avatar do paladino sagrado', 5, false)
+ON CONFLICT (id_avatar) DO NOTHING;

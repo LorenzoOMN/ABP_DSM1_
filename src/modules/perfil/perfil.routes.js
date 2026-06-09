@@ -1,14 +1,33 @@
-const express = require("express");
+const { Router } = require('express');
+const {
+    getPerfilController,
+    getEstatisticasController,
+    getRankingController,
+    getHistoricoController,
+    getDadosContaController,
+    iniciarSessaoController,
+    finalizarSessaoController
+} = require('./perfil.controller');
 
-const router = express.Router();
+const router = Router();
 
-const perfilController = require("./perfil.controller");
+// Rota principal do perfil
+router.get('/', getPerfilController);
 
-router.get("/", perfilController.getPerfil);
+// Estatísticas
+router.get('/estatisticas', getEstatisticasController);
 
-router.put(
-    "/configuracoes",
-    perfilController.atualizarConfiguracoes
-);
+// Ranking
+router.get('/ranking', getRankingController);
+
+// Histórico
+router.get('/historico', getHistoricoController);
+
+// Dados da conta
+router.get('/dados-conta', getDadosContaController);
+
+// Sessão
+router.post('/sessao/iniciar', iniciarSessaoController);
+router.post('/sessao/finalizar', finalizarSessaoController);
 
 module.exports = router;
