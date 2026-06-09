@@ -55,5 +55,7 @@
 
   "lead-time": "É o tempo total decorrido desde o momento em que uma tarefa é solicitada pelo cliente até a sua entrega final.",
 
-  "cycle-time": "É o tempo que a equipe leva para concluir uma tarefa a partir do momento em que o trabalho nela realmente começou."
+  "cycle-time": "É o tempo que a equipe leva para concluir uma tarefa a partir do momento em que o trabalho nela realmente começou.",
+
+  "artefatos": "São os elementos principais do Scrum (Product Backlog, Sprint Backlog e Incremento) que servem para dar transparência ao trabalho."
 }
