@@ -1,315 +1,434 @@
+/* =========================================
+   GLOBAL & FUNDO
+   ========================================= */
 body {
-
     margin: 0;
     padding: 0;
-
-    overflow: hidden;
-
+    overflow-x: hidden;
+    background-color: #1a1008;
     background-image: url("/assets/img/fundo_perfil.jpg");
-
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-
     font-family: "Cinzel", serif;
+    color: #2b1708;
 }
 
 .perfil-container {
-
     width: 100vw;
     height: 100vh;
-
     display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
+/* =========================================
+   O LIVRO (CONTAINER) - MAIOR NO DESKTOP
+   ========================================= */
+.livro-perfil {
+    display: flex;
+    width: 95vw;
+    max-width: 1400px; /* AUMENTADO de 1000px para 1400px */
+    aspect-ratio: 1.8 / 1; /* Proporção mais próxima de livro aberto */
+    background-color: #6b2f1a; /* Capa mais escura e rica */
+    border-radius: 12px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.7),
+        0 0 0 2px #4a1f16,
+        inset 0 0 30px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    padding: 25px;
+    gap: 6px;
+}
+
+/* Lombada do livro (Centro) */
+.livro-perfil::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background: linear-gradient(to right, #2a0f08, #4a1f16, #2a0f08);
+    transform: translateX(-50%);
+    box-shadow: 0 0 15px rgba(0,0,0,0.8);
+    z-index: 10;
+}
+
+/* =========================================
+   PÁGINAS COM TEXTURA DE PERGAMINHO
+   ========================================= */
+.pagina-esquerda,
+.pagina-direita {
+    flex: 1;
+    
+    /* TEXTURA DE PERGAMINHO REALISTA */
+    background-color: #f4e4c1;
+    background-image: 
+        /* Manchas de envelhecimento */
+        radial-gradient(ellipse at 20% 30%, rgba(139, 90, 43, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(139, 90, 43, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(160, 120, 60, 0.08) 0%, transparent 60%),
+        /* Bordas envelhecidas (vinheta) */
+        radial-gradient(ellipse at center, transparent 60%, rgba(101, 67, 33, 0.3) 100%),
+        /* Textura de papel via SVG */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    
+    padding: 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+    /* Borda interna da página */
+    border: 2px solid #d4c4a1;
+    border-radius: 4px;
+    box-shadow: 
+        inset 0 0 30px rgba(101, 67, 33, 0.2),
+        inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Efeito de página curvada (sombra interna) */
+.pagina-esquerda {
+    box-shadow: 
+        inset -15px 0 30px -10px rgba(0,0,0,0.15),
+        inset 0 0 30px rgba(101, 67, 33, 0.2);
+}
+
+.pagina-direita {
+    box-shadow: 
+        inset 15px 0 30px -10px rgba(0,0,0,0.15),
+        inset 0 0 30px rgba(101, 67, 33, 0.2);
+}
+
+/* =========================================
+   ELEMENTOS DA PÁGINA ESQUERDA
+   ========================================= */
+.titulo-pagina {
+    text-align: center;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    margin-bottom: 20px;
+    color: #4a1f16;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+    border-bottom: 2px solid #8b5a2b;
+    padding-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.area-perfil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+/* Avatar com Borda CSS */
+.avatar-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.livro-perfil {
-
-    position: relative;
-
-    width: 80vw;
-
-    aspect-ratio: 1200 / 750;
-
-    font-size: clamp(0.8rem, 2.2vw, 2.2rem);
-
-    background-image: url("/assets/img/openbook.png");
-
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-/* ================================= */
-/* TÍTULO */
-/* ================================= */
-
-.perfil-titulo {
-
-    position: absolute;
-
-    top: 16.7%;
-    left: 19%;
-
-    color: #2b1708;
-
-    margin: 0;
-
-    font-size: clamp(0.8rem, 2.2vw, 2.2rem);
-}
-
-/* ================================= */
-/* AVATAR */
-/* ================================= */
-
-/* ================================= */
-/* NOME */
-/* ================================= */
-
-.nome-usuario {
-
-    position: absolute;
-
-    top: 36.4%;
-    left: 26.5%;
-
-    color: #2b1708;
-
-    font-size: clamp(0.5rem, 1.3vw, 1.3rem);
-
-    font-weight: bold;
-}
-
-/* ================================= */
-/* EMAIL */
-/* ================================= */
-
-.email-usuario {
-
-    position: absolute;
-
-    top: 39.3%;
-    left: 26.5%;
-
-    font-size: clamp(0.5rem, 1.2vw, 1rem);
-
-    color: #2b1708;
-}
-
-/* ================================= */
-/* MODULO */
-/* ================================= */
-
-.modulo-container {
-
-    position: absolute;
-
-    top: 50.7%;
-    left: 15.8%;
-
-    color: #2b1708;
-
-    font-size: clamp(0.8rem, 1.5vw, 1.8rem);
-}
-
-#capituloAtual {
-
-    font-weight: 700;
-}
-
-.label {
-    font-weight: bold;
-}
-
-/* ================================= */
-/* CONFIGURAÇÕES */
-/* ================================= */
-
-.config-titulo {
-
-    position: absolute;
-
-    top: 16.7%;
-    left: 58%;
-
-    color: #2b1708;
-
-    margin: 0;
-
-    font-size: clamp(1rem, 2.2vw, 2.5rem);
-}
-
-/* ================================= */
-/* MÚSICA */
-/* ================================= */
-
-.texto-musica {
-
-    position: absolute;
-
-    top: 37.3%;
-    left: 54.2%;
-
-    color: #2b1708;
-
-    font-size: clamp(0.8rem, 1.4vw, 1.6rem);
-
-    font-weight: bold;
-}
-
-#toggleMusica {
-
-    position: absolute;
-
-    top: 36%;
-    left: 81.7%;
-}
-
-/* ================================= */
-/* EFEITOS */
-/* ================================= */
-
-.texto-efeitos {
-
-    position: absolute;
-
-    top: 48%;
-    left: 54.2%;
-
-    color: #2b1708;
-
-    font-size: clamp(0.8rem, 1.4vw, 1.6rem);
-
-    font-weight: bold;
-}
-
-#toggleEfeitos {
-
-    position: absolute;
-
-    top: 46.7%;
-    left: 81.7%;
-}
-
-/* ================================= */
-/* TOGGLES */
-/* ================================= */
-
-.toggle-audio {
-
-    width: clamp(18px, 2.5vw, 35px);
-    height: clamp(18px, 2.5vw, 35px);
-
+.avatar-img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+    z-index: 2;
     cursor: pointer;
-
-    background: #2ECC71;
-    border: 2px solid #168042;
-
-    border-radius: 40%;
-
-    transition: all 0.2s ease;
+    background: #fff;
+    transition: transform 0.2s;
 }
 
-/* DESATIVADO */
-
-.toggle-audio.desativado {
-
-    background: #462817;
-
-    border: 2px solid #996B0F;
-}
-
-/* ================================= */
-/* BOTÃO ADM */
-/* ================================= */
-
-.botao-dev {
-
-    position: absolute;
-
-    bottom: 18.3%;
-    left: 15%;
-
-    width: clamp(15px, 8vw, 250px);
-    height: clamp(15px, 8vw, 250px);
-
-    padding: 0;
-
-    border: none;
-    background: transparent;
-
-    cursor: pointer;
-
-    transition: transform 0.2s ease;
-}
-
-.botao-dev-img {
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-
-    display: block;
-        user-select: none;
-    -webkit-user-select: none;
-}
-
-.botao-dev:hover {
-
+.avatar-img:hover {
     transform: scale(1.05);
 }
 
-.botao-dev:active {
-
-    transform: scale(0.95);
-}
-
-.avatar-container {
-
+/* Borda decorativa simulando frame de pedra */
+.avatar-border {
     position: absolute;
-
-    top: 26.5%;
-    left: 14.8%;
-
-    width: 12%;
-
-    aspect-ratio: 1 / 1;
-}
-
-.avatar-imagem {
-
-    position: absolute;
-
-    top: 18%;
-    left: 18%;
-
-    width: 60%;
-    height: 60%;
-
-    background: #ffffff;
-
-    border-radius: 8%;
-}
-
-.avatar-moldura {
-
-    position: absolute;
-
-    inset: 0;
-      top: -40%;
-    left: -40%;
-
-    width: 180%;
-    height: 180%;
-
-    object-fit: contain;
-
-    image-rendering: pixelated;
-
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 8px solid #5c2b00;
+    border-radius: 12px;
+    box-shadow: 
+        0 0 15px rgba(0,0,0,0.5),
+        inset 0 0 10px rgba(0,0,0,0.3);
     pointer-events: none;
-        user-select: none;
-    -webkit-user-select: none;
+    z-index: 3;
+}
+
+.dados-usuario {
+    text-align: center;
+    width: 100%;
+}
+
+.dados-usuario h3 {
+    margin: 5px 0;
+    font-size: clamp(1.1rem, 2vw, 1.8rem);
+    color: #2b1708;
+}
+
+.dados-usuario span {
+    font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+    opacity: 0.8;
+    color: #4a2f1a;
+}
+
+.modulo-box {
+    margin-top: 20px;
+    background: rgba(139, 90, 43, 0.1);
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: 2px solid #8b5a2b;
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+    color: #4a1f16;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Botão ADM */
+.botao-adm {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 70px;
+    height: 70px;
+    transition: transform 0.2s;
+}
+
+.botao-adm:hover {
+    transform: scale(1.1);
+}
+
+.botao-adm-img {
+    width: 100%;
+    height: 100%;
+}
+
+/* =========================================
+   ELEMENTOS DA PÁGINA DIREITA
+   ========================================= */
+.lista-configuracoes {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px 0;
+    align-items: flex-start;
+}
+
+.item-config {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    font-weight: bold;
+    border-bottom: 2px dashed #8b5a2b;
+    padding-bottom: 12px;
+    color: #4a1f16;
+}
+
+/* Toggles Customizados */
+.toggle {
+    width: 60px;
+    height: 30px;
+    background-color: #2ECC71;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    border: 3px solid #168042;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.toggle::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    top: 1px;
+    left: 2px;
+    transition: 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.toggle.desativado {
+    background-color: #462817;
+    border-color: #996B0F;
+}
+
+.toggle.desativado::after {
+    left: 30px;
+}
+
+/* =========================================
+   MODAL DE AVATAR
+   ========================================= */
+.modal-avatares {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.85);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.2s;
+}
+.modal-content {
+    background: #f4e4c1;
+    padding: 30px;
+    border: 4px solid #8b3a2a;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.modal-content h3 {
+    color: #4a1f16;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+.avatar-option {
+    cursor: pointer;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    padding: 8px;
+    background: rgba(255,255,255,0.3);
+    transition: all 0.2s;
+}
+.avatar-option:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.6);
+}
+.avatar-option.selected { 
+    border-color: gold; 
+    background: rgba(255, 215, 0, 0.3); 
+}
+.avatar-option img { 
+    width: 100%; 
+    border-radius: 4px; 
+}
+.avatar-option p {
+    margin: 5px 0 0 0;
+    color: #4a1f16;
+    font-weight: bold;
+}
+.modal-content button {
+    margin-top: 15px;
+    padding: 12px 30px;
+    background: #8b3a2a;
+    color: #f4e4c1;
+    border: 2px solid #4a1f16;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Cinzel", serif;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+}
+.modal-content button:hover {
+    background: #6b2f1a;
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* =========================================
+   RESPONSIVIDADE (MOBILE)
+   ========================================= */
+@media (max-width: 768px) {
+    .perfil-container {
+        align-items: flex-start;
+        padding: 10px;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .livro-perfil {
+        flex-direction: column;
+        aspect-ratio: auto;
+        height: auto;
+        min-height: 80vh;
+        gap: 20px;
+        padding: 15px;
+        overflow-y: auto;
+        width: 98vw;
+        max-width: none;
+    }
+
+    .livro-perfil::before {
+        display: none;
+    }
+
+    .pagina-esquerda,
+    .pagina-direita {
+        padding: 20px 15px;
+        min-height: auto;
+    }
+
+    .titulo-pagina {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+
+    .avatar-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+    .avatar-img {
+        width: 75px;
+        height: 75px;
+    }
+    .avatar-border {
+        border-width: 6px;
+    }
+
+    .item-config {
+        font-size: 1.1rem;
+    }
+    .toggle {
+        width: 45px;
+        height: 24px;
+    }
+    .toggle::after {
+        width: 18px;
+        height: 18px;
+    }
+    .toggle.desativado::after {
+        left: 22px;
+    }
+
+    .botao-adm {
+        width: 55px;
+        height: 55px;
+    }
+}
+
+@media (max-width: 480px) {
+    .livro-perfil {
+        padding: 10px;
+        gap: 15px;
+    }
+    
+    .pagina-esquerda,
+    .pagina-direita {
+        padding: 15px 12px;
+    }
+    
+    .titulo-pagina {
+        font-size: 1.2rem;
+    }
 }

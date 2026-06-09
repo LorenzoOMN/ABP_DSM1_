@@ -151,7 +151,7 @@ async function findUsuarioByCpfAndSenha(cpf, senha) {
     email: usuario.email,
     cpf: usuario.cpf,
     barra_desbloqueada: usuario.barra_desbloqueada,
-    is_admin: usuario.is_admin 
+    is_admin: usuario.is_admin
   };
 }
 
@@ -274,7 +274,7 @@ async function updateConfiguracoesAudio(
 ) {
 
   const result = await pool.query(
-      `
+    `
       UPDATE usuarios
       SET
           musica_ativa = $2,
@@ -282,13 +282,132 @@ async function updateConfiguracoesAudio(
       WHERE id_usuario = $1
       RETURNING musica_ativa, efeitos_ativos
       `,
-      [idUsuario, musicaAtiva, efeitosAtivos]
+    [idUsuario, musicaAtiva, efeitosAtivos]
   );
 
   return result.rows[0] || null;
 }
 
-// exportando a respectiva função para outros arquivos.
+// ============================================================================
+// AVATAR - Repository Functions
+// ============================================================================
+
+/**
+ * Busca o avatar do usuário
+ */
+async function findUsuarioAvatar(idUsuario) {
+  const result = await pool.query(
+    `SELECT avatar FROM usuarios WHERE id_usuario = $1`,
+    [idUsuario]
+  );
+
+  return result.rows[0]?.avatar || 'default.png';
+}
+
+/**
+ * Atualiza o avatar do usuário
+ */
+async function updateUsuarioAvatar(idUsuario, avatar) {
+  const result = await pool.query(
+    `UPDATE usuarios 
+    SET avatar = $1 
+    WHERE id_usuario = $2 
+    RETURNING id_usuario, avatar`,
+    [avatar, idUsuario]
+  );
+
+  return result.rows[0] || null;
+}
+
+/**
+ * Busca lista de avatares disponíveis (se tiver tabela de avatares)
+ */
+async function findAvataresDisponiveis() {
+  const result = await pool.query(
+    `SELECT id_avatar, nome, caminho_imagem, descricao 
+    FROM avatares 
+    ORDER BY nome`
+  );
+
+  return result.rows || [];
+}
+
+/**
+ * Busca avatares desbloqueados pelo usuário
+ */
+async function findAvataresUsuario(idUsuario) {
+  const result = await pool.query(
+    `SELECT a.id_avatar, a.nome, a.caminho_imagem, a.descricao, ua.equipado
+    FROM usuario_avatares ua
+    JOIN avatares a ON ua.id_avatar = a.id_avatar
+    WHERE ua.id_usuario = $1
+    ORDER BY a.nome`,
+    [idUsuario]
+  );
+
+  return result.rows || [];
+}
+
+/**
+ * Equipa um avatar para o usuário
+ */
+async function equiparAvatarUsuario(idUsuario, idAvatar) {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    // Verifica se o usuário tem esse avatar desbloqueado
+    const check = await client.query(
+      `SELECT 1 FROM usuario_avatares 
+      WHERE id_usuario = $1 AND id_avatar = $2`,
+      [idUsuario, idAvatar]
+    );
+
+    if (check.rowCount === 0) {
+      throw new Error('Avatar não desbloqueado');
+    }
+
+    // Desequipa todos os avatares
+    await client.query(
+      `UPDATE usuario_avatares 
+      SET equipado = false 
+      WHERE id_usuario = $1`,
+      [idUsuario]
+    );
+
+    // Equipa o novo avatar
+    await client.query(
+      `UPDATE usuario_avatares 
+      SET equipado = true 
+      WHERE id_usuario = $1 AND id_avatar = $2`,
+      [idUsuario, idAvatar]
+    );
+
+    // Atualiza coluna avatar na tabela usuarios
+    const avatarInfo = await client.query(
+      `SELECT caminho_imagem FROM avatares WHERE id_avatar = $1`,
+      [idAvatar]
+    );
+
+    await client.query(
+      `UPDATE usuarios 
+      SET avatar = $1 
+      WHERE id_usuario = $2`,
+      [avatarInfo.rows[0].caminho_imagem, idUsuario]
+    );
+
+    await client.query('COMMIT');
+    return true;
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+}
+
+// Atualize o module.exports no final do arquivo
 module.exports = {
   createUsuario,
   findUsuarioById,
@@ -297,5 +416,10 @@ module.exports = {
   verificarBarraDesbloqueada,
   desbloquearBarraNavegacao,
   updateUsuario,
-  updateConfiguracoesAudio
+  updateConfiguracoesAudio,
+  findUsuarioAvatar,
+  updateUsuarioAvatar,
+  findAvataresDisponiveis,
+  findAvataresUsuario,
+  equiparAvatarUsuario
 };

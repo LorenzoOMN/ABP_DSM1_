@@ -6,6 +6,11 @@ const {
   updateNomeController,
   updateEmailController,
   updateSenhaController,
+  getAvatarController,
+  updateAvatarController,
+  getAvataresDisponiveisController,
+  getMeusAvataresController,
+  equiparAvatarController
 } = require("./usuario.controller");
 const router = Router();
 
@@ -27,5 +32,19 @@ router.patch("/email", updateEmailController);
 // PATCH /api/usuarios/senha - Atualizar Senha
 router.patch("/senha", updateSenhaController);
 
+// GET /api/usuarios/avatar - Obter avatar do usuário atual
+router.get("/avatar", getAvatarController);
+
+// PATCH /api/usuarios/avatar - Atualizar avatar (seleção simples)
+router.patch("/avatar", updateAvatarController);
+
+// GET /api/usuarios/avatares - Listar avatares disponíveis no sistema
+router.get("/avatares", getAvataresDisponiveisController);
+
+// GET /api/usuarios/meus-avatares - Listar avatares desbloqueados pelo usuário
+router.get("/meus-avatares", getMeusAvataresController);
+
+// PUT /api/usuarios/avatar/equipar - Equipar um avatar
+router.put("/avatar/equipar", equiparAvatarController);
 
 module.exports = router;
