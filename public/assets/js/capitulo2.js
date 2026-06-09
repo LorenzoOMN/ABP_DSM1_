@@ -11,7 +11,7 @@ const guardioesDetalhesData = {
     conteudo: `
       <p>
         O bardo sorri enquanto toca um ala&uacute;de cheio de marca&ccedil;&otilde;es.
-        Ele aponta para o <button class="texto-azul texto-link" data-scroll-to="#artefatos" type="button">Product Backlog</button> em sua mochila, como se reconhecesse a pr&oacute;pria assinatura.
+        Ele aponta para o Product Backlog em sua mochila, como se reconhecesse a pr&oacute;pria assinatura.
       </p>
 
       <blockquote>
