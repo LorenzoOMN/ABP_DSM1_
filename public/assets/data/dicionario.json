@@ -39,5 +39,11 @@
 
   "release": "É uma versão do produto disponibilizada para os usuários após a conclusão de melhorias e funcionalidades.",
 
-  "iteration": "É um ciclo de desenvolvimento onde a equipe trabalha em melhorias e funcionalidades do projeto."
+  "iteration": "É um ciclo de desenvolvimento onde a equipe trabalha em melhorias e funcionalidades do projeto.",
+
+  "sprint-planning": "É a reunião onde a equipe define as prioridades e planeja o trabalho que será realizado na próxima sprint.",
+
+  "review": "É a reunião realizada ao final da sprint onde a equipe apresenta as funcionalidades concluídas para validação e feedback.",
+
+  "retrospectiva": "É a reunião realizada após a sprint onde a equipe avalia o próprio processo de trabalho para identificar melhorias contínuas."
 }
