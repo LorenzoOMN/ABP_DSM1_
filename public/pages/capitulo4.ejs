@@ -1,75 +1,40 @@
 <!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capítulo 4 | Scrum Dungeon</title>
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="../assets/css/capitulo4.css?v=hourglass-force"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Capítulo 4 | Scrum Dungeon</title>
-  <link rel="stylesheet" href="../assets/css/main.css" />
-  <link rel="stylesheet" href="../assets/css/capitulo4.css?v=hourglass-force" />
-</head>
+  <body>
+    <%- include('partials/alert') %> <%- include('partials/header') %> <%-
+    include('./partials/botao_voltar') %>
+    <div
+      class="viewport-blackout"
+      id="viewportBlackout"
+      aria-hidden="true"
+    ></div>
+    <section
+      class="capitulo4-intro"
+      id="capitulo4IntroNarrativa"
+      aria-live="polite"
+      aria-label="Introdução narrativa do capítulo 4"
+    >
+      <p class="intro-prelude" id="introPrelude">A areia não cai.</p>
 
-<body>
-  <%- include('partials/alert') %>
-  <%- include('partials/header') %>
-  <%- include('./partials/botao_voltar') %>
-  <div class="viewport-blackout" id="viewportBlackout" aria-hidden="true"></div>
-  <section class="capitulo4-intro" id="capitulo4IntroNarrativa" aria-live="polite" aria-label="Introdução narrativa do capítulo 4">
-    <p class="intro-prelude" id="introPrelude">
-      A areia não cai.
-    </p>
-
-    <div class="intro-hourglass-frame">
-      <img
-        class="intro-hourglass-image"
-        id="introHourglassImage"
-        src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png"
-        alt="Ampulheta travada do capítulo 4"
-      >
-    </div>
-
-    <div class="intro-lines" id="introLines">
-      <p class="capitulo4-intro-line" data-intro-line>
-        A terceira porta ficou para trás.
-      </p>
-      <p class="capitulo4-intro-line" data-intro-line>
-        A Ampulheta da Sprint foi conquistada, mas o tempo não obedece.
-      </p>
-      <p class="capitulo4-intro-line" data-intro-line>
-        O ciclo existe. O fluxo falhou.
-      </p>
-      <p class="capitulo4-intro-line" data-intro-line>
-        Cada passo adiante agora cobra clareza, ritmo e entrega real.
-      </p>
-      <p class="capitulo4-intro-line" data-intro-line>
-        É na travessia do tempo quebrado que a quarta jornada começa.
-      </p>
-    </div>
-
-    <p class="intro-scroll-hint" id="introScrollHint" aria-hidden="true">
-      Role para continuar
-    </p>
-  </section>
-
-  <main class="capitulo-page" id="capitulo4">
-    <section class="capitulo-hero" id="inicio-capitulo4">
-      <div class="hero-overlay" aria-hidden="true"></div>
-
-      <div class="hero-content">
-        <p class="chapter-kicker">Capítulo 4</p>
-        <h1>Travessia Viva do Tempo Quebrado</h1>
-        <p>
-          A terceira porta ficou para trás. A Ampulheta da Sprint está em suas mãos,
-          mas a areia não cai. O ciclo existe. O fluxo, ainda não.
-        </p>
-
-        <button class="btn-primary" type="button" data-scroll-to-hourglass>
-          Entrar na névoa
-        </button>
+      <div class="intro-hourglass-frame">
+        <img
+          class="intro-hourglass-image"
+          id="introHourglassImage"
+          src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png"
+          alt="Ampulheta travada do capítulo 4"
+        />
       </div>
-    </section>
-
-    <section class="intro-scroll-space" id="introScrollSpace" aria-hidden="true"></section>
 
     <section class="chapter-progress-wrap" aria-label="Progresso do capítulo 4">
       <nav class="chapter-progress">
@@ -137,16 +102,9 @@
         </p>
       </div>
 
-      <div class="story-art">
-        <figure
-          class="hourglass-hover"
-          tabindex="0"
-          data-corvo-hover="Trabalho iniciado não é trabalho concluído."
-          aria-label="Ampulheta travada. Trabalho iniciado não é trabalho concluído."
-        >
-          <img src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png" alt="Ampulheta travada do capítulo 4">
-        </figure>
-      </div>
+      <p class="intro-scroll-hint" id="introScrollHint" aria-hidden="true">
+        Role para continuar
+      </p>
     </section>
 
     <section class="story-block kanban-scene reveal" id="cena-kanban">
@@ -156,13 +114,94 @@
           <p class="scene-impact">
             A névoa se abre e revela uma parede dividida em colunas.
           </p>
+
+          <button class="btn-primary" type="button" data-scroll-to-hourglass>
+            Entrar na névoa
+          </button>
+        </div>
+      </section>
+
+      <section
+        class="intro-scroll-space"
+        id="introScrollSpace"
+        aria-hidden="true"
+      ></section>
+
+      <section
+        class="chapter-progress-wrap"
+        aria-label="Progresso do capítulo 4"
+      >
+        <nav class="chapter-progress">
+          <button
+            class="progress-item active"
+            data-scroll-to="#cena-ampulheta"
+            type="button"
+          >
+            <span>01</span>
+            <small>Ampulheta</small>
+          </button>
+          <button
+            class="progress-item"
+            data-scroll-to="#cena-kanban"
+            type="button"
+          >
+            <span>02</span>
+            <small>Kanban</small>
+          </button>
+          <button
+            class="progress-item"
+            data-scroll-to="#cena-forja"
+            type="button"
+          >
+            <span>03</span>
+            <small>Forja</small>
+          </button>
+          <button
+            class="progress-item"
+            data-scroll-to="#cena-ponte"
+            type="button"
+          >
+            <span>04</span>
+            <small>Ponte</small>
+          </button>
+          <button
+            class="progress-item"
+            data-scroll-to="#cena-divida"
+            type="button"
+          >
+            <span>05</span>
+            <small>Dívida</small>
+          </button>
+          <button
+            class="progress-item"
+            data-scroll-to="#cena-metricas"
+            type="button"
+          >
+            <span>06</span>
+            <small>Métricas</small>
+          </button>
+        </nav>
+      </section>
+
+      <section id="cena-ampulheta" class="story-block immersive-scene reveal">
+        <div class="scene-atmosphere" aria-hidden="true"></div>
+
+        <div class="story-side-icon" aria-hidden="true">
+          <span>01</span>
+        </div>
+
+        <div class="story-text">
+          <span class="section-number">Cena 01</span>
+          <h2>A Ampulheta Parada</h2>
+          <p class="scene-impact">A Sprint existe, mas a areia não cai.</p>
           <p>
             O Bardo aponta para as inscrições: A Fazer, Em Desenvolvimento, Teste e Concluído.
             "Isto é um quadro <span class="glossario" data-g="kanban">Kanban</span>. Ele mostra o caminho do trabalho."
           </p>
           <p>
-            Os cartões se acumulam em Em Desenvolvimento. A coluna de Teste quase não se move.
-            O Corvo corta a discussão antes que o grupo confunda movimento com avanço.
+            O Product Backlog e o Sprint Backlog se abrem no chão. As tarefas
+            brilham como marcas de luz: algumas avançam, outras piscam, outras
+            ficam presas no mesmo ponto.
           </p>
           <p>
             No chão, as marcas da cena anterior se juntam em pequenos elos de luz.
@@ -172,21 +211,60 @@
             O <span class="glossario" data-g="kanban">Kanban</span> enfatiza fluxo contínuo. Quando uma etapa acumula mais itens que as demais,
             o problema tem nome: gargalo.
           </p>
-          <p class="crow-note">
-            "Não confundam muitas tarefas iniciadas com progresso."
+          <p>
+            Trabalho iniciado não é trabalho concluído. A Sprint só respira
+            quando o trabalho flui.
           </p>
-          <blockquote>Começar menos pode ser o caminho para terminar mais.</blockquote>
         </div>
 
-        <div class="story-art kanban-art">
-          <div class="kanban-panel">
-            <div class="kanban-panel-header">
-              <span>Fluxo do time</span>
-              <strong>WIP revela o gargalo</strong>
-            </div>
-            <p class="kanban-wip-note">
-              WIP é o limite de trabalho em andamento. Ele impede que o time comece mais tarefas do que consegue terminar.
+        <div class="story-art">
+          <figure
+            class="hourglass-hover"
+            tabindex="0"
+            data-corvo-hover="Trabalho iniciado não é trabalho concluído."
+            aria-label="Ampulheta travada. Trabalho iniciado não é trabalho concluído."
+          >
+            <img
+              src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png"
+              alt="Ampulheta travada do capítulo 4"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="story-block kanban-scene reveal" id="cena-kanban">
+        <div class="story-side-icon" aria-hidden="true">
+          <span>02</span>
+        </div>
+
+        <div class="kanban-layout">
+          <div class="story-text kanban-copy">
+            <span class="section-number">Cena 02</span>
+            <h2>O Quadro das Tarefas Presas</h2>
+            <p class="scene-impact">
+              A névoa se abre e revela uma parede dividida em colunas.
             </p>
+            <p>
+              O Bardo aponta para as inscrições: A Fazer, Em Desenvolvimento,
+              Teste e Concluído. "Isto é um quadro Kanban. Ele mostra o caminho
+              do trabalho."
+            </p>
+            <p>
+              Os cartões se acumulam em Em Desenvolvimento. A coluna de Teste
+              quase não se move. O Corvo corta a discussão antes que o grupo
+              confunda movimento com avanço.
+            </p>
+            <p>
+              O Kanban enfatiza fluxo contínuo. Quando uma etapa acumula mais
+              itens que as demais, o problema tem nome: gargalo.
+            </p>
+            <p class="crow-note">
+              "Não confundam muitas tarefas iniciadas com progresso."
+            </p>
+            <blockquote>
+              Começar menos pode ser o caminho para terminar mais.
+            </blockquote>
+          </div>
 
             <div class="minigame-guide minigame-guide--kanban" aria-label="Como resolver o Kanban">
               <span class="minigame-guide__eyebrow">Como resolver</span>
@@ -210,45 +288,75 @@
                   Preparar critério
                 </button>
               </div>
+              <p class="kanban-wip-note">
+                WIP é o limite de trabalho em andamento. Ele impede que o time
+                comece mais tarefas do que consegue terminar.
+              </p>
 
-              <div class="kanban-column" data-column="doing" data-wip-limit="2">
-                <div class="kanban-column-header">
-                  <h3>Em Desenvolvimento</h3>
-                  <span data-wip-counter>WIP 3/2</span>
+              <div
+                class="kanban-board"
+                aria-label="Quadro Kanban interativo com limite WIP"
+              >
+                <div class="kanban-column" data-column="todo">
+                  <div class="kanban-column-header">
+                    <h3>A Fazer</h3>
+                    <span>Fila</span>
+                  </div>
+                  <button class="kanban-card" type="button" data-kanban-card>
+                    Refinar história
+                  </button>
+                  <button class="kanban-card" type="button" data-kanban-card>
+                    Preparar critério
+                  </button>
                 </div>
-                <button class="kanban-card" type="button" data-kanban-card>
-                  API de progresso
-                </button>
-                <button class="kanban-card" type="button" data-kanban-card>
-                  Tela do desafio
-                </button>
-                <button class="kanban-card" type="button" data-kanban-card>
-                  Ajuste de layout
-                </button>
+
+                <div
+                  class="kanban-column"
+                  data-column="doing"
+                  data-wip-limit="2"
+                >
+                  <div class="kanban-column-header">
+                    <h3>Em Desenvolvimento</h3>
+                    <span data-wip-counter>WIP 3/2</span>
+                  </div>
+                  <button class="kanban-card" type="button" data-kanban-card>
+                    API de progresso
+                  </button>
+                  <button class="kanban-card" type="button" data-kanban-card>
+                    Tela do desafio
+                  </button>
+                  <button class="kanban-card" type="button" data-kanban-card>
+                    Ajuste de layout
+                  </button>
+                </div>
+
+                <div class="kanban-column" data-column="test">
+                  <div class="kanban-column-header">
+                    <h3>Teste</h3>
+                    <span>Parado</span>
+                  </div>
+                </div>
+
+                <div class="kanban-column" data-column="done">
+                  <div class="kanban-column-header">
+                    <h3>Concluído</h3>
+                    <span>Entrega</span>
+                  </div>
+                </div>
               </div>
 
-              <div class="kanban-column" data-column="test">
-                <div class="kanban-column-header">
-                  <h3>Teste</h3>
-                  <span>Parado</span>
-                </div>
-              </div>
-
-              <div class="kanban-column" data-column="done">
-                <div class="kanban-column-header">
-                  <h3>Concluído</h3>
-                  <span>Entrega</span>
-                </div>
-              </div>
+              <p
+                class="kanban-status kanban-status--warning"
+                id="kanbanStatus"
+                aria-live="polite"
+              >
+                Em Desenvolvimento está acima do WIP. Leve cartões para Teste
+                antes de iniciar mais trabalho.
+              </p>
             </div>
-
-            <p class="kanban-status kanban-status--warning" id="kanbanStatus" aria-live="polite">
-              Em Desenvolvimento está acima do WIP. Leve cartões para Teste antes de iniciar mais trabalho.
-            </p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
     <section class="story-block reveal" id="cena-forja" data-locked-by="kanban" aria-describedby="lock-cena-forja">
       <div class="story-text">
@@ -307,7 +415,6 @@
                 <span>Sem defeitos críticos conhecidos</span>
               </label>
             </div>
-          </div>
 
           <button class="btn-primary dod-button" id="btnValidarDod" type="button">
             Abrir a porta
@@ -316,14 +423,18 @@
             Marque os cinco critérios e aperte Abrir a porta.
           </p>
         </div>
-      </div>
 
-      <div class="scene-lock" id="lock-cena-forja" role="status" aria-live="polite">
-        <span class="scene-lock__icon" aria-hidden="true"></span>
-        <strong>Bloqueado</strong>
-        <p>Conclua o Kanban para liberar a Porta da DoD.</p>
-      </div>
-    </section>
+        <div
+          class="scene-lock"
+          id="lock-cena-forja"
+          role="status"
+          aria-live="polite"
+        >
+          <span class="scene-lock__icon" aria-hidden="true"></span>
+          <strong>Bloqueado</strong>
+          <p>Conclua o Kanban para liberar a Porta da DoD.</p>
+        </div>
+      </section>
 
     <section class="story-block reveal pipeline-scene" id="cena-ponte" data-locked-by="dod" aria-describedby="lock-cena-ponte">
       <div class="story-text">
@@ -355,15 +466,26 @@
         <blockquote>Código, integração, testes, build e deploy. Lembre a ordem.</blockquote>
       </div>
 
-      <div class="pipeline-scroll-blackout" id="pipelineScrollBlackout" aria-hidden="true"></div>
+        <div
+          class="pipeline-scroll-blackout"
+          id="pipelineScrollBlackout"
+          aria-hidden="true"
+        ></div>
 
-      <div class="pipeline-void" id="pipelineVoid" aria-label="Ponte Contínua no escuro">
-        <div class="pipeline-void__inner">
-          <div class="pipeline-void__copy" aria-live="polite">
-            <span id="commitStep">A ponte ainda aparece na escuridão</span>
-            <strong id="commitTitle">Role até o breu completo</strong>
-            <p id="commitDescription">A imagem da ponte vai sumir com o scroll. Quando tudo apagar, observe o brilho atrás dos ícones.</p>
-          </div>
+        <div
+          class="pipeline-void"
+          id="pipelineVoid"
+          aria-label="Ponte Contínua no escuro"
+        >
+          <div class="pipeline-void__inner">
+            <div class="pipeline-void__copy" aria-live="polite">
+              <span id="commitStep">A ponte ainda aparece na escuridão</span>
+              <strong id="commitTitle">Role até o breu completo</strong>
+              <p id="commitDescription">
+                A imagem da ponte vai sumir com o scroll. Quando tudo apagar,
+                observe o brilho atrás dos ícones.
+              </p>
+            </div>
 
           <div class="minigame-guide minigame-guide--pipeline" aria-label="Como atravessar a Ponte CI/CD">
             <span class="minigame-guide__eyebrow">Como resolver</span>
@@ -406,9 +528,20 @@
             </button>
           </div>
 
-          <div class="pipeline-void__footer">
-            <div class="pipeline-memory-progress" aria-hidden="true">
-              <span data-pipeline-progress></span>
+            <div class="pipeline-void__footer">
+              <div class="pipeline-memory-progress" aria-hidden="true">
+                <span data-pipeline-progress></span>
+              </div>
+              <button
+                class="pipeline-replay-button"
+                id="btnRepetirPipeline"
+                type="button"
+              >
+                Rever sequência
+              </button>
+              <p class="pipeline-status" id="pipelineStatus" aria-live="polite">
+                Continue descendo até a tela ficar totalmente preta.
+              </p>
             </div>
             <button class="pipeline-replay-button" id="btnRepetirPipeline" type="button">
               Rever sequência
@@ -418,14 +551,18 @@
             </p>
           </div>
         </div>
-      </div>
 
-      <div class="scene-lock" id="lock-cena-ponte" role="status" aria-live="polite">
-        <span class="scene-lock__icon" aria-hidden="true"></span>
-        <strong>Bloqueado</strong>
-        <p>Conclua a Porta da DoD para liberar o próximo trecho.</p>
-      </div>
-    </section>
+        <div
+          class="scene-lock"
+          id="lock-cena-ponte"
+          role="status"
+          aria-live="polite"
+        >
+          <span class="scene-lock__icon" aria-hidden="true"></span>
+          <strong>Bloqueado</strong>
+          <p>Conclua a Porta da DoD para liberar o próximo trecho.</p>
+        </div>
+      </section>
 
     <section class="story-block reveal debt-scene" id="cena-divida" data-locked-by="pipeline" aria-describedby="lock-cena-divida">
       <div class="story-text refactor-intro-card">
@@ -546,7 +683,6 @@
             </p>
           </div>
         </div>
-      </div>
 
       <div class="scene-lock" id="lock-cena-divida" role="status" aria-live="polite">
         <span class="scene-lock__icon" aria-hidden="true"></span>
@@ -800,11 +936,24 @@
     </section>
   </main>
 
-  <%- include('partials/navegacao_inferior') %>
-  <%- include('partials/footer') %>
+        <div class="story-art">
+          <div
+            class="porta-boss-scene"
+            id="portaBossScene"
+            aria-label="Porta do desafio do módulo 4"
+          >
+            <strong>Quarta porta</strong>
+            <span>Desafio bloqueado</span>
+          </div>
+        </div>
+      </section>
+    </main>
 
-  <script src="../assets/js/main.js"></script>
-  <script src="../assets/js/capitulo4.js?v=hourglass-scroll-hint"></script>
-</body>
+    <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
+    %>
 
+    <script src="../assets/js/audio.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/capitulo4.js?v=hourglass-scroll-hint"></script>
+  </body>
 </html>
