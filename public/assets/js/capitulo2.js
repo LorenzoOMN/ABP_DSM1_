@@ -351,8 +351,8 @@ async function concluirHistoriaCapitulo2() {
   const btnConcluir = document.getElementById("btnConcluirHistoriaCapitulo2");
   const btnDesafio = document.getElementById("btnIrDesafioCapitulo2");
   const porta = document.getElementById("porta2Scene");
+  const portal = document.querySelector(".guardioes-final-portal");
   const status = document.getElementById("statusHistoriaCapitulo2");
-  const tooltip = document.querySelector(".porta2-tooltip");
 
   if (btnConcluir) {
     btnConcluir.disabled = true;
@@ -395,8 +395,8 @@ async function concluirHistoriaCapitulo2() {
       porta.classList.add("porta-liberada");
     }
 
-    if (tooltip) {
-      tooltip.textContent = "Atravesse. O Julgamento dos Guardioes comeca do outro lado.";
+    if (portal) {
+      portal.classList.add("is-portal-active");
     }
   } catch (error) {
     console.error(error);
@@ -438,6 +438,26 @@ function configurarConclusaoCapitulo2() {
   }
 }
 
+function configurarParallaxPortalCapitulo2() {
+  const portal = document.querySelector(".guardioes-final-portal");
+
+  if (!portal) return;
+
+  portal.addEventListener("pointermove", (event) => {
+    const rect = portal.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+
+    portal.style.setProperty("--portal-mouse-x", x.toFixed(3));
+    portal.style.setProperty("--portal-mouse-y", y.toFixed(3));
+  });
+
+  portal.addEventListener("pointerleave", () => {
+    portal.style.setProperty("--portal-mouse-x", "0");
+    portal.style.setProperty("--portal-mouse-y", "0");
+  });
+}
+
 function configurarDesbloqueioNavbarCapitulo2() {
   const secaoFinal = document.getElementById("porta2");
 
@@ -470,6 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
   configurarGuardioes();
   configurarPreparoDesafio();
   configurarConclusaoCapitulo2();
+  configurarParallaxPortalCapitulo2();
   configurarDesbloqueioNavbarCapitulo2();
   ajustarHashInicialCapitulo2();
 });

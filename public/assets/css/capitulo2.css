@@ -216,6 +216,29 @@
   line-height: 1.55;
 }
 
+.corredor-only {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 4rem auto;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.corredor-only img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.22),
+    0 24px 44px rgba(0, 0, 0, 0.58);
+}
+
 /* ============================================================
    BARRA DO CAPÍTULO 2
 ============================================================ */
@@ -922,39 +945,6 @@
 }
 
 /* ============================================================
-   PORTAL FINAL - CONTROLES COMPARTILHADOS
-============================================================ */
-
-.porta2-tooltip {
-  position: absolute;
-  left: 50%;
-  top: calc(100% + 0.35rem);
-  z-index: 5;
-  width: max-content;
-  max-width: min(390px, 86%);
-  transform: translateX(-50%) translateY(8px);
-  padding: 0.75rem 1rem;
-  color: #f7e6aa;
-  font-family: "Cinzel", serif;
-  font-size: 0.85rem;
-  text-align: center;
-  background: rgba(7, 6, 10, 0.92);
-  border: 1px solid rgba(212, 175, 55, 0.65);
-  border-radius: 10px;
-  box-shadow: 0 0 28px rgba(118, 61, 184, 0.16);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.22s ease, transform 0.22s ease;
-}
-
-.guardioes-final-portal-button:hover .porta2-tooltip,
-.guardioes-final-portal-button:focus-visible .porta2-tooltip,
-.guardioes-final-portal-button.porta-liberada .porta2-tooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* ============================================================
    RESPONSIVO
 ============================================================ */
 
@@ -1208,11 +1198,7 @@
   min-height: 460vh;
   margin: 0;
   padding-top: 0;
-  background:
-    radial-gradient(ellipse at 50% 24%, rgba(166, 58, 255, 0.38) 0, rgba(119, 41, 191, 0.22) 18rem, transparent 34rem),
-    radial-gradient(ellipse at 50% 72%, rgba(142, 45, 224, 0.34) 0, rgba(88, 30, 148, 0.2) 18rem, transparent 34rem),
-    radial-gradient(ellipse at 50% 90%, rgba(105, 36, 168, 0.3), transparent 28rem),
-    linear-gradient(180deg, #05020a 0%, #0b0617 42%, #19082d 74%, #150826 100%);
+  background: #000;
   --guardioes-final-curtain: 0;
   --guardioes-final-stage-opacity: 0;
   --guardioes-final-text-opacity: 0;
@@ -1266,9 +1252,7 @@
   height: 100vh;
   min-height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 74%, rgba(101, 35, 168, 0.26), transparent 32rem),
-    linear-gradient(90deg, #030207 0%, #0b0617 22%, #150826 50%, #0b0617 78%, #030207 100%);
+  background: #000;
   opacity: var(--guardioes-final-stage-opacity);
   transition: opacity 0.08s linear;
 }
@@ -1282,9 +1266,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    radial-gradient(ellipse at 50% 42%, rgba(126, 45, 202, 0.18), transparent 30rem),
-    linear-gradient(90deg, #030207 0%, #0b0617 22%, #150826 50%, #0b0617 78%, #030207 100%);
+  background: #000;
   pointer-events: none;
 }
 
@@ -1419,6 +1401,8 @@
   position: absolute;
   inset: 0;
   z-index: 8;
+  --portal-mouse-x: 0;
+  --portal-mouse-y: 0;
   display: grid;
   grid-template-rows: minmax(0, 58vh) auto;
   justify-items: center;
@@ -1457,12 +1441,27 @@
 .guardioes-final-portal::after {
   z-index: 1;
   background:
+    radial-gradient(circle at 31% 22%, rgba(244, 225, 170, 0.64) 0 1px, transparent 3px),
+    radial-gradient(circle at 73% 18%, rgba(242, 75, 255, 0.52) 0 1px, transparent 3px),
+    radial-gradient(circle at 82% 40%, rgba(112, 170, 255, 0.46) 0 1px, transparent 3px);
+  opacity: 0.36;
+  transform: translate(
+    calc(var(--portal-mouse-x) * 14px),
+    calc(var(--portal-mouse-y) * 10px)
+  );
+  transition: opacity 0.45s ease, background 0.45s ease;
+}
+
+.guardioes-final-portal.is-portal-active::after {
+  background:
+    radial-gradient(circle at 18% 55%, rgba(228, 75, 255, 0.86) 0 2px, transparent 5px),
     radial-gradient(circle at 28% 23%, rgba(244, 225, 170, 0.82) 0 1px, transparent 3px),
+    radial-gradient(circle at 41% 15%, rgba(130, 167, 255, 0.62) 0 1px, transparent 3px),
+    radial-gradient(circle at 56% 33%, rgba(255, 98, 239, 0.72) 0 1px, transparent 3px),
     radial-gradient(circle at 69% 17%, rgba(242, 75, 255, 0.75) 0 1px, transparent 3px),
     radial-gradient(circle at 82% 38%, rgba(112, 170, 255, 0.72) 0 1px, transparent 3px),
-    radial-gradient(circle at 19% 55%, rgba(228, 75, 255, 0.78) 0 2px, transparent 5px);
-  opacity: 0.75;
-  animation: portalSparksDrift 3.8s ease-in-out infinite;
+    radial-gradient(circle at 87% 68%, rgba(244, 225, 170, 0.62) 0 1px, transparent 3px);
+  opacity: 0.78;
 }
 
 .guardioes-final-scroll[data-final-index="3"] .guardioes-final-slice {
@@ -1487,10 +1486,9 @@
   display: grid;
   place-items: center;
   isolation: isolate;
-  transform: translateY(0.55rem);
-  filter:
-    drop-shadow(0 0 30px rgba(176, 52, 255, 0.56))
-    drop-shadow(0 0 96px rgba(104, 36, 255, 0.34));
+  transform: translateY(clamp(4rem, 7vh, 5.2rem));
+  filter: drop-shadow(0 0 18px rgba(176, 52, 255, 0.18));
+  transition: filter 0.45s ease;
 }
 
 .portal-layer {
@@ -1571,6 +1569,45 @@
   animation: portalSparksDrift 2.8s ease-in-out infinite;
 }
 
+.portal-vortex,
+.portal-fog,
+.portal-sparks {
+  opacity: 0;
+  transition: opacity 0.45s ease, filter 0.45s ease;
+}
+
+.guardioes-final-portal:not(.is-portal-active) .portal-vortex,
+.guardioes-final-portal:not(.is-portal-active) .portal-fog,
+.guardioes-final-portal:not(.is-portal-active) .portal-sparks {
+  animation: none;
+}
+
+.guardioes-final-portal.is-portal-active .guardioes-final-portal-core {
+  filter:
+    drop-shadow(0 0 30px rgba(176, 52, 255, 0.56))
+    drop-shadow(0 0 96px rgba(104, 36, 255, 0.34));
+}
+
+.guardioes-final-portal.is-portal-active .portal-vortex {
+  opacity: 1;
+  animation: portalVortexBreath 3.2s ease-in-out infinite;
+}
+
+.guardioes-final-portal.is-portal-active .portal-fog-back {
+  opacity: 0.42;
+  animation: portalFogBackDrift 6.5s ease-in-out infinite;
+}
+
+.guardioes-final-portal.is-portal-active .portal-fog-front {
+  opacity: 0.34;
+  animation: portalFogFrontDrift 5.8s ease-in-out infinite;
+}
+
+.guardioes-final-portal.is-portal-active .portal-sparks {
+  opacity: 1;
+  animation: portalSparksDrift 2.8s ease-in-out infinite;
+}
+
 @keyframes portalFogBackDrift {
   0%,
   100% {
@@ -1618,12 +1655,20 @@
   0%,
   100% {
     opacity: 0.45;
-    transform: translateY(8px) scale(0.98);
+    transform: translate(
+        calc(var(--portal-mouse-x) * -18px),
+        calc(8px + var(--portal-mouse-y) * -12px)
+      )
+      scale(0.98);
   }
 
   50% {
     opacity: 1;
-    transform: translateY(-8px) scale(1.02);
+    transform: translate(
+        calc(var(--portal-mouse-x) * -26px),
+        calc(-8px + var(--portal-mouse-y) * -18px)
+      )
+      scale(1.02);
   }
 }
 
