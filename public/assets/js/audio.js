@@ -11,6 +11,9 @@
     "/capitulo4": "/assets/sound/abp_mapa_sala.mp3",
     "/capitulo5": "/assets/sound/abp_mapa_sala.mp3",
     "/resultado": "/assets/sound/abp_mapa_sala.mp3",
+    "/certificado": "/assets/sound/abp_mapa_sala.mp3",
+    "/burningdown": "/assets/sound/abp_mapa_sala.mp3",
+    "/artefatos": "/assets/sound/abp_mapa_sala.mp3",
 
     "/desafio1": "/assets/sound/abp_desafio.mp3",
     "/desafio2": "/assets/sound/abp_desafio.mp3",
@@ -23,10 +26,10 @@
 
   const caminhoAudio = trilhasPorPagina[window.location.pathname];
 
-  if (!caminhoAudio) {
-    botaoAudio.hidden = true;
-    return;
-  }
+  //if (!caminhoAudio) {
+  //  botaoAudio.hidden = true;
+  //  return;
+  //}
 
   const audio = new Audio(caminhoAudio);
   audio.loop = true;
