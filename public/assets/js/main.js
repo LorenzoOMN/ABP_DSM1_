@@ -645,6 +645,11 @@ function tocarSomClick() {
 
 document.addEventListener("click", (event) => {
 
+  // Se estiver em uma página de questionário, não toca o som
+  if (document.body.classList.contains("pagina-questionario")) {
+    return;
+  }
+
   const botao = event.target.closest("button");
 
   if (!botao) {

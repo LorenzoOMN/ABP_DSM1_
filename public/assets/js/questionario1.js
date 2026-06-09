@@ -52,8 +52,27 @@
   // CONSTANTES
   // ============================================================================
 
+  const musicaQuestionario = new Audio("/assets/audio/questionario.mp3");
   const DURACAO_TIMER_SEGUNDOS = 20 * 60;
   const RESPOSTA_PULADA = "x";
+
+  function tocarMusicaQuestionario() {
+    if (!efeitosSonorosAtivos()) {
+      return;
+    }
+  
+    musicaQuestionario.volume = 0.2;
+    musicaQuestionario.loop = true;
+  
+    musicaQuestionario.play().catch((erro) => {
+      console.error("Erro ao tocar música do questionário:", erro);
+    });
+  }
+  
+  function pararMusicaQuestionario() {
+    musicaQuestionario.pause();
+    musicaQuestionario.currentTime = 0;
+  }
 
   const BOSSES = {
     1: {
@@ -273,6 +292,7 @@
 
     questionarioEncerrado = true;
 
+    pararMusicaQuestionario();
     pararTimer();
 
     if (timerEl) {
@@ -507,6 +527,7 @@
 
     questionarioEncerrado = true;
 
+    pararMusicaQuestionario();
     pararTimer();
 
     desabilitarTudo();
@@ -678,6 +699,7 @@
 
     questionarioEncerrado = true;
 
+    pararMusicaQuestionario();
     desabilitarTudo();
 
     pararTimer();
@@ -817,6 +839,7 @@
       atualizarVidaBoss();
       renderizarQuestao();
       iniciarTimer();
+      tocarMusicaQuestionario();
     } catch (err) {
       console.error(err);
       mostrarAlerta("Erro de conexão ao carregar questões", "erro");
