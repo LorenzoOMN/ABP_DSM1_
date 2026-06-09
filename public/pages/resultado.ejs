@@ -10,7 +10,8 @@
   </head>
 
   <body class="corpo-resultado">
-    <%- include('partials/header') %> <%- include('partials/alert') %>
+    <%- include('partials/header') %>
+    <%- include('partials/alert') %>
 
     <main class="tela">
       <section
@@ -56,47 +57,48 @@
               </div>
             </div>
           </div>
-          <div class="resultado-visual">
-            <div class="resultado-imagem-area" id="resultadoImagemArea">
-              <img
-                id="resultadoImagem"
-                class="resultado-imagem"
-                src="/assets/img/capitulo_1/resultado_venceu.png"
-                alt="Resultado da batalha"
-              />
+         <div class="resultado-visual">
+  <div class="resultado-imagem-area" id="resultadoImagemArea">
+    <img
+      id="resultadoImagem"
+      class="resultado-imagem"
+      src="/assets/img/capitulo_1/resultado_venceu.png"
+      alt="Resultado da batalha"
+    />
 
-              <div id="resultadoHoverTexto" class="resultado-hover-texto">
-                VOCÊ VENCEU
-              </div>
-            </div>
+    <div id="resultadoHoverTexto" class="resultado-hover-texto">
+      VOCÊ VENCEU
+    </div>
+  </div>
 
-            <div class="button-posicao">
-              <button
-                class="tentar-novamente"
-                id="btnAcaoResultado"
-                type="button"
-                disabled
-              >
-                <span class="texto-botao">Carregando...</span>
-              </button>
+  <div class="button-posicao">
+    <button
+      class="tentar-novamente"
+      id="btnAcaoResultado"
+      type="button"
+      disabled
+    >
+      <span class="texto-botao">Carregando...</span>
+    </button>
 
-              <button
-                class="tentar-novamente botao-melhorar-nota"
-                id="btnMelhorarNota"
-                type="button"
-                hidden
-              >
-                <span class="texto-botao">Melhorar nota</span>
-              </button>
-            </div>
-          </div>
+    <button
+  class="tentar-novamente botao-melhorar-nota"
+  id="btnMelhorarNota"
+  type="button"
+  hidden
+>
+  <span class="texto-botao">Melhorar nota</span>
+</button>
+
+  </div>
+</div>
         </div>
       </section>
     </main>
 
     <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
     %>
-    <script src="../assets/js/audio.js"></script>
+
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/resultado.js"></script>
   </body>

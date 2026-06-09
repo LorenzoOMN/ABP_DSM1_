@@ -10,8 +10,9 @@
   </head>
 
   <body>
-    <%- include('./partials/header') %> <%- include('./partials/botao_voltar')
-    %> <%- include('./partials/alert') %>
+    <%- include('./partials/header') %>
+    <%- include('./partials/botao_voltar') %>
+    <%- include('./partials/alert') %>
 
     <main class="mapa-custom-2-page">
       <section class="mapa-custom-2-header">
@@ -34,7 +35,7 @@
         <aside class="mapa-actions-panel" aria-label="Acoes da jornada">
           <button
             class="atalho-mapa atalho-progresso"
-            onclick="window.location.href = '/burningdown'"
+            onclick="window.location.href='/burningdown'"
             type="button"
           >
             <span class="atalho-kicker">Progresso</span>
@@ -47,7 +48,7 @@
 
           <button
             class="atalho-mapa atalho-artefatos"
-            onclick="window.location.href = '/artefatos'"
+            onclick="window.location.href='/artefatos'"
             type="button"
           >
             <span class="atalho-kicker">Colecao</span>
@@ -77,11 +78,10 @@
       </section>
     </main>
 
-    <script src="../assets/js/audio.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/mapa.js"></script>
 
-    <%- include('./partials/navegacao_inferior') %> <%-
-    include('./partials/footer') %>
+    <%- include('./partials/navegacao_inferior') %>
+    <%- include('./partials/footer') %>
   </body>
 </html>
