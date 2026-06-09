@@ -6,38 +6,33 @@
 
 :root {
   --sd-bg: #090908;
-  --sd-bg-deep: #050504;
   --sd-surface: rgba(18, 15, 12, 0.92);
-  --sd-surface-2: rgba(31, 24, 17, 0.95);
+  --sd-surface-strong: rgba(31, 24, 17, 0.95);
   --sd-gold: #d6ad35;
-  --sd-gold-soft: rgba(214, 173, 53, 0.55);
+  --sd-gold-light: #f5d27a;
   --sd-gold-muted: #996b0f;
   --sd-text: #f4efe2;
   --sd-muted: #d8c7a3;
   --sd-purple: #8b4dff;
-  --sd-purple-soft: rgba(139, 77, 255, 0.28);
   --sd-fire: #ff8a1f;
   --sd-border: rgba(214, 173, 53, 0.32);
-  --sd-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-  --mapa-bg: #0d0b09;
-  --mapa-surface: rgba(18, 15, 12, 0.94);
-  --mapa-surface-2: rgba(35, 28, 19, 0.92);
-  --mapa-line: rgba(214, 173, 53, 0.56);
-  --mapa-line-muted: rgba(153, 107, 15, 0.44);
-  --mapa-text: #f4efe2;
-  --mapa-muted: #d7ccb7;
-  --mapa-accent: #f5d27a;
+  --sd-border-strong: rgba(214, 173, 53, 0.56);
+  --sd-shadow: 0 18px 34px rgba(0, 0, 0, 0.36);
+
   --mapa-focus: #f4d03f;
-  --mapa-blue: #7eb0ff;
-  --mapa-green: #79c785;
+  --mapa-locked: #938876;
   --mapa-red: #ff7368;
 }
 
 body {
   margin: 0;
   background: var(--sd-bg);
-  color: var(--mapa-text);
+  color: var(--sd-text);
   font-family: "Source Serif 4", serif;
+}
+
+button {
+  font-family: inherit;
 }
 
 .pagina-mapa header {
@@ -83,10 +78,6 @@ body {
     inset 0 1px 0 rgba(255, 244, 220, 0.06);
 }
 
-button {
-  font-family: inherit;
-}
-
 .mapa-custom-2-page {
   position: relative;
   isolation: isolate;
@@ -94,75 +85,71 @@ button {
   padding: clamp(88px, 11vw, 124px) clamp(14px, 3vw, 28px) 112px;
   background:
     radial-gradient(
-      760px 460px at 50% 36%,
-      rgba(139, 77, 255, 0.1),
-      transparent 74%
-    ),
-    radial-gradient(
-      900px 520px at 50% 34%,
-      rgba(245, 210, 122, 0.07),
+      900px 560px at 50% 28%,
+      rgba(255, 214, 125, 0.08),
       transparent 72%
     ),
     linear-gradient(
       180deg,
-      rgba(5, 4, 3, 0.9) 0%,
-      rgba(7, 6, 5, 0.8) 34%,
-      rgba(7, 6, 5, 0.88) 70%,
-      rgba(5, 4, 3, 0.96)
+      rgba(5, 4, 3, 0.12),
+      rgba(5, 4, 3, 0.42) 72%,
+      rgba(5, 4, 3, 0.72)
     ),
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.64),
-      rgba(0, 0, 0, 0.26) 28%,
-      rgba(0, 0, 0, 0.34) 70%,
-      rgba(0, 0, 0, 0.66)
+      rgba(0, 0, 0, 0.46),
+      rgba(0, 0, 0, 0.08) 28%,
+      rgba(0, 0, 0, 0.14) 70%,
+      rgba(0, 0, 0, 0.52)
     ),
-    url("/assets/img/fundo_mapa_cartografia.png") center top / cover no-repeat,
+    url("/assets/img/fundo_mapa_dungeon_v2.jpg") center top / cover no-repeat,
     var(--sd-bg);
 }
 
-.mapa-custom-2-page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(
-      620px 360px at 18% 18%,
-      rgba(255, 138, 31, 0.08),
-      transparent 68%
-    ),
-    radial-gradient(
-      620px 360px at 84% 18%,
-      rgba(139, 77, 255, 0.08),
-      transparent 68%
-    ),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.16));
-  opacity: 1;
-  filter: none;
-  pointer-events: none;
-}
-
+.mapa-custom-2-page::before,
 .mapa-custom-2-page::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+}
+
+.mapa-custom-2-page::before {
+  opacity: 0.78;
   background:
     radial-gradient(
-      900px 460px at 50% 26%,
-      transparent 34%,
-      rgba(0, 0, 0, 0.58) 100%
+      620px 360px at 18% 52%,
+      rgba(255, 138, 31, 0.12),
+      transparent 70%
+    ),
+    radial-gradient(
+      620px 360px at 82% 20%,
+      rgba(139, 77, 255, 0.14),
+      transparent 70%
+    ),
+    linear-gradient(
+      115deg,
+      transparent 0 43%,
+      rgba(214, 173, 53, 0.025) 44% 45%,
+      transparent 46% 100%
+    );
+}
+
+.mapa-custom-2-page::after {
+  background:
+    radial-gradient(
+      980px 520px at 50% 34%,
+      transparent 48%,
+      rgba(0, 0, 0, 0.32) 100%
     ),
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.18),
+      rgba(0, 0, 0, 0.12),
       transparent 18%,
       transparent 82%,
-      rgba(0, 0, 0, 0.18)
-    ),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.22));
+      rgba(0, 0, 0, 0.16)
+    );
 }
 
 .mapa-custom-2-page > * {
@@ -186,7 +173,6 @@ button {
   padding: 0.95rem 1.35rem;
   border: 1px solid var(--sd-border);
   border-radius: 8px;
-  outline: 0;
   color: #f7eed9;
   font-family: "Cinzel", serif;
   font-size: clamp(1.8rem, 4.2vw, 3.25rem);
@@ -209,7 +195,7 @@ button {
   max-width: 680px;
   margin: 0;
   padding-top: 16px;
-  color: var(--mapa-text);
+  color: var(--sd-text);
   font-size: clamp(1rem, 1.7vw, 1.15rem);
   line-height: 1.5;
 }
@@ -230,7 +216,7 @@ button {
 }
 
 .mapa-shell {
-  width: min(1180px, 100%);
+  width: min(1320px, 100%);
   margin: 0 auto;
   position: relative;
   display: grid;
@@ -258,15 +244,16 @@ button {
     );
   box-shadow:
     var(--sd-shadow),
-    inset 0 1px 0 rgba(255, 244, 220, 0.1),
-    inset 0 0 0 1px rgba(245, 210, 122, 0.06),
-    inset 0 0 34px rgba(0, 0, 0, 0.32);
+    0 0 0 1px rgba(214, 173, 53, 0.18),
+    0 0 28px rgba(214, 173, 53, 0.1),
+    inset 0 1px 0 rgba(255, 238, 190, 0.08),
+    inset 0 0 42px rgba(0, 0, 0, 0.42);
 }
 
 .mapa-stage {
   position: relative;
   z-index: 2;
-  min-height: clamp(520px, 54vw, 640px);
+  min-height: clamp(600px, 54vw, 720px);
   overflow: visible;
 }
 
@@ -275,18 +262,15 @@ button {
   position: absolute;
   left: 7%;
   right: 7%;
-  bottom: 8%;
-  height: 22%;
+  bottom: 7%;
+  height: 28%;
   border-radius: 50%;
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(255, 138, 31, 0.14),
-      transparent 62%
-    ),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.1), transparent 76%);
-  filter: blur(16px);
-  opacity: 0.78;
+  opacity: 0.18;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 138, 31, 0.12),
+    transparent 64%
+  );
   pointer-events: none;
 }
 
@@ -310,18 +294,31 @@ button {
 .mapa-stage-grid {
   position: absolute;
   inset: 20px;
+  overflow: hidden;
   border: 1px solid rgba(245, 210, 122, 0.1);
   border-radius: 6px;
   pointer-events: none;
-  overflow: hidden;
   background:
     radial-gradient(
-      640px 280px at 50% 18%,
-      rgba(214, 173, 53, 0.09),
-      transparent 68%
+      720px 320px at 50% 18%,
+      rgba(214, 173, 53, 0.08),
+      transparent 70%
     ),
-    linear-gradient(180deg, rgba(245, 210, 122, 0.045), transparent 28%),
-    rgba(0, 0, 0, 0.045);
+    repeating-linear-gradient(
+      90deg,
+      rgba(214, 173, 53, 0.018) 0 1px,
+      transparent 1px 92px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(214, 173, 53, 0.014) 0 1px,
+      transparent 1px 86px
+    ),
+    rgba(0, 0, 0, 0.018);
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 210, 122, 0.08),
+    inset 0 0 48px rgba(0, 0, 0, 0.3),
+    0 0 18px rgba(214, 173, 53, 0.08);
 }
 
 #mapaModulos {
@@ -332,11 +329,11 @@ button {
   grid-template-areas:
     "porta1 . porta2 . porta3"
     ". porta4 . porta5 .";
-  grid-template-columns: repeat(5, minmax(82px, 126px));
+  grid-template-columns: repeat(5, minmax(96px, 148px));
   justify-items: center;
   justify-content: center;
   align-content: center;
-  gap: clamp(22px, 4vw, 42px) clamp(12px, 1.8vw, 18px);
+  gap: clamp(14px, 2.4vw, 30px) clamp(6px, 1.2vw, 14px);
   padding: clamp(18px, 3vw, 32px);
 }
 
@@ -345,7 +342,7 @@ button {
   inset: 0;
   display: grid;
   place-items: center;
-  color: var(--mapa-muted);
+  color: var(--sd-muted);
   font-size: 1.05rem;
 }
 
@@ -383,12 +380,14 @@ button {
       transparent 48%
     ),
     linear-gradient(180deg, rgba(31, 25, 18, 0.82), rgba(8, 7, 6, 0.92));
-  color: var(--mapa-text);
+  color: var(--sd-text);
   text-align: center;
   cursor: pointer;
   box-shadow:
-    inset 0 1px 0 rgba(255, 244, 220, 0.06),
-    0 8px 16px rgba(0, 0, 0, 0.28);
+    0 10px 18px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(214, 173, 53, 0.12),
+    inset 0 1px 0 rgba(255, 238, 190, 0.08),
+    inset 0 0 24px rgba(0, 0, 0, 0.34);
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease,
@@ -419,11 +418,13 @@ button {
 .atalho-mapa:hover:not(:disabled),
 .certificado-botao:hover:not(:disabled) {
   transform: translateY(-3px);
-  border-color: var(--mapa-accent);
+  border-color: var(--sd-gold-light);
   box-shadow:
+    0 12px 22px rgba(0, 0, 0, 0.32),
     0 0 0 1px rgba(245, 210, 122, 0.22),
-    0 14px 28px rgba(214, 173, 53, 0.16),
-    0 0 26px rgba(139, 77, 255, 0.08);
+    0 0 18px rgba(214, 173, 53, 0.18),
+    inset 0 1px 0 rgba(255, 238, 190, 0.1),
+    inset 0 0 24px rgba(0, 0, 0, 0.3);
 }
 
 .atalho-mapa:focus-visible,
@@ -436,7 +437,7 @@ button {
 
 .atalho-kicker,
 .certificado-kicker {
-  color: var(--mapa-accent);
+  color: var(--sd-gold-light);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0;
@@ -449,13 +450,12 @@ button {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.42));
 }
 
 .atalho-imagem {
   width: 104px;
   height: 104px;
-  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.42))
-    drop-shadow(0 0 14px rgba(244, 211, 94, 0.22));
 }
 
 .atalho-progresso .atalho-imagem {
@@ -468,7 +468,7 @@ button {
 
 .atalho-titulo,
 .certificado-texto {
-  color: var(--mapa-text);
+  color: var(--sd-text);
   font-family: "Cinzel", serif;
   font-size: 0.9rem;
   font-weight: 700;
@@ -480,7 +480,7 @@ button {
 .atalho-descricao,
 .certificado-status {
   max-width: 220px;
-  color: var(--mapa-muted);
+  color: var(--sd-muted);
   font-size: 0.8rem;
   line-height: 1.28;
 }
@@ -500,82 +500,68 @@ button {
   width: 120px;
   height: 120px;
   background-image: url("/assets/img/certificado_incompleto.png");
-  filter: grayscale(1) brightness(0.62);
 }
 
 #btnCertificado.liberado {
   opacity: 1;
   cursor: pointer;
   filter: none;
-  border-color: var(--mapa-accent);
+  border-color: var(--sd-gold-light);
 }
 
 #btnCertificado.liberado .certificado-imagem {
   background-image: url("/assets/img/certificado_liberado.png");
-  filter: drop-shadow(0 0 12px rgba(255, 244, 220, 0.72))
-    drop-shadow(0 0 28px rgba(244, 211, 94, 0.56));
+}
+
+#btnCertificado:not(.liberado) .certificado-imagem {
+  filter: grayscale(1) brightness(0.72) contrast(1.04)
+    drop-shadow(0 10px 14px rgba(0, 0, 0, 0.42));
 }
 
 .porta-card {
-  width: clamp(150px, 18vw, 196px);
+  width: clamp(154px, 15vw, 194px);
   min-height: 0;
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
-  transition:
-    box-shadow 180ms ease,
-    transform 180ms ease;
-}
-
-.porta-card::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 1.15rem;
-  width: 72%;
-  height: 15px;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.58),
-    rgba(0, 0, 0, 0.08) 68%,
-    transparent 74%
-  );
-  opacity: 0.68;
-  pointer-events: none;
+  transition: transform 180ms ease;
 }
 
 .porta-card::after {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 1.45rem;
+  bottom: 18%;
   z-index: -1;
-  width: 68%;
-  height: 34%;
+  width: 78%;
+  height: 58%;
   transform: translateX(-50%);
   border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(139, 77, 255, 0.12),
-    transparent 68%
-  );
-  filter: blur(16px);
-  opacity: 0.55;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(139, 77, 255, 0.18),
+      transparent 58%
+    ),
+    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.1), transparent 72%);
+  opacity: 0.44;
   pointer-events: none;
 }
 
 .porta-card:hover {
   z-index: 4000;
-  transform: translateY(-4px);
+  transform: translateY(-2px);
+}
+
+.porta-card:hover .porta-imagem {
+  transform: translateY(-2px);
 }
 
 .porta-card.porta-1 {
@@ -599,6 +585,7 @@ button {
 }
 
 .porta-botao {
+  position: relative;
   display: grid;
   justify-items: center;
   margin: 0;
@@ -608,14 +595,39 @@ button {
   cursor: default;
 }
 
+.porta-botao::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  z-index: -1;
+  width: 128%;
+  height: 92%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(139, 77, 255, 0.2),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 138, 31, 0.12),
+      transparent 72%
+    );
+  opacity: 0.62;
+  pointer-events: none;
+}
+
 .porta-botao::after {
   content: "";
   display: block;
-  margin-top: 3px;
+  margin-top: 0;
   padding: 0.16rem 0.52rem;
   border: 1px solid rgba(214, 173, 53, 0.24);
   border-radius: 999px;
-  color: var(--mapa-text);
+  color: var(--sd-text);
   font-family: "Cinzel", serif;
   font-size: 0.88rem;
   font-weight: 700;
@@ -623,7 +635,10 @@ button {
   line-height: 1.1;
   text-align: center;
   background: rgba(7, 6, 5, 0.64);
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.32);
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(214, 173, 53, 0.08),
+    inset 0 0 10px rgba(0, 0, 0, 0.38);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.82);
 }
 
@@ -648,47 +663,18 @@ button {
 }
 
 .porta-imagem {
+  position: relative;
+  z-index: 1;
   display: block;
-  width: clamp(108px, 12vw, 132px);
-  height: clamp(154px, 17vw, 188px);
+  width: clamp(126px, 9vw, 158px);
+  height: clamp(180px, 13vw, 224px);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58));
+  filter: drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54));
   transition:
     transform 200ms ease,
     filter 200ms ease;
-}
-
-.porta-card.bloqueado::after {
-  content: "Bloqueada";
-  position: absolute;
-  left: 50%;
-  right: auto;
-  top: calc(100% + 0.3rem);
-  bottom: auto;
-  z-index: 3;
-  width: auto;
-  height: auto;
-  transform: translateX(-50%);
-  padding: 0.18rem 0.45rem;
-  border: 1px solid rgba(147, 136, 118, 0.26);
-  border-radius: 999px;
-  background: rgba(10, 9, 8, 0.72);
-  color: #938876;
-  font-family: "Cinzel", serif;
-  font-size: 0.62rem;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.24);
-  pointer-events: none;
-  filter: none;
-  opacity: 1;
-}
-
-.porta-card:hover .porta-imagem {
-  transform: translateY(-5px);
 }
 
 .porta-card.porta-1 .porta-imagem {
@@ -731,71 +717,198 @@ button {
   background-image: url("/assets/img/porta_5_liberada.png");
 }
 
-.porta-card.estado-incompleto .porta-imagem {
-  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
-    drop-shadow(0 0 11px rgba(255, 138, 31, 0.2));
+.porta-card.liberado .porta-botao::before {
+  opacity: 0.72;
 }
 
-.porta-card.estado-historia .porta-imagem {
-  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
-    drop-shadow(0 0 13px rgba(255, 138, 31, 0.32));
+.porta-card.estado-completo::after {
+  bottom: 20%;
+  width: 92%;
+  height: 72%;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(245, 210, 122, 0.2),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(139, 77, 255, 0.24),
+      transparent 68%
+    );
+  opacity: 0.82;
+}
+
+.porta-card.estado-completo .porta-botao::before {
+  width: 144%;
+  height: 112%;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(245, 210, 122, 0.24),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(139, 77, 255, 0.28),
+      transparent 72%
+    );
+  opacity: 0.92;
 }
 
 .porta-card.estado-completo .porta-imagem {
-  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
-    drop-shadow(0 0 13px rgba(139, 77, 255, 0.32))
-    drop-shadow(0 0 18px rgba(214, 173, 53, 0.22));
+  filter: drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54))
+    drop-shadow(0 0 10px rgba(214, 173, 53, 0.32))
+    drop-shadow(0 0 14px rgba(139, 77, 255, 0.18));
+}
+
+.porta-card.estado-completo .porta-imagem::after {
+  content: "\2713";
+  position: absolute;
+  right: 4%;
+  top: 6%;
+  width: clamp(24px, 2.4vw, 34px);
+  height: clamp(24px, 2.4vw, 34px);
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(245, 210, 122, 0.84);
+  border-radius: 50%;
+  color: #f8e7aa;
+  background:
+    radial-gradient(circle, rgba(255, 138, 31, 0.24), transparent 64%),
+    linear-gradient(180deg, rgba(41, 31, 16, 0.95), rgba(8, 7, 6, 0.96));
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.82rem, 1.35vw, 1.08rem);
+  font-weight: 800;
+  line-height: 1;
+  box-shadow:
+    0 0 10px rgba(214, 173, 53, 0.28),
+    inset 0 0 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 0 8px rgba(245, 210, 122, 0.42);
+}
+
+.porta-card.estado-completo .porta-botao::after,
+.porta-card.desafio-atual .porta-botao::after {
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.36),
+    0 0 12px rgba(214, 173, 53, 0.26),
+    inset 0 0 10px rgba(0, 0, 0, 0.38);
+}
+
+.porta-card.desafio-atual::after {
+  bottom: 18%;
+  width: 96%;
+  height: 72%;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 177, 54, 0.26),
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(139, 77, 255, 0.16),
+      transparent 74%
+    );
+  opacity: 0.82;
+}
+
+.porta-card.desafio-atual .porta-botao::before {
+  width: 146%;
+  height: 112%;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 177, 54, 0.3),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(139, 77, 255, 0.18),
+      transparent 72%
+    );
+  opacity: 0.92;
+}
+
+.porta-card.desafio-atual .porta-imagem {
+  filter: drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54))
+    drop-shadow(0 0 12px rgba(255, 138, 31, 0.34));
+}
+
+.porta-card.desafio-atual .porta-botao::after {
+  border-color: rgba(255, 177, 54, 0.72);
+  color: #ffe4a3;
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.36),
+    0 0 14px rgba(255, 138, 31, 0.24),
+    inset 0 0 10px rgba(0, 0, 0, 0.38);
+}
+
+.porta-card.bloqueado::after {
+  content: "Bloqueada";
+  position: absolute;
+  left: 50%;
+  right: auto;
+  top: calc(100% - 0.05rem);
+  bottom: auto;
+  z-index: 3;
+  width: auto;
+  height: auto;
+  transform: translateX(-50%);
+  padding: 0.18rem 0.45rem;
+  border: 1px solid rgba(147, 136, 118, 0.26);
+  border-radius: 999px;
+  background: rgba(10, 9, 8, 0.72);
+  color: var(--mapa-locked);
+  font-family: "Cinzel", serif;
+  font-size: 0.62rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.24);
+  opacity: 1;
+  pointer-events: none;
+}
+
+.porta-card.bloqueado .porta-botao::before,
+.porta-card.bloqueado .porta-imagem::after {
+  display: none;
+  content: none;
 }
 
 .porta-card.bloqueado .porta-imagem {
-  filter: grayscale(1) brightness(0.45) contrast(1.12)
-    drop-shadow(0 14px 15px rgba(0, 0, 0, 0.54));
+  filter: grayscale(1) brightness(0.68) contrast(1.08) opacity(0.72)
+    drop-shadow(0 12px 12px rgba(0, 0, 0, 0.5));
 }
 
-.porta-card.bloqueado .porta-botao::after,
+.porta-card.bloqueado .porta-botao::after {
+  border-color: rgba(147, 136, 118, 0.24);
+  color: var(--mapa-locked);
+  opacity: 0.58;
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.34),
+    inset 0 0 10px rgba(0, 0, 0, 0.38);
+}
+
 .porta-card.bloqueado .porta-info {
   opacity: 0.58;
-}
-
-.porta-card.bloqueado .porta-info {
   border-color: rgba(147, 136, 118, 0.24);
+  color: var(--mapa-locked);
   background: linear-gradient(
     180deg,
     rgba(16, 14, 12, 0.98),
     rgba(8, 8, 7, 0.98)
   );
-  color: #938876;
 }
 
 .porta-card.bloqueado .porta-info h2,
 .porta-card.bloqueado .porta-info p,
 .porta-card.bloqueado .porta-acoes button {
-  color: #938876;
+  color: var(--mapa-locked);
 }
 
 .porta-card.bloqueado .porta-acoes button {
   opacity: 0.58;
-}
-
-.porta-card.desafio-atual .porta-imagem {
-  filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.58))
-    drop-shadow(0 0 16px rgba(255, 138, 31, 0.5))
-    drop-shadow(0 0 30px rgba(139, 77, 255, 0.24));
-}
-
-.porta-card.desafio-atual::after {
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(255, 138, 31, 0.22),
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse at center,
-      rgba(139, 77, 255, 0.18),
-      transparent 74%
-    );
-  opacity: 0.9;
 }
 
 .porta-info {
@@ -807,6 +920,7 @@ button {
   padding: 0 12px;
   border: 1px solid var(--sd-border);
   border-radius: 8px;
+  color: var(--sd-text);
   background:
     radial-gradient(
       circle at center top,
@@ -846,7 +960,6 @@ button {
   padding: 10px;
   pointer-events: auto;
   transform: translate(-50%, 0);
-  z-index: 5000;
   transition:
     opacity 220ms ease,
     max-height 420ms ease,
@@ -888,7 +1001,7 @@ button {
   border-radius: 999px;
   padding: 6px 10px;
   background: rgba(31, 24, 17, 0.94);
-  color: var(--mapa-text);
+  color: var(--sd-text);
   cursor: pointer;
   font-size: 0.78rem;
   transition:
@@ -906,7 +1019,7 @@ button {
 
 .porta-acoes button:hover:not(:disabled),
 .porta-mobile-acoes button:hover:not(:disabled) {
-  border-color: var(--mapa-accent);
+  border-color: var(--sd-gold-light);
   background: linear-gradient(180deg, #f5d27a, #d6ad35);
   color: #17100a;
 }
@@ -920,7 +1033,7 @@ button {
 @media (max-width: 1180px) {
   .mapa-shell {
     grid-template-columns: 1fr;
-    width: min(940px, 100%);
+    width: min(980px, 100%);
   }
 
   .mapa-actions-panel {
@@ -956,10 +1069,9 @@ button {
     grid-template-areas:
       "porta1 . porta2 . porta3"
       ". porta4 . porta5 .";
-    grid-template-columns: repeat(5, minmax(56px, 104px));
-    justify-content: center;
+    grid-template-columns: repeat(5, minmax(58px, 104px));
     align-items: start;
-    gap: 18px 10px;
+    gap: 16px 8px;
     padding: 20px 14px;
   }
 
@@ -969,8 +1081,7 @@ button {
   .porta-card.porta-3,
   .porta-card.porta-4,
   .porta-card.porta-5 {
-    position: relative;
-    width: min(170px, 100%);
+    width: min(164px, 100%);
   }
 
   .porta-info {
@@ -978,8 +1089,8 @@ button {
   }
 
   .porta-imagem {
-    width: clamp(94px, 18vw, 118px);
-    height: clamp(135px, 26vw, 168px);
+    width: clamp(94px, 17vw, 120px);
+    height: clamp(134px, 25vw, 170px);
   }
 }
 
@@ -1007,6 +1118,7 @@ button {
   #mapaModulos {
     grid-template-areas: none;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 10px;
   }
 
   .porta-card,
@@ -1016,6 +1128,11 @@ button {
   .porta-card.porta-4,
   .porta-card.porta-5 {
     grid-area: auto;
+    width: min(210px, 100%);
+  }
+
+  .porta-info {
+    width: min(220px, calc(100vw - 32px));
   }
 
   .atalho-mapa,
@@ -1056,26 +1173,9 @@ button {
   .atalho-descricao,
   .certificado-status {
     grid-area: descricao;
+    max-width: none;
     font-size: 0.72rem;
     line-height: 1.15;
-  }
-
-  .atalho-descricao,
-  .certificado-status {
-    max-width: none;
-  }
-
-  .porta-card,
-  .porta-card.porta-1,
-  .porta-card.porta-2,
-  .porta-card.porta-3,
-  .porta-card.porta-4,
-  .porta-card.porta-5 {
-    width: min(210px, 100%);
-  }
-
-  .porta-info {
-    width: min(220px, calc(100vw - 32px));
   }
 }
 
@@ -1131,7 +1231,7 @@ button {
 
   #mapaModulos {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 22px;
     padding: 18px 12px;
   }
 
@@ -1145,543 +1245,7 @@ button {
   }
 
   .porta-imagem {
-    width: 108px;
-    height: 154px;
-  }
-}
-
-/* =========================================================
-   REFINO VISUAL DO MAPA - SALA MAIS VIVA
-========================================================= */
-
-.mapa-custom-2-page {
-  background:
-    radial-gradient(900px 560px at 50% 28%, rgba(255, 214, 125, 0.08), transparent 72%),
-    linear-gradient(180deg, rgba(5, 4, 3, 0.12), rgba(5, 4, 3, 0.42) 72%, rgba(5, 4, 3, 0.72)),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.08) 28%, rgba(0, 0, 0, 0.14) 70%, rgba(0, 0, 0, 0.52)),
-    url("/assets/img/fundo_mapa_dungeon_v2.jpg") center top / cover no-repeat,
-    var(--sd-bg);
-}
-
-.mapa-custom-2-page::before {
-  background:
-    radial-gradient(620px 360px at 18% 52%, rgba(255, 138, 31, 0.12), transparent 70%),
-    radial-gradient(620px 360px at 82% 20%, rgba(139, 77, 255, 0.14), transparent 70%),
-    linear-gradient(115deg, transparent 0 43%, rgba(214, 173, 53, 0.025) 44% 45%, transparent 46% 100%);
-  opacity: 0.78;
-}
-
-.mapa-custom-2-page::after {
-  background:
-    radial-gradient(980px 520px at 50% 34%, transparent 48%, rgba(0, 0, 0, 0.32) 100%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.12), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.16));
-}
-
-.mapa-shell {
-  width: min(1320px, 100%);
-}
-
-.mapa-stage {
-  min-height: clamp(600px, 54vw, 720px);
-}
-
-.mapa-stage::before {
-  bottom: 7%;
-  height: 28%;
-  background:
-    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.2), transparent 58%),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.16), transparent 74%);
-  filter: blur(18px);
-  opacity: 0.88;
-}
-
-.mapa-stage-grid {
-  background:
-    radial-gradient(720px 360px at 50% 18%, rgba(214, 173, 53, 0.1), transparent 70%),
-    radial-gradient(620px 300px at 62% 64%, rgba(139, 77, 255, 0.08), transparent 72%),
-    repeating-linear-gradient(90deg, rgba(214, 173, 53, 0.024) 0 1px, transparent 1px 92px),
-    repeating-linear-gradient(0deg, rgba(214, 173, 53, 0.018) 0 1px, transparent 1px 86px),
-    rgba(0, 0, 0, 0.025);
-}
-
-#mapaModulos {
-  grid-template-columns: repeat(5, minmax(112px, 172px));
-  gap: clamp(30px, 4.2vw, 56px) clamp(18px, 2.5vw, 30px);
-}
-
-.porta-card {
-  width: clamp(176px, 18vw, 226px);
-}
-
-.porta-card::before {
-  bottom: 1.05rem;
-  width: 80%;
-  height: 18px;
-}
-
-.porta-card::after {
-  bottom: 1.35rem;
-  width: 78%;
-  height: 42%;
-}
-
-.porta-botao {
-  position: relative;
-}
-
-.porta-botao::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 47%;
-  z-index: -1;
-  width: 150%;
-  height: 110%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background:
-    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.15), transparent 55%),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.16), transparent 72%);
-  filter: blur(12px);
-  opacity: 0.72;
-  pointer-events: none;
-}
-
-.porta-imagem {
-  position: relative;
-  z-index: 1;
-  width: clamp(136px, 10vw, 176px);
-  height: clamp(194px, 14vw, 250px);
-}
-
-.porta-card.bloqueado::after {
-  top: calc(100% + 0.18rem);
-}
-
-.porta-card.estado-incompleto .porta-imagem {
-  filter:
-    drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
-    drop-shadow(0 0 10px rgba(255, 138, 31, 0.18));
-}
-
-.porta-card.estado-historia .porta-imagem {
-  filter:
-    drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
-    drop-shadow(0 0 11px rgba(255, 138, 31, 0.26));
-}
-
-.porta-card.estado-completo .porta-imagem {
-  filter:
-    drop-shadow(0 16px 18px rgba(0, 0, 0, 0.58))
-    drop-shadow(0 0 12px rgba(139, 77, 255, 0.28))
-    drop-shadow(0 0 16px rgba(214, 173, 53, 0.18));
-}
-
-.porta-card.estado-completo .porta-imagem::after {
-  content: "✓";
-  position: absolute;
-  right: 4%;
-  top: 6%;
-  width: clamp(24px, 2.4vw, 34px);
-  height: clamp(24px, 2.4vw, 34px);
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(245, 210, 122, 0.84);
-  border-radius: 50%;
-  color: #f8e7aa;
-  background:
-    radial-gradient(circle, rgba(255, 138, 31, 0.24), transparent 64%),
-    linear-gradient(180deg, rgba(41, 31, 16, 0.95), rgba(8, 7, 6, 0.96));
-  font-family: "Cinzel", serif;
-  font-size: clamp(0.82rem, 1.35vw, 1.08rem);
-  font-weight: 800;
-  line-height: 1;
-  box-shadow:
-    0 0 12px rgba(214, 173, 53, 0.36),
-    0 0 20px rgba(139, 77, 255, 0.16),
-    inset 0 0 8px rgba(0, 0, 0, 0.4);
-  text-shadow: 0 0 8px rgba(245, 210, 122, 0.42);
-}
-
-.porta-card.estado-completo .porta-botao::after {
-  border-color: rgba(245, 210, 122, 0.58);
-  color: #f8e7aa;
-  box-shadow:
-    inset 0 0 10px rgba(0, 0, 0, 0.32),
-    0 0 12px rgba(214, 173, 53, 0.22);
-}
-
-.porta-card.bloqueado .porta-imagem {
-  filter:
-    grayscale(1)
-    brightness(0.68)
-    contrast(1.08)
-    opacity(0.72)
-    drop-shadow(0 14px 15px rgba(0, 0, 0, 0.54));
-}
-
-.porta-card.bloqueado .porta-botao::before {
-  background:
-    radial-gradient(ellipse at center, rgba(214, 173, 53, 0.08), transparent 56%),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.08), transparent 74%);
-  opacity: 0.46;
-}
-
-.porta-card.desafio-atual .porta-imagem {
-  filter:
-    drop-shadow(0 18px 18px rgba(0, 0, 0, 0.58))
-    drop-shadow(0 0 14px rgba(255, 138, 31, 0.42))
-    drop-shadow(0 0 24px rgba(139, 77, 255, 0.22));
-}
-
-#btnCertificado:not(.liberado) .certificado-imagem {
-  filter:
-    grayscale(1)
-    brightness(0.72)
-    contrast(1.04)
-    drop-shadow(0 10px 14px rgba(0, 0, 0, 0.42));
-}
-
-@media (max-width: 1180px) {
-  .mapa-shell {
-    width: min(980px, 100%);
-  }
-}
-
-@media (max-width: 900px) {
-  .mapa-stage {
-    min-height: auto;
-  }
-
-  #mapaModulos {
-    grid-template-columns: repeat(5, minmax(64px, 112px));
-    gap: 18px 10px;
-  }
-
-  .porta-card,
-  .porta-card.porta-1,
-  .porta-card.porta-2,
-  .porta-card.porta-3,
-  .porta-card.porta-4,
-  .porta-card.porta-5 {
-    width: min(178px, 100%);
-  }
-
-  .porta-imagem {
-    width: clamp(100px, 18vw, 126px);
-    height: clamp(142px, 26vw, 178px);
-  }
-}
-
-@media (max-width: 720px) {
-  #mapaModulos {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 520px) {
-  #mapaModulos {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .porta-imagem {
-    width: 116px;
-    height: 164px;
-  }
-}
-
-/* =========================================================
-   PERFORMANCE DO MAPA
-   Mantem o visual, mas evita filtros caros durante o scroll.
-========================================================= */
-
-.mapa-stage::before,
-.porta-card::after,
-.porta-botao::before {
-  filter: none;
-}
-
-.mapa-stage::before {
-  opacity: 0.5;
-}
-
-.porta-card::after {
-  opacity: 0.34;
-}
-
-.porta-botao::before {
-  opacity: 0.46;
-}
-
-.porta-imagem,
-.porta-card.estado-incompleto .porta-imagem,
-.porta-card.estado-historia .porta-imagem,
-.porta-card.estado-completo .porta-imagem,
-.porta-card.desafio-atual .porta-imagem {
-  filter: drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54));
-}
-
-.porta-card.bloqueado .porta-imagem {
-  filter:
-    grayscale(1)
-    brightness(0.68)
-    contrast(1.08)
-    opacity(0.72)
-    drop-shadow(0 12px 12px rgba(0, 0, 0, 0.5));
-}
-
-.atalho-imagem,
-#btnCertificado.liberado .certificado-imagem,
-#btnCertificado:not(.liberado) .certificado-imagem {
-  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.42));
-}
-
-.porta-card.estado-completo .porta-imagem::after {
-  box-shadow:
-    0 0 10px rgba(214, 173, 53, 0.28),
-    inset 0 0 8px rgba(0, 0, 0, 0.4);
-}
-
-/* =========================================================
-   SOMBRAS LEVES DE MOLDURA
-   Charme de UI de RPG sem filtros custosos no scroll.
-========================================================= */
-
-.mapa-stage,
-.mapa-actions-panel {
-  box-shadow:
-    0 18px 34px rgba(0, 0, 0, 0.36),
-    0 0 0 1px rgba(214, 173, 53, 0.18),
-    0 0 28px rgba(214, 173, 53, 0.1),
-    inset 0 1px 0 rgba(255, 238, 190, 0.08),
-    inset 0 0 42px rgba(0, 0, 0, 0.42);
-}
-
-.mapa-stage-grid {
-  box-shadow:
-    inset 0 0 0 1px rgba(245, 210, 122, 0.08),
-    inset 0 0 48px rgba(0, 0, 0, 0.3),
-    0 0 18px rgba(214, 173, 53, 0.08);
-}
-
-.atalho-mapa,
-.certificado-botao {
-  box-shadow:
-    0 10px 18px rgba(0, 0, 0, 0.28),
-    0 0 0 1px rgba(214, 173, 53, 0.12),
-    inset 0 1px 0 rgba(255, 238, 190, 0.08),
-    inset 0 0 24px rgba(0, 0, 0, 0.34);
-}
-
-.atalho-mapa:hover:not(:disabled),
-.certificado-botao:hover:not(:disabled) {
-  box-shadow:
-    0 12px 22px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(245, 210, 122, 0.22),
-    0 0 18px rgba(214, 173, 53, 0.18),
-    inset 0 1px 0 rgba(255, 238, 190, 0.1),
-    inset 0 0 24px rgba(0, 0, 0, 0.3);
-}
-
-.porta-botao::after {
-  box-shadow:
-    0 5px 10px rgba(0, 0, 0, 0.36),
-    0 0 0 1px rgba(214, 173, 53, 0.08),
-    inset 0 0 10px rgba(0, 0, 0, 0.38);
-}
-
-.porta-card.estado-completo .porta-botao::after,
-.porta-card.desafio-atual .porta-botao::after {
-  box-shadow:
-    0 5px 10px rgba(0, 0, 0, 0.36),
-    0 0 12px rgba(214, 173, 53, 0.26),
-    inset 0 0 10px rgba(0, 0, 0, 0.38);
-}
-
-/* =========================================================
-   AJUSTE DE PORTAS
-   Aproxima o grid e troca sombra de chao por aura discreta.
-========================================================= */
-
-#mapaModulos {
-  grid-template-columns: repeat(5, minmax(96px, 148px));
-  gap: clamp(14px, 2.4vw, 30px) clamp(6px, 1.2vw, 14px);
-}
-
-.porta-card {
-  width: clamp(154px, 15vw, 194px);
-  gap: 4px;
-}
-
-.porta-card::before {
-  display: none;
-}
-
-.porta-card::after {
-  bottom: 18%;
-  width: 78%;
-  height: 58%;
-  background:
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.18), transparent 58%),
-    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.1), transparent 72%);
-  opacity: 0.44;
-}
-
-.porta-card:hover {
-  transform: translateY(-2px);
-}
-
-.porta-card:hover .porta-imagem {
-  transform: translateY(-2px);
-}
-
-.porta-botao::before {
-  top: 44%;
-  width: 128%;
-  height: 92%;
-  background:
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.2), transparent 58%),
-    radial-gradient(ellipse at center, rgba(255, 138, 31, 0.12), transparent 72%);
-  opacity: 0.62;
-}
-
-.porta-imagem {
-  width: clamp(126px, 9vw, 158px);
-  height: clamp(180px, 13vw, 224px);
-}
-
-.porta-botao::after {
-  margin-top: 0;
-}
-
-.porta-card.bloqueado::after {
-  top: calc(100% - 0.05rem);
-}
-
-.porta-card.bloqueado .porta-botao::before {
-  background: radial-gradient(ellipse at center, rgba(139, 77, 255, 0.1), transparent 68%);
-  opacity: 0.28;
-}
-
-.porta-card.liberado .porta-botao::before {
-  opacity: 0.72;
-}
-
-.porta-card.desafio-atual .porta-botao::before,
-.porta-card.estado-completo .porta-botao::before {
-  background:
-    radial-gradient(ellipse at center, rgba(255, 194, 74, 0.28), transparent 50%),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.24), transparent 72%);
-  opacity: 0.86;
-}
-
-.porta-card.estado-completo::after {
-  bottom: 20%;
-  width: 92%;
-  height: 72%;
-  background:
-    radial-gradient(ellipse at center, rgba(245, 210, 122, 0.2), transparent 48%),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.24), transparent 68%);
-  opacity: 0.82;
-}
-
-.porta-card.estado-completo .porta-imagem {
-  filter:
-    drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54))
-    drop-shadow(0 0 10px rgba(214, 173, 53, 0.32))
-    drop-shadow(0 0 14px rgba(139, 77, 255, 0.18));
-}
-
-.porta-card.estado-completo .porta-botao::before {
-  width: 144%;
-  height: 112%;
-  background:
-    radial-gradient(ellipse at center, rgba(245, 210, 122, 0.24), transparent 48%),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.28), transparent 72%);
-  opacity: 0.92;
-}
-
-@media (max-width: 900px) {
-  #mapaModulos {
-    grid-template-columns: repeat(5, minmax(58px, 104px));
-    gap: 16px 8px;
-  }
-
-  .porta-card,
-  .porta-card.porta-1,
-  .porta-card.porta-2,
-  .porta-card.porta-3,
-  .porta-card.porta-4,
-  .porta-card.porta-5 {
-    width: min(164px, 100%);
-  }
-
-  .porta-imagem {
-    width: clamp(94px, 17vw, 120px);
-    height: clamp(134px, 25vw, 170px);
-  }
-}
-
-@media (max-width: 720px) {
-  #mapaModulos {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 10px;
-  }
-}
-
-@media (max-width: 520px) {
-  .porta-imagem {
     width: 112px;
     height: 158px;
   }
-}
-
-/* Destaque quente para a porta atual */
-.porta-card.desafio-atual::after {
-  bottom: 18%;
-  width: 96%;
-  height: 72%;
-  background:
-    radial-gradient(ellipse at center, rgba(255, 177, 54, 0.26), transparent 52%),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.16), transparent 74%);
-  opacity: 0.82;
-}
-
-.porta-card.desafio-atual .porta-botao::before {
-  width: 146%;
-  height: 112%;
-  background:
-    radial-gradient(ellipse at center, rgba(255, 177, 54, 0.3), transparent 50%),
-    radial-gradient(ellipse at center, rgba(139, 77, 255, 0.18), transparent 72%);
-  opacity: 0.92;
-}
-
-.porta-card.desafio-atual .porta-imagem {
-  filter:
-    drop-shadow(0 14px 14px rgba(0, 0, 0, 0.54))
-    drop-shadow(0 0 12px rgba(255, 138, 31, 0.34));
-}
-
-.porta-card.desafio-atual .porta-botao::after {
-  border-color: rgba(255, 177, 54, 0.72);
-  color: #ffe4a3;
-  box-shadow:
-    0 5px 10px rgba(0, 0, 0, 0.36),
-    0 0 14px rgba(255, 138, 31, 0.24),
-    inset 0 0 10px rgba(0, 0, 0, 0.38);
-}
-
-/* Remove a mancha central do palco; deixa o fundo gerado respirar. */
-.mapa-stage::before {
-  opacity: 0.18;
-  background: radial-gradient(ellipse at center, rgba(255, 138, 31, 0.12), transparent 64%);
-}
-
-.mapa-stage-grid {
-  background:
-    radial-gradient(720px 320px at 50% 18%, rgba(214, 173, 53, 0.08), transparent 70%),
-    repeating-linear-gradient(90deg, rgba(214, 173, 53, 0.018) 0 1px, transparent 1px 92px),
-    repeating-linear-gradient(0deg, rgba(214, 173, 53, 0.014) 0 1px, transparent 1px 86px),
-    rgba(0, 0, 0, 0.018);
 }
