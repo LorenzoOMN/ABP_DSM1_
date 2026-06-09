@@ -13,6 +13,130 @@
 window.__progressoSessao = window.__progressoSessao || {};
 
 /* =========================================================
+   BARREIRAS DE ACESSO POR PROGRESSO
+========================================================= */
+
+(async function protegerRotasPorProgresso() {
+  const rotaAtual = window.location.pathname;
+  const rotasPublicas = ["/"];
+  const rotasComBarreira = [
+    "/mapa",
+    "/burningdown",
+    "/artefatos",
+    "/coleta-artefato",
+    "/perfil",
+    "/certificado",
+    "/questionario",
+    "/questionario1",
+    "/resultado",
+  ];
+  const rotaCapitulo = rotaAtual.match(/^\/capitulo([1-5])$/);
+  const rotaDesafio = rotaAtual.match(/^\/desafio([1-5])$/);
+  const precisaValidar =
+    rotaCapitulo || rotaDesafio || rotasComBarreira.includes(rotaAtual);
+
+  if (!precisaValidar || rotasPublicas.includes(rotaAtual)) return;
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.replace("/");
+    return;
+  }
+
+  try {
+    const progresso = await obterProgressoDaJornada(token);
+    const modulos = Array.isArray(progresso?.modulos) ? progresso.modulos : [];
+    const moduloAtual =
+      modulos.find((modulo) => modulo.desafio_atual) || modulos[0];
+
+    if (!modulos.length || !podeAcessarRotaDaJornada(rotaAtual, modulos)) {
+      window.location.replace(criarRotaSeguraDaJornada(moduloAtual));
+    }
+  } catch (error) {
+    console.warn("Falha ao validar acesso da rota.", error);
+    window.location.replace("/");
+  }
+})();
+
+async function obterProgressoDaJornada(token) {
+  if (window.__progressoSessao.progressoMapa) {
+    return window.__progressoSessao.progressoMapa;
+  }
+
+  const response = await fetch("/api/progresso/mapa", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Nao foi possivel validar o progresso.");
+  }
+
+  const progresso = await response.json();
+  window.__progressoSessao.progressoMapa = progresso;
+  return progresso;
+}
+
+function podeAcessarRotaDaJornada(rota, modulos) {
+  const rotaCapitulo = rota.match(/^\/capitulo([1-5])$/);
+  const rotaDesafio = rota.match(/^\/desafio([1-5])$/);
+  const moduloAtual = modulos.find((modulo) => modulo.desafio_atual);
+
+  if (rotaCapitulo) {
+    const idModulo = Number(rotaCapitulo[1]);
+    const modulo = modulos.find((item) => Number(item.id_modulo) === idModulo);
+    return Boolean(modulo?.historia_liberada);
+  }
+
+  if (rotaDesafio) {
+    const idModulo = Number(rotaDesafio[1]);
+    const modulo = modulos.find((item) => Number(item.id_modulo) === idModulo);
+    return Boolean(modulo?.historia_concluida && modulo?.desafio_atual);
+  }
+
+  if (rota === "/questionario" || rota === "/questionario1") {
+    return Boolean(moduloAtual?.historia_concluida);
+  }
+
+  if (rota === "/certificado") {
+    return modulos.some((modulo) => modulo.certificado_liberado);
+  }
+
+  if (rota === "/artefatos") {
+    const primeiroModulo = modulos.find((modulo) => Number(modulo.id_modulo) === 1);
+    return Boolean(primeiroModulo?.historia_concluida);
+  }
+
+  if (rota === "/coleta-artefato") {
+    const idModulo = Number(new URLSearchParams(window.location.search).get("modulo"));
+    const modulo = modulos.find((item) => Number(item.id_modulo) === idModulo);
+    return Boolean(
+      idModulo &&
+        modulo &&
+        (!modulo.desafio_atual || modulo.certificado_liberado)
+    );
+  }
+
+  if (rota === "/resultado") {
+    return Boolean(moduloAtual?.historia_concluida);
+  }
+
+  return true;
+}
+
+function criarRotaSeguraDaJornada(moduloAtual) {
+  const idModuloAtual = Number(moduloAtual?.id_modulo) || 1;
+
+  if (moduloAtual?.historia_concluida) {
+    return `/desafio${idModuloAtual}`;
+  }
+
+  return `/capitulo${idModuloAtual}`;
+}
+
+/* =========================================================
    MENU MOBILE (HEADER)
 ========================================================= */
 
@@ -109,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnToggle.addEventListener("click", (e) => {
       e.stopPropagation(); // Evita que o clique feche imediatamente pelo listener global
       navbarPrincipal.classList.toggle("navbar-aberta");
-      
+
       // Opcional: Altera o ícone dinamicamente entre abrir (⚔️) e fechar (❌)
       const iconSpan = btnToggle.querySelector(".toggle-icon");
       if (iconSpan) {
@@ -123,7 +247,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Fecha a barra caso o usuário clique fora dela (na tela do sistema)
     document.addEventListener("click", (e) => {
-      if (!navbarPrincipal.contains(e.target) && !btnToggle.contains(e.target)) {
+      if (
+        !navbarPrincipal.contains(e.target) &&
+        !btnToggle.contains(e.target)
+      ) {
         if (navbarPrincipal.classList.contains("navbar-aberta")) {
           navbarPrincipal.classList.remove("navbar-aberta");
           const iconSpan = btnToggle.querySelector(".toggle-icon");
@@ -136,8 +263,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Lógica existente de marcar a rota atual ativa
   const rotaAtual = window.location.pathname;
   const itensMenu = document.querySelectorAll(".navegacao-inferior__item");
-  
-  itensMenu.forEach(item => {
+
+  itensMenu.forEach((item) => {
     if (item.getAttribute("data-rota") === rotaAtual) {
       item.classList.add("item-ativo"); // Adicione estilização no seu CSS para a classe ativa se quiser
     }
@@ -292,44 +419,47 @@ async function controlarVisibilidadeNavbar() {
   if (!navbar) return;
 
   let deveMostrar = false;
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   // Tenta backend primeiro
   if (token) {
     try {
-      const res = await fetch('/api/navbar/status', {
+      const res = await fetch("/api/navbar/status", {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
       if (res.ok) {
         const data = await res.json();
-        if (typeof data.barra_desbloqueada === 'boolean') {
+        if (typeof data.barra_desbloqueada === "boolean") {
           deveMostrar = data.barra_desbloqueada;
-          localStorage.setItem(getChaveProgressoUsuario(), deveMostrar ? 'true' : 'false');
+          localStorage.setItem(
+            getChaveProgressoUsuario(),
+            deveMostrar ? "true" : "false",
+          );
         }
       }
     } catch (e) {
-      console.warn('Fallback localStorage', e);
+      console.warn("Fallback localStorage", e);
     }
   }
 
   // Fallback localStorage
-  if (!token || typeof deveMostrar !== 'boolean') {
+  if (!token || typeof deveMostrar !== "boolean") {
     const chave = getChaveProgressoUsuario();
-    deveMostrar = localStorage.getItem(chave) === 'true';
+    deveMostrar = localStorage.getItem(chave) === "true";
   }
 
   // Aplica estado final
   if (deveMostrar) {
-    navbar.classList.remove('bloqueada', 'hidden');
-    navbar.classList.add('navbar-visivel');
-    navbar.style.display = 'flex';
+    navbar.classList.remove("bloqueada", "hidden");
+    navbar.classList.add("navbar-visivel");
+    navbar.style.display = "flex";
   } else {
-    navbar.classList.add('bloqueada', 'hidden');
-    navbar.classList.remove('navbar-visivel');
-    navbar.style.display = 'none';
+    navbar.classList.add("bloqueada", "hidden");
+    navbar.classList.remove("navbar-visivel");
+    navbar.style.display = "none";
   }
 }
 
@@ -337,13 +467,13 @@ async function controlarVisibilidadeNavbar() {
  * Gera chave única de progresso baseada no token do usuário
  */
 function getChaveProgressoUsuario() {
-  const token = localStorage.getItem('token');
-  if (!token) return 'capitulo1_concluido_anon';
+  const token = localStorage.getItem("token");
+  if (!token) return "capitulo1_concluido_anon";
 
   // Cria hash simples do token para chave única
   let hash = 0;
   for (let i = 0; i < token.length; i++) {
-    hash = ((hash << 5) - hash) + token.charCodeAt(i);
+    hash = (hash << 5) - hash + token.charCodeAt(i);
     hash |= 0;
   }
   return `capitulo1_concluido_${Math.abs(hash)}`;
@@ -389,7 +519,7 @@ function logout() {
  */
 function marcarCapitulo1Concluido() {
   const chave = getChaveProgressoUsuario();
-  localStorage.setItem(chave, 'true');
+  localStorage.setItem(chave, "true");
   mostrarNavbarInferior();
 }
 
@@ -398,42 +528,71 @@ function marcarCapitulo1Concluido() {
  */
 function usuarioConcluiuCapitulo1() {
   const chave = getChaveProgressoUsuario();
-  return localStorage.getItem(chave) === 'true';
+  return localStorage.getItem(chave) === "true";
 }
 
 /**
  * Mostra a navbar inferior com animação
  */
 function mostrarNavbarInferior() {
-  const navbar = document.getElementById('navbarPrincipal');
-  if (!navbar) return;
+  const container = document.querySelector(".navbar-container-fixo");
+  const navbar = document.getElementById("navbarPrincipal");
+  const btnToggle = document.getElementById("btnToggleNavbar");
 
-  navbar.classList.remove('hidden', 'bloqueada');
-  navbar.classList.add('navbar-visivel');
-  navbar.style.display = 'flex';
+  if (container) {
+    container.classList.remove("navbar-bloqueada");
+  }
+
+  if (navbar) {
+    navbar.classList.remove("hidden", "bloqueada");
+    navbar.classList.add("navbar-visivel");
+    navbar.style.display = "flex";
+  }
+
+  if (btnToggle) {
+    btnToggle.classList.remove("navbar-bloqueada");
+    btnToggle.hidden = false;
+  }
 }
 
 /**
  * Esconde a navbar inferior
  */
 function esconderNavbarInferior() {
-  const navbar = document.getElementById('navbarPrincipal');
-  if (!navbar) return;
+  const container = document.querySelector(".navbar-container-fixo");
+  const navbar = document.getElementById("navbarPrincipal");
+  const btnToggle = document.getElementById("btnToggleNavbar");
 
-  navbar.classList.remove('navbar-visivel');
-  navbar.classList.add('bloqueada');
-  navbar.style.display = 'none';
+  if (container) {
+    container.classList.add("navbar-bloqueada");
+  }
+
+  if (navbar) {
+    navbar.classList.remove("navbar-visivel", "navbar-aberta");
+    navbar.classList.add("bloqueada");
+    navbar.style.display = "none";
+  }
+
+  if (btnToggle) {
+    btnToggle.classList.add("navbar-bloqueada");
+    btnToggle.hidden = true;
+
+    const iconSpan = btnToggle.querySelector(".toggle-icon");
+    if (iconSpan) {
+      iconSpan.textContent = "⚔️";
+    }
+  }
 }
 
 /**
  * Verifica e atualiza estado da navbar - EXECUTA EM TODAS AS PÁGINAS
  */
 async function verificarEAtualizarNavbar() {
-  const navbar = document.getElementById('navbarPrincipal');
+  const navbar = document.getElementById("navbarPrincipal");
   if (!navbar) return;
 
   // Prioriza buscar do backend se houver token
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   let barraDesbloqueada = false;
 
   if (token) {
@@ -455,24 +614,24 @@ async function verificarEAtualizarNavbar() {
  * Busca status da navbar do backend para o usuário logado
  */
 async function buscarStatusNavbarDoBackend() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (!token) return null;
 
   try {
     // URL correta conforme sua estrutura
-    const response = await fetch('/api/navbar/status', {
+    const response = await fetch("/api/navbar/status", {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
 
-    if (!response.ok) throw new Error('Falha ao buscar status');
+    if (!response.ok) throw new Error("Falha ao buscar status");
 
     const data = await response.json();
     return data.barra_desbloqueada;
   } catch (error) {
-    console.error('Erro ao buscar status da navbar:', error);
+    console.error("Erro ao buscar status da navbar:", error);
     return null;
   }
 }
@@ -481,36 +640,33 @@ async function buscarStatusNavbarDoBackend() {
  * Desbloqueia navbar no backend
  */
 async function desbloquearNavbarNoBackend() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (!token) return false;
 
   try {
-    const response = await fetch('/api/navbar/desbloquear', {
-      method: 'POST',
+    const response = await fetch("/api/navbar/desbloquear", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
 
-    if (!response.ok) throw new Error('Falha ao desbloquear');
-    
+    if (!response.ok) throw new Error("Falha ao desbloquear");
+
     const data = await response.json();
-    
+
     // 👇 MOSTRA O ALERTA (antes do return!)
-    if (data.alerta) {
-      mostrarAlerta(data.alerta.mensagem, data.alerta.tipo);
-    }
-    
-    console.log('Navbar desbloqueada:', data.mensagem);
+   mostrarModalNavbarDesbloqueada();
+
+    console.log("Navbar desbloqueada:", data.mensagem);
     return data.sucesso !== false; // retorna true se sucesso for true ou undefined
-    
   } catch (error) {
-    console.error('Erro ao desbloquear navbar:', error);
-    
+    console.error("Erro ao desbloquear navbar:", error);
+
     // 👇 Mostra alerta de erro também
-    mostrarAlerta('Erro ao desbloquear navbar', 'erro');
-    
+    mostrarAlerta("Erro ao desbloquear navbar", "erro");
+
     return false;
   }
 }
@@ -525,14 +681,30 @@ window.desbloquearNavbarNoBackend = desbloquearNavbarNoBackend;
   await controlarVisibilidadeNavbar();
 
   const navbar = document.querySelector(".navegacao-inferior");
-  if (navbar && !navbar.classList.contains('bloqueada')) {
+  if (navbar && !navbar.classList.contains("bloqueada")) {
     // controlarSobreposicaoNavbarFooter();  ← COMENTE ESTA LINHA (já está no DOMContentLoaded)
   }
 
-  window.addEventListener('popstate', async () => {
+  window.addEventListener("popstate", async () => {
     await controlarVisibilidadeNavbar();
   });
 })();
+
+function mostrarModalNavbarDesbloqueada() {
+  const modal = document.getElementById("navbarUnlockModal");
+  const btnContinuar = document.getElementById("btnContinuarAventura");
+
+  if (!modal) return;
+
+  modal.classList.remove("hidden");
+
+  if (btnContinuar) {
+    btnContinuar.onclick = () => {
+      modal.classList.add("hidden");
+    };
+  }
+}
+
 
 function renderizarVidas(container, falhasNoModulo, totalTentativas = 2) {
   if (!container) return;
@@ -562,7 +734,6 @@ function renderizarVidas(container, falhasNoModulo, totalTentativas = 2) {
  * Glossario
  */
 async function glossario() {
-
   // pega o json
   const r = await fetch("/assets/data/dicionario.json");
 
@@ -573,7 +744,6 @@ async function glossario() {
   const termos = document.querySelectorAll(".glossario");
 
   termos.forEach((el) => {
-
     // pega o ID
     const id = el.dataset.g;
 
@@ -582,13 +752,88 @@ async function glossario() {
 
     // se existir
     if (definicao) {
-
       // adiciona tooltip
       el.dataset.tip = definicao;
     }
-
   });
+}
 
+// Efeitos Sonoros
+
+// Chave usada para salvar a preferência do usuário
+const AUDIO_KEY = "efeitosSonoros";
+
+// Retorna true ou false
+function efeitosSonorosAtivos() {
+  const valor = localStorage.getItem(AUDIO_KEY);
+
+  // Se nunca configurou, assume ligado
+  return valor !== "false";
+}
+
+// Salva a preferência
+function definirEfeitosSonoros(ativo) {
+  localStorage.setItem(AUDIO_KEY, ativo);
+}
+
+// Toca qualquer áudio respeitando a configuração
+function tocarSom(caminho, volume = 1) {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const audio = new Audio(caminho);
+
+  audio.volume = volume;
+
+  audio.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somClickGlobal = new Audio("/assets/audio/click.mp3");
+
+function efeitosSonorosAtivos() {
+  return localStorage.getItem("efeitosAtivos") !== "false";
+}
+
+function tocarSomClick() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  somClickGlobal.volume = 0.15;
+  somClickGlobal.currentTime = 0;
+
+  somClickGlobal.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+document.addEventListener("click", (event) => {
+
+  const botao = event.target.closest("button");
+
+  if (!botao) {
+    return;
+  }
+
+  tocarSomClick();
+});
+
+function tocarEfeito(caminho, volume = 0.25) {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const audio = new Audio(caminho);
+
+  audio.volume = volume;
+
+  audio.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
 }
 
 glossario();

@@ -5,6 +5,15 @@ const INTRO_SCROLL_HINT_DELAY = 2000;
 const kanbanFlow = ["todo", "doing", "test", "done"];
 const completedMinigames = new Set();
 let introHourglassForced = false;
+const REFATORACAO_SOURCE_KEY = "2-1";
+const REFATORACAO_TARGET_KEY = "1-3";
+const REFATORACAO_ROUTE_KEYS = ["2-1", "2-2", "3-2", "3-3", "2-3", "1-3"];
+const REFATORACAO_DIRECTION_DELTAS = {
+  top: { row: -1, col: 0, opposite: "bottom" },
+  right: { row: 0, col: 1, opposite: "left" },
+  bottom: { row: 1, col: 0, opposite: "top" },
+  left: { row: 0, col: -1, opposite: "right" },
+};
 
 if (typeof document !== "undefined") {
   document.documentElement.classList.add("capitulo4-motion");
@@ -142,9 +151,10 @@ function concluirMinigame(minigame, options = {}) {
   atualizarBloqueiosHistoria();
 
   const nextSectionSelector = options.scrollTo || (sectionsToUnlock[0] ? `#${sectionsToUnlock[0].id}` : "");
+  const scrollDelay = typeof options.scrollDelay === "number" ? options.scrollDelay : 700;
 
   if (nextSectionSelector) {
-    setTimeout(() => rolarParaElemento(nextSectionSelector), 700);
+    setTimeout(() => rolarParaElemento(nextSectionSelector), scrollDelay);
   }
 
   setTimeout(() => {
@@ -445,7 +455,7 @@ function moverCartao(card) {
   atualizarKanban();
 
   if (todosCartoesKanbanConcluidos()) {
-    atualizarStatusKanban("Todos os cartões chegaram em Concluído. O fluxo está saudável.", "success");
+    atualizarStatusKanban("Todos os cartões chegaram em Concluído. Os elos do gargalo afrouxaram e revelaram a próxima porta.", "success");
     concluirMinigame("kanban");
   } else if (!document.querySelector(".kanban-column--over-limit")) {
     atualizarStatusKanban("Gargalo reduzido. Continue movendo os cartões até Concluído.", "success");
@@ -526,7 +536,7 @@ function configurarDod() {
       button.textContent = "Trecho liberado";
 
       if (status) {
-        status.textContent = "A porta reconheceu o incremento pronto. Continue para a próxima cena.";
+      status.textContent = "A porta reconheceu o incremento pronto. Os elos seguem para a ponte sem quebrar o fluxo.";
       }
 
       concluirMinigame("dod", { scrollTo: "#cena-ponte" });
@@ -687,7 +697,7 @@ function configurarPipelineDecisoesAntigo() {
       button.disabled = true;
     });
 
-    setPipelineStatus("CI integrou e testou. CD automatizou a entrega. A ponte está estável.", "success");
+    setPipelineStatus("CI integrou e testou. CD automatizou a entrega. A ponte está estável, mas revelou o peso interno do sistema.", "success");
     window.setTimeout(() => {
       concluirMinigame("pipeline", { scrollTo: "#cena-divida" });
     }, 1600);
@@ -1022,7 +1032,7 @@ function configurarPipelineDecisoes() {
       replayButton.textContent = "Sequência concluída";
     }
 
-    setPipelineStatus("CI integrou e testou. CD automatizou a entrega. A ponte está estável.", "success");
+    setPipelineStatus("CI integrou e testou. CD automatizou a entrega. A ponte está estável, mas revelou o peso interno do sistema.", "success");
 
     if (scrollBlackout) {
       scrollBlackout.style.opacity = "0";
@@ -1136,6 +1146,377 @@ function configurarPipelineDecisoes() {
   }
 }
 
+function normalizarRotacaoRefatoracao(rotation) {
+  const numericRotation = Number(rotation) || 0;
+  const normalized = numericRotation % 360;
+
+  return normalized < 0 ? normalized + 360 : normalized;
+}
+
+function criarChaveTileRefatoracao(row, col) {
+  return `${row}-${col}`;
+}
+
+function obterConexoesRefatoracao(tileType, rotation) {
+  const normalizedRotation = normalizarRotacaoRefatoracao(rotation);
+
+  if (tileType === "decoy") {
+    return [];
+  }
+
+  if (tileType === "straight") {
+    return normalizedRotation % 180 === 0
+      ? ["left", "right"]
+      : ["top", "bottom"];
+  }
+
+  if (tileType === "corner") {
+    const cornerConnections = {
+      0: ["top", "right"],
+      90: ["right", "bottom"],
+      180: ["bottom", "left"],
+      270: ["left", "top"],
+    };
+
+    return cornerConnections[normalizedRotation] || [];
+  }
+
+  return [];
+}
+
+function calcularEstadoRefatoracao(tiles) {
+  const tileMap = new Map();
+  const connectedKeys = [];
+  const visited = new Set();
+  const queue = [];
+  let reachesExit = false;
+
+  tiles.forEach((tile) => {
+    const key = criarChaveTileRefatoracao(tile.row, tile.col);
+    tileMap.set(key, {
+      ...tile,
+      key,
+      rotation: normalizarRotacaoRefatoracao(tile.rotation),
+      connections: obterConexoesRefatoracao(tile.type, tile.rotation),
+    });
+  });
+
+  const sourceTile = tileMap.get(REFATORACAO_SOURCE_KEY);
+
+  if (!sourceTile || !sourceTile.connections.includes("left")) {
+    return {
+      solved: false,
+      connectedKeys,
+      reachesExit,
+    };
+  }
+
+  queue.push(sourceTile);
+  visited.add(sourceTile.key);
+
+  while (queue.length > 0) {
+    const currentTile = queue.shift();
+    connectedKeys.push(currentTile.key);
+
+    currentTile.connections.forEach((direction) => {
+      if (currentTile.key === REFATORACAO_TARGET_KEY && direction === "right") {
+        reachesExit = true;
+        return;
+      }
+
+      if (currentTile.key === REFATORACAO_SOURCE_KEY && direction === "left") {
+        return;
+      }
+
+      const delta = REFATORACAO_DIRECTION_DELTAS[direction];
+
+      if (!delta) return;
+
+      const neighborKey = criarChaveTileRefatoracao(
+        currentTile.row + delta.row,
+        currentTile.col + delta.col,
+      );
+      const neighborTile = tileMap.get(neighborKey);
+
+      if (!neighborTile) return;
+      if (!neighborTile.connections.includes(delta.opposite)) return;
+      if (visited.has(neighborKey)) return;
+
+      visited.add(neighborKey);
+      queue.push(neighborTile);
+    });
+  }
+
+  return {
+    solved: reachesExit && visited.has(REFATORACAO_TARGET_KEY),
+    connectedKeys,
+    reachesExit,
+  };
+}
+
+function configurarRefatoracao() {
+  const scene = document.getElementById("cena-divida");
+  const board = document.querySelector("[data-refactor-board]");
+  const status = document.querySelector("[data-refactor-status]");
+  const tiles = Array.from(document.querySelectorAll("[data-refactor-tile]"));
+  const gameStage = document.getElementById("refactorVoid");
+  const boardShell = gameStage?.querySelector(".refactor-board-shell");
+  const introCard = scene?.querySelector(".refactor-intro-card");
+  const scrollBlackout = document.getElementById("refactorScrollBlackout");
+  const stepLabel = document.getElementById("refactorStep");
+  const title = document.getElementById("refactorTitle");
+  const description = document.getElementById("refactorDescription");
+  const flowCounter = document.querySelector("[data-refactor-flow-count]");
+  let completed = false;
+  let started = false;
+  let scrollTicking = false;
+
+  if (
+    !scene ||
+    !board ||
+    !status ||
+    !gameStage ||
+    !boardShell ||
+    !introCard ||
+    !scrollBlackout ||
+    !stepLabel ||
+    !title ||
+    !description ||
+    !flowCounter ||
+    tiles.length === 0
+  ) return;
+
+  function setTilesDisabled(disabled) {
+    tiles.forEach((tile) => {
+      tile.disabled = disabled;
+    });
+  }
+
+  function lerTilesDoDom() {
+    return tiles.map((tile) => ({
+      row: Number(tile.dataset.row),
+      col: Number(tile.dataset.col),
+      type: tile.dataset.tileType || "decoy",
+      rotation: Number(tile.dataset.rotation || 0),
+    }));
+  }
+
+  function atualizarEstadoVisual() {
+    const state = calcularEstadoRefatoracao(lerTilesDoDom());
+    const connectedKeys = new Set(state.connectedKeys);
+    const routeConnectedCount = state.connectedKeys.filter((key) => REFATORACAO_ROUTE_KEYS.includes(key)).length;
+
+    tiles.forEach((tile) => {
+      const key = criarChaveTileRefatoracao(tile.dataset.row, tile.dataset.col);
+      tile.style.setProperty(
+        "--tile-rotation",
+        `${normalizarRotacaoRefatoracao(tile.dataset.rotation)}deg`,
+      );
+      tile.classList.toggle("refactor-tile--linked", connectedKeys.has(key));
+      tile.classList.toggle("refactor-tile--solved", completed && connectedKeys.has(key));
+      tile.setAttribute("aria-pressed", connectedKeys.has(key) ? "true" : "false");
+    });
+
+    board.classList.toggle("refactor-board--complete", completed);
+    boardShell.classList.toggle("refactor-board-shell--complete", completed);
+    scene.classList.toggle("debt-scene--complete", completed);
+    flowCounter.textContent = completed
+      ? "6/6 peças conectadas"
+      : `${routeConnectedCount}/6 peças conectadas`;
+
+    if (!started && !completed) {
+      status.textContent = "Continue descendo até a tela ficar totalmente preta. O terminal vai liberar as placas.";
+    } else if (!completed && state.connectedKeys.length > 1) {
+      status.textContent = `Bom sinal: ${routeConnectedCount} peça(s) da rota respirando. Continue girando as placas travadas.`;
+    } else if (!completed) {
+      status.textContent = "Clique nas placas para girar 90°. Comece abrindo a entrada do Banco de Dados.";
+    }
+
+    if (completed || !state.solved) return;
+
+    completed = true;
+    setTilesDisabled(true);
+
+    board.classList.add("refactor-board--complete");
+    boardShell.classList.add("refactor-board-shell--complete");
+    scene.classList.add("debt-scene--complete");
+    stepLabel.textContent = "Fluxo restaurado";
+    title.textContent = "Código refatorado";
+    description.textContent = "Banco de Dados e Usuário seguem conectados por uma estrutura interna limpa.";
+    status.textContent = "O caminho interno voltou a respirar. As correntes caíram, mas deixaram rastros para medir o fluxo.";
+
+    window.setTimeout(() => {
+      concluirMinigame("refatoracao", { scrollTo: "#cena-metricas", scrollDelay: 180 });
+    }, 900);
+  }
+
+  function girarTile(tile) {
+    if (!started || completed || tile.disabled) return;
+
+    const nextRotation = (normalizarRotacaoRefatoracao(tile.dataset.rotation) + 90) % 360;
+    tile.dataset.rotation = String(nextRotation);
+    atualizarEstadoVisual();
+  }
+
+  function atualizarEscuridaoRefatoracao() {
+    const stageRect = gameStage.getBoundingClientRect();
+    const introRect = introCard.getBoundingClientRect();
+
+    if (scene.classList.contains("is-locked") && !completed) {
+      gameStage.style.setProperty("--refactor-darkness", "0");
+      gameStage.style.setProperty("--refactor-game-opacity", "0");
+      scrollBlackout.style.opacity = "0";
+      setTilesDisabled(true);
+      started = false;
+      flowCounter.textContent = "0/6 peças conectadas";
+      stepLabel.textContent = "O caminho ainda está escondido";
+      title.textContent = "Role até o breu completo";
+      description.textContent = "Quando a tela escurecer por completo, o caminho interno vai aparecer peça por peça.";
+      status.textContent = "Conclua a Cena 04 para liberar este trecho.";
+      return;
+    }
+
+    const introTop = introRect.top + window.scrollY;
+    const introHeight = introCard.offsetHeight || 0;
+    const stageTop = introTop + introHeight / 2 - window.innerHeight * 0.82;
+    const stageHeight = window.innerHeight;
+    const darkness = calcularProgressoBlackoutHero(window.scrollY, stageTop, stageHeight);
+    const gameOpacity = clamp((darkness - 0.82) / 0.18, 0, 1);
+    const gameStageVisible = stageRect.top <= window.innerHeight * 0.72
+      && stageRect.bottom >= window.innerHeight * 0.28;
+
+    gameStage.style.setProperty("--refactor-darkness", darkness.toFixed(3));
+    gameStage.style.setProperty("--refactor-game-opacity", gameOpacity.toFixed(3));
+    scrollBlackout.style.opacity = completed ? "0" : String(darkness);
+
+    if (!started && !completed && darkness < 0.82) {
+      setTilesDisabled(true);
+      stepLabel.textContent = "O caminho ainda está escondido";
+      title.textContent = "Role até o breu completo";
+      description.textContent = "Quando a tela escurecer por completo, o caminho interno vai aparecer peça por peça.";
+      status.textContent = "Continue descendo até a tela ficar totalmente preta. Depois clique nas placas para girar.";
+    }
+
+    if (darkness >= 0.96 && gameStageVisible && !started && !completed) {
+      started = true;
+      setTilesDisabled(false);
+      stepLabel.textContent = "Fluxo interno revelado";
+      title.textContent = "Refatore sem mudar o resultado";
+      description.textContent = "Gire as placas em 90° até o fluxo sair do Banco de Dados e chegar ao Usuário.";
+      status.textContent = "Azul significa trecho conectado. Verde aparece quando a rota inteira estiver limpa.";
+    }
+  }
+
+  function solicitarAtualizacaoEscuridao() {
+    if (scrollTicking) return;
+
+    scrollTicking = true;
+    window.requestAnimationFrame(() => {
+      scrollTicking = false;
+      atualizarEscuridaoRefatoracao();
+    });
+  }
+
+  tiles.forEach((tile) => {
+    tile.style.setProperty(
+      "--tile-rotation",
+      `${normalizarRotacaoRefatoracao(tile.dataset.rotation)}deg`,
+    );
+
+    tile.addEventListener("click", () => {
+      girarTile(tile);
+    });
+
+    tile.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      event.preventDefault();
+      girarTile(tile);
+    });
+  });
+
+  setTilesDisabled(true);
+  atualizarEstadoVisual();
+  atualizarEscuridaoRefatoracao();
+  window.addEventListener("scroll", solicitarAtualizacaoEscuridao, { passive: true });
+  window.addEventListener("resize", solicitarAtualizacaoEscuridao);
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.some((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.38);
+
+      if (!visible || started || scene.classList.contains("is-locked")) return;
+
+      atualizarEscuridaoRefatoracao();
+    }, { threshold: [0.38, 0.62] });
+
+    observer.observe(gameStage);
+  }
+}
+
+function configurarArtefatosMetricas() {
+  const cards = Array.from(document.querySelectorAll("[data-metric-artifact]"));
+  const title = document.querySelector("[data-metric-artifact-title]");
+  const description = document.querySelector("[data-metric-artifact-description]");
+  const evidence = document.querySelector("[data-metric-artifact-evidence]");
+  const preview = document.querySelector("[data-metric-artifact-preview]");
+
+  if (cards.length === 0 || !title || !description || !evidence || !preview) return;
+
+  cards.forEach((card, index) => {
+    card.setAttribute("aria-pressed", index === 0 ? "true" : "false");
+
+    card.addEventListener("click", () => {
+      cards.forEach((item) => {
+        item.classList.remove("metric-artifact-card--active");
+        item.setAttribute("aria-pressed", "false");
+      });
+
+      card.classList.add("metric-artifact-card--active");
+      card.setAttribute("aria-pressed", "true");
+      title.textContent = card.dataset.title || "";
+      description.textContent = card.dataset.description || "";
+      evidence.textContent = card.dataset.evidence || "";
+      preview.setAttribute("src", card.dataset.image || "");
+      preview.setAttribute("alt", card.dataset.alt || "");
+    });
+  });
+}
+
+function configurarRetrospectiva() {
+  const form = document.getElementById("retroForm");
+  const feedback = document.getElementById("retroFeedback");
+
+  if (!form || !feedback) return;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const data = new FormData(form);
+    const respostas = ["positivo", "negativo", "melhoria"].map((campo) =>
+      String(data.get(campo) || "").trim(),
+    );
+    const preenchidos = respostas.filter(Boolean).length;
+
+    feedback.classList.toggle("is-complete", preenchidos > 0);
+
+    if (!preenchidos) {
+      feedback.textContent = "O baú permanece fechado. Registre pelo menos uma evidência da Sprint.";
+      return;
+    }
+
+    feedback.textContent =
+      preenchidos === 3
+        ? "As três inscrições foram registradas. O baú reconheceu aprendizado para o próximo ciclo."
+        : "O baú ouviu a reflexão. Complete os outros espaços para deixar o aprendizado mais claro.";
+
+    concluirMinigame("retrospectiva", {
+      scrollTo: "#cena-finalizar-historia",
+      scrollDelay: 450,
+    });
+  });
+}
+
 async function concluirHistoria() {
   const token = obterToken();
   const button = document.getElementById("btnConcluirHistoria");
@@ -1193,6 +1574,7 @@ async function concluirHistoria() {
 
 function liberarPortaDesafio() {
   const gate = document.getElementById("portaBossScene");
+  const state = gate?.querySelector(".porta-boss-state");
 
   if (!gate) return;
 
@@ -1200,6 +1582,10 @@ function liberarPortaDesafio() {
   gate.setAttribute("role", "button");
   gate.setAttribute("tabindex", "0");
   gate.setAttribute("aria-label", "Entrar no desafio do modulo 4");
+
+  if (state) {
+    state.textContent = "Entrar no desafio";
+  }
 }
 
 function configurarConclusaoHistoria() {
@@ -1251,6 +1637,10 @@ async function carregarEstadoHistoria() {
 
     if (!moduleState?.historia_concluida) return;
 
+    ["kanban", "dod", "pipeline", "refatoracao", "retrospectiva"].forEach((minigame) => {
+      completedMinigames.add(minigame);
+    });
+
     const button = document.getElementById("btnConcluirHistoria");
     const status = document.getElementById("statusHistoria");
 
@@ -1289,6 +1679,9 @@ if (typeof document !== "undefined") {
     configurarKanban();
     configurarDod();
     configurarPipelineDecisoes();
+    configurarRefatoracao();
+    configurarArtefatosMetricas();
+    configurarRetrospectiva();
     configurarConclusaoHistoria();
     configurarPortaDesafio();
 
@@ -1305,5 +1698,8 @@ if (typeof module !== "undefined" && module.exports) {
     calcularProgressoBlackoutHero,
     calcularScrollParaAmpulheta,
     deveManterAmpulhetaForcada,
+    normalizarRotacaoRefatoracao,
+    obterConexoesRefatoracao,
+    calcularEstadoRefatoracao,
   };
 }
