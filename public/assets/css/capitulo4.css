@@ -258,7 +258,6 @@
   width: min(1120px, calc(100% - 2rem));
   margin: 4rem auto;
   padding: clamp(1.2rem, 3vw, 2.4rem);
-  padding-left: clamp(5.5rem, 9vw, 7.5rem);
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
   gap: clamp(1.5rem, 4vw, 4rem);
@@ -410,31 +409,6 @@
   border: 1px solid rgba(214, 173, 53, 0.18);
   border-radius: 14px;
   box-shadow: inset 0 0 42px rgba(0, 0, 0, 0.72);
-}
-
-.story-side-icon {
-  position: absolute;
-  left: 1.25rem;
-  top: 2rem;
-  width: 76px;
-  height: 76px;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle, rgba(244, 211, 94, 0.12), rgba(0, 0, 0, 0.65)),
-    linear-gradient(135deg, rgba(28, 25, 18, 0.95), rgba(6, 6, 6, 0.95));
-  border: 2px solid rgba(212, 175, 55, 0.65);
-  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-  box-shadow:
-    0 0 0 2px rgba(0, 0, 0, 0.6),
-    0 0 18px rgba(212, 175, 55, 0.18);
-}
-
-.story-side-icon span {
-  color: #f4d35e;
-  font-family: "Cinzel", serif;
-  font-size: 1.2rem;
-  font-weight: 700;
 }
 
 .story-text {
@@ -637,6 +611,66 @@ blockquote {
   border-radius: 8px;
   font-size: 0.84rem;
   line-height: 1.35;
+}
+
+.minigame-guide {
+  display: grid;
+  gap: 0.42rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.62rem 0.72rem;
+  color: #efe7d1;
+  background: rgba(4, 7, 7, 0.58);
+  border: 1px solid rgba(246, 230, 174, 0.2);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.minigame-guide__eyebrow {
+  color: #f4d35e;
+  font-family: "Cinzel", serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.minigame-guide ol {
+  display: grid;
+  gap: 0.28rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.minigame-guide__step {
+  padding-left: 0.08rem;
+}
+
+.minigame-guide__step::marker {
+  color: #f4d35e;
+  font-weight: 800;
+}
+
+.minigame-guide--dod {
+  margin-bottom: 0.65rem;
+  background: rgba(16, 13, 7, 0.64);
+  border-color: rgba(244, 211, 94, 0.24);
+}
+
+.minigame-guide--pipeline {
+  width: min(38rem, 100%);
+  margin: 0 auto 0.75rem;
+  text-align: left;
+  opacity: var(--pipeline-game-opacity);
+  transform: translateY(calc((1 - var(--pipeline-game-opacity)) * 12px));
+  transition: opacity 0.32s ease, transform 0.32s ease;
+}
+
+.minigame-guide--retro {
+  background: rgba(8, 18, 13, 0.66);
+  border-color: rgba(169, 213, 128, 0.25);
 }
 
 .kanban-board {
@@ -1374,16 +1408,10 @@ blockquote {
   box-shadow: none;
 }
 
-.pipeline-scene .story-side-icon {
-  left: max(1.25rem, calc((100vw - 1120px) / 2 + 1.25rem));
-  top: 2rem;
-}
-
 .pipeline-scene .story-text {
   width: min(1120px, calc(100% - 2rem));
   margin: 0 auto;
   padding: clamp(1.2rem, 3vw, 2.4rem);
-  padding-left: clamp(5.5rem, 9vw, 7.5rem);
   background:
     linear-gradient(90deg, rgba(5, 5, 4, 0.94) 0%, rgba(5, 5, 4, 0.86) 48%, rgba(5, 5, 4, 0.54) 100%),
     linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.72)),
@@ -1410,12 +1438,12 @@ blockquote {
   position: relative;
   z-index: 91;
   isolation: auto;
-  width: 100vw;
+  width: 100%;
   min-height: 185svh;
-  margin-left: 50%;
+  margin-left: 0;
   color: #dff9ff;
   background: transparent;
-  transform: translateX(-50%);
+  transform: none;
   overflow: hidden;
 }
 
@@ -1449,6 +1477,8 @@ blockquote {
   top: 0;
   z-index: 91;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   min-height: 100svh;
   display: grid;
   grid-template-rows: minmax(7rem, auto) 1fr minmax(7rem, auto);
@@ -1459,7 +1489,8 @@ blockquote {
 }
 
 .pipeline-void__copy {
-  width: min(44rem, 92vw);
+  width: min(44rem, 100%);
+  box-sizing: border-box;
   display: grid;
   gap: 0.45rem;
   opacity: var(--pipeline-game-opacity);
@@ -1494,7 +1525,8 @@ blockquote {
 }
 
 .pipeline-neon-board {
-  width: min(1040px, 94vw);
+  width: min(1040px, 100%);
+  box-sizing: border-box;
   min-height: clamp(17rem, 42vw, 28rem);
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1944,7 +1976,8 @@ blockquote {
 }
 
 .pipeline-void__footer {
-  width: min(38rem, 92vw);
+  width: min(38rem, 100%);
+  box-sizing: border-box;
   display: grid;
   justify-items: center;
   gap: 0.7rem;
@@ -2065,57 +2098,73 @@ blockquote {
 }
 
 .debt-scene {
-  background:
-    radial-gradient(circle at 72% 28%, rgba(237, 125, 84, 0.1), transparent 30%),
-    radial-gradient(circle at 24% 72%, rgba(112, 173, 210, 0.1), transparent 28%),
-    linear-gradient(135deg, rgba(12, 11, 10, 0.96), rgba(5, 5, 4, 0.92));
+  width: 100%;
+  margin: 4rem 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
-.debt-art {
+.refactor-intro-card {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: clamp(1.2rem, 3vw, 2.4rem);
+  background:
+    linear-gradient(90deg, rgba(5, 5, 4, 0.95) 0%, rgba(5, 5, 4, 0.87) 48%, rgba(5, 5, 4, 0.52) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.7)),
+    url("/assets/img/capitulo_4/correntes-divida-tecnica-pixel.png") center / cover no-repeat;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 0 70px rgba(0, 0, 0, 0.52),
+    0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.debt-scene.is-locked .refactor-intro-card,
+.debt-scene.is-locked .refactor-void {
+  opacity: 0.28;
+  filter: blur(8px);
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 1s ease, filter 1s ease;
+}
+
+.debt-scene.is-unlocking .refactor-intro-card,
+.debt-scene.is-unlocking .refactor-void {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.debt-art,
+.refactor-intro-art {
   align-items: stretch;
 }
 
-.debt-panel {
-  width: 100%;
-  display: grid;
-  gap: 0.75rem;
-  padding: clamp(0.85rem, 2vw, 1.15rem);
-  background:
-    radial-gradient(circle at 50% 10%, rgba(237, 125, 84, 0.08), transparent 34%),
-    linear-gradient(135deg, rgba(8, 8, 7, 0.96), rgba(18, 13, 10, 0.92));
-  border: 1px solid rgba(237, 125, 84, 0.22);
-  border-radius: 8px;
-  box-shadow:
-    inset 0 0 28px rgba(0, 0, 0, 0.46),
-    0 18px 38px rgba(0, 0, 0, 0.34);
-  transition: border-color 0.24s ease, box-shadow 0.24s ease, transform 0.24s ease;
-}
-
-.debt-illustration {
+.refactor-illustration {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: clamp(20rem, 38vw, 29rem);
+  min-height: clamp(20rem, 34vw, 29rem);
   display: grid;
   align-content: end;
-  padding: clamp(1rem, 2.4vw, 1.55rem);
+  padding: clamp(1rem, 2.4vw, 1.45rem);
   border: 1px solid rgba(246, 230, 174, 0.18);
-  border-radius: 8px;
-  background: rgba(5, 5, 4, 0.9);
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.3);
-}
-
-.debt-illustration::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+  border-radius: 18px;
   background:
-    linear-gradient(180deg, rgba(4, 4, 3, 0.1) 0%, rgba(4, 4, 3, 0.28) 44%, rgba(4, 4, 3, 0.92) 100%),
-    radial-gradient(circle at 48% 68%, rgba(237, 125, 84, 0.12), transparent 38%);
+    linear-gradient(180deg, rgba(4, 4, 3, 0.08) 0%, rgba(4, 4, 3, 0.34) 46%, rgba(4, 4, 3, 0.92) 100%),
+    rgba(5, 5, 4, 0.92);
+  box-shadow:
+    inset 0 0 34px rgba(0, 0, 0, 0.42),
+    0 22px 46px rgba(0, 0, 0, 0.36);
 }
 
-.debt-illustration img {
+.refactor-illustration img {
   position: absolute;
   inset: 0;
   z-index: -2;
@@ -2123,41 +2172,23 @@ blockquote {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.82;
-  filter: saturate(0.94) contrast(1.05) brightness(0.78);
+  opacity: 0.78;
+  filter: saturate(0.92) contrast(1.04) brightness(0.72);
   image-rendering: pixelated;
   pointer-events: none;
 }
 
-.debt-caption {
-  max-width: 34rem;
-  display: grid;
-  gap: 0.45rem;
+.refactor-illustration::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(4, 4, 3, 0.06) 0%, rgba(4, 4, 3, 0.3) 42%, rgba(4, 4, 3, 0.92) 100%),
+    radial-gradient(circle at 78% 22%, rgba(237, 125, 84, 0.16), transparent 30%);
 }
 
-.debt-caption span {
-  color: #edb184;
-  font-family: "Cinzel", serif;
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.debt-caption strong {
-  color: #f6e6ae;
-  font-family: "Cinzel", serif;
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
-  line-height: 1.18;
-}
-
-.debt-caption p {
-  margin: 0;
-  color: #ddd0bf;
-  font-size: 0.94rem;
-  line-height: 1.5;
-}
-
-.debt-echoes {
+.refactor-echoes {
   position: absolute;
   inset: 1rem 1rem auto;
   display: flex;
@@ -2166,8 +2197,7 @@ blockquote {
   z-index: 1;
 }
 
-.debt-echoes span,
-.debt-evidence-trail span,
+.refactor-echoes span,
 .oracle-evidence-strip span {
   display: inline-flex;
   align-items: center;
@@ -2182,220 +2212,932 @@ blockquote {
   line-height: 1.15;
 }
 
-.debt-workbench {
+.refactor-caption {
   display: grid;
-  gap: 0.35rem;
-  padding: 0.78rem 0.86rem;
-  color: #ead8bf;
-  background:
-    linear-gradient(135deg, rgba(37, 24, 15, 0.86), rgba(11, 15, 16, 0.78));
-  border: 1px solid rgba(237, 125, 84, 0.3);
-  border-radius: 8px;
+  gap: 0.4rem;
+  max-width: 28rem;
 }
 
-.debt-workbench span {
+.refactor-caption span {
   color: #edb184;
   font-family: "Cinzel", serif;
   font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.debt-workbench strong {
+.refactor-caption strong {
   color: #f6e6ae;
   font-family: "Cinzel", serif;
-  font-size: 1rem;
+  font-size: clamp(1.06rem, 2vw, 1.38rem);
   line-height: 1.2;
 }
 
-.debt-workbench p {
-  max-width: 42rem;
+.refactor-caption p {
   margin: 0;
-  color: #cfc6b8;
-  font-size: 0.88rem;
-  line-height: 1.42;
+  color: #ddd0bf;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 
-.debt-progress {
-  overflow: hidden;
-  height: 0.55rem;
-  background: rgba(33, 67, 38, 0.28);
-  border: 1px solid rgba(169, 213, 128, 0.22);
-  border-radius: 999px;
+.refactor-scroll-blackout {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.debt-progress span {
-  display: block;
+.refactor-void {
+  --refactor-darkness: 0;
+  --refactor-game-opacity: 0;
+  position: relative;
+  z-index: 91;
+  isolation: auto;
   width: 100%;
-  height: 100%;
+  min-height: 185svh;
+  margin-left: 0;
+  color: #dff9ff;
+  background: transparent;
+  transform: none;
+  overflow: hidden;
+}
+
+.refactor-void::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background:
-    linear-gradient(90deg, rgba(237, 125, 84, 0.95), rgba(214, 173, 53, 0.88));
-  border-radius: inherit;
-  transition: width 0.28s ease;
+    radial-gradient(circle at 50% 54%, rgba(34, 210, 255, 0.08), transparent 30%),
+    radial-gradient(circle at 18% 16%, rgba(169, 213, 128, 0.05), transparent 22%),
+    radial-gradient(circle at 82% 26%, rgba(214, 173, 53, 0.04), transparent 20%);
+  opacity: var(--refactor-game-opacity);
+  transition: opacity 0.12s linear;
 }
 
-.debt-refactor-station {
+.refactor-void::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 54%, rgba(34, 210, 255, 0.06), transparent 28%),
+    radial-gradient(circle at 18% 16%, rgba(169, 213, 128, 0.04), transparent 20%),
+    radial-gradient(circle at 82% 26%, rgba(214, 173, 53, 0.03), transparent 18%),
+    #000;
+  opacity: var(--refactor-game-opacity);
+  transition: opacity 0.12s linear;
+}
+
+.refactor-void__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+  padding: clamp(1.4rem, 4vw, 3rem);
+}
+
+.refactor-panel {
+  width: min(1100px, 94vw);
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  padding: 0;
+  opacity: var(--refactor-game-opacity);
+  transform: translateY(calc((1 - var(--refactor-game-opacity)) * 1.2rem));
+  transition:
+    opacity 0.42s ease,
+    transform 0.48s cubic-bezier(0.18, 0.82, 0.22, 1);
+}
+
+.refactor-mission {
+  width: min(100%, 46rem);
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: 0.7rem;
-  align-items: stretch;
-}
-
-.debt-before,
-.debt-after {
-  min-height: 8.5rem;
-  display: grid;
-  align-content: start;
-  gap: 0.42rem;
-  padding: 0.86rem;
+  align-items: center;
+  padding: 0.65rem;
+  color: #dff9ff;
+  background:
+    linear-gradient(135deg, rgba(3, 6, 7, 0.88), rgba(12, 13, 9, 0.84));
+  border: 1px solid rgba(246, 230, 174, 0.18);
   border-radius: 8px;
-  line-height: 1.35;
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.42),
+    0 12px 28px rgba(0, 0, 0, 0.24);
 }
 
-.debt-before {
-  color: #ffe2c9;
-  background: rgba(74, 31, 22, 0.62);
-  border: 1px solid rgba(237, 125, 84, 0.42);
+.refactor-mission div {
+  display: grid;
+  gap: 0.16rem;
+  align-content: center;
+  padding: 0.55rem 0.65rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
 }
 
-.debt-after {
-  color: #ddf0c2;
-  background: rgba(33, 67, 38, 0.56);
-  border: 1px solid rgba(169, 213, 128, 0.42);
+.refactor-mission span,
+.refactor-steps li::marker,
+.refactor-hud span {
+  color: #7de7ff;
 }
 
-.debt-before span,
-.debt-after span {
+.refactor-mission span {
   font-family: "Cinzel", serif;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.82;
 }
 
-.debt-before strong,
-.debt-after strong {
-  color: inherit;
-  font-size: 0.96rem;
-  line-height: 1.22;
-}
-
-.debt-before p,
-.debt-after p {
-  margin: 0;
-  color: inherit;
-  font-size: 0.84rem;
-  opacity: 0.9;
-}
-
-.debt-transform {
-  min-width: 3.35rem;
-  display: grid;
-  place-items: center;
+.refactor-mission strong {
   color: #f6e6ae;
   font-family: "Cinzel", serif;
-  font-size: 0.82rem;
+  font-size: 0.98rem;
+  line-height: 1.24;
 }
 
-.debt-transform::before {
-  content: "";
-  width: 2.7rem;
-  height: 2.7rem;
-  grid-area: 1 / 1;
-  border: 1px solid rgba(246, 230, 174, 0.34);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(214, 173, 53, 0.18), rgba(7, 17, 22, 0.62));
-  box-shadow: 0 0 18px rgba(214, 173, 53, 0.14);
-}
-
-.debt-transform span {
-  z-index: 1;
-  grid-area: 1 / 1;
-}
-
-.debt-refactor-button {
-  grid-column: 1 / -1;
-  min-height: 3rem;
-  color: #f6e6ae;
-  background: rgba(38, 45, 31, 0.72);
-  border: 1px solid rgba(169, 213, 128, 0.48);
-  border-radius: 8px;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 800;
-  letter-spacing: 0;
-  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
-}
-
-.debt-refactor-button:hover,
-.debt-refactor-button:focus-visible {
-  transform: translateY(-2px);
-  background: rgba(47, 67, 38, 0.78);
-  border-color: rgba(190, 231, 128, 0.72);
-  outline: 2px solid rgba(169, 213, 128, 0.34);
-  outline-offset: 2px;
-  box-shadow: 0 0 18px rgba(169, 213, 128, 0.18);
-}
-
-.debt-refactor-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.72;
-  transform: none;
-}
-
-.debt-refactor-station--applied .debt-after {
-  animation: debt-after-applied 0.34s ease-out;
-}
-
-.debt-status {
-  min-height: 2.75rem;
+.refactor-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  align-items: center;
   margin: 0;
-  padding: 0.7rem 0.85rem;
-  color: #e7f8ff;
-  background: rgba(7, 17, 22, 0.72);
-  border: 1px solid rgba(112, 173, 210, 0.3);
-  border-radius: 8px;
-  font-size: 0.9rem;
+  padding: 0.55rem 0.65rem;
+  color: #d8e9ef;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.12);
+  border-radius: 6px;
+  font-size: 0.82rem;
   line-height: 1.35;
+  list-style-position: inside;
 }
 
-.debt-panel--refactored {
-  border-color: rgba(169, 213, 128, 0.62);
-  box-shadow:
-    inset 0 0 32px rgba(169, 213, 128, 0.08),
-    0 0 30px rgba(169, 213, 128, 0.2),
-    0 22px 46px rgba(0, 0, 0, 0.36);
+.refactor-steps li {
+  min-width: min(100%, 10rem);
 }
 
-.debt-panel--refactored .debt-status {
-  color: #ddf0c2;
-  background: rgba(33, 67, 38, 0.64);
-  border-color: rgba(169, 213, 128, 0.48);
+.refactor-stage-copy {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.debt-evidence-trail {
+.refactor-board-shell {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.debt-evidence-trail span {
+  grid-template-columns: minmax(8.8rem, 9.4rem) minmax(18rem, 25rem) minmax(6.1rem, 7.1rem);
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
   justify-content: center;
-  color: #d8edf5;
-  border-color: rgba(112, 173, 210, 0.32);
+  gap: clamp(0.65rem, 1.8vw, 1rem);
+  width: min(100%, 46rem);
+  min-height: clamp(25rem, 40vw, 32rem);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(15, 28, 36, 0.82), rgba(3, 4, 5, 0.98) 68%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+  border: 1px solid rgba(246, 230, 174, 0.14);
+  border-radius: 28px;
+  box-shadow:
+    inset 0 0 80px rgba(0, 0, 0, 0.82),
+    0 0 42px rgba(34, 210, 255, 0.08),
+    0 28px 60px rgba(0, 0, 0, 0.48);
+  overflow: hidden;
 }
 
-.debt-panel--refactored .debt-evidence-trail span {
-  border-color: rgba(169, 213, 128, 0.46);
-  box-shadow: 0 0 16px rgba(169, 213, 128, 0.12);
+.refactor-board-shell--complete {
+  border-color: rgba(118, 255, 126, 0.28);
+  box-shadow:
+    inset 0 0 90px rgba(0, 0, 0, 0.82),
+    0 0 46px rgba(118, 255, 126, 0.12),
+    0 28px 60px rgba(0, 0, 0, 0.48);
+}
+
+.refactor-board-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0, transparent 49.35%, rgba(112, 173, 210, 0.08) 50%, transparent 50.65%, transparent 100%),
+    linear-gradient(transparent 0, transparent 49.35%, rgba(112, 173, 210, 0.08) 50%, transparent 50.65%, transparent 100%),
+    radial-gradient(circle at 50% 50%, rgba(34, 210, 255, 0.08), transparent 44%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.refactor-board-shell::after {
+  content: "";
+  position: absolute;
+  inset: auto 8% 7%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(246, 230, 174, 0.4), transparent);
+  box-shadow: 0 0 18px rgba(246, 230, 174, 0.16);
+  pointer-events: none;
+}
+
+.refactor-board-label {
+  position: relative;
+  z-index: 2;
+  min-height: 2.5rem;
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.62rem;
+  align-items: center;
+  justify-self: center;
+  padding: 0;
+  color: #e7f8ff;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  text-shadow: 0 0 14px rgba(125, 231, 255, 0.24);
+  box-shadow: none;
+}
+
+.refactor-board-label img {
+  width: 2.35rem;
+  height: 2.35rem;
+  display: block;
+  padding: 0;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  filter:
+    brightness(0)
+    invert(1)
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.2))
+    drop-shadow(0 0 12px rgba(125, 231, 255, 0.28));
+  box-shadow: none;
+}
+
+.refactor-board-label--banco img {
+  background: transparent;
+}
+
+.refactor-board-label--usuario img {
+  background: transparent;
+}
+
+.refactor-board-label--banco {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.refactor-board-label--usuario {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.refactor-board {
+  position: relative;
+  z-index: 1;
+  grid-column: 2;
+  grid-row: 1 / 4;
+  width: min(100%, 25rem);
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(11, 30, 38, 0.58), rgba(4, 5, 6, 0.96) 72%),
+    rgba(5, 8, 9, 0.96);
+  border: 1px solid rgba(212, 175, 55, 0.14);
+  border-radius: 24px;
+  box-shadow:
+    inset 0 0 0 1px rgba(246, 230, 174, 0.04),
+    inset 0 0 28px rgba(34, 210, 255, 0.04),
+    0 18px 38px rgba(0, 0, 0, 0.34),
+    0 0 26px rgba(112, 173, 210, 0.08);
+}
+
+.refactor-board::before,
+.refactor-board::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.refactor-board::before {
+  left: -1.45rem;
+  top: calc(50% + 0.12rem);
+  width: 1.45rem;
+  height: 0.56rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(125, 231, 255, 0.12), rgba(125, 231, 255, 0.92));
+  box-shadow: 0 0 18px rgba(125, 231, 255, 0.36);
+}
+
+.refactor-board::after {
+  right: -1.45rem;
+  top: calc(16.66% + 0.92rem);
+  width: 1.45rem;
+  height: 0.56rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(125, 231, 255, 0.92), rgba(125, 231, 255, 0.12));
+  box-shadow: 0 0 18px rgba(125, 231, 255, 0.32);
+}
+
+.refactor-board-shell--complete .refactor-board-label {
+  color: #dff7cf;
+  text-shadow:
+    0 0 14px rgba(118, 255, 126, 0.42),
+    0 0 28px rgba(118, 255, 126, 0.2);
+}
+
+.refactor-board-shell--complete .refactor-board-label img {
+  filter:
+    brightness(0)
+    invert(1)
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.24))
+    drop-shadow(0 0 12px rgba(118, 255, 126, 0.5));
+}
+
+.refactor-board-shell--complete .refactor-board::before,
+.refactor-board-shell--complete .refactor-board::after {
+  background: linear-gradient(90deg, rgba(118, 255, 126, 0.9), rgba(118, 255, 126, 0.14));
+  box-shadow: 0 0 18px rgba(118, 255, 126, 0.42);
+}
+
+.refactor-board--complete::after {
+  box-shadow: 0 0 18px rgba(118, 255, 126, 0.42);
+}
+
+.refactor-tile {
+  --tile-rotation: 0deg;
+  --tile-line: rgba(171, 137, 70, 0.5);
+  --tile-line-glow: rgba(246, 230, 174, 0.08);
+  position: relative;
+  border: 1px solid rgba(171, 137, 70, 0.32);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(69, 65, 56, 0.36), transparent 32%),
+    linear-gradient(315deg, rgba(5, 5, 4, 0.3), transparent 44%),
+    repeating-linear-gradient(90deg, rgba(246, 230, 174, 0.035) 0 1px, transparent 1px 12px),
+    linear-gradient(145deg, rgba(34, 32, 27, 0.98), rgba(12, 13, 12, 0.96));
+  box-shadow:
+    inset 0 0 0 1px rgba(246, 230, 174, 0.04),
+    inset 0 -0.9rem 1.2rem rgba(0, 0, 0, 0.34),
+    inset 0.35rem 0.35rem 0.75rem rgba(255, 255, 255, 0.035),
+    0 10px 18px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.refactor-tile:hover,
+.refactor-tile:focus-visible {
+  transform: translateY(-2px) scale(1.01);
+  border-color: rgba(246, 230, 174, 0.42);
+  outline: 2px solid rgba(246, 230, 174, 0.18);
+  outline-offset: 2px;
+  box-shadow:
+    inset 0 0 0 1px rgba(246, 230, 174, 0.08),
+    0 0 18px rgba(246, 230, 174, 0.14),
+    0 14px 24px rgba(0, 0, 0, 0.26);
+}
+
+.refactor-tile:disabled {
+  cursor: default;
+}
+
+.refactor-tile:disabled:not(.refactor-tile--solved) {
+  opacity: 0.72;
+}
+
+.refactor-tile__path {
+  position: absolute;
+  inset: 0.34rem;
+  transform: rotate(var(--tile-rotation));
+  transition: transform 0.22s ease;
+}
+
+.refactor-tile__frame {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.refactor-tile__frame::before,
+.refactor-tile__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0.45rem;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.refactor-tile__frame::before {
+  border: 1px solid rgba(246, 230, 174, 0.1);
+}
+
+.refactor-tile__frame::after {
+  inset: 0.62rem;
+  border: 1px solid rgba(0, 0, 0, 0.28);
+}
+
+.refactor-tile--straight .refactor-tile__path::before,
+.refactor-tile--corner .refactor-tile__path::before,
+.refactor-tile--corner .refactor-tile__path::after {
+  content: "";
+  position: absolute;
+  background: var(--tile-line);
+  box-shadow:
+    0 0 16px var(--tile-line-glow),
+    inset 0 0 6px rgba(255, 255, 255, 0.08);
+}
+
+.refactor-tile--straight .refactor-tile__path::before {
+  left: 8%;
+  right: 8%;
+  top: calc(50% - 0.31rem);
+  height: 0.62rem;
+  border-radius: 4px;
+}
+
+.refactor-tile--corner .refactor-tile__path::before {
+  left: 50%;
+  right: 8%;
+  top: calc(50% - 0.31rem);
+  height: 0.62rem;
+  border-radius: 4px;
+}
+
+.refactor-tile--corner .refactor-tile__path::after {
+  top: 8%;
+  bottom: 50%;
+  left: calc(50% - 0.31rem);
+  width: 0.62rem;
+  border-radius: 4px;
+}
+
+.refactor-tile--decoy .refactor-tile__path::before,
+.refactor-tile--decoy .refactor-tile__path::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: calc(50% - 0.08rem);
+  height: 0.18rem;
+  border-radius: 2px;
+  background: rgba(172, 83, 56, 0.66);
+  box-shadow: 0 0 10px rgba(172, 83, 56, 0.18);
+}
+
+.refactor-tile--decoy .refactor-tile__path::before {
+  transform: rotate(45deg);
+}
+
+.refactor-tile--decoy .refactor-tile__path::after {
+  transform: rotate(-45deg);
+}
+
+.refactor-tile--linked {
+  --tile-line: rgba(105, 214, 255, 0.94);
+  --tile-line-glow: rgba(112, 173, 210, 0.38);
+  border-color: rgba(112, 173, 210, 0.54);
+  background:
+    linear-gradient(180deg, rgba(112, 173, 210, 0.14), rgba(112, 173, 210, 0.04)),
+    linear-gradient(145deg, rgba(14, 28, 34, 0.97), rgba(8, 14, 18, 0.96));
+  box-shadow:
+    inset 0 0 0 1px rgba(112, 173, 210, 0.14),
+    0 0 18px rgba(112, 173, 210, 0.18),
+    0 14px 24px rgba(0, 0, 0, 0.28);
+}
+
+.refactor-board--complete .refactor-tile--linked,
+.refactor-tile--solved {
+  --tile-line: rgba(118, 255, 126, 0.96);
+  --tile-line-glow: rgba(118, 255, 126, 0.36);
+  border-color: rgba(118, 255, 126, 0.52);
+  background:
+    linear-gradient(180deg, rgba(118, 255, 126, 0.16), rgba(118, 255, 126, 0.05)),
+    rgba(7, 18, 10, 0.96);
+  box-shadow:
+    inset 0 0 0 1px rgba(118, 255, 126, 0.16),
+    0 0 18px rgba(118, 255, 126, 0.18),
+    0 14px 24px rgba(0, 0, 0, 0.28);
+}
+
+.refactor-hud {
+  width: min(100%, 52rem);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.refactor-hud span {
+  min-height: 2.35rem;
+  display: grid;
+  place-items: center;
+  padding: 0.45rem 0.6rem;
+  background: rgba(2, 8, 9, 0.72);
+  border: 1px solid rgba(112, 173, 210, 0.2);
+  border-radius: 8px;
+  font-family: "Cinzel", serif;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.debt-scene--complete .refactor-hud span {
+  color: #dff7cf;
+  border-color: rgba(118, 255, 126, 0.28);
+  box-shadow: inset 0 0 14px rgba(118, 255, 126, 0.06);
+}
+
+.refactor-status {
+  width: min(100%, 34rem);
+  min-height: 1.8rem;
+  margin: 0;
+  padding: 0;
+  color: #b8cad2;
+  background: transparent;
+  border: 0;
+  font-size: 0.96rem;
+  line-height: 1.45;
+  text-align: center;
+  text-shadow: 0 0 22px rgba(34, 210, 255, 0.14);
+}
+
+.debt-scene--complete .refactor-scroll-blackout {
+  opacity: 0 !important;
+}
+
+.debt-scene--complete .refactor-status {
+  color: #dff7cf;
+  text-shadow:
+    0 0 16px rgba(118, 255, 126, 0.3),
+    0 0 28px rgba(118, 255, 126, 0.14);
 }
 
 .oracle-scene {
+  isolation: isolate;
+  grid-template-columns: 1fr;
   background:
-    radial-gradient(circle at 66% 24%, rgba(112, 173, 210, 0.12), transparent 30%),
-    radial-gradient(circle at 28% 76%, rgba(214, 173, 53, 0.1), transparent 28%),
     linear-gradient(135deg, rgba(7, 12, 15, 0.96), rgba(5, 5, 4, 0.93));
+}
+
+.oracle-scene::before,
+.oracle-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.oracle-scene::before {
+  z-index: 0;
+  background-image: url("/assets/img/capitulo_4/oraculo-metricas-bg.png");
+  background-position: center;
+  background-size: cover;
+  opacity: 0.72;
+  transform: scale(1.02);
+}
+
+.oracle-scene::after {
+  z-index: 0;
+  background:
+    linear-gradient(90deg, rgba(2, 6, 8, 0.92) 0%, rgba(2, 6, 8, 0.72) 42%, rgba(2, 6, 8, 0.3) 72%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.58));
+}
+
+.oracle-scene .story-text {
+  position: relative;
+  z-index: 1;
+}
+
+.metric-artifacts-scene {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: clamp(1rem, 2.6vw, 1.6rem);
+  background:
+    radial-gradient(circle at 76% 24%, rgba(102, 224, 211, 0.12), transparent 34%),
+    radial-gradient(circle at 18% 82%, rgba(214, 173, 53, 0.1), transparent 30%),
+    linear-gradient(135deg, rgba(7, 12, 14, 0.96), rgba(5, 5, 4, 0.94));
+}
+
+.metric-artifacts-scene .story-text {
+  max-width: 58rem;
+}
+
+.metric-artifacts-panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.8rem, 2vw, 1.15rem);
+  align-items: stretch;
+  min-width: 0;
+  padding: clamp(0.7rem, 1.8vw, 1rem);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(102, 224, 211, 0.09), transparent 34%),
+    linear-gradient(135deg, rgba(3, 8, 10, 0.86), rgba(7, 6, 4, 0.78));
+  border: 1px solid rgba(246, 230, 174, 0.16);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 38px rgba(0, 0, 0, 0.36),
+    0 22px 44px rgba(0, 0, 0, 0.3);
+}
+
+.metric-artifacts-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(0.5rem, 1.4vw, 0.75rem);
+}
+
+.metric-artifact-card {
+  min-width: 0;
+  min-height: 10.25rem;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.72rem;
+  color: #e9dcc1;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(102, 224, 211, 0.12), transparent 42%),
+    linear-gradient(135deg, rgba(11, 18, 20, 0.92), rgba(8, 7, 5, 0.9));
+  border: 1px solid rgba(246, 230, 174, 0.18);
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  text-align: center;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.metric-artifact-card img {
+  width: min(100%, 7.35rem);
+  aspect-ratio: 1;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter:
+    drop-shadow(0 0 16px rgba(102, 224, 211, 0.22))
+    drop-shadow(0 16px 22px rgba(0, 0, 0, 0.34));
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.metric-artifact-card span {
+  color: #f6e6ae;
+  font-family: "Cinzel", serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.metric-artifact-card:hover,
+.metric-artifact-card:focus-visible,
+.metric-artifact-card--active {
+  transform: translateY(-3px);
+  border-color: rgba(214, 173, 53, 0.62);
+  background:
+    radial-gradient(circle at 50% 34%, rgba(102, 224, 211, 0.18), transparent 40%),
+    linear-gradient(135deg, rgba(13, 28, 30, 0.96), rgba(28, 21, 8, 0.88));
+  box-shadow:
+    0 0 22px rgba(102, 224, 211, 0.12),
+    0 0 18px rgba(214, 173, 53, 0.1);
+  outline: none;
+}
+
+.metric-artifact-card:hover img,
+.metric-artifact-card:focus-visible img,
+.metric-artifact-card--active img {
+  transform: translateY(-0.18rem) scale(1.04);
+  filter:
+    drop-shadow(0 0 24px rgba(102, 224, 211, 0.32))
+    drop-shadow(0 18px 24px rgba(0, 0, 0, 0.38));
+}
+
+.metric-artifact-detail {
+  display: grid;
+  grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr);
+  gap: clamp(0.9rem, 2vw, 1.25rem);
+  align-items: center;
+  min-width: 0;
+  min-height: 14rem;
+  padding: clamp(1rem, 2.2vw, 1.35rem);
+  color: #ddd2bd;
+  background:
+    radial-gradient(circle at 12% 50%, rgba(102, 224, 211, 0.12), transparent 30%),
+    linear-gradient(135deg, rgba(5, 9, 10, 0.88), rgba(8, 7, 4, 0.82));
+  border: 1px solid rgba(102, 224, 211, 0.2);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 28px rgba(0, 0, 0, 0.38),
+    0 18px 36px rgba(0, 0, 0, 0.28);
+}
+
+.metric-artifact-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle, rgba(102, 224, 211, 0.16), transparent 58%),
+    rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(246, 230, 174, 0.12);
+}
+
+.metric-artifact-preview::after {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(102, 224, 211, 0.16);
+  box-shadow: 0 0 28px rgba(102, 224, 211, 0.1);
+}
+
+.metric-artifact-preview img {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 10.5rem);
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter:
+    drop-shadow(0 0 28px rgba(102, 224, 211, 0.28))
+    drop-shadow(0 20px 28px rgba(0, 0, 0, 0.4));
+}
+
+.metric-artifact-copy {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.metric-artifact-copy span {
+  color: #66e0d3;
+  font-family: "Cinzel", serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.metric-artifact-copy strong {
+  color: #f7e6aa;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  line-height: 1.12;
+}
+
+.metric-artifact-copy p {
+  margin: 0;
+  color: #ddd2bd;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.stakeholder-scene {
+  isolation: isolate;
+  grid-template-columns: 1fr;
+  min-height: clamp(36rem, 72vw, 48rem);
+  align-items: end;
+  background:
+    linear-gradient(135deg, rgba(10, 12, 14, 0.96), rgba(5, 5, 4, 0.92));
+}
+
+.stakeholder-scene::before,
+.stakeholder-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stakeholder-scene::before {
+  z-index: -2;
+  background:
+    url("/assets/img/capitulo_4/conselho-valor-background.png") center right / cover no-repeat;
+  opacity: 0.88;
+  transform: scale(1.02);
+}
+
+.stakeholder-scene::after {
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(3, 5, 6, 0.96) 0%, rgba(3, 5, 6, 0.78) 44%, rgba(3, 5, 6, 0.18) 82%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.74)),
+    radial-gradient(circle at 62% 34%, rgba(102, 224, 211, 0.2), transparent 34%),
+    radial-gradient(circle at 18% 82%, rgba(214, 173, 53, 0.16), transparent 28%);
+}
+
+.stakeholder-scene .story-text {
+  position: relative;
+  z-index: 1;
+}
+
+.stakeholder-scene h2 {
+  color: #f7e6aa;
+  text-shadow:
+    0 0 24px rgba(214, 173, 53, 0.24),
+    0 2px 0 rgba(0, 0, 0, 0.42);
+}
+
+.retrospective-scene {
+  grid-template-columns: 1fr;
+  background:
+    radial-gradient(circle at 68% 30%, rgba(169, 213, 128, 0.13), transparent 30%),
+    radial-gradient(circle at 22% 78%, rgba(214, 173, 53, 0.1), transparent 28%),
+    linear-gradient(135deg, rgba(8, 13, 10, 0.96), rgba(5, 5, 4, 0.93));
+}
+
+.retrospective-scene .story-text {
+  max-width: none;
+}
+
+.retro-form {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1rem 0 1.15rem;
+  padding: clamp(0.85rem, 2vw, 1.1rem);
+  background:
+    linear-gradient(135deg, rgba(5, 9, 7, 0.86), rgba(15, 13, 8, 0.8));
+  border: 1px solid rgba(169, 213, 128, 0.24);
+  border-radius: 12px;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.34);
+}
+
+.retro-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.retro-field span {
+  color: #dff7cf;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.retro-field textarea {
+  width: 100%;
+  min-height: 5.2rem;
+  resize: vertical;
+  padding: 0.75rem 0.85rem;
+  color: #f5f0df;
+  background: rgba(5, 5, 4, 0.68);
+  border: 1px solid rgba(246, 230, 174, 0.18);
+  border-radius: 8px;
+  font: inherit;
+  line-height: 1.45;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.retro-field textarea::placeholder {
+  color: rgba(221, 208, 191, 0.58);
+}
+
+.retro-field textarea:focus {
+  background: rgba(7, 17, 13, 0.78);
+  border-color: rgba(169, 213, 128, 0.56);
+  box-shadow: 0 0 0 3px rgba(169, 213, 128, 0.12);
+}
+
+.retro-button {
+  justify-self: start;
+  margin-top: 0;
+}
+
+.retro-feedback {
+  min-height: 1.35rem;
+  margin: 0;
+  color: #cfe8b7;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.retro-feedback.is-complete {
+  color: #f6e6ae;
 }
 
 .oracle-art {
@@ -2957,7 +3699,8 @@ blockquote {
   .pipeline-void.pipeline-panel--complete .pipeline-neon-step,
   .debt-refactor-station--applied .debt-after,
   .oracle-calibration--wrong,
-  .oracle-panel--distorted {
+  .oracle-panel--distorted,
+  .porta-boss-scene.porta-liberada .porta-boss-img {
     animation: none;
   }
 
@@ -3015,39 +3758,139 @@ blockquote {
 }
 
 .porta-boss-scene {
+  position: relative;
   display: grid;
   place-items: center;
-  gap: 0.65rem;
-  min-height: clamp(16rem, 36vw, 25rem);
-  border: 1px solid rgba(214, 173, 53, 0.45);
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 50% 20%, rgba(214, 173, 53, 0.18), transparent 34%),
-    linear-gradient(180deg, rgba(18, 13, 9, 0.92), rgba(6, 5, 4, 0.96));
-  color: #d6ad35;
+  width: min(100%, 30rem);
+  min-height: clamp(17rem, 40vw, 27rem);
+  margin-inline: auto;
   text-align: center;
-  box-shadow: inset 0 0 34px rgba(0, 0, 0, 0.48);
+  isolation: isolate;
+  border-radius: 12px;
 }
 
-.porta-boss-scene strong {
-  font-family: "Cinzel", serif;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+.porta-boss-scene::before {
+  content: "";
+  position: absolute;
+  inset: clamp(0.65rem, 2vw, 1rem);
+  z-index: 0;
+  border: 1px solid rgba(214, 173, 53, 0.28);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(214, 173, 53, 0.14), transparent 42%),
+    rgba(0, 0, 0, 0.45);
+  box-shadow:
+    inset 0 0 28px rgba(0, 0, 0, 0.34),
+    0 0 0 rgba(214, 173, 53, 0);
+  opacity: 1;
+  transition: background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  pointer-events: none;
 }
 
-.porta-boss-scene span {
+.porta-boss-img {
+  position: relative;
+  z-index: 1;
+  width: min(100%, clamp(16rem, 34vw, 25rem));
+  height: auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 18px rgba(214, 173, 53, 0.24))
+    drop-shadow(0 22px 30px rgba(0, 0, 0, 0.34));
+  transform: translateY(0) scale(1);
+  transition: transform 0.22s ease, filter 0.22s ease;
+}
+
+.porta-boss-state {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: clamp(0.6rem, 2vw, 1rem);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(82%, 18rem);
+  padding: 0.45rem 0.72rem;
   color: #c9bfa4;
+  background: rgba(5, 5, 4, 0.72);
+  border: 1px solid rgba(214, 173, 53, 0.28);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  transition: transform 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .porta-boss-scene.porta-liberada {
   cursor: pointer;
-  border-color: #f2c84b;
-  box-shadow:
-    inset 0 0 34px rgba(0, 0, 0, 0.42),
-    0 0 24px rgba(214, 173, 53, 0.32);
 }
 
-.porta-boss-scene.porta-liberada span {
+.porta-boss-scene.porta-liberada:hover::before,
+.porta-boss-scene.porta-liberada:focus-visible::before {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(214, 173, 53, 0.24), transparent 42%),
+    rgba(0, 0, 0, 0.56);
+  border-color: #d6ad35;
+  box-shadow:
+    inset 0 0 34px rgba(214, 173, 53, 0.08),
+    0 0 18px rgba(214, 173, 53, 0.3);
+}
+
+.porta-boss-scene.porta-liberada .porta-boss-img {
+  animation: porta-boss-shadow-flow 2.4s ease-in-out infinite;
+}
+
+.porta-boss-scene.porta-liberada:hover .porta-boss-img,
+.porta-boss-scene.porta-liberada:focus-visible .porta-boss-img {
+  animation-play-state: paused;
+  transform: none;
+  filter:
+    drop-shadow(0 0 38px rgba(244, 211, 94, 0.64))
+    drop-shadow(0 0 22px rgba(102, 224, 211, 0.36))
+    drop-shadow(0 28px 38px rgba(0, 0, 0, 0.42));
+}
+
+.porta-boss-scene.porta-liberada .porta-boss-state {
   color: #f7e6aa;
+  background:
+    linear-gradient(135deg, rgba(32, 24, 8, 0.88), rgba(7, 32, 31, 0.78));
+  border-color: rgba(242, 200, 75, 0.48);
+  box-shadow:
+    0 0 18px rgba(214, 173, 53, 0.22),
+    inset 0 0 12px rgba(102, 224, 211, 0.12);
+}
+
+.porta-boss-scene.porta-liberada:hover .porta-boss-state,
+.porta-boss-scene.porta-liberada:focus-visible .porta-boss-state {
+  transform: translateX(-50%);
+  color: #ffffff;
+  border-color: rgba(102, 224, 211, 0.62);
+  box-shadow:
+    0 0 22px rgba(102, 224, 211, 0.24),
+    0 0 18px rgba(214, 173, 53, 0.2),
+    inset 0 0 14px rgba(102, 224, 211, 0.16);
+}
+
+.porta-boss-scene.porta-liberada:focus-visible {
+  outline: 2px solid rgba(102, 224, 211, 0.72);
+  outline-offset: 0.35rem;
+  border-radius: 12px;
+}
+
+@keyframes porta-boss-shadow-flow {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 22px rgba(214, 173, 53, 0.4))
+      drop-shadow(0 0 12px rgba(102, 224, 211, 0.18))
+      drop-shadow(0 24px 34px rgba(0, 0, 0, 0.36));
+  }
+
+  50% {
+    filter:
+      drop-shadow(0 0 34px rgba(244, 211, 94, 0.58))
+      drop-shadow(0 0 20px rgba(102, 224, 211, 0.3))
+      drop-shadow(0 24px 34px rgba(0, 0, 0, 0.36));
+  }
 }
 
 @media (max-width: 768px) {
@@ -3071,7 +3914,33 @@ blockquote {
   .story-block {
     grid-template-columns: 1fr;
     padding-left: clamp(1.2rem, 4vw, 2rem);
-    padding-top: 6.5rem;
+  }
+
+  .metric-artifacts-scene,
+  .metric-artifacts-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-artifacts-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric-artifact-card {
+    min-height: 8.4rem;
+  }
+
+  .metric-artifact-card img {
+    width: min(100%, 5.4rem);
+  }
+
+  .metric-artifact-detail {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .metric-artifact-preview {
+    width: min(14rem, 100%);
+    justify-self: center;
   }
 
   .kanban-scene {
@@ -3132,18 +4001,12 @@ blockquote {
     grid-column: 1 / -1;
   }
 
-  .pipeline-scene .story-side-icon {
-    left: 50%;
-    top: 1.25rem;
-    transform: translateX(-50%);
-  }
-
   .pipeline-scene .story-text {
     padding-left: clamp(1.2rem, 4vw, 2rem);
-    padding-top: 6.5rem;
   }
 
   .pipeline-neon-board {
+    width: min(100%, calc(100vw - 4rem));
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: repeat(3, minmax(4.8rem, 1fr));
     align-content: center;
@@ -3204,21 +4067,86 @@ blockquote {
     grid-row: 5;
   }
 
-  .debt-refactor-station {
-    grid-template-columns: minmax(0, 1fr);
+  .refactor-intro-card {
+    padding-left: clamp(1.2rem, 4vw, 2rem);
   }
 
-  .debt-evidence-trail,
+  .refactor-board-shell {
+    grid-template-columns: minmax(3.8rem, 4.6rem) minmax(13.4rem, 18.2rem) minmax(3.8rem, 4.6rem);
+    gap: 0.35rem;
+    min-height: 22rem;
+    padding: 2.4rem 0.35rem 2.8rem;
+  }
+
+  .refactor-board {
+    width: min(100%, 18.2rem);
+    gap: 0.55rem;
+    padding: 0.7rem;
+  }
+
+  .refactor-board-label {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 0.25rem;
+    max-width: 4.1rem;
+    font-size: 0.58rem;
+    line-height: 1.08;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .refactor-board-label img {
+    width: 1.95rem;
+    height: 1.95rem;
+  }
+
+  .refactor-board::before {
+    left: -0.86rem;
+    width: 0.86rem;
+    height: 0.44rem;
+  }
+
+  .refactor-board::after {
+    right: -0.86rem;
+    width: 0.86rem;
+    height: 0.44rem;
+    top: calc(16.66% + 0.58rem);
+  }
+
+  .refactor-signals,
   .oracle-evidence-strip {
+    display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+
+  .refactor-void__inner {
+    width: min(100%, calc(100% - 1rem));
+    min-height: 100svh;
+    padding: 1.5rem 0 2.5rem;
+  }
+
+  .refactor-panel {
+    width: 100%;
+  }
+
+  .refactor-mission,
+  .refactor-hud {
+    grid-template-columns: 1fr;
+  }
+
+  .refactor-mission {
+    gap: 0.65rem;
+  }
+
+  .refactor-steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    font-size: 0.8rem;
   }
 
   .oracle-evidence-strip span:last-child {
     grid-column: 1 / -1;
-  }
-
-  .debt-transform {
-    min-height: 2.6rem;
   }
 
   .oracle-chamber {
@@ -3268,12 +4196,6 @@ blockquote {
     grid-template-columns: 1fr;
   }
 
-  .story-side-icon {
-    left: 50%;
-    top: 1.25rem;
-    transform: translateX(-50%);
-  }
-
   .capitulo-hero {
     min-height: 100svh;
     background-position: center;
@@ -3312,5 +4234,76 @@ blockquote {
 
   .btn-primary {
     width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .metric-artifacts-list {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-artifact-card {
+    min-height: 7.6rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: 1fr;
+    text-align: left;
+  }
+
+  .metric-artifact-card img {
+    width: 4.6rem;
+  }
+
+  .metric-artifact-preview {
+    width: min(11rem, 100%);
+  }
+
+  .refactor-board-shell {
+    grid-template-columns: minmax(2.85rem, 3.35rem) minmax(12.2rem, 15.6rem) minmax(2.85rem, 3.35rem);
+    gap: 0.25rem;
+    min-height: 19.8rem;
+    padding: 2.25rem 0.2rem 2.55rem;
+    border-radius: 18px;
+  }
+
+  .refactor-board {
+    width: min(100%, 15.6rem);
+    gap: 0.42rem;
+    padding: 0.55rem;
+    border-radius: 18px;
+  }
+
+  .refactor-board-label {
+    max-width: 3.25rem;
+    font-size: 0.48rem;
+    letter-spacing: 0.02em;
+  }
+
+  .refactor-board-label img {
+    width: 1.65rem;
+    height: 1.65rem;
+  }
+
+  .refactor-tile {
+    border-radius: 10px;
+  }
+
+  .refactor-tile__path {
+    inset: 0.26rem;
+  }
+
+  .refactor-tile--straight .refactor-tile__path::before,
+  .refactor-tile--corner .refactor-tile__path::before {
+    top: calc(50% - 0.24rem);
+    height: 0.48rem;
+  }
+
+  .refactor-tile--corner .refactor-tile__path::after {
+    left: calc(50% - 0.24rem);
+    width: 0.48rem;
+  }
+
+  .refactor-hud span {
+    min-height: 2.1rem;
+    font-size: 0.7rem;
   }
 }
