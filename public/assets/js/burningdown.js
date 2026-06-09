@@ -3,7 +3,23 @@ document.addEventListener("DOMContentLoaded", () => {
   carregarResumoBurningDown();
   configurarRetornoAventura();
   carregarVidasBurningdown();
+  tocarSomFogueira();
 });
+
+function tocarSomFogueira() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/fogueira.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
 
 function animarEntrada() {
   const left = document.querySelector(".burningdown-left");
