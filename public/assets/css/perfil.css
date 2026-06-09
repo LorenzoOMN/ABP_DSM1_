@@ -659,90 +659,240 @@ body {
 }
 
 /* =========================================
-   MODAL DE AVATAR
+    MODAL DE AVATAR - LARGURA MAIOR + DESCRIÇÃO
    ========================================= */
 .modal-avatares {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh;
     background: rgba(0,0,0,0.85);
     z-index: 2000;
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: fadeIn 0.2s;
+    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(3px);
 }
+
 .modal-content {
-    background: #f4e4c1;
-    padding: 30px;
+    background: linear-gradient(135deg, #f4e4c1 0%, #e8d5b0 100%);
+    padding: 40px;
     border: 4px solid #8b3a2a;
-    border-radius: 10px;
+    border-radius: 15px;
     text-align: center;
-    max-width: 90%;
-    max-height: 80%;
+    max-width: 95%;
+    width: 900px;
+    max-height: 85vh;
     overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
 }
+
 .modal-content h3 {
     color: #4a1f16;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 3px solid #8b5a2b;
+    padding-bottom: 15px;
 }
+
+/* Grid de Avatares - MAIS LARGO */
 .avatar-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+    padding: 25px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 12px;
+    border: 2px solid #d4c4a1;
 }
+
 .avatar-option {
     cursor: pointer;
-    border: 3px solid transparent;
+    border: 4px solid transparent;
+    border-radius: 12px;
+    padding: 20px;
+    background: rgba(255,255,255,0.5);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,215,0,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
     border-radius: 8px;
-    padding: 8px;
-    background: rgba(255,255,255,0.3);
-    transition: all 0.2s;
+    pointer-events: none;
 }
+
 .avatar-option:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(139, 90, 43, 0.4);
+    background: rgba(255,255,255,0.8);
+}
+
+.avatar-option:hover::before {
+    opacity: 1;
+}
+
+.avatar-option.selected {
+    border-color: #ffd700;
+    background: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
     transform: scale(1.05);
-    background: rgba(255,255,255,0.6);
 }
-.avatar-option.selected { 
-    border-color: gold; 
-    background: rgba(255, 215, 0, 0.3); 
+
+.avatar-option.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #ffd700;
+    color: #4a1f16;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 10;
 }
-.avatar-option img { 
-    width: 100%; 
-    border-radius: 4px; 
+
+.avatar-option img {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: white;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
 }
+
+.avatar-option:hover img {
+    transform: scale(1.1);
+}
+
 .avatar-option p {
-    margin: 5px 0 0 0;
+    margin: 0;
     color: #4a1f16;
     font-weight: bold;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    z-index: 1;
 }
+
+/* Descrição do Avatar */
+.avatar-option .descricao {
+    font-size: 0.85rem;
+    color: #6b4a2a;
+    text-align: center;
+    line-height: 1.4;
+    margin-top: 5px;
+    font-style: italic;
+    opacity: 0.9;
+    z-index: 1;
+    max-height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Botão Fechar */
 .modal-content button {
-    margin-top: 15px;
-    padding: 12px 30px;
-    background: #8b3a2a;
+    margin-top: 25px;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #8b3a2a, #6b2f1a);
     color: #f4e4c1;
-    border: 2px solid #4a1f16;
-    border-radius: 8px;
+    border: 3px solid #4a1f16;
+    border-radius: 10px;
     cursor: pointer;
     font-family: "Cinzel", serif;
-    font-size: 1.1rem;
-    transition: all 0.2s;
-}
-.modal-content button:hover {
-    background: #6b2f1a;
-    transform: scale(1.05);
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-content button:hover {
+    background: linear-gradient(135deg, #6b2f1a, #4a1f16);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+
+/* Scrollbar do modal */
+.modal-content::-webkit-scrollbar {
+    width: 12px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(139, 90, 43, 0.2);
+    border-radius: 6px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #8b5a2b, #6b2f1a);
+    border-radius: 6px;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to { 
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
 /* =========================================
-   RESPONSIVIDADE - MOBILE
+   RESPONSIVIDADE - TABLET
+   ========================================= */
+@media (max-width: 1024px) {
+    .modal-content {
+        width: 95%;
+        padding: 30px;
+    }
+    
+    .avatar-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .avatar-option img {
+        height: 100px;
+    }
+}
+
+/* =========================================
+   RESPONSIVIDADE - MOBILE (AJUSTADO!)
    ========================================= */
 @media (max-width: 768px) {
     .perfil-container {
-        padding: 10px;
+        padding: 25px 15px;  /* AUMENTADO: padding vertical para ver o fundo em cima/baixo */
         align-items: flex-start;
     }
 
@@ -752,8 +902,9 @@ body {
         height: auto;
         gap: 20px;
         padding: 15px;
-        width: 98vw;
-        max-width: none;
+        width: 92vw;  /* REDUZIDO: de 98vw para 92vw (deixa ver o fundo nas laterais) */
+        max-width: 500px;  /* NOVO: limite máximo para telas grandes em modo retrato */
+        margin: 20px auto;  /* NOVO: margem vertical para ver o fundo em cima/baixo */
     }
 
     .livro-perfil::before {
@@ -835,12 +986,53 @@ body {
     .historico-lista li {
         padding-right: 90px;
     }
+
+    .modal-content {
+        width: 95%;
+        padding: 25px;
+    }
+    
+    .avatar-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .avatar-option {
+        padding: 12px;
+    }
+    
+    .avatar-option img {
+        height: 90px;
+    }
+    
+    .avatar-option p {
+        font-size: 0.9rem;
+    }
+    
+    .avatar-option .descricao {
+        font-size: 0.75rem;
+        max-height: 50px;
+    }
+    
+    .modal-content h3 {
+        font-size: 1.5rem;
+    }
 }
 
+/* =========================================
+   RESPONSIVIDADE - MOBILE PEQUENO
+   ========================================= */
 @media (max-width: 480px) {
+    .perfil-container {
+        padding: 20px 10px;  /* AUMENTADO: padding vertical */
+    }
+    
     .livro-perfil {
-        padding: 10px;
+        padding: 12px;
         gap: 15px;
+        width: 94vw;  /* REDUZIDO: de 98vw para 94vw */
+        margin: 15px auto;  /* NOVO: margem vertical */
     }
     
     .pagina-esquerda,
@@ -864,5 +1056,13 @@ body {
     
     .historico-lista li {
         padding-right: 85px;
+    }
+
+    .avatar-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .avatar-option img {
+        height: 100px;
     }
 }

@@ -32,8 +32,11 @@ async function carregarPerfil() {
         document.getElementById("emailConta").textContent = usuario.email ?? "-";
         document.getElementById("capituloAtual").textContent = usuario.progresso?.modulo_desafio_atual ?? "-";
 
+        // Avatar - o backend já garante que sempre terá um valor válido
         if (usuario.avatar) {
-            document.getElementById("avatarImg").src = `/assets/img/avatares/${usuario.avatar}`;
+            document.getElementById("avatarImg").src = `/assets/img/perfil/icones/${usuario.avatar}`;
+        } else {
+            document.getElementById("avatarImg").src = `/assets/img/perfil/icones/corvo.png`;
         }
 
         if (usuario.data_criacao) {
@@ -76,9 +79,7 @@ async function carregarEstatisticas() {
             headers: { Authorization: `Bearer ${token}` },
         });
         
-        if (!response.ok) {
-            return;
-        }
+        if (!response.ok) return;
         
         const stats = await response.json();
         
@@ -87,7 +88,7 @@ async function carregarEstatisticas() {
         document.getElementById("streakDias").textContent = stats.streak_dias ?? 0;
         document.getElementById("tempoMedio").textContent = (stats.tempo_medio ?? 0) + "s";
     } catch (error) {
-        // Silencioso - sem dados ainda
+        // Silencioso
     }
 }
 
@@ -149,9 +150,7 @@ async function carregarHistorico() {
             headers: { Authorization: `Bearer ${token}` },
         });
         
-        if (!response.ok) {
-            return;
-        }
+        if (!response.ok) return;
         
         const historico = await response.json();
         
@@ -192,9 +191,7 @@ async function carregarDadosConta() {
             headers: { Authorization: `Bearer ${token}` },
         });
         
-        if (!response.ok) {
-            return;
-        }
+        if (!response.ok) return;
         
         const dados = await response.json();
         
@@ -338,27 +335,46 @@ async function salvarConfiguracoes() {
 }
 
 // ============================================
-// AVATAR
+// AVATAR - SELETOR COMPLETO
 // ============================================
 async function abrirSeletorAvatar() {
     try {
         const token = localStorage.getItem("token");
-        const response = await fetch("/api/usuarios/meus-avatares", {
+        
+        // Busca TODOS os avatares do banco
+        const response = await fetch("/api/perfil/avatares/todos", {
             headers: { Authorization: `Bearer ${token}` },
         });
         
-        let avatares;
-        if (response.ok) {
-            avatares = await response.json();
-        } else {
-            avatares = [
-                { id_avatar: 1, nome: 'Guerreiro', caminho_imagem: 'guerreiro.png', equipado: true },
-            ];
+        if (!response.ok) {
+            alert("Erro ao carregar avatares. Tente novamente.");
+            return;
         }
         
-        mostrarModalAvatares(avatares);
+        const todosAvatares = await response.json();
+        
+        // Busca qual está equipado
+        const responseEquipado = await fetch("/api/perfil/meus-avatares", {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        let avataresComStatus = todosAvatares;
+        
+        if (responseEquipado.ok) {
+            const meusAvatares = await responseEquipado.json();
+            
+            // Marca quais estão equipados
+            avataresComStatus = todosAvatares.map(ava => ({
+                ...ava,
+                equipado: meusAvatares.find(m => m.id_avatar === ava.id_avatar)?.equipado || false
+            }));
+        }
+        
+        mostrarModalAvatares(avataresComStatus);
+        
     } catch (error) {
-        // Ignora
+        console.error("Erro ao carregar avatares:", error);
+        alert("Não foi possível carregar os avatares.");
     }
 }
 
@@ -368,23 +384,77 @@ function mostrarModalAvatares(avatares) {
     
     const content = document.createElement("div");
     content.className = "modal-content";
-    content.innerHTML = `<h3>Escolha seu Avatar</h3><div class="avatar-grid" id="grid"></div>`;
+    content.innerHTML = `
+        <h3>🎨 Escolha seu Avatar</h3>
+        <div class="avatar-grid" id="grid"></div>
+    `;
     
     const grid = content.querySelector("#grid");
+    
     avatares.forEach(ava => {
         const opt = document.createElement("div");
         opt.className = `avatar-option ${ava.equipado ? 'selected' : ''}`;
-        opt.innerHTML = `<img src="/assets/img/avatares/${ava.caminho_imagem}" alt="${ava.nome}"><p>${ava.nome}</p>`;
-        opt.addEventListener("click", () => {
-            document.getElementById("avatarImg").src = `/assets/img/avatares/${ava.caminho_imagem}`;
-            modal.remove();
+        opt.dataset.id = ava.id_avatar;
+        opt.dataset.caminho = ava.caminho_imagem;
+        opt.dataset.nome = ava.nome;
+        
+        // Inclui a descrição se existir
+        opt.innerHTML = `
+            <img src="/assets/img/perfil/icones/${ava.caminho_imagem}" alt="${ava.nome}">
+            <p>${ava.nome}</p>
+            ${ava.descricao ? `<div class="descricao">${ava.descricao}</div>` : ''}
+        `;
+        
+        opt.addEventListener("click", async () => {
+            // Remover seleção anterior
+            document.querySelectorAll('.avatar-option').forEach(o => 
+                o.classList.remove('selected')
+            );
+            
+            // Selecionar o clicado
+            opt.classList.add('selected');
+            
+            // Atualizar avatar na tela imediatamente
+            document.getElementById("avatarImg").src = `/assets/img/perfil/icones/${ava.caminho_imagem}`;
+            
+            // Salvar no backend
+            try {
+                const token = localStorage.getItem("token");
+                const response = await fetch("/api/perfil/equipar-avatar", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ id_avatar: ava.id_avatar })
+                });
+                
+                if (response.ok) {
+                    // Feedback visual de sucesso
+                    opt.style.boxShadow = "0 0 30px rgba(46, 204, 113, 0.8)";
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 800);
+                }
+            } catch (error) {
+                console.error("Erro ao equipar avatar:", error);
+                // Mesmo com erro, fecha o modal
+                setTimeout(() => {
+                    modal.remove();
+                }, 500);
+            }
         });
+        
         grid.appendChild(opt);
     });
     
     const btn = document.createElement("button");
-    btn.textContent = "Fechar";
-    btn.onclick = () => modal.remove();
+    btn.textContent = "✕ Fechar";
+    btn.onclick = () => {
+        modal.style.animation = "fadeIn 0.3s ease reverse";
+        setTimeout(() => modal.remove(), 300);
+    };
+    
     content.appendChild(btn);
     modal.appendChild(content);
     document.body.appendChild(modal);
