@@ -132,6 +132,23 @@ function tocarSomPilar(botao) {
   });
 }
 
+const somPapel = new Audio("/assets/audio/papel.mp3");
+
+function tocarSomPapel() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/papel.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function obterToken() {
   const token = localStorage.getItem("token");
 
@@ -284,7 +301,12 @@ function configurarPergaminho() {
   if (!btn || !texto) return;
 
   btn.addEventListener("click", () => {
+
+    // toca o som do papel
+    tocarSomPapel();
+
     texto.classList.toggle("hidden");
+
     btn.textContent = texto.classList.contains("hidden")
       ? "Ler pergaminho"
       : "Fechar pergaminho";
