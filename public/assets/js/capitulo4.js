@@ -73,6 +73,21 @@ function obterToken() {
   return token;
 }
 
+function tocarSomArcano() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/arcano.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function rolarParaElemento(selector, offset = SCROLL_OFFSET) {
   const target = document.querySelector(selector);
 
@@ -517,6 +532,7 @@ function configurarDod() {
     button.textContent = "Liberando próximo trecho...";
 
     if (status) {
+      tocarSomArcano()
       status.textContent = "DoD completa. O próximo trecho está sendo liberado.";
     }
 

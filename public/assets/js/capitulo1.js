@@ -149,6 +149,23 @@ function tocarSomPapel() {
   });
 }
 
+const somRunas = new Audio("/assets/audio/runas.mp3");
+
+function tocarSomRunas() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/runas.mp3");
+
+  som.volume = 0.5;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function obterToken() {
   const token = localStorage.getItem("token");
 
@@ -263,6 +280,7 @@ function configurarRunas() {
 
   document.querySelectorAll(".runa-btn").forEach((botao) => {
     botao.addEventListener("click", () => {
+      tocarSomRunas()
       const runa = runasData[botao.dataset.runa];
       if (!runa || !card) return;
 
