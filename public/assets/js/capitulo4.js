@@ -88,6 +88,23 @@ function tocarSomSino() {
   });
 }
 
+const somGirando = new Audio("/assets/audio/girando.mp3");
+
+function tocarSomGirando() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/girando.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function obterToken() {
   const token = localStorage.getItem("token");
 
@@ -1395,6 +1412,7 @@ function configurarRefatoracao() {
     status.textContent = "O caminho interno voltou a respirar. As correntes caíram, mas deixaram rastros para medir o fluxo.";
 
     window.setTimeout(() => {
+      tocarSomArcano();
       concluirMinigame("refatoracao", { scrollTo: "#cena-metricas", scrollDelay: 180 });
     }, 900);
   }

@@ -2606,6 +2606,7 @@ function configurarForjaMvp() {
   }
 
   btnIniciarForja.addEventListener("click", () => {
+    tocarSomMetal();
     forjaAulaWrap.classList.remove("hidden");
     forjaDropStage.classList.add("hidden");
 
@@ -2657,6 +2658,7 @@ function configurarForjaMvp() {
   });
 
   btnForjarMvp.addEventListener("click", () => {
+    tocarSomArtefatos();
     const totalPreenchidos = contarArtefatosPosicionados();
 
     if (totalPreenchidos < 3) {
