@@ -14,6 +14,8 @@
     "/certificado": "/assets/sound/abp_mapa_sala.mp3",
     "/burningdown": "/assets/sound/abp_mapa_sala.mp3",
     "/artefatos": "/assets/sound/abp_mapa_sala.mp3",
+    "/perfil": "/assets/sound/abp_mapa_sala.mp3",
+    "/admin": "/assets/sound/abp_mapa_sala.mp3",
 
     "/desafio1": "/assets/sound/abp_desafio.mp3",
     "/desafio2": "/assets/sound/abp_desafio.mp3",
@@ -25,11 +27,6 @@
   };
 
   const caminhoAudio = trilhasPorPagina[window.location.pathname];
-
-  //if (!caminhoAudio) {
-  //  botaoAudio.hidden = true;
-  //  return;
-  //}
 
   const audio = new Audio(caminhoAudio);
   audio.loop = true;
@@ -66,10 +63,21 @@
     audio.pause();
   }
 
+  // ✅ Função para sincronizar com o toggle do perfil
+  function sincronizarComPerfil() {
+    const toggleMusica = document.getElementById("toggleMusica");
+    if (toggleMusica) {
+      toggleMusica.classList.toggle("desativado", !ligado);
+    }
+  }
+
   botaoAudio.addEventListener("click", async () => {
     ligado = !ligado;
     localStorage.setItem("audioLigado", String(ligado));
     await aplicarEstado();
+    
+    // ✅ Sincroniza com o toggle do perfil na mesma página
+    sincronizarComPerfil();
   });
 
   document.addEventListener(
@@ -81,6 +89,15 @@
     },
     { once: true },
   );
+
+  // ✅ Sincroniza entre abas diferentes
+  window.addEventListener("storage", (event) => {
+    if (event.key === "audioLigado") {
+      ligado = event.newValue !== "false";
+      aplicarEstado();
+      sincronizarComPerfil();
+    }
+  });
 
   aplicarEstado();
 })();

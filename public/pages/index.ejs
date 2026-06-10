@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../assets/css/index.css" />
-    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/index.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
     <title>Bem-Vindo | Scrum Dungeon</title>
   </head>
 
@@ -90,8 +91,8 @@
     <%- include('partials/footer') %>
 
     <!-- PAINEL LATERAL DE LOGIN E CADASTRO -->
-    <div class="overlay_escuro" id="overlayEscuro"></div>
-    <div class="painel_auth" id="painelAuth">
+    <div class="overlay_escuro" id="overlayEscuro" aria-hidden="true"></div>
+    <div class="painel_auth" id="painelAuth" aria-hidden="true">
       <div class="painel_auth_conteudo">
         <!-- BOTÃO FECHAR -->
         <button class="botao_fechar" id="fecharAuth">
@@ -105,9 +106,9 @@
         <%- include('partials/formulario_cadastro') %>
       </div>
     </div>
-    <script src="../assets/js/audio.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/index.js"></script>
-    <script src="../assets/js/auth.js"></script>
+    <script src="/assets/js/audio.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/index.js"></script>
+    <script src="/assets/js/auth.js"></script>
   </body>
 </html>
