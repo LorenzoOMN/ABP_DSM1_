@@ -337,6 +337,40 @@ function tocarSomCarta() {
   });
 }
 
+const somMetal = new Audio("/assets/audio/metal.mp3");
+
+function tocarSomMetal() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/metal.mp3");
+
+  som.volume = 0.2;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somFogo = new Audio("/assets/audio/fogueira.mp3");
+
+function tocarSomFogo() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/fogueira.mp3");
+
+  som.volume = 0.2;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 async function concluirHistoria() {
   const token = obterToken();
 
@@ -2293,12 +2327,13 @@ function configurarFornalhasDaForja() {
 
   if (!fornalhas.length || !btnLiberarMontagemForja || !forjaDropStage) {
     return;
-  }
+  } 
 
   const fornalhasAcesas = new Set();
 
   function atualizarEstadoFornalhas(fornalhaAtiva) {
     fornalhas.forEach((btn) => {
+      tocarSomFogo()
       btn.classList.toggle("is-ativa", btn === fornalhaAtiva);
     });
   }
