@@ -13,7 +13,7 @@
 
   "principio-agil": "É uma diretriz que orienta equipes a desenvolver software com colaboração, adaptação e entrega contínua.",
 
-  "burning-down": "É um gráfico usado no Scrum para acompanhar o progresso das tarefas ao longo do tempo.",
+  "burning-down": "Também conhecido como Burndown Chart, é um gráfico que mostra quanto trabalho ainda resta em uma sprint.",
 
   "backlog": "É a lista de tarefas, funcionalidades e objetivos que precisam ser desenvolvidos no projeto.",
 
@@ -39,5 +39,24 @@
 
   "release": "É uma versão do produto disponibilizada para os usuários após a conclusão de melhorias e funcionalidades.",
 
-  "iteration": "É um ciclo de desenvolvimento onde a equipe trabalha em melhorias e funcionalidades do projeto."
+  "iteration": "É um ciclo de desenvolvimento onde a equipe trabalha em melhorias e funcionalidades do projeto.",
+
+  "sprint-planning": "É a reunião onde a equipe define as prioridades e planeja o trabalho que será realizado na próxima sprint.",
+
+  "review": "É a reunião realizada ao final da sprint onde a equipe apresenta as funcionalidades concluídas para validação e feedback.",
+
+  "retrospectiva": "É a reunião realizada após a sprint onde a equipe avalia o próprio processo de trabalho para identificar melhorias contínuas.",
+
+  "sprint-backlog": "É a lista de tarefas selecionadas do product backlog que a equipe se compromete a entregar durante uma sprint específica.",
+
+  "product-backlog": "É a lista principal e priorizada de todas as funcionalidades, melhorias e requisitos necessários para o produto a longo prazo.",
+
+  "burnup": "É um gráfico que mostra o progresso do projeto ao longo do tempo, comparando o trabalho concluído com o escopo total planejado.",
+
+  "lead-time": "É o tempo total decorrido desde o momento em que uma tarefa é solicitada pelo cliente até a sua entrega final.",
+
+  "cycle-time": "É o tempo que a equipe leva para concluir uma tarefa a partir do momento em que o trabalho nela realmente começou.",
+
+  "artefatos": "No Scrum, os artefatos são os elementos que armazenam informações importantes sobre o produto e o trabalho da equipe. Existem 3 artefatos principais: Product Backlog, Sprint Backlog e Increment"
+  
 }

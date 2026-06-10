@@ -717,56 +717,106 @@ a.navegacao-inferior__item.item-ativo span {
   font-weight: bold;
 
   cursor: help;
+
+  transition: color 0.2s ease;
 }
 
+.glossario:hover {
+  color: #7cedfc;
+}
+
+/* Caixa do glossário */
 .glossario::after {
   content: attr(data-tip);
 
   position: absolute;
 
-  bottom: 130%;
+  bottom: calc(100% + 12px);
   left: 50%;
 
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(4px);
 
-  width: 220px;
-  max-width: 220px;
+  width: 240px;
+  max-width: 240px;
 
-  background-color: #2c2318;
+  background: rgba(13, 23, 35, 0.80);
 
-  border: 1px solid #d6ad35;
+  backdrop-filter: blur(6px);
 
-  color: white;
+  -webkit-backdrop-filter: blur(6px);
 
-  padding: 10px;
+  border: 1px solid rgba(126, 176, 255);
 
-  border-radius: 8px;
+  color: #D5CDC1;
 
-  font-size: 14px;
+  padding: 14px 16px;
+
+  border-radius: 6px;
+
+  font-size: 0.9rem;
+  line-height: 1.5;
 
   text-align: center;
 
   white-space: normal;
 
-  word-wrap: break-word;
+  opacity: 0;
+  visibility: hidden;
+
+  pointer-events: none;
+
+  box-shadow:
+    0 0 10px rgba(0, 200, 255, 0.20),
+    0 0 25px rgba(0, 200, 255, 0.08);
+
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s ease;
+
+  z-index: 999;
+}
+
+/* Setinha */
+.glossario::before {
+  content: "";
+
+  position: absolute;
+
+  bottom: calc(100% + 7px);
+  left: 50%;
+
+  width: 10px;
+  height: 10px;
+
+  background: #0D1624;
+
+  border-right: 1px solid rgba(126, 176, 255);
+  border-bottom: 1px solid rgba(126, 176, 255);
+
+  transform: translateX(-50%) rotate(45deg);
 
   opacity: 0;
-
   visibility: hidden;
 
   pointer-events: none;
 
   transition:
-    opacity 0.2s ease,
-    visibility 0.2s ease;
+    opacity 0.18s ease,
+    visibility 0.18s ease;
 
-  z-index: 999;
+  z-index: 998;
+}
+
+/* Exibir tooltip */
+.glossario:hover::after,
+.glossario:hover::before {
+  opacity: 1;
+  visibility: visible;
 }
 
 .glossario:hover::after {
-  opacity: 1;
-
-  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* ================= RESPONSIVO (4 BREAKPOINTS) ================= */
