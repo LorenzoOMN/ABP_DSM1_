@@ -6,33 +6,29 @@ CREATE TABLE IF NOT EXISTS public.usuarios (
   senha VARCHAR(200),
   certificado_hash VARCHAR(96),
   barra_desbloqueada BOOLEAN DEFAULT FALSE,
-  is_admin BOOLEAN DEFAULT false
+  is_admin BOOLEAN DEFAULT false,
+  musica_ativa BOOLEAN DEFAULT true,
+  efeitos_ativos BOOLEAN DEFAULT true,
+  avatar VARCHAR(255) DEFAULT 'default.png'  -- <-- NOVA COLUNA
 );
 
+-- Configurações de áudio (caso a tabela já exista)
 ALTER TABLE public.usuarios
-ADD COLUMN IF NOT EXISTS barra_desbloqueada BOOLEAN DEFAULT FALSE;
-
--- Adiciona a coluna is_admin
-ALTER TABLE usuarios 
-ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false;
-
--- Configurações de áudio
-ALTER TABLE usuarios
 ADD COLUMN IF NOT EXISTS musica_ativa BOOLEAN DEFAULT true;
 
-ALTER TABLE usuarios
+ALTER TABLE public.usuarios
 ADD COLUMN IF NOT EXISTS efeitos_ativos BOOLEAN DEFAULT true;
 
+-- NOVO: Coluna de avatar
+ALTER TABLE public.usuarios
+ADD COLUMN IF NOT EXISTS avatar VARCHAR(255) DEFAULT 'default.png';
+
 -- Define SEU usuário como admin (substitua pelo seu email)
-UPDATE usuarios 
+UPDATE public.usuarios 
 SET is_admin = true 
 WHERE email = '44@44';
 
--- Verificar se funcionou
--- SELECT id_usuario, email, nome, is_admin 
--- FROM usuarios 
--- WHERE is_admin = true;
-
+-- Índices únicos
 CREATE UNIQUE INDEX IF NOT EXISTS uq_usuarios_cpf
   ON public.usuarios (cpf)
   WHERE cpf IS NOT NULL;
@@ -44,3 +40,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS uq_usuarios_email
 CREATE UNIQUE INDEX IF NOT EXISTS uq_usuarios_certificado_hash
   ON public.usuarios (certificado_hash)
   WHERE certificado_hash IS NOT NULL;
+
+-- Índice para avatar
+CREATE INDEX IF NOT EXISTS idx_usuarios_avatar
+  ON public.usuarios (avatar)
+  WHERE avatar IS NOT NULL;

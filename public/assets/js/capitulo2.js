@@ -11,7 +11,7 @@ const guardioesDetalhesData = {
     conteudo: `
       <p>
         O bardo sorri enquanto toca um ala&uacute;de cheio de marca&ccedil;&otilde;es.
-        Ele aponta para o <button class="texto-azul texto-link" data-scroll-to="#artefatos" type="button">Product Backlog</button> em sua mochila, como se reconhecesse a pr&oacute;pria assinatura.
+        Ele aponta para o Product Backlog em sua mochila, como se reconhecesse a pr&oacute;pria assinatura.
       </p>
 
       <blockquote>
@@ -351,16 +351,11 @@ async function concluirHistoriaCapitulo2() {
   const btnConcluir = document.getElementById("btnConcluirHistoriaCapitulo2");
   const btnDesafio = document.getElementById("btnIrDesafioCapitulo2");
   const porta = document.getElementById("porta2Scene");
-  const status = document.getElementById("statusHistoriaCapitulo2");
-  const tooltip = document.querySelector(".porta2-tooltip");
+  const portal = document.querySelector(".guardioes-final-portal");
 
   if (btnConcluir) {
     btnConcluir.disabled = true;
     btnConcluir.textContent = "Registrando progresso...";
-  }
-
-  if (status) {
-    status.textContent = "A dungeon está registrando sua jornada...";
   }
 
   try {
@@ -379,10 +374,6 @@ async function concluirHistoriaCapitulo2() {
 
     localStorage.setItem("moduloAtual", String(ID_MODULO));
 
-    if (status) {
-      status.textContent = "Os tres guardioes responderam. O portal esta aberto.";
-    }
-
     if (btnConcluir) {
       btnConcluir.classList.add("hidden");
     }
@@ -395,15 +386,11 @@ async function concluirHistoriaCapitulo2() {
       porta.classList.add("porta-liberada");
     }
 
-    if (tooltip) {
-      tooltip.textContent = "Atravesse. O Julgamento dos Guardioes comeca do outro lado.";
+    if (portal) {
+      portal.classList.add("is-portal-active");
     }
   } catch (error) {
     console.error(error);
-
-    if (status) {
-      status.textContent = "Erro ao registrar progresso. Tente novamente.";
-    }
 
     if (btnConcluir) {
       btnConcluir.disabled = false;
@@ -438,6 +425,26 @@ function configurarConclusaoCapitulo2() {
   }
 }
 
+function configurarParallaxPortalCapitulo2() {
+  const portal = document.querySelector(".guardioes-final-portal");
+
+  if (!portal) return;
+
+  portal.addEventListener("pointermove", (event) => {
+    const rect = portal.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+
+    portal.style.setProperty("--portal-mouse-x", x.toFixed(3));
+    portal.style.setProperty("--portal-mouse-y", y.toFixed(3));
+  });
+
+  portal.addEventListener("pointerleave", () => {
+    portal.style.setProperty("--portal-mouse-x", "0");
+    portal.style.setProperty("--portal-mouse-y", "0");
+  });
+}
+
 function configurarDesbloqueioNavbarCapitulo2() {
   const secaoFinal = document.getElementById("porta2");
 
@@ -470,6 +477,7 @@ document.addEventListener("DOMContentLoaded", () => {
   configurarGuardioes();
   configurarPreparoDesafio();
   configurarConclusaoCapitulo2();
+  configurarParallaxPortalCapitulo2();
   configurarDesbloqueioNavbarCapitulo2();
   ajustarHashInicialCapitulo2();
 });

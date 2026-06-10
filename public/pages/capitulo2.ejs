@@ -68,11 +68,11 @@
 
         <button class="progress-item" data-step="mesa" data-scroll-to="#preparo-desafio" type="button">
           <img src="/assets/img/artefatos/product-backlog-icon.png" alt="" />
-          <span>Mesa</span>
+          <span>Pergaminho</span>
         </button>
 
         <button class="progress-item" data-step="conselho" data-scroll-to="#conselho-porta" type="button">
-          <img src="/assets/img/capitulo_2/icones/artefatos-icone.png" alt="" />
+          <img src="/assets/img/corvo_feliz.png" alt="" />
           <span>Conselho</span>
         </button>
 
@@ -81,6 +81,13 @@
           <span>Desafio</span>
         </button>
       </nav>
+    </section>
+
+    <section class="corredor-only reveal" aria-label="Corredor da masmorra">
+      <img
+        src="/assets/img/capitulo_2/corredor.png"
+        alt="Corredor escuro da masmorra"
+      />
     </section>
 
     <section class="story-block reveal" id="corredor" data-step="sinais">
@@ -182,23 +189,21 @@
       </div>
 
       <div class="artefatos-grid">
-        <article class="artefato-card" data-artefato="product-backlog">
-          <a class="artefato-card-link" href="/artefatos" aria-label="Abrir a pagina de artefatos no Product Backlog">
-            <img src="/assets/img/artefatos/product-backlog-icon.png" alt="">
-            <h3>Product Backlog</h3>
-          </a>
+        <article class="artefato-card">
+          <img src="/assets/img/artefatos/product-backlog-icon.png" alt="">
+          <h3>Product Backlog</h3>
           <p>Lista viva do que é necessário no produto.</p>
           <span>Compromisso: Product Goal</span>
         </article>
 
-        <article class="artefato-card" data-artefato="sprint-backlog">
+        <article class="artefato-card">
           <img src="/assets/img/capitulo_1/icones/product-backlog.png" alt="">
           <h3>Sprint Backlog</h3>
           <p>Itens selecionados para a Sprint e o plano para entregá-los.</p>
           <span>Compromisso: Sprint Goal</span>
         </article>
 
-        <article class="artefato-card" data-artefato="incremento">
+        <article class="artefato-card">
           <img src="/assets/img/capitulo_2/icones/incremento-icone.png" alt="">
           <h3>Incremento</h3>
           <p>Conjunto de itens concluídos e utilizáveis.</p>
@@ -264,7 +269,7 @@
           <img src="/assets/img/capitulo_2/pre_desafio/heroi-recebendo.png" alt="Mesa mistica com Product Backlog, cartas e bussola da Sprint Planning">
         </figure>
 
-        <article class="pre-desafio-painel" id="painelRefinamento" aria-live="polite">
+        <article class="pre-desafio-painel" aria-live="polite">
           <span class="pre-desafio-numero">I</span>
           <h3>Scrum &eacute; um framework</h3>
           <p>
@@ -311,7 +316,7 @@
           </button>
         </div>
 
-        <article class="pre-desafio-painel conselho-painel" id="painelConselho" aria-live="polite">
+        <article class="pre-desafio-painel conselho-painel" aria-live="polite">
           <span class="pre-desafio-numero">V</span>
           <h3>Product Owner presente</h3>
           <p>
@@ -341,7 +346,7 @@
             <p class="porta2-kicker">O Bardo interrompe o silencio</p>
             <h2>Valor antes de movimento.</h2>
             <blockquote>
-              "Uma Sprint sem prioridade e apenas ruido vestido de plano."
+              "Uma Sprint sem prioridade é apenas ruido vestido de plano."
             </blockquote>
           </div>
         </article>
@@ -355,7 +360,7 @@
           </div>
 
           <div class="guardioes-final-dialogo">
-            <p class="porta2-kicker">A Equipe avanca um passo</p>
+            <p class="porta2-kicker">A Equipe avança um passo</p>
             <h2>Entrega e compromisso.</h2>
             <blockquote>
               "Ideia sem incremento nao atravessa masmorra nenhuma."
@@ -382,9 +387,11 @@
 
         <article class="guardioes-final-portal" data-final-panel="3">
           <div class="guardioes-final-portal-core" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span class="portal-layer portal-fog portal-fog-back"></span>
+            <span class="portal-layer portal-vortex"></span>
+            <span class="portal-layer portal-frame"></span>
+            <span class="portal-layer portal-fog portal-fog-front"></span>
+            <span class="portal-layer portal-sparks"></span>
           </div>
 
           <div class="guardioes-final-dialogo guardioes-final-dialogo-portal">
@@ -395,9 +402,7 @@
             </blockquote>
           </div>
 
-          <button class="guardioes-final-portal-button porta2-interativa" id="porta2Scene" type="button" aria-label="Portal para o desafio dos Guardioes">
-            <span class="porta2-tooltip">Conclua a historia para atravessar.</span>
-          </button>
+          <button class="guardioes-final-portal-button" id="porta2Scene" type="button" aria-label="Portal para o desafio dos Guardioes"></button>
         </article>
 
         <div class="porta2-actions">
@@ -408,8 +413,6 @@
           <button class="btn-secondary hidden" id="btnIrDesafioCapitulo2" type="button">
             Atravessar para o desafio
           </button>
-
-          <p class="status-historia" id="statusHistoriaCapitulo2"></p>
         </div>
       </div>
     </section>
@@ -419,6 +422,7 @@
   <%- include('partials/navegacao_inferior') %>
   <%- include('partials/footer') %>
 
+  <script src="/assets/js/audio.js"></script>
   <script src="/assets/js/main.js"></script>
   <script src="/assets/js/capitulo2.js"></script>
 </body>

@@ -4,6 +4,7 @@
 const express = require("express");
 const path = require("path");
 const cors = require('cors');
+const pool = require("./shared/database/db");
 
 // Importando middlewares
 const authMiddleware = require('./shared/middlewares/auth.middleware');
@@ -21,6 +22,8 @@ const perfilModule = require('./modules/perfil');
 
 // Inicializa o express
 const app = express();
+
+app.set('db', pool);
 
 // Habilita o CORS para todas as rotas
 app.use(cors());
@@ -171,8 +174,20 @@ app.use('/api/perfil', authMiddleware, perfilModule);
 // ==========================================
 // ROTA 404 (SEMPRE POR ÚLTIMO)
 // ==========================================
-app.use(function (_req, res) {
-    res.status(404).render("not-found");
+
+
+
+
+// Rota Catch-all para 404 
+app.use((req, res) => {
+  if (req.originalUrl.startsWith('/api/')) {
+    return res.status(404).json({ 
+      message: "Recurso não encontrado", 
+      error: "Rota inexistente" 
+    });
+  }
+  
+  res.status(404).render('404'); 
 });
 
 module.exports = app;
