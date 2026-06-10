@@ -1,26 +1,97 @@
-const perfilRepository = require("./perfil.repository");
+const perfilRepository = require('./perfil.repository');
 
-async function buscarPerfilUsuarioService(idUsuario) {
-
-    const usuario = await perfilRepository.buscarPerfilUsuario(idUsuario);
-
-    if (!usuario) {
-        throw new Error("Usuário não encontrado");
-    }
-
-    return usuario;
+// ============================================================================
+// ESTATÍSTICAS COMPLETAS
+// ============================================================================
+async function getEstatisticasCompletaService(idUsuario) {
+    const stats = await perfilRepository.getEstatisticasUsuario(idUsuario);
+    const streak = await perfilRepository.getStreakDias(idUsuario);
+    
+    return {
+        total_questoes: parseInt(stats.total_questoes) || 0,
+        taxa_acerto: Math.round(stats.taxa_acerto) || 0,
+        streak_dias: streak,
+        tempo_medio: Math.round(stats.tempo_medio_segundos) || 0
+    };
 }
 
-async function salvarConfiguracoesAudioService(idUsuario, musicaAtiva, efeitosAtivos) {
+// ============================================================================
+// RANKING
+// ============================================================================
+async function getRankingService(idUsuario) {
+    const ranking = await perfilRepository.getRankingGeral();
+    const posicao = await perfilRepository.getPosicaoUsuario(idUsuario);
+    
+    // Pegar top 5
+    const top5 = ranking.slice(0, 5).map(u => ({
+        nome: u.nome,
+        pontos: Math.round(u.pontuacao)
+    }));
+    
+    return {
+        minha_posicao: posicao.posicao,
+        total_jogadores: posicao.total_jogadores,
+        top5
+    };
+}
 
-    return perfilRepository.salvarConfiguracoesAudio(
-        idUsuario,
-        musicaAtiva,
-        efeitosAtivos
-    );
+// ============================================================================
+// HISTÓRICO
+// ============================================================================
+async function getHistoricoService(idUsuario) {
+    const historico = await perfilRepository.getHistoricoAtividades(idUsuario, 10);
+    
+    return historico.map(h => ({
+        titulo: `${h.modulo_nome} - Grupo ${h.grupo}`,
+        acertou: h.acertou,
+        data: h.data_formatada
+    }));
+}
+
+// ============================================================================
+// DADOS DA CONTA
+// ============================================================================
+async function getDadosContaService(idUsuario) {
+    const dados = await perfilRepository.getDadosConta(idUsuario);
+    
+    // Formatar tempo_total
+    let tempo_total_formatado = "0 minutos";
+    if (dados.tempo_total) {
+        const segundos = dados.tempo_total.seconds || 0;
+        const horas = Math.floor(segundos / 3600);
+        const minutos = Math.floor((segundos % 3600) / 60);
+        
+        if (horas > 0) {
+            tempo_total_formatado = `${horas}h ${minutos}min`;
+        } else {
+            tempo_total_formatado = `${minutos} minutos`;
+        }
+    }
+    
+    return {
+        data_criacao: dados.data_criacao,
+        ultimo_acesso: dados.ultimo_acesso,
+        tempo_total: tempo_total_formatado
+    };
+}
+
+// ============================================================================
+// SESSÃO
+// ============================================================================
+async function iniciarSessaoService(idUsuario) {
+    await perfilRepository.atualizarUltimoAcesso(idUsuario);
+    return await perfilRepository.iniciarSessao(idUsuario);
+}
+
+async function finalizarSessaoService(idSessao) {
+    await perfilRepository.finalizarSessao(idSessao);
 }
 
 module.exports = {
-    buscarPerfilUsuarioService,
-    salvarConfiguracoesAudioService
+    getEstatisticasCompletaService,
+    getRankingService,
+    getHistoricoService,
+    getDadosContaService,
+    iniciarSessaoService,
+    finalizarSessaoService
 };
