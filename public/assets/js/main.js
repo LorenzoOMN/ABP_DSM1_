@@ -386,23 +386,6 @@ if (paginaAnterior && !paginasBloqueadas.includes(paginaAnterior)) {
 sessionStorage.setItem("paginaAtual", paginaAtual);
 
 /* =========================================================
- BOTÃO VOLTAR INTELIGENTE
-========================================================= */
-
-function voltarPagina() {
-  const ultimaPaginaValida = sessionStorage.getItem("ultimaPaginaValida");
-
-  // se existir uma página salva, usa ela
-  if (ultimaPaginaValida) {
-    window.location.href = ultimaPaginaValida;
-    return;
-  }
-
-  // fallback
-  window.location.href = "/mapa";
-}
-
-/* =========================================================
  EVENTOS GLOBAIS
 ========================================================= */
 
