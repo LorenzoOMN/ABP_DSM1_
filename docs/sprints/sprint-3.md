@@ -17,7 +17,7 @@ Níveis 2–5 (histórias e desafios) · Polimento geral · Melhorias de Seguran
 [![Kanban](https://img.shields.io/badge/Acompanhar_Kanban-163451?style=plastic&logo=github&logoColor=white)](https://github.com/users/octopusCode26/projects/)
 
 | Tarefa | Pontuação | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
-|--------|:---------:|:------------|:----------:|:----------:|:-----------:|:--------:|:---------:|
+|--------|:---------:|:-----------:|:----------:|:----------:|:-----------:|:--------:|:---------:|
 | Nível 2 (História + Desafio) | — | Alef | `RNF-01` `RNF-02` | Alta | Médio | ✔️ | — |
 | Nível 3 (História + Desafio) | — | Patricia | `RNF-01` `RNF-02` | Alta | Médio | ✔️ | — |
 | Nível 4 (História + Desafio) | — | Renan | `RNF-01` `RNF-02` | Alta | Médio | ✔️ | — |
