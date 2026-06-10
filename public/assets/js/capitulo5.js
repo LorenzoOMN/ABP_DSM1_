@@ -2352,6 +2352,7 @@ function configurarFornalhasDaForja() {
         btnLiberarMontagemForja.classList.remove("hidden");
 
         if (forjaDicaFinal) {
+          tocarSomMetal();
           forjaDicaFinal.classList.remove("hidden");
         }
       }
@@ -2359,6 +2360,7 @@ function configurarFornalhasDaForja() {
   });
 
   btnLiberarMontagemForja.addEventListener("click", () => {
+    tocarSomMetal();
     forjaDropStage.classList.remove("hidden");
     forjaDropStage.scrollIntoView({
       behavior: "smooth",
