@@ -70,11 +70,6 @@ app.get("/capitulo2", function (_req, res) {
     res.render("capitulo2");
 });
 
-// Rota capítulo 2
-app.get("/capitulo2", function (_req, res) {
-    res.render("capitulo2");
-});
-
 // Rota capitulo 3
 app.get("/capitulo3", function (_req, res) {
     res.render("capitulo3");
@@ -164,7 +159,7 @@ app.get("/admin", function (_req, res) {
 app.use("/api/auth", authModule);
 
 // TODAS as outras rotas da API precisam de autenticação
-app.use("/api/certificados", authMiddleware, certificadosModule);
+app.use("/api/certificados", certificadosModule);
 app.use("/api/usuarios", authMiddleware, usuariosModule);
 app.use("/api/questoes", authMiddleware, questoesModule);
 app.use("/api/progresso", authMiddleware, progressoModule);
@@ -176,8 +171,20 @@ app.use('/api/perfil', authMiddleware, perfilModule);
 // ==========================================
 // ROTA 404 (SEMPRE POR ÚLTIMO)
 // ==========================================
-app.use(function (_req, res) {
-    res.status(404).render("not-found");
+
+
+
+
+// Rota Catch-all para 404 
+app.use((req, res) => {
+  if (req.originalUrl.startsWith('/api/')) {
+    return res.status(404).json({ 
+      message: "Recurso não encontrado", 
+      error: "Rota inexistente" 
+    });
+  }
+  
+  res.status(404).render('404'); 
 });
 
 module.exports = app;

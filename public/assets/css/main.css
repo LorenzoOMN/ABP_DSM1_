@@ -92,7 +92,7 @@ header {
 }
 
 .botao_logout {
-  margin-left: auto;
+  margin-left: 1rem;
   background: transparent;
   border: none;
   color: #fff;
@@ -111,6 +111,42 @@ header {
     0px 0px 10px #f4d03f,
     0px 0px 15px #f4d03f,
     0px 0px 20px #f4d03f;
+}
+
+.botao-audio {
+  margin-left: auto;
+  border: 0;
+  background-color: transparent;
+  background-image: url("/assets/img/som_on.PNG");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 28px 28px;
+  color: #f4d03f;
+  border-radius: 8px;
+  width: 42px;
+  height: 38px;
+  padding: 0;
+  cursor: pointer;
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.botao-audio:hover {
+  background-color: rgba(244, 208, 63, 0.12);
+  box-shadow: 0 0 10px rgba(244, 208, 63, 0.45);
+}
+
+.botao-audio.audio-desligado {
+  background-image: url("/assets/img/som_off.PNG");
+  border-color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .menu_toggle {
@@ -519,6 +555,133 @@ a.navegacao-inferior__item.item-ativo span {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
     }
 }
+/* ================= Notificação desbloqueio da nav bar================= */
+
+.navbar-unlock-modal {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(3px);
+}
+
+.navbar-unlock-modal.hidden {
+  display: none !important;
+}
+
+.navbar-unlock-card {
+  width: min(720px, 92vw);
+  min-height: auto;
+
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  align-items: center;
+  gap: 1.5rem;
+
+  padding: 1.6rem 2rem;
+
+  border: 1.5px solid rgba(255, 178, 0, 0.85);
+  border-radius: 28px;
+
+  background: #121214;
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.45),
+    0 0 22px rgba(255, 178, 0, 0.1);
+}
+
+.navbar-unlock-icon {
+  width: 135px;
+  max-width: 100%;
+  image-rendering: pixelated;
+  justify-self: center;
+  filter:
+    drop-shadow(0 0 8px rgba(255, 178, 0, 0.2))
+    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.4));
+}
+.navbar-unlock-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.navbar-unlock-content h2 {
+  width: 100%;
+  margin: 0 0 1rem;
+
+  color: #fff4e0;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.navbar-unlock-content p {
+  max-width: 430px;
+  margin: 0;
+
+  color: #f4ead8;
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  line-height: 1.45;
+}
+
+.navbar-unlock-btn {
+  margin-top: 1.5rem;
+  min-width: 200px;
+
+  padding: 0.75rem 1.1rem;
+
+  border: none;
+  border-radius: 18px;
+
+  background: #f5a000;
+  color: #120d08;
+
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+
+  cursor: pointer;
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.navbar-unlock-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.08);
+  box-shadow: 0 0 22px rgba(245, 160, 0, 0.38);
+}
+
+@media (max-width: 760px) {
+  .navbar-unlock-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .navbar-unlock-icon {
+    width: 170px;
+  }
+
+  .navbar-unlock-content {
+    align-items: center;
+  }
+
+  .navbar-unlock-content p {
+    margin-inline: auto;
+  }
+}
 /* ================= FIM DA NAVEGAÇÃO INFERIOR ================= */
 
 /* ================= BOTÃO VOLTAR ================= */
@@ -776,4 +939,11 @@ a.navegacao-inferior__item.item-ativo span {
 
     z-index: 99999;
   }
+}
+
+/* ================= Ajuste Navbar ================= */
+
+.navbar-container-fixo.navbar-bloqueada,
+.navbar-toggle-btn.navbar-bloqueada {
+  display: none !important;
 }
