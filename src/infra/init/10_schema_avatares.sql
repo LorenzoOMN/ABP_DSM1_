@@ -30,26 +30,34 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_avatar_equipado
     WHERE equipado = true;
 
 -- ============================================
--- INSERIR AVATARES NO CATÁLOGO
+-- INSERIR AVATARES NO CATÁLOGO (SEM DUPLICATAS)
 -- ============================================
-INSERT INTO public.avatares (nome, caminho_imagem, descricao, modulo_desbloqueio, eh_padrao) VALUES
-    ('Corvo', 'corvo.png', 'Avatar básico do companheiro do SM', 1, true),
-    ('Alef', 'alef.png', 'Avatar do guerreiro da sprint', 2, false),
-    ('Cauã', 'caua.png', 'Avatar do programador de poções', 3, false),
-    ('Enzo', 'enzo.png', 'Avatar do enorme tanque magico', 4, false),
-    ('Igor', 'igor.png', 'Avatar do mago das magias proíbidas', 5, false),
-    ('Lorenzo', 'lorenzo.png', 'Avatar do arqueiro mestre das sprints', 6, false),
-    ('Patrícia', 'patricia.png', 'Avatar da maga detentora da luz', 7, false),
-    ('Renan', 'renan.png', 'Avatar do estudioso magico elétrico', 8, false),
-    ('Thiago', 'thiago.png', 'Avatar do poderoso mago das linguagens', 9, false),
-    ('Vitor', 'vitor.png', 'Avatar do grandioso bardo da conexão (e seu pet)', 10, false)
-ON CONFLICT (id_avatar) DO NOTHING;
+-- A mágica está no NOT EXISTS: ele "lê" o banco e só insere a linha 
+-- se não houver nenhum avatar cadastrado com aquele nome.
+INSERT INTO public.avatares (nome, caminho_imagem, descricao, modulo_desbloqueio, eh_padrao)
+SELECT v.nome, v.caminho_imagem, v.descricao, v.modulo_desbloqueio, v.eh_padrao
+FROM (
+    VALUES
+        ('Corvo', 'corvo.png', 'Avatar básico do companheiro do SM', 1, true),
+        ('Alef', 'alef.png', 'Avatar do guerreiro da sprint', 2, false),
+        ('Cauã', 'caua.png', 'Avatar do programador de poções', 3, false),
+        ('Enzo', 'enzo.png', 'Avatar do enorme tanque magico', 4, false),
+        ('Igor', 'igor.png', 'Avatar do mago das magias proíbidas', 5, false),
+        ('Lorenzo', 'lorenzo.png', 'Avatar do arqueiro mestre das sprints', 6, false),
+        ('Patrícia', 'patricia.png', 'Avatar da maga detentora da luz', 7, false),
+        ('Renan', 'renan.png', 'Avatar do estudioso magico elétrico', 8, false),
+        ('Thiago', 'thiago.png', 'Avatar do poderoso mago das linguagens', 9, false),
+        ('Vitor', 'vitor.png', 'Avatar do grandioso bardo da conexão (e seu pet)', 10, false)
+) AS v (nome, caminho_imagem, descricao, modulo_desbloqueio, eh_padrao)
+WHERE NOT EXISTS (
+    SELECT 1 FROM public.avatares a WHERE a.nome = v.nome
+);
 
 -- ============================================
 -- DAR AVATAR PADRÃO AOS USUÁRIOS (SEM AVATAR)
 -- ============================================
 
--- 1. Inserir na tabela usuario_avatares (sistema complexo)
+-- 1. Inserir na tabela usuario_avatares apenas se o usuário não tiver NENHUM avatar
 INSERT INTO public.usuario_avatares (id_usuario, id_avatar, equipado)
 SELECT u.id_usuario, a.id_avatar, true
 FROM public.usuarios u
@@ -61,8 +69,7 @@ AND NOT EXISTS (
 )
 ON CONFLICT (id_usuario, id_avatar) DO UPDATE SET equipado = true;
 
--- 2. Sincronizar com a coluna avatar da tabela usuarios (sistema simples)
--- Atualiza quem tem avatar equipado na tabela usuario_avatares
+-- 2. Sincronizar com a coluna avatar da tabela usuarios
 UPDATE public.usuarios u
 SET avatar = a.caminho_imagem
 FROM public.usuario_avatares ua

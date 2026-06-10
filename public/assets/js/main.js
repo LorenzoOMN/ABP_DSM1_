@@ -840,7 +840,130 @@ function tocarEfeito(caminho, volume = 0.25) {
 
 glossario();
 
-// Torna funções disponíveis globalmente para outras páginas
+/* =========================================================
+   SISTEMA DE SESSÃO GLOBAL (em todas as páginas)
+========================================================= */
+
+let idSessaoGlobal = null;
+let tempoInicioSessao = null;
+let sessaoFinalizada = false;
+
+// Iniciar sessão quando a página carregar
+document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        await iniciarSessaoGlobal();
+    }
+});
+
+async function iniciarSessaoGlobal() {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        
+        // Finaliza qualquer sessão anterior pendente
+        if (idSessaoGlobal && !sessaoFinalizada) {
+            await finalizarSessaoGlobal(true);
+        }
+        
+        const response = await fetch("/api/perfil/sessao/iniciar", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            idSessaoGlobal = data.id_sessao;
+            tempoInicioSessao = Date.now();
+            sessaoFinalizada = false;
+            console.log("✅ Sessão iniciada:", idSessaoGlobal);
+        }
+    } catch (error) {
+        console.error("Erro ao iniciar sessão:", error);
+    }
+}
+
+async function finalizarSessaoGlobal(forçado = false) {
+    if (!idSessaoGlobal || sessaoFinalizada) {
+        return;
+    }
+    
+    sessaoFinalizada = true;
+    const duracaoMs = Date.now() - tempoInicioSessao;
+    const duracaoSegundos = Math.floor(duracaoMs / 1000);
+    
+    console.log(`🔄 Finalizando sessão ${idSessaoGlobal} (${duracaoSegundos}s)`);
+    
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        
+        // Tenta finalizar via fetch normal primeiro
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        
+        try {
+            const response = await fetch("/api/perfil/sessao/finalizar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ id_sessao: idSessaoGlobal }),
+                signal: controller.signal,
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (response.ok) {
+                console.log("✅ Sessão finalizada com sucesso");
+            }
+        } catch (fetchError) {
+            console.log("⚠️  Fetch falhou, tentando sendBeacon...");
+            
+            // Fallback com sendBeacon
+            const data = JSON.stringify({ id_sessao: idSessaoGlobal });
+            const blob = new Blob([data], { type: 'application/json' });
+            
+            if (navigator.sendBeacon) {
+                const enviado = navigator.sendBeacon("/api/perfil/sessao/finalizar", blob);
+                console.log("📤 sendBeacon:", enviado ? "enviado" : "falhou");
+            }
+        }
+        
+        idSessaoGlobal = null;
+        tempoInicioSessao = null;
+    } catch (error) {
+        console.error("Erro ao finalizar sessão:", error);
+        sessaoFinalizada = false; // Permite tentar novamente
+    }
+}
+
+// Eventos de finalização
+window.addEventListener("beforeunload", () => {
+    console.log("📄 beforeunload - finalizando sessão");
+    if (idSessaoGlobal) {
+        finalizarSessaoGlobal();
+    }
+});
+
+window.addEventListener("pagehide", () => {
+    console.log("📄 pagehide - finalizando sessão");
+    if (idSessaoGlobal) {
+        finalizarSessaoGlobal();
+    }
+});
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden" && idSessaoGlobal && !sessaoFinalizada) {
+        console.log("👁️ visibilitychange - página oculta");
+        finalizarSessaoGlobal();
+    }
+});
+
+// Exporta funções
+window.iniciarSessaoGlobal = iniciarSessaoGlobal;
+window.finalizarSessaoGlobal = finalizarSessaoGlobal;
 window.marcarCapitulo1Concluido = marcarCapitulo1Concluido;
 window.usuarioConcluiuCapitulo1 = usuarioConcluiuCapitulo1;
 window.verificarEAtualizarNavbar = verificarEAtualizarNavbar;
