@@ -2352,7 +2352,6 @@ function configurarFornalhasDaForja() {
         btnLiberarMontagemForja.classList.remove("hidden");
 
         if (forjaDicaFinal) {
-          tocarSomMetal();
           forjaDicaFinal.classList.remove("hidden");
         }
       }
@@ -2532,6 +2531,7 @@ function configurarForjaMvp() {
     }
 
     if (totalPreenchidos === 3) {
+      tocarSomAcerto();
       btnForjarMvp.disabled = false;
       btnForjarMvp.classList.add("is-pronto");
 
