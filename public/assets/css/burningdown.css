@@ -178,6 +178,10 @@
   text-align: right;
 }
 
+.stats-box .vidas-container {
+  justify-content: center;
+}
+
 .btn-retomar {
   width: calc(100% - 48px);
   margin: 8px 24px 26px;

@@ -151,7 +151,7 @@ function concluirMinigame(minigame, options = {}) {
   atualizarBloqueiosHistoria();
 
   const nextSectionSelector = options.scrollTo || (sectionsToUnlock[0] ? `#${sectionsToUnlock[0].id}` : "");
-  const scrollDelay = typeof options.scrollDelay === "number" ? options.scrollDelay : 700;
+  const scrollDelay = typeof options.scrollDelay === "number" ? options.scrollDelay : 250;
 
   if (nextSectionSelector) {
     setTimeout(() => rolarParaElemento(nextSectionSelector), scrollDelay);

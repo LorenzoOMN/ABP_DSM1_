@@ -73,7 +73,7 @@ main{
   width: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
-  padding: 16px 24px 88px;
+  padding: 16px 24px 16px;
 }
 
 .pagina-certificado footer {
@@ -427,7 +427,7 @@ p{
   main {
     padding-right: 12px;
     padding-left: 12px;
-    padding-bottom: 84px;
+    padding-bottom: 16px;
   }
 
   .certificado-botoes-area {

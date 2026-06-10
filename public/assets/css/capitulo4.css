@@ -273,12 +273,13 @@
 }
 
 .story-block > :not(.scene-lock) {
-  transition: opacity 1s ease, filter 1s ease;
+  transition: opacity 0.9s ease, filter 0.9s ease, transform 0.9s ease;
 }
 
 .story-block.is-locked > :not(.scene-lock) {
-  opacity: 0.28;
-  filter: blur(8px);
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(18px) scale(0.98);
   pointer-events: none;
   user-select: none;
 }
@@ -315,6 +316,7 @@
 .story-block.is-unlocking > :not(.scene-lock) {
   opacity: 1;
   filter: blur(0);
+  transform: translateY(0) scale(1);
 }
 
 .scene-lock strong,
@@ -1430,6 +1432,7 @@ blockquote {
   background: #000;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 1.4s ease;
 }
 
 .pipeline-void {
@@ -1439,7 +1442,7 @@ blockquote {
   z-index: 91;
   isolation: auto;
   width: 100%;
-  min-height: 185svh;
+  min-height: 120svh;
   margin-left: 0;
   color: #dff9ff;
   background: transparent;
@@ -1453,10 +1456,11 @@ blockquote {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(circle at 50% 52%, rgba(34, 210, 255, 0.12), transparent 34%),
-    radial-gradient(circle at 12% 18%, rgba(169, 213, 128, 0.06), transparent 24%);
+    radial-gradient(circle at 50% 50%, rgba(34, 210, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 12% 18%, rgba(169, 213, 128, 0.06), transparent 24%),
+    linear-gradient(180deg, #000 0%, #050505 45%, #090908 100%);
   opacity: var(--pipeline-game-opacity);
-  transition: opacity 0.12s linear;
+  transition: opacity 1.4s ease;
 }
 
 .pipeline-void::after {
@@ -1996,9 +2000,19 @@ blockquote {
   background: rgba(0, 0, 0, 0.58);
 }
 
+
+.pipeline-scene--complete .pipeline-scroll-blackout {
+  opacity: 0;
+}
 .pipeline-void.pipeline-panel--complete {
   box-shadow: inset 0 0 100px rgba(169, 213, 128, 0.1);
 }
+
+.debt-scene--complete .refactor-scroll-blackout {
+  opacity: 0;
+}
+
+
 
 .pipeline-void.pipeline-panel--complete .pipeline-neon-board {
   grid-template-rows: minmax(7rem, 1fr);
@@ -2105,7 +2119,14 @@ blockquote {
   grid-template-columns: 1fr;
   gap: 2rem;
   overflow: visible;
-  background: transparent;
+  background:
+    linear-gradient(
+      180deg,
+      #000 0%,
+      #050505 18%,
+      #090908 42%,
+      transparent 100%
+    );
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -2247,6 +2268,7 @@ blockquote {
   background: #000;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 1.8s ease;
 }
 
 .refactor-void {
@@ -2256,7 +2278,7 @@ blockquote {
   z-index: 91;
   isolation: auto;
   width: 100%;
-  min-height: 185svh;
+  min-height: 120svh;
   margin-left: 0;
   color: #dff9ff;
   background: transparent;
@@ -2273,7 +2295,7 @@ blockquote {
     radial-gradient(circle at 18% 16%, rgba(169, 213, 128, 0.05), transparent 22%),
     radial-gradient(circle at 82% 26%, rgba(214, 173, 53, 0.04), transparent 20%);
   opacity: var(--refactor-game-opacity);
-  transition: opacity 0.12s linear;
+transition: opacity 1.4s ease;
 }
 
 .refactor-void::after {
@@ -2284,9 +2306,9 @@ blockquote {
     radial-gradient(circle at 50% 54%, rgba(34, 210, 255, 0.06), transparent 28%),
     radial-gradient(circle at 18% 16%, rgba(169, 213, 128, 0.04), transparent 20%),
     radial-gradient(circle at 82% 26%, rgba(214, 173, 53, 0.03), transparent 18%),
-    #000;
+    linear-gradient(180deg, #000 0%, #050505 45%, #090908 100%);
   opacity: var(--refactor-game-opacity);
-  transition: opacity 0.12s linear;
+  transition: opacity 1.4s ease;
 }
 
 .refactor-void__inner {
@@ -2826,8 +2848,21 @@ blockquote {
 .oracle-scene::after {
   z-index: 0;
   background:
-    linear-gradient(90deg, rgba(2, 6, 8, 0.92) 0%, rgba(2, 6, 8, 0.72) 42%, rgba(2, 6, 8, 0.3) 72%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.58));
+    linear-gradient(
+      180deg,
+      #000 0%,
+      #050505 14%,
+      rgba(2, 6, 8, 0.92) 30%,
+      rgba(2, 6, 8, 0.72) 52%,
+      rgba(2, 6, 8, 0.34) 78%,
+      rgba(2, 6, 8, 0.16) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(2, 6, 8, 0.9) 0%,
+      rgba(2, 6, 8, 0.68) 42%,
+      rgba(2, 6, 8, 0.28) 72%
+    );
 }
 
 .oracle-scene .story-text {
@@ -3913,7 +3948,6 @@ blockquote {
 
   .story-block {
     grid-template-columns: 1fr;
-    padding-left: clamp(1.2rem, 4vw, 2rem);
   }
 
   .metric-artifacts-scene,
@@ -3922,16 +3956,23 @@ blockquote {
   }
 
   .metric-artifacts-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .metric-artifact-card {
-    min-height: 8.4rem;
+    min-height: 6.2rem;
+  padding: 0.5rem;
+  display: grid;
+  place-items: center;
   }
 
   .metric-artifact-card img {
-    width: min(100%, 5.4rem);
+    width: min(100%, 4.6rem);
   }
+
+  .metric-artifact-card span {
+  display: none;
+}
 
   .metric-artifact-detail {
     grid-template-columns: 1fr;
@@ -4239,15 +4280,20 @@ blockquote {
 
 @media (max-width: 420px) {
   .metric-artifacts-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .metric-artifact-card {
-    min-height: 7.6rem;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-rows: 1fr;
-    text-align: left;
+    min-height: 6rem;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  padding: 0.45rem;
+  text-align: center;
   }
+
+  .metric-artifact-card span {
+  display: none;
+}
 
   .metric-artifact-card img {
     width: 4.6rem;
