@@ -495,6 +495,26 @@ function getChaveProgressoUsuario() {
 document.addEventListener("DOMContentLoaded", controlarVisibilidadeNavbar);
 
 /* =========================================================
+   BOTAO GLOBAL DE LOGOUT
+========================================================= */
+
+function atualizarBotaoLogout() {
+  const botaoLogout = document.getElementById("botao-logout");
+  if (!botaoLogout) return;
+
+  const usuarioLogado = Boolean(localStorage.getItem("token"));
+  botaoLogout.hidden = !usuarioLogado;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const botaoLogout = document.getElementById("botao-logout");
+  if (!botaoLogout) return;
+
+  atualizarBotaoLogout();
+  botaoLogout.addEventListener("click", fazerLogout);
+});
+
+/* =========================================================
    FUNÇÃO CENTRALIZADA DE LOGOUT
 ========================================================= */
 

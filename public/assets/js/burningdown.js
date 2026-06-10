@@ -106,7 +106,7 @@ const totalTentativasGastas = Number(
   atualizarTexto("desafiosCompletos", `${desafiosConcluidos}/${totalModulos}`);
   atualizarTexto("porcentagemTotal", `${porcentagemTotal}%`);
   atualizarTexto("tentativasGastas", totalTentativasGastas);
-
+  atualizarGraficoBurningdown(modulos, totalConteudos);
 
 }
 
@@ -116,6 +116,50 @@ function atualizarTexto(id, valor) {
   if (elemento) {
     elemento.textContent = valor;
   }
+}
+
+function atualizarGraficoBurningdown(modulos, totalConteudos) {
+  const linhaAtual = document.getElementById("linhaBurningdownAtual");
+  const pontos = document.querySelectorAll("#pontosBurningdown span");
+
+  if (!linhaAtual) return;
+
+  const modulosOrdenados = [...modulos].sort(
+    (a, b) => Number(a.id_modulo) - Number(b.id_modulo)
+  );
+  const certificadoLiberado = modulos.some(
+    (modulo) => modulo.certificado_liberado
+  );
+
+  let concluidosAcumulados = 0;
+  const coordenadas = modulosOrdenados.map((modulo, index) => {
+    const historiaConcluida = Boolean(modulo.historia_concluida);
+    const desafioConcluido = Boolean(
+      certificadoLiberado ||
+        modulo.desafio_concluido ||
+        modulo.certificado_liberado ||
+        (modulo.historia_concluida && !modulo.desafio_atual)
+    );
+
+    concluidosAcumulados += Number(historiaConcluida) + Number(desafioConcluido);
+
+    const x = 42 + index * 86;
+    const restante = Math.max(0, totalConteudos - concluidosAcumulados);
+    const y = 26 + ((totalConteudos - restante) / totalConteudos) * 136;
+
+    if (pontos[index]) {
+      pontos[index].classList.toggle("concluido", desafioConcluido);
+    }
+
+    return `${x},${y.toFixed(1)}`;
+  });
+
+  if (!coordenadas.length) return;
+
+  const restanteTotal = Math.max(0, totalConteudos - concluidosAcumulados);
+
+  linhaAtual.setAttribute("points", coordenadas.join(" "));
+  atualizarTexto("restanteTotal", restanteTotal);
 }
 
 function configurarRetornoAventura() {
