@@ -360,7 +360,7 @@ function resetarFiltrosECarregar() {
 
 // Editar questão
 function editarQuestao(id) {
-    console.log('Editar questão:', id);
+    // console.log('Editar questão:', id); /*Descomente para ver o debug no console*/
     mostrarAlerta(`Editar questão ${id} - Em desenvolvimento`, "erro");
 }
 
@@ -541,7 +541,7 @@ async function salvarNovaQuestao(event) {
 
 // Inicializar quando a página carregar
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('Página admin carregada');
+    // console.log('Página admin carregada'); /*Descomente para ver o debug no console*/
 
     // Adiciona eventos aos botões de filtro de módulo
     document.querySelectorAll('.modulo-btn').forEach(btn => {

@@ -698,7 +698,7 @@ async function desbloquearNavbarNoBackend() {
     // 👇 MOSTRA O ALERTA (antes do return!)
    mostrarModalNavbarDesbloqueada();
 
-    console.log("Navbar desbloqueada:", data.mensagem);
+    console.log("Navbar desbloqueada");
     return data.sucesso !== false; // retorna true se sucesso for true ou undefined
   } catch (error) {
     console.error("Erro ao desbloquear navbar:", error);
@@ -915,7 +915,7 @@ async function iniciarSessaoGlobal() {
             idSessaoGlobal = data.id_sessao;
             tempoInicioSessao = Date.now();
             sessaoFinalizada = false;
-            console.log("✅ Sessão iniciada:", idSessaoGlobal);
+            console.log("Sessão iniciada");
         } else if (response.status === 401) {
             // Token inválido ou expirado - limpa e não mostra erro
             localStorage.removeItem("token");
@@ -963,7 +963,6 @@ async function finalizarSessaoGlobal(forçado = false) {
             clearTimeout(timeoutId);
             
             if (response.ok) {
-                console.log("Sessão finalizada com sucesso");
             }
         } catch (fetchError) {
             console.log("Fetch falhou, tentando sendBeacon...");
@@ -974,7 +973,7 @@ async function finalizarSessaoGlobal(forçado = false) {
             
             if (navigator.sendBeacon) {
                 const enviado = navigator.sendBeacon("/api/perfil/sessao/finalizar", blob);
-                console.log("📤 sendBeacon:", enviado ? "enviado" : "falhou");
+                console.log("sendBeacon:", enviado ? "enviado" : "falhou");
             }
         }
         

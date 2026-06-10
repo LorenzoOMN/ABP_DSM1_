@@ -195,7 +195,7 @@ async function carregarDadosConta() {
         }
         
         const dados = await response.json();
-        console.log("📊 Dados da conta recebidos:", dados);
+        console.log("Dados da conta recebidos", /*dados*/); /*Caso queira ver os dados no console, basta descomentar*/
         
         if (dados.data_criacao) {
             document.getElementById("dataCadastro").textContent = formatarData(dados.data_criacao);
@@ -207,7 +207,7 @@ async function carregarDadosConta() {
         
         // Calcula tempo a partir dos segundos
         const segundos = dados.tempo_total_segundos || 0;
-        console.log("⏱️ Tempo total em segundos:", segundos);
+        console.log("Tempo total em segundos:", segundos);
         
         if (segundos > 0) {
             const minutos = Math.floor(segundos / 60);
@@ -223,10 +223,10 @@ async function carregarDadosConta() {
             }
             
             document.getElementById("tempoTotal").textContent = texto;
-            console.log("✅ Tempo exibido:", texto);
+            console.log("Tempo exibido:", texto);
         } else {
             document.getElementById("tempoTotal").textContent = "0 segundos";
-            console.log("⚠️  Sem tempo registrado");
+            console.log("Sem tempo registrado");
         }
     } catch (error) {
         console.error("❌ Erro ao carregar dados da conta:", error);
