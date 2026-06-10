@@ -313,7 +313,24 @@ function tocarSomDesmoronamento() {
 
   const som = new Audio("/assets/audio/desmoronamento.mp3");
 
-  som.volume = 0.3;
+  som.volume = 0.1;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somCarta = new Audio("/assets/audio/carta.mp3");
+
+function tocarSomCarta() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/carta.mp3");
+
+  som.volume = 0.2;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -1869,7 +1886,6 @@ function configurarDesafioNecrobranch() {
       necroAmpulhetaDropzone.classList.add("hidden");
 
       if (necroAmpulhetaAtivacao) {
-        tocarSomArtefatos();
         necroAmpulhetaAtivacao.classList.remove("hidden");
       }
 
@@ -1885,7 +1901,6 @@ function configurarDesafioNecrobranch() {
   }
 
   btnIniciarNecrobranch.addEventListener("click", () => {
-    tocarSomDesmoronamento();
     necroAnaliseWrap.classList.remove("hidden");
     necroAnaliseWrap.scrollIntoView({
       behavior: "smooth",
@@ -1938,6 +1953,7 @@ function configurarDesafioNecrobranch() {
 
   btnSelarNecrobranch.addEventListener("click", () => {
     if (necroAmpulhetaIcon) {
+      tocarSomArtefatos();
       necroAmpulhetaIcon.classList.add("girando");
     }
 
@@ -1947,6 +1963,7 @@ function configurarDesafioNecrobranch() {
 
       const necroRevealCopy = document.getElementById("necroRevealCopy");
       if (necroRevealCopy) {
+        tocarSomDesmoronamento();
         setTimeout(() => {
           necroRevealCopy.classList.add("show");
         }, 250);
@@ -2158,6 +2175,7 @@ function configurarDesafioBugInfernal() {
 
   if (bugFlipCard) {
     bugFlipCard.addEventListener("click", () => {
+      tocarSomCarta();
       const cartaVirada = bugFlipCard.classList.toggle("is-flipped");
 
       bugFlipCard.setAttribute("aria-pressed", String(cartaVirada));
