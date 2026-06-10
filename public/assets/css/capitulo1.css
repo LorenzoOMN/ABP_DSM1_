@@ -1195,7 +1195,7 @@ body {
 
 .capitulo-page {
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (max-width: 768px) {
