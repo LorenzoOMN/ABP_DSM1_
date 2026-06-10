@@ -5,14 +5,34 @@ const pool = require("../../shared/database/db");
 // ============================================================================
 async function getEstatisticasUsuario(idUsuario) {
     const result = await pool.query(
-        `SELECT 
-            COUNT(*) as total_questoes,
-            COALESCE(ROUND(AVG(CASE WHEN nota > 0 THEN 100.0 ELSE 0 END)), 0) as taxa_acerto,
-            0 as tempo_medio_segundos
-        FROM respostas 
-        WHERE id_exame IN (
-            SELECT id_exame FROM exames WHERE id_usuario = $1
-        )`,
+        `WITH estatisticas_respostas AS (
+            SELECT 
+                COUNT(*) as total_questoes,
+                COALESCE(ROUND(AVG(CASE WHEN nota > 0 THEN 100.0 ELSE 0 END)), 0) as taxa_acerto
+            FROM respostas 
+            WHERE id_exame IN (
+                SELECT id_exame FROM exames WHERE id_usuario = $1
+            )
+        ),
+        tempo_medio_calculo AS (
+            SELECT 
+                CASE 
+                    WHEN COUNT(s.id_sessao) > 0 AND (SELECT total_questoes FROM estatisticas_respostas) > 0 THEN
+                        ROUND(
+                            EXTRACT(EPOCH FROM SUM(s.duracao)) / (SELECT total_questoes FROM estatisticas_respostas)
+                        )::INTEGER
+                    ELSE 0
+                END as tempo_medio_segundos
+            FROM sessoes_usuario s
+            WHERE s.id_usuario = $1 
+            AND s.tempo_fim IS NOT NULL
+        )
+        SELECT 
+            er.total_questoes,
+            er.taxa_acerto,
+            COALESCE(tm.tempo_medio_segundos, 0) as tempo_medio_segundos
+        FROM estatisticas_respostas er
+        CROSS JOIN tempo_medio_calculo tm`,
         [idUsuario]
     );
     
@@ -59,11 +79,11 @@ async function getRankingGeral() {
             COALESCE(ROUND(AVG(CASE WHEN r.nota > 0 THEN 100.0 ELSE 0 END)), 0) as taxa_acerto,
             (COUNT(DISTINCT e.id_modulo) * 100 + 
              COALESCE(ROUND(AVG(CASE WHEN r.nota > 0 THEN 100.0 ELSE 0 END)), 0) * 10 + 
-             COUNT(r.id_resposta)) as pontuacao
+            COUNT(r.id_resposta)) as pontuacao
         FROM usuarios u
         LEFT JOIN exames e ON u.id_usuario = e.id_usuario
         LEFT JOIN respostas r ON e.id_exame = r.id_exame
-        WHERE u.is_admin = false
+        -- REMOVIDO: WHERE u.is_admin = false (Agora todos aparecem no ranking)
         GROUP BY u.id_usuario, u.nome
         ORDER BY pontuacao DESC`
     );
@@ -119,7 +139,8 @@ async function getDadosConta(idUsuario) {
         `SELECT 
             data_criacao,
             ultimo_acesso,
-            tempo_total
+            tempo_total,
+            EXTRACT(EPOCH FROM COALESCE(tempo_total, INTERVAL '0 seconds'))::INTEGER as tempo_total_segundos
         FROM usuarios
         WHERE id_usuario = $1`,
         [idUsuario]
@@ -144,6 +165,18 @@ async function atualizarUltimoAcesso(idUsuario) {
 // REGISTRAR SESSÃO
 // ============================================================================
 async function iniciarSessao(idUsuario) {
+    // 🧹 Limpa sessões muito antigas (mais de 30 dias) automaticamente
+    try {
+        await pool.query(
+            `DELETE FROM sessoes_usuario 
+            WHERE tempo_inicio < NOW() - INTERVAL '30 days'`
+        );
+    } catch (error) {
+        // Ignora erros de limpeza - não deve impedir o início da sessão
+        console.warn("Aviso: falha ao limpar sessões antigas:", error.message);
+    }
+    
+    // Cria a nova sessão
     const result = await pool.query(
         `INSERT INTO sessoes_usuario (id_usuario, tempo_inicio)
         VALUES ($1, CURRENT_TIMESTAMP)
@@ -155,27 +188,31 @@ async function iniciarSessao(idUsuario) {
 }
 
 async function finalizarSessao(idSessao) {
-    await pool.query(
+    // Finaliza a sessão específica
+    const result = await pool.query(
         `UPDATE sessoes_usuario 
         SET tempo_fim = CURRENT_TIMESTAMP,
             duracao = CURRENT_TIMESTAMP - tempo_inicio
-        WHERE id_sessao = $1 AND tempo_fim IS NULL`,
+        WHERE id_sessao = $1 AND tempo_fim IS NULL
+        RETURNING id_usuario, duracao`,
         [idSessao]
     );
     
-    await pool.query(
-        `UPDATE usuarios 
-        SET tempo_total = tempo_total + (
-            SELECT COALESCE(SUM(duracao), INTERVAL '0 seconds')
-            FROM sessoes_usuario
-            WHERE id_usuario = (SELECT id_usuario FROM sessoes_usuario WHERE id_sessao = $1)
-            AND tempo_fim IS NOT NULL
-        )
-        WHERE id_usuario = (
-            SELECT id_usuario FROM sessoes_usuario WHERE id_sessao = $1
-        )`,
-        [idSessao]
-    );
+    // Se encontrou a sessão, atualiza o tempo_total
+    if (result.rows.length > 0) {
+        const idUsuario = result.rows[0].id_usuario;
+        
+        await pool.query(
+            `UPDATE usuarios 
+            SET tempo_total = (
+                SELECT COALESCE(SUM(duracao), INTERVAL '0 seconds')
+                FROM sessoes_usuario
+                WHERE id_usuario = $1 AND tempo_fim IS NOT NULL
+            )
+            WHERE id_usuario = $1`,
+            [idUsuario]
+        );
+    }
 }
 
 module.exports = {

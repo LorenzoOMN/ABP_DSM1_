@@ -28,9 +28,9 @@ body {
    ========================================= */
 .livro-perfil {
     display: flex;
-    width: 90vw;
+    width: 80vw;
     max-width: 1600px;
-    max-height: 90vh;
+    max-height: 82vh;
     height: auto;
     background-color: #6b2f1a;
     border-radius: 12px;

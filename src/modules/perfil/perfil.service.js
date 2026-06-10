@@ -54,24 +54,30 @@ async function getHistoricoService(idUsuario) {
 async function getDadosContaService(idUsuario) {
     const dados = await perfilRepository.getDadosConta(idUsuario);
     
-    // Formatar tempo_total
-    let tempo_total_formatado = "0 minutos";
-    if (dados.tempo_total) {
-        const segundos = dados.tempo_total.seconds || 0;
-        const horas = Math.floor(segundos / 3600);
-        const minutos = Math.floor((segundos % 3600) / 60);
+    // Formatar tempo_total corretamente
+    let tempo_total_formatado = "0 segundos";
+    let tempo_total_segundos = 0;
+    
+    if (dados.tempo_total_segundos && dados.tempo_total_segundos > 0) {
+        tempo_total_segundos = dados.tempo_total_segundos;
+        const horas = Math.floor(dados.tempo_total_segundos / 3600);
+        const minutos = Math.floor((dados.tempo_total_segundos % 3600) / 60);
+        const segundos = dados.tempo_total_segundos % 60;
         
         if (horas > 0) {
-            tempo_total_formatado = `${horas}h ${minutos}min`;
+            tempo_total_formatado = `${horas}h ${minutos}min ${segundos}s`;
+        } else if (minutos > 0) {
+            tempo_total_formatado = `${minutos} minutos e ${segundos} segundos`;
         } else {
-            tempo_total_formatado = `${minutos} minutos`;
+            tempo_total_formatado = `${segundos} segundos`;
         }
     }
     
     return {
         data_criacao: dados.data_criacao,
         ultimo_acesso: dados.ultimo_acesso,
-        tempo_total: tempo_total_formatado
+        tempo_total: tempo_total_formatado,
+        tempo_total_segundos: tempo_total_segundos  // Adiciona os segundos crus
     };
 }
 

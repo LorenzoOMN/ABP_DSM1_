@@ -1,6 +1,5 @@
 let musicaAtiva = true;
 let efeitosAtivos = true;
-let idSessao = null;
 
 // ============================================
 // CARREGAR PERFIL
@@ -63,7 +62,6 @@ async function carregarPerfil() {
             carregarDadosConta()
         ]);
         
-        iniciarSessao();
     } catch (error) {
         console.error("Erro ao carregar perfil:", error);
     }
@@ -191,74 +189,49 @@ async function carregarDadosConta() {
             headers: { Authorization: `Bearer ${token}` },
         });
         
-        if (!response.ok) return;
+        if (!response.ok) {
+            console.error("Erro HTTP:", response.status);
+            return;
+        }
         
         const dados = await response.json();
+        console.log("📊 Dados da conta recebidos:", dados);
         
         if (dados.data_criacao) {
             document.getElementById("dataCadastro").textContent = formatarData(dados.data_criacao);
         }
+        
         if (dados.ultimo_acesso) {
             document.getElementById("ultimoAcesso").textContent = formatarDataRelativa(dados.ultimo_acesso);
         }
-        if (dados.tempo_total) {
-            document.getElementById("tempoTotal").textContent = dados.tempo_total;
-        }
-    } catch (error) {
-        // Silencioso
-    }
-}
-
-// ============================================
-// SISTEMA DE SESSÃO
-// ============================================
-async function iniciarSessao() {
-    try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("/api/perfil/sessao/iniciar", {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-        });
         
-        if (response.ok) {
-            const data = await response.json();
-            idSessao = data.id_sessao;
-        }
-    } catch (error) {
-        // Ignora
-    }
-}
-
-async function finalizarSessao() {
-    if (!idSessao) return;
-    
-    try {
-        const token = localStorage.getItem("token");
-        await fetch("/api/perfil/sessao/finalizar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ id_sessao: idSessao }),
-        });
-        idSessao = null;
-    } catch (error) {
-        // Ignora
-    }
-}
-
-window.addEventListener("beforeunload", () => {
-    if (idSessao) {
-        const token = localStorage.getItem("token");
-        const data = JSON.stringify({ id_sessao: idSessao });
-        const blob = new Blob([data], { type: 'application/json' });
+        // Calcula tempo a partir dos segundos
+        const segundos = dados.tempo_total_segundos || 0;
+        console.log("⏱️ Tempo total em segundos:", segundos);
         
-        if (navigator.sendBeacon) {
-            navigator.sendBeacon("/api/perfil/sessao/finalizar", blob);
+        if (segundos > 0) {
+            const minutos = Math.floor(segundos / 60);
+            const segundosRestantes = segundos % 60;
+            
+            let texto = '';
+            if (minutos > 0) {
+                texto += `${minutos} minuto${minutos > 1 ? 's' : ''}`;
+            }
+            if (segundosRestantes > 0) {
+                texto += texto ? ` e ${segundosRestantes} segundo${segundosRestantes > 1 ? 's' : ''}` 
+                                : `${segundosRestantes} segundo${segundosRestantes > 1 ? 's' : ''}`;
+            }
+            
+            document.getElementById("tempoTotal").textContent = texto;
+            console.log("✅ Tempo exibido:", texto);
+        } else {
+            document.getElementById("tempoTotal").textContent = "0 segundos";
+            console.log("⚠️  Sem tempo registrado");
         }
+    } catch (error) {
+        console.error("❌ Erro ao carregar dados da conta:", error);
     }
-});
+}
 
 // ============================================
 // FUNÇÕES AUXILIARES
