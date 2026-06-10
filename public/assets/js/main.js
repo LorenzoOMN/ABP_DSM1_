@@ -20,20 +20,12 @@ window.__progressoSessao = window.__progressoSessao || {};
   const rotaAtual = window.location.pathname;
   const rotasPublicas = ["/"];
   const rotasComBarreira = [
-    "/mapa",
-    "/burningdown",
-    "/artefatos",
-    "/coleta-artefato",
-    "/perfil",
-    "/certificado",
-    "/questionario",
-    "/questionario1",
-    "/resultado",
+    "/mapa", "/burningdown", "/artefatos", "/coleta-artefato",
+    "/perfil", "/certificado", "/questionario", "/questionario1", "/resultado",
   ];
   const rotaCapitulo = rotaAtual.match(/^\/capitulo([1-5])$/);
   const rotaDesafio = rotaAtual.match(/^\/desafio([1-5])$/);
-  const precisaValidar =
-    rotaCapitulo || rotaDesafio || rotasComBarreira.includes(rotaAtual);
+  const precisaValidar = rotaCapitulo || rotaDesafio || rotasComBarreira.includes(rotaAtual);
 
   if (!precisaValidar || rotasPublicas.includes(rotaAtual)) return;
 
@@ -45,17 +37,28 @@ window.__progressoSessao = window.__progressoSessao || {};
   }
 
   try {
+    // ✅ Valida se o token ainda é válido no backend
+    const response = await fetch("/api/usuarios/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      // Token inválido (usuário deletado, banco reiniciado, etc)
+      console.warn("Token inválido, fazendo logout...");
+      fazerLogout();
+      return;
+    }
+
     const progresso = await obterProgressoDaJornada(token);
     const modulos = Array.isArray(progresso?.modulos) ? progresso.modulos : [];
-    const moduloAtual =
-      modulos.find((modulo) => modulo.desafio_atual) || modulos[0];
+    const moduloAtual = modulos.find((modulo) => modulo.desafio_atual) || modulos[0];
 
     if (!modulos.length || !podeAcessarRotaDaJornada(rotaAtual, modulos)) {
       window.location.replace(criarRotaSeguraDaJornada(moduloAtual));
     }
   } catch (error) {
     console.warn("Falha ao validar acesso da rota.", error);
-    window.location.replace("/");
+    fazerLogout();
   }
 })();
 
@@ -488,35 +491,51 @@ function getChaveProgressoUsuario() {
 // Executa quando o DOM estiver pronto
 document.addEventListener("DOMContentLoaded", controlarVisibilidadeNavbar);
 
-/*========FUNÇAO LOGOUT===========*/
-document.addEventListener("DOMContentLoaded", async () => {
-  await controlarVisibilidadeNavbar();
+/* =========================================================
+   FUNÇÃO CENTRALIZADA DE LOGOUT
+========================================================= */
 
-  if (typeof controlarSobreposicaoNavbarFooter === "function") {
-    controlarSobreposicaoNavbarFooter();
-  }
-
-  if (typeof marcarItemAtivoDaNavegacaoInferior === "function") {
-    marcarItemAtivoDaNavegacaoInferior();
-  }
-
-  const botaoLogout = document.getElementById("botao-logout");
-
-  if (botaoLogout && localStorage.getItem("token")) {
-    botaoLogout.removeAttribute("hidden");
-    botaoLogout.addEventListener("click", logout);
-  }
-});
-
-function logout() {
-  // Remove os dados de autenticacao salvos no navegador.
+function fazerLogout() {
+  console.log("Fazendo logout...");
+  
+  // Remove TODOS os dados do usuário
   localStorage.removeItem("token");
   localStorage.removeItem("nome");
   localStorage.removeItem("cpf");
   localStorage.removeItem("usuario");
-
-  window.location.href = "/";
+  localStorage.removeItem("musicaAtiva");
+  localStorage.removeItem("efeitosAtivos");
+  localStorage.removeItem("efeitosSonoros");
+  
+  // Limpa variáveis de sessão
+  if (typeof idSessaoGlobal !== "undefined" && idSessaoGlobal) {
+    finalizarSessaoGlobal();
+  }
+  
+  // Redireciona para a home
+  window.location.replace("/");
 }
+
+// Torna disponível globalmente
+window.fazerLogout = fazerLogout;
+
+/* =========================================================
+   SINCRONIZAÇÃO DE LOGOUT ENTRE ABAS
+========================================================= */
+
+window.addEventListener("storage", (event) => {
+  // Quando o token for removido em outra aba, remove nesta também
+  if (event.key === "token" && !event.newValue) {
+    console.log("Logout detectado em outra aba, sincronizando...");
+    fazerLogout();
+  }
+});
+
+/*========FUNÇAO LOGOUT===========*/
+function logout() {
+  fazerLogout();
+}
+
 /**
  * Marca capítulo 1 como concluído para o usuário atual
  */
@@ -876,7 +895,7 @@ async function iniciarSessaoGlobal() {
             idSessaoGlobal = data.id_sessao;
             tempoInicioSessao = Date.now();
             sessaoFinalizada = false;
-            console.log("✅ Sessão iniciada:", idSessaoGlobal);
+            console.log("Sessão iniciada");
         }
     } catch (error) {
         console.error("Erro ao iniciar sessão:", error);
@@ -891,8 +910,6 @@ async function finalizarSessaoGlobal(forçado = false) {
     sessaoFinalizada = true;
     const duracaoMs = Date.now() - tempoInicioSessao;
     const duracaoSegundos = Math.floor(duracaoMs / 1000);
-    
-    console.log(`🔄 Finalizando sessão ${idSessaoGlobal} (${duracaoSegundos}s)`);
     
     try {
         const token = localStorage.getItem("token");
@@ -916,10 +933,10 @@ async function finalizarSessaoGlobal(forçado = false) {
             clearTimeout(timeoutId);
             
             if (response.ok) {
-                console.log("✅ Sessão finalizada com sucesso");
+                console.log("Sessão finalizada com sucesso");
             }
         } catch (fetchError) {
-            console.log("⚠️  Fetch falhou, tentando sendBeacon...");
+            console.log("Fetch falhou, tentando sendBeacon...");
             
             // Fallback com sendBeacon
             const data = JSON.stringify({ id_sessao: idSessaoGlobal });
@@ -941,14 +958,12 @@ async function finalizarSessaoGlobal(forçado = false) {
 
 // Eventos de finalização
 window.addEventListener("beforeunload", () => {
-    console.log("📄 beforeunload - finalizando sessão");
     if (idSessaoGlobal) {
         finalizarSessaoGlobal();
     }
 });
 
 window.addEventListener("pagehide", () => {
-    console.log("📄 pagehide - finalizando sessão");
     if (idSessaoGlobal) {
         finalizarSessaoGlobal();
     }
@@ -956,7 +971,6 @@ window.addEventListener("pagehide", () => {
 
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden" && idSessaoGlobal && !sessaoFinalizada) {
-        console.log("👁️ visibilitychange - página oculta");
         finalizarSessaoGlobal();
     }
 });
