@@ -130,6 +130,23 @@ const preparoDesafioData = {
   },
 };
 
+const somPortal = new Audio("/assets/audio/portal.mp3");
+
+function tocarSomPortal() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/portal.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function obterTokenCapitulo2() {
   const token = localStorage.getItem("token");
 
@@ -383,6 +400,7 @@ async function concluirHistoriaCapitulo2() {
     }
 
     if (porta) {
+      tocarSomPortal()
       porta.classList.add("porta-liberada");
     }
 

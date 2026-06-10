@@ -12,6 +12,23 @@ function obterToken() {
   return token;
 }
 
+const somPapel = new Audio("/assets/audio/papel.mp3");
+
+function tocarSomPapel() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/papel.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function rolarParaElemento(seletor, offset = SCROLL_OFFSET) {
   const alvo = document.querySelector(seletor);
 
@@ -94,6 +111,7 @@ function configurarDailyBook() {
   if (!dailyBook) return;
 
   dailyBook.addEventListener("click", () => {
+    tocarSomPapel()
     dailyBook.classList.toggle("is-open");
     dailyBook.setAttribute(
       "aria-expanded",
@@ -108,6 +126,7 @@ function configurarPergaminhoRetrospectiva() {
   if (!pergaminho) return;
 
   pergaminho.addEventListener("click", () => {
+    tocarSomPapel()
     pergaminho.classList.toggle("is-open");
     pergaminho.setAttribute(
       "aria-expanded",
