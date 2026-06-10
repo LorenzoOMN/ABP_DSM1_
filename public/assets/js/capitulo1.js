@@ -166,6 +166,23 @@ function tocarSomRunas() {
   });
 }
 
+const somAcerto = new Audio("/assets/audio/acerto.mp3");
+
+function tocarSomAcerto() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/acerto.mp3");
+
+  som.volume = 0.5;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function obterToken() {
   const token = localStorage.getItem("token");
 
@@ -299,6 +316,7 @@ function configurarPrincipios() {
 
   document.querySelectorAll(".principio-btn").forEach((botao) => {
     botao.addEventListener("click", () => {
+      tocarSomRunas()
       const principio = principiosData[botao.dataset.principio];
       if (!principio || !card) return;
 
@@ -389,6 +407,7 @@ function configurarBacklogVivo() {
     });
 
     cardsOrdenados.forEach((card) => {
+      tocarSomAcerto();
       lista.appendChild(card);
     });
 
@@ -540,6 +559,7 @@ async function concluirHistoria() {
   if (!token) return;
 
   if (btnConcluir) {
+    tocarSomRunas();
     btnConcluir.disabled = true;
     btnConcluir.textContent = "Registrando progresso...";
   }
