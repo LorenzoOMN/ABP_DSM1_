@@ -846,7 +846,7 @@ function tocarSomClick() {
     return;
   }
 
-  somClickGlobal.volume = 0.15;
+  somClickGlobal.volume = 0.06;
   somClickGlobal.currentTime = 0;
 
   somClickGlobal.play().catch((erro) => {

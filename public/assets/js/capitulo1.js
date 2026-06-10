@@ -112,7 +112,7 @@ function tocarSomPilar(botao) {
 
   // Cria uma nova instância para permitir cliques rápidos e sobreposição do sino
   const som = new Audio("/assets/audio/pilar.mp3");
-  som.volume = 0.15;
+  som.volume = 0.03;
 
   // Desativa a trava de tom do navegador
   som.preservesPitch = false;
@@ -159,7 +159,7 @@ function tocarSomRunas() {
 
   const som = new Audio("/assets/audio/runas.mp3");
 
-  som.volume = 0.5;
+  som.volume = 0.06;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -176,7 +176,7 @@ function tocarSomAcerto() {
 
   const som = new Audio("/assets/audio/acerto.mp3");
 
-  som.volume = 0.5;
+  som.volume = 0.01;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
