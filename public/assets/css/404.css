@@ -7,7 +7,7 @@
   min-height: 100vh;
   background:
     linear-gradient(180deg, rgba(8, 5, 3, 0.7), rgba(8, 5, 3, 0.85)),
-    url("/assets/img/fundo_perfil.jpg"); /* Reusa a textura do projeto */
+   url("/assets/img/perfil/fundo_perfil.jpg");
   background-size: cover;
   background-position: center;
   color: #f4efe2;
