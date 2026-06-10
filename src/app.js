@@ -4,6 +4,7 @@
 const express = require("express");
 const path = require("path");
 const cors = require('cors');
+const pool = require("./shared/database/db");
 
 // Importando middlewares
 const authMiddleware = require('./shared/middlewares/auth.middleware');
@@ -21,6 +22,8 @@ const perfilModule = require('./modules/perfil');
 
 // Inicializa o express
 const app = express();
+
+app.set('db', pool);
 
 // Habilita o CORS para todas as rotas
 app.use(cors());

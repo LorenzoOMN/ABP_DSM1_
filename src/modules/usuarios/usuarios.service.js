@@ -6,7 +6,12 @@ const {
   insertProgressoDesafioInicial,
   verificarBarraDesbloqueada,
   desbloquearBarraNavegacao,
-  updateUsuario
+  updateUsuario,
+  findUsuarioAvatar,
+  updateUsuarioAvatar,
+  findAvataresDisponiveis,
+  findAvataresUsuario,
+  equiparAvatarUsuario
 } = require("./usuarios.repository");
 
 // define o cadastro do usuário
@@ -125,6 +130,87 @@ async function findUsuarioByIdService(idUsuario) {
 }
 
 // ============================================================================
+// AVATAR - Service Functions
+// ============================================================================
+
+/**
+ * Busca o avatar do usuário
+ */
+async function findUsuarioAvatarService(idUsuario) {
+  if (!idUsuario) {
+    throw new Error("ID do usuário é obrigatório");
+  }
+
+  const avatar = await findUsuarioAvatar(idUsuario);
+  return avatar;
+}
+
+/**
+ * Atualiza o avatar do usuário (seleção simples)
+ */
+async function updateUsuarioAvatarService(idUsuario, avatar) {
+  if (!idUsuario) {
+    throw new Error("ID do usuário é obrigatório");
+  }
+
+  if (!avatar) {
+    throw new Error("Avatar é obrigatório");
+  }
+
+  // Validação básica do nome do arquivo (evitar path traversal)
+  if (avatar.includes('..') || avatar.includes('/') || avatar.includes('\\')) {
+    throw new Error("Nome de avatar inválido");
+  }
+
+  const result = await updateUsuarioAvatar(idUsuario, avatar);
+
+  if (!result) {
+    throw new Error("usuário não encontrado");
+  }
+
+  return result;
+}
+
+/**
+ * Lista avatares disponíveis no sistema
+ */
+async function findAvataresDisponiveisService() {
+  return await findAvataresDisponiveis();
+}
+
+/**
+ * Lista avatares desbloqueados pelo usuário
+ */
+async function findAvataresUsuarioService(idUsuario) {
+  if (!idUsuario) {
+    throw new Error("ID do usuário é obrigatório");
+  }
+
+  return await findAvataresUsuario(idUsuario);
+}
+
+/**
+ * Equipa um avatar para o usuário
+ */
+async function equiparAvatarUsuarioService(idUsuario, idAvatar) {
+  if (!idUsuario) {
+    throw new Error("ID do usuário é obrigatório");
+  }
+
+  if (!idAvatar) {
+    throw new Error("ID do avatar é obrigatório");
+  }
+
+  const result = await equiparAvatarUsuario(idUsuario, idAvatar);
+  
+  if (!result) {
+    throw new Error("Não foi possível equipar o avatar");
+  }
+
+  return result;
+}
+
+// ============================================================================
 // EXPORTAÇÕES
 // ============================================================================
 module.exports = {
@@ -133,5 +219,10 @@ module.exports = {
   updateUsuarioNomeService,
   updateUsuarioEmailService,
   updateUsuarioSenhaService,
-  findUsuarioByIdService, 
+  findUsuarioByIdService,
+  findUsuarioAvatarService,
+  updateUsuarioAvatarService,
+  findAvataresDisponiveisService,
+  findAvataresUsuarioService,
+  equiparAvatarUsuarioService,
 };

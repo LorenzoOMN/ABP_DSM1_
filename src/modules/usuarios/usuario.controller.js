@@ -6,7 +6,12 @@ const { updateUsuarioCpfService,
     updateUsuarioNomeService,
     updateUsuarioEmailService,
     updateUsuarioSenhaService,
-    findUsuarioByIdService } = require('./usuarios.service');
+    findUsuarioByIdService,
+    findUsuarioAvatarService,
+    updateUsuarioAvatarService,
+    findAvataresDisponiveisService,
+    findAvataresUsuarioService,
+    equiparAvatarUsuarioService } = require('./usuarios.service');
 
 // ============================================================================
 // CONTROLLER: OBTER DADOS DO USUÁRIO ATUAL (GET /me)
@@ -194,6 +199,114 @@ async function updateSenhaController(req, res) {
 }
 
 // ============================================================================
+// CONTROLLER: OBTER AVATAR DO USUÁRIO (GET /avatar)
+// ============================================================================
+async function getAvatarController(req, res) {
+    const idUsuario = req.usuario?.id_usuario;
+
+    if (!idUsuario) {
+        return res.status(401).json({ message: "Usuário não autenticado" });
+    }
+
+    try {
+        const avatar = await findUsuarioAvatarService(idUsuario);
+        return res.status(200).json({ avatar });
+    } catch (error) {
+        console.error("Erro em getAvatarController:", error);
+        return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
+// ============================================================================
+// CONTROLLER: ATUALIZAR AVATAR (PATCH /avatar)
+// ============================================================================
+async function updateAvatarController(req, res) {
+    const idUsuario = req.usuario?.id_usuario;
+    const { avatar } = req.body;
+
+    if (!idUsuario) {
+        return res.status(401).json({ message: "Usuário não autenticado" });
+    }
+
+    if (!avatar) {
+        return res.status(400).json({ message: "Avatar é obrigatório" });
+    }
+
+    try {
+        const result = await updateUsuarioAvatarService(idUsuario, avatar);
+        return res.status(200).json(result);
+    } catch (error) {
+        if (error.message === "Avatar é obrigatório" || error.message === "Nome de avatar inválido") {
+            return res.status(400).json({ message: error.message });
+        }
+        if (error.message === "usuário não encontrado") {
+            return res.status(404).json({ message: error.message });
+        }
+        console.error("Erro em updateAvatarController:", error);
+        return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
+// ============================================================================
+// CONTROLLER: LISTAR AVATARES DISPONÍVEIS (GET /avatares)
+// ============================================================================
+async function getAvataresDisponiveisController(req, res) {
+    try {
+        const avatares = await findAvataresDisponiveisService();
+        return res.status(200).json(avatares);
+    } catch (error) {
+        console.error("Erro em getAvataresDisponiveisController:", error);
+        return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
+// ============================================================================
+// CONTROLLER: LISTAR AVATARES DO USUÁRIO (GET /meus-avatares)
+// ============================================================================
+async function getMeusAvataresController(req, res) {
+    const idUsuario = req.usuario?.id_usuario;
+
+    if (!idUsuario) {
+        return res.status(401).json({ message: "Usuário não autenticado" });
+    }
+
+    try {
+        const avatares = await findAvataresUsuarioService(idUsuario);
+        return res.status(200).json(avatares);
+    } catch (error) {
+        console.error("Erro em getMeusAvataresController:", error);
+        return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
+// ============================================================================
+// CONTROLLER: EQUIPAR AVATAR (PUT /avatar/equipar)
+// ============================================================================
+async function equiparAvatarController(req, res) {
+    const idUsuario = req.usuario?.id_usuario;
+    const { id_avatar } = req.body;
+
+    if (!idUsuario) {
+        return res.status(401).json({ message: "Usuário não autenticado" });
+    }
+
+    if (!id_avatar) {
+        return res.status(400).json({ message: "ID do avatar é obrigatório" });
+    }
+
+    try {
+        await equiparAvatarUsuarioService(idUsuario, id_avatar);
+        return res.status(200).json({ message: "Avatar equipado com sucesso" });
+    } catch (error) {
+        if (error.message === "Avatar não desbloqueado") {
+            return res.status(403).json({ message: error.message });
+        }
+        console.error("Erro em equiparAvatarController:", error);
+        return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
+// ============================================================================
 // EXPORTAÇÕES
 // ============================================================================
 module.exports = {
@@ -202,4 +315,9 @@ module.exports = {
     updateNomeController,
     updateEmailController,
     updateSenhaController,
+    getAvatarController,
+    updateAvatarController,
+    getAvataresDisponiveisController,
+    getMeusAvataresController,
+    equiparAvatarController
 };

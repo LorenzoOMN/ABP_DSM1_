@@ -1,214 +1,180 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../assets/css/main.css" />
 
-    <title>Perfil</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/perfil.css" />
+  <title>Perfil</title>
+</head>
 
-    <link rel="stylesheet" href="/assets/css/perfil.css" />
-  </head>
+<body>
+  <%- include('./partials/header') %>
+    <%- include('./partials/botao_voltar') %>
+      <%- include('./partials/alert') %>
 
-  <body>
-    <%- include('./partials/header') %> <%- include('./partials/botao_voltar')
-    %> <%- include('./partials/alert') %>
+        <main class="perfil-container">
+          <section class="livro-perfil">
 
-<main class="perfil-container">
+            <!-- PÁGINA ESQUERDA: Perfil + Estatísticas -->
+            <div class="pagina-esquerda">
+              <h1 class="titulo-pagina">Perfil do Jogador</h1>
 
-    <section class="livro-perfil">
+              <!-- Avatar e Dados Básicos -->
+              <div class="area-perfil">
+                <div class="avatar-wrapper" id="avatarContainer">
+                  <img id="avatarImg" src="/assets/img/perfil/icones/corvo.png" alt="Avatar" class="avatar-img">
+                  <div class="avatar-border"></div>
+                </div>
 
+                <div class="dados-usuario">
+                  <h3 id="nomeUsuario">Carregando...</h3>
+                  <span id="emailUsuario">Carregando...</span>
 
-        <!-- ESQUERDA -->
+                  <div class="modulo-box">
+                    <span>Módulo Atual:</span>
+                    <strong id="capituloAtual">-</strong>
+                  </div>
+                </div>
+              </div>
 
-        <h1 class="perfil-titulo">
-            Perfil do Jogador
-        </h1>
+              <!-- Estatísticas Principais -->
+              <div class="stats-box">
+                <h4 class="stats-titulo">Suas Estatísticas</h4>
+                <div class="stats-grid">
+                  <div class="stat-item">
+                    <span class="stat-valor" id="totalQuestoes">0</span>
+                    <span class="stat-label">Questões</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-valor" id="taxaAcerto">0%</span>
+                    <span class="stat-label">Acertos</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-valor" id="streakDias">0</span>
+                    <span class="stat-label">Dias Seguidos</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-valor" id="tempoMedio">0s</span>
+                    <span class="stat-label">Tempo Médio</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
- <div class="avatar-container">
+            <!-- PÁGINA DIREITA: Abas -->
+            <div class="pagina-direita">
+              <h1 class="titulo-pagina">Jornada</h1>
 
-    <div class="avatar-imagem"></div>
+              <!-- Sistema de Abas -->
+              <div class="abas-container">
+                <div class="abas-header">
+                  <button class="aba-btn ativa" data-aba="configuracoes">Ajustes</button>
+                  <button class="aba-btn" data-aba="ranking">Ranking</button>
+                  <button class="aba-btn" data-aba="historico">Histórico</button>
+                  <button class="aba-btn" data-aba="conta">Conta</button>
+                </div>
 
-    <img
-        src="/assets/img/stone_frame.png"
-        alt=""
-        class="avatar-moldura"
-    >
+                <!-- ABA: Configurações -->
+                <div class="aba-conteudo ativa" id="aba-configuracoes">
+                  <div class="lista-configuracoes">
+                    <div class="item-config">
+                      <span>Música</span>
+                      <div id="toggleMusica" class="toggle"></div>
+                    </div>
+                    <div class="item-config">
+                      <span>Efeitos Sonoros</span>
+                      <div id="toggleEfeitos" class="toggle"></div>
+                    </div>
+                    <div class="">
+                      <a id="botaoDev" class="adm-link" href="/admin">
+                        <span class="adm-icon">⚙️</span>
+                        <span class="adm-texto">Painel Administrativo</span>
+                        <span class="adm-seta">→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
 
-</div>
+                <!-- ABA: Ranking -->
+                <div class="aba-conteudo" id="aba-ranking">
+                  <div class="ranking-box">
+                    <div class="ranking-destaque">
+                      <div class="ranking-posicao" id="minhaPosicao">#-</div>
+                      <div class="ranking-info">
+                        <strong>Sua Posição</strong>
+                        <span id="rankingTotal">de - jogadores</span>
+                      </div>
+                    </div>
+                    <div class="ranking-top">
+                      <h4>Top 5 Aventureiros</h4>
+                      <ul id="listaRanking" class="ranking-lista">
+                        <!-- Preenchido via JS -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
 
-</div>
+                <!-- ABA: Histórico -->
+                <div class="aba-conteudo" id="aba-historico">
+                  <div class="historico-box">
+                    <h4>Atividades Recentes</h4>
+                    <ul id="listaHistorico" class="historico-lista">
+                      <!-- Preenchido via JS -->
+                    </ul>
+                  </div>
+                </div>
 
+                <!-- ABA: Conta (NOVA) -->
+                <div class="aba-conteudo" id="aba-conta">
+                  <div class="conta-box-aba">
+                    <h4 class="stats-titulo">Dados da Conta</h4>
+                    <div class="conta-info-aba">
+                      <div class="conta-item-aba">
+                        <div class="conta-icon">📅</div>
+                        <div class="conta-detalhes">
+                          <span class="conta-label">Membro desde</span>
+                          <span class="conta-valor" id="dataCadastro">-</span>
+                        </div>
+                      </div>
 
-</div>
+                      <div class="conta-item-aba">
+                        <div class="conta-icon">🕐</div>
+                        <div class="conta-detalhes">
+                          <span class="conta-label">Último acesso</span>
+                          <span class="conta-valor" id="ultimoAcesso">-</span>
+                        </div>
+                      </div>
 
-</div>
+                      <div class="conta-item-aba">
+                        <div class="conta-icon">⏱️</div>
+                        <div class="conta-detalhes">
+                          <span class="conta-label">Tempo total na plataforma</span>
+                          <span class="conta-valor" id="tempoTotal">-</span>
+                        </div>
+                      </div>
 
-</div>
+                      <div class="conta-item-aba">
+                        <div class="conta-icon">📧</div>
+                        <div class="conta-detalhes">
+                          <span class="conta-label">E-mail cadastrado</span>
+                          <span class="conta-valor" id="emailConta">-</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <span
-            id="nomeUsuario"
-            class="nome-usuario"
-        >
-            Carregando...
-        </span>
+          </section>
+        </main>
 
-        <span
-            id="emailUsuario"
-            class="email-usuario"
-        >
-            Carregando...
-        </span>
+        <script src="/assets/js/audio.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/perfil.js"></script>
+        <%- include('./partials/navegacao_inferior') %>
+</body>
 
-        <div class="modulo-container">
-
-            <span class="label">
-                 Módulo Atual:
-            </span>
-
-            <span id="capituloAtual">
-                -
-            </span>
-
-        </div>
-
-        <!-- DIREITA -->
-
-        <h2 class="config-titulo">
-            Configurações
-        </h2>
-
-        <span class="texto-musica">
-            Música
-        </span>
-
-        <div
-            id="toggleMusica"
-            class="toggle-audio"
-        ></div>
-
-        <span class="texto-efeitos">
-            Efeitos Sonoros
-        </span>
-
-        <div
-            id="toggleEfeitos"
-            class="toggle-audio"
-        ></div>
-
-        <a id="botaoDev" class="botao-dev" href="/admin">
-            <img
-                src="/assets/img/botao_adm.png"
-                alt="Botão ADM"
-                class="botao-dev-img"
-                  draggable="false"
-            >
-        </a>
-    </section>
-
-</main>
-
-    <script>
-      let musicaAtiva = true;
-      let efeitosAtivos = true;
-
-      async function carregarPerfil() {
-        try {
-          const token = localStorage.getItem("token");
-
-          const response = await fetch("/api/perfil", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          const usuario = await response.json();
-
-          console.log(usuario);
-
-          document.getElementById("nomeUsuario").textContent =
-            usuario.nome ?? "-";
-
-          document.getElementById("emailUsuario").textContent =
-            usuario.email ?? "-";
-
-          document.getElementById("capituloAtual").textContent =
-            usuario.progresso?.modulo_desafio_atual ?? "-";
-
-          musicaAtiva = usuario.musica_ativa ?? true;
-          efeitosAtivos = usuario.efeitos_ativos ?? true;
-
-          localStorage.setItem("musicaAtiva", musicaAtiva);
-          localStorage.setItem("efeitosAtivos", efeitosAtivos);
-
-          atualizarToggles();
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      function atualizarToggles() {
-        const musica = document.getElementById("toggleMusica");
-
-        const efeitos = document.getElementById("toggleEfeitos");
-
-        musica.classList.toggle("desativado", !musicaAtiva);
-
-        efeitos.classList.toggle("desativado", !efeitosAtivos);
-      }
-
-      async function salvarConfiguracoes() {
-        try {
-          const token = localStorage.getItem("token");
-
-          await fetch("/api/perfil/configuracoes", {
-            method: "PUT",
-
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-
-            body: JSON.stringify({
-              musica_ativa: musicaAtiva,
-              efeitos_ativos: efeitosAtivos,
-            }),
-          });
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      document
-        .getElementById("toggleMusica")
-        .addEventListener("click", async () => {
-          musicaAtiva = !musicaAtiva;
-
-          localStorage.setItem("musicaAtiva", musicaAtiva);
-
-          atualizarToggles();
-
-          await salvarConfiguracoes();
-        });
-
-      document
-        .getElementById("toggleEfeitos")
-        .addEventListener("click", async () => {
-          efeitosAtivos = !efeitosAtivos;
-
-          localStorage.setItem("efeitosAtivos", efeitosAtivos);
-
-          atualizarToggles();
-
-          await salvarConfiguracoes();
-        });
-
-      carregarPerfil();
-    </script>
-    <script src="../assets/js/audio.js"></script>
-    <script src="../assets/js/main.js"></script>
-
-    <%- include('./partials/navegacao_inferior') %>
-  </body>
 </html>
