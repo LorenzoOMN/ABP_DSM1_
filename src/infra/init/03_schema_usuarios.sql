@@ -41,7 +41,7 @@ CREATE INDEX IF NOT EXISTS idx_usuarios_avatar
   ON public.usuarios (avatar)
   WHERE avatar IS NOT NULL;
 
--- Define SEU usuário como admin
-INSERT INTO public.usuarios (nome, email, cpf, senha, is_admin)
-VALUES ('44', '44@44', '44444444444', '444444', true)
-ON CONFLICT (email) DO NOTHING;
+-- -- Define SEU usuário como admin
+-- INSERT INTO public.usuarios (nome, email, cpf, senha, is_admin)
+-- VALUES ('44', '44@44', '44444444444', '444444', true)
+-- ON CONFLICT (email) DO NOTHING;
