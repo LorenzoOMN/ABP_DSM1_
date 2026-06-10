@@ -1164,6 +1164,31 @@ blockquote {
   }
 }
 
+@media (max-width: 768px) {
+  .runas-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    justify-items: center;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .runa-btn {
+    width: min(112px, 32vw);
+  }
+
+  .runa-btn img {
+    width: 100%;
+    max-width: 112px;
+  }
+
+  #manifesto .info-card {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 body {
   background: #090908;
 }
@@ -1175,25 +1200,44 @@ body {
 
 @media (max-width: 768px) {
   .pilares-scene {
-    min-height: 280px;
+    min-height: 10px;
+  }
+
+  .pilar-btn img {
+    height: clamp(115px, 33vw, 150px);
   }
 
   .pilar-transparencia {
-    left: 6%;
-    bottom: 55%;
-    width: 24%;
+    left: 25%;
+    right: auto;
+    bottom: 53%;
+    width: auto;
+    transform: translateX(-50%);
   }
 
   .pilar-inspecao {
-    left: 35%;
-    bottom: 50%;
-    width: 19%;
+    left: 50%;
+    bottom: 53%;
+    width: auto;
+    transform: translateX(-50%);
   }
 
   .pilar-adaptacao {
-    right: 15%;
-    bottom: 55%;
-    width: 24%;
+    left: 75%;
+    right: auto;
+    bottom: 53%;
+    width: auto;
+    transform: translateX(-50%);
+  }
+
+  .pilar-btn:hover,
+  .pilar-btn:focus,
+  .pilar-btn:active {
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  #pilares .info-card {
+    margin-top: -2.25rem;
   }
 }
 
@@ -1254,8 +1298,17 @@ body {
 
 @media (max-width: 768px) {
   .story-block {
+    width: calc(100% - 1.5rem);
+    max-width: calc(100vw - 1.5rem);
     padding-left: clamp(1.2rem, 4vw, 2rem);
+    padding-right: clamp(1.2rem, 4vw, 2rem);
     padding-top: 6.5rem;
+    overflow: hidden;
+  }
+
+  .story-text h2 {
+    white-space: normal;
+    overflow-wrap: break-word;
   }
 
   .story-side-icon {
