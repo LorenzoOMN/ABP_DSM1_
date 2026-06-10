@@ -235,6 +235,40 @@ function restaurarEntradaCapitulo5() {
   }
 }
 
+const somArtefatos = new Audio("/assets/audio/artefatos.mp3");
+
+function tocarSomArtefatos() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/artefatos.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somConflito = new Audio("/assets/audio/conflito.mp3");
+
+function tocarSomConflito() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/conflito.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 async function concluirHistoria() {
   const token = obterToken();
 
@@ -1614,6 +1648,7 @@ function configurarDesafioStakeholder() {
   }
 
   btnIniciarStakeholder.addEventListener("click", () => {
+    tocarSomConflito();
     stakeholderTurnosWrap.classList.remove("hidden");
     stakeholderTurnosWrap.scrollIntoView({
       behavior: "smooth",

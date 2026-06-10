@@ -71,6 +71,23 @@ function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0, intro
   };
 }
 
+const somSino = new Audio("/assets/audio/sino.mp3");
+
+function tocarSomSino() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/sino.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function obterToken() {
   const token = localStorage.getItem("token");
 
@@ -1061,6 +1078,7 @@ function configurarPipelineDecisoes() {
 
   actionButtons.forEach((button) => {
     button.addEventListener("click", () => {
+      tocarSomSino()
       if (!started) {
         startPipelineGame();
         return;
