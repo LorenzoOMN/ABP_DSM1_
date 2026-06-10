@@ -352,6 +352,15 @@ function atualizarAlturaHeader() {
   );
 }
 
+function atualizarAlturasFixas() {
+  atualizarAlturaFooter();
+  atualizarAlturaHeader();
+}
+
+function agendarAtualizacaoAlturas() {
+  window.requestAnimationFrame(atualizarAlturasFixas);
+}
+
 /* =========================================================
  CONTROLE GLOBAL DE NAVEGAÇÃO
 ========================================================= */
@@ -396,8 +405,7 @@ function voltarPagina() {
 
 // Quando a página termina de carregar
 window.addEventListener("load", () => {
-  atualizarAlturaFooter();
-  atualizarAlturaHeader();
+  agendarAtualizacaoAlturas();
 
   if (typeof marcarItemAtivoDaNavegacaoInferior === "function") {
     marcarItemAtivoDaNavegacaoInferior();
@@ -405,9 +413,7 @@ window.addEventListener("load", () => {
 });
 
 // Quando a tela é redimensionada
-window.addEventListener("resize", atualizarAlturaFooter);
-
-window.addEventListener("resize", atualizarAlturaHeader);
+window.addEventListener("resize", agendarAtualizacaoAlturas);
 
 /* =========================================================
    NAVBAR PERMANENTE — CONTROLE POR USUÁRIO
@@ -484,9 +490,6 @@ document.addEventListener("DOMContentLoaded", controlarVisibilidadeNavbar);
 
 /*========FUNÇAO LOGOUT===========*/
 document.addEventListener("DOMContentLoaded", async () => {
-  atualizarAlturaFooter();
-  atualizarAlturaHeader();
-
   await controlarVisibilidadeNavbar();
 
   if (typeof controlarSobreposicaoNavbarFooter === "function") {
@@ -675,9 +678,8 @@ async function desbloquearNavbarNoBackend() {
 window.desbloquearNavbarNoBackend = desbloquearNavbarNoBackend;
 
 // Inicialização automática da navbar em todas as páginas
-(async function inicializarNavbarGlobal() {
-  atualizarAlturaFooter();
-  atualizarAlturaHeader();
+window.addEventListener("load", async () => {
+  agendarAtualizacaoAlturas();
   await controlarVisibilidadeNavbar();
 
   const navbar = document.querySelector(".navegacao-inferior");
@@ -688,7 +690,7 @@ window.desbloquearNavbarNoBackend = desbloquearNavbarNoBackend;
   window.addEventListener("popstate", async () => {
     await controlarVisibilidadeNavbar();
   });
-})();
+});
 
 function mostrarModalNavbarDesbloqueada() {
   const modal = document.getElementById("navbarUnlockModal");

@@ -22,6 +22,7 @@ function limparFechamentoPendente() {
         timeoutFechamento = null;
     }
     fechandoPainel = false;
+    painelAuth.classList.remove("abrindo");
     painelAuth.classList.remove("fechando");
     painelAuth.removeEventListener("animationend", finalizarFechamento);
 }
@@ -33,10 +34,8 @@ function abrirPainel(tipo) {
     painelAuth.style.display = "block";
     overlayEscuro.style.display = "block";
     painelAuth.setAttribute("aria-hidden", "false");
-    
-    // Força o reflow para reiniciar a animação se necessário
-    void painelAuth.offsetWidth;
-
+    overlayEscuro.setAttribute("aria-hidden", "false");
+    painelAuth.classList.add("abrindo");
     if (tipo === "login") {
         formLogin.style.display = "flex";
         formCadastro.style.display = "none";
@@ -54,7 +53,7 @@ function fecharPainel(event) {
     }
     
     // Se já está fechando ou já está escondido, não faz nada
-    if (fechandoPainel || getComputedStyle(painelAuth).display === "none") {
+    if (fechandoPainel || painelAuth.getAttribute("aria-hidden") === "true") {
         return;
     }
 
@@ -90,8 +89,10 @@ function finalizarFechamento() {
     painelAuth.style.display = "none";
     overlayEscuro.style.display = "none";
     painelAuth.setAttribute("aria-hidden", "true");
+    overlayEscuro.setAttribute("aria-hidden", "true");
     
     // Limpa estados
+    painelAuth.classList.remove("abrindo");
     painelAuth.classList.remove("fechando");
     fechandoPainel = false;
 }
