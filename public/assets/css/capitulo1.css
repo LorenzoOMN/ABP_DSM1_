@@ -1164,6 +1164,15 @@ blockquote {
   }
 }
 
+body {
+  background: #090908;
+}
+
+.capitulo-page {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 @media (max-width: 768px) {
   .pilares-scene {
     min-height: 280px;
@@ -1189,12 +1198,37 @@ blockquote {
 }
 
 @media (max-width: 768px) {
+  header,
+  .header_conteudo,
+  .capitulo-page,
+  .capitulo-hero {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .chapter-progress-wrap {
+    padding: 0.65rem 0;
+  }
+
+  .chapter-progress-wrap.is-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    z-index: 1000;
+    background: transparent;
+    backdrop-filter: none;
+    overflow: hidden;
+  }
+
   .chapter-progress {
     justify-content: flex-start;
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-
+    border-radius: 14px;
+    padding: 0.7rem 0.85rem;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -1206,17 +1240,6 @@ blockquote {
   .progress-item {
     flex: 0 0 auto;
     min-width: 82px;
-  }
-}
-
-@media (max-width: 768px) {
-  .chapter-progress-wrap {
-    padding: 0.65rem 0;
-  }
-
-  .chapter-progress {
-    border-radius: 14px;
-    padding: 0.7rem 0.85rem;
   }
 
   .progress-item img {
