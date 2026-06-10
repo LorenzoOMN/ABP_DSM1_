@@ -33,7 +33,7 @@
   position: relative;
   isolation: isolate;
   min-height: calc(100vh - 140px);
-  padding: clamp(76px, 8vw, 104px) clamp(14px, 2.6vw, 34px) 86px;
+  padding: clamp(70px, 7.4vw, 96px) clamp(14px, 2.4vw, 30px) 82px;
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(5, 4, 3, 0.06), rgba(5, 4, 3, 0.7)),
@@ -62,12 +62,12 @@
 
 .burningdown-container .burningdown-header,
 .burningdown-container .burningdown-content {
-  width: min(1100px, 100%);
+  width: min(1040px, 100%);
   margin-inline: auto;
 }
 
 .burningdown-container .burningdown-header {
-  margin-bottom: clamp(20px, 3vw, 30px);
+  margin-bottom: clamp(18px, 2.6vw, 26px);
 }
 
 .burningdown-container .title-box {
@@ -85,7 +85,7 @@
   border-radius: 8px;
   color: #f7eed9;
   font-family: "Cinzel", serif;
-  font-size: clamp(1.65rem, 3.4vw, 2.85rem);
+  font-size: clamp(1.55rem, 3vw, 2.55rem);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.26), 0 10px 24px rgba(0, 0, 0, 0.48);
@@ -117,7 +117,7 @@
 
 .burningdown-container .burningdown-content {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(300px, 0.88fr);
+  grid-template-columns: minmax(270px, 0.96fr) minmax(292px, 0.86fr);
   align-items: stretch;
   gap: clamp(16px, 2.4vw, 26px);
 }
@@ -131,7 +131,7 @@
 }
 
 .burningdown-container .burningdown-left {
-  min-height: clamp(420px, 42vw, 500px);
+  min-height: clamp(390px, 38vw, 460px);
   display: grid;
   place-items: center;
   padding: clamp(18px, 3vw, 32px);
@@ -139,7 +139,7 @@
 
 .burningdown-container .fogueira-card {
   position: relative;
-  width: min(450px, 100%);
+  width: min(400px, 100%);
   display: grid;
   justify-items: center;
   gap: 12px;
@@ -176,7 +176,7 @@
 }
 
 .burningdown-container .fogueira-card img {
-  width: min(430px, 100%);
+  width: min(385px, 100%);
   height: auto;
   display: block;
   object-fit: contain;
@@ -240,7 +240,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 15px 18px;
+  padding: 13px 16px;
   font-family: "Cinzel", serif;
   font-size: clamp(0.82rem, 1vw, 0.94rem);
   letter-spacing: 0.04em;
@@ -345,14 +345,14 @@
 }
 
 .burningdown-container .stats-box {
-  padding: 16px 18px;
+  padding: 14px 16px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
 .burningdown-container .stat {
-  min-height: 76px;
+  min-height: 70px;
   display: grid;
   align-content: center;
   gap: 6px;
@@ -396,8 +396,8 @@
 
 .burningdown-container .btn-retomar {
   width: calc(100% - 36px);
-  min-height: 48px;
-  margin: 18px;
+  min-height: 46px;
+  margin: 16px 18px;
   display: flex;
   justify-content: center;
   align-items: center;

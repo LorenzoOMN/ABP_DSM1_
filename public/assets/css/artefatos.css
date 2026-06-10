@@ -51,7 +51,7 @@ button {
   position: relative;
   isolation: isolate;
   min-height: calc(100vh - 140px);
-  padding: clamp(76px, 8.5vw, 108px) clamp(14px, 2.5vw, 26px) 96px;
+  padding: clamp(70px, 7.6vw, 96px) clamp(14px, 2.4vw, 24px) 88px;
   overflow: hidden;
   background:
     radial-gradient(760px 420px at 30% 34%, rgba(255, 138, 31, 0.12), transparent 72%),
@@ -90,15 +90,15 @@ button {
 
 .section-title-box,
 .artefatos-content {
-  width: min(1120px, 100%);
+  width: min(1060px, 100%);
   margin-inline: auto;
 }
 
 .section-title-box {
   display: grid;
   justify-items: start;
-  gap: 10px;
-  margin-bottom: clamp(20px, 3vw, 30px);
+  gap: 9px;
+  margin-bottom: clamp(18px, 2.6vw, 26px);
   text-align: left;
 }
 
@@ -130,7 +130,7 @@ button {
   padding: clamp(0.72rem, 1.2vw, 0.88rem) clamp(1rem, 1.8vw, 1.24rem);
   border: 1px solid var(--sd-border);
   border-radius: 8px;
-  font-size: clamp(1.65rem, 3.5vw, 2.9rem);
+  font-size: clamp(1.55rem, 3vw, 2.55rem);
   background:
     linear-gradient(180deg, rgba(30, 23, 16, 0.84), rgba(8, 7, 5, 0.94)),
     radial-gradient(circle at top, rgba(214, 173, 53, 0.16), transparent 58%);
@@ -159,8 +159,8 @@ button {
 
 .artefatos-content {
   display: grid;
-  grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.08fr);
-  gap: clamp(16px, 2.4vw, 26px);
+  grid-template-columns: minmax(286px, 0.9fr) minmax(0, 1fr);
+  gap: clamp(14px, 2.1vw, 22px);
   align-items: stretch;
 }
 
@@ -174,11 +174,11 @@ button {
 }
 
 .artefatos-left {
-  min-height: clamp(500px, 43vw, 620px);
+  min-height: clamp(450px, 38vw, 560px);
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
   gap: clamp(14px, 2vw, 20px);
-  padding: clamp(18px, 3vw, 32px);
+  padding: clamp(16px, 2.5vw, 26px);
   overflow: hidden;
 }
 
@@ -227,8 +227,8 @@ button {
 .side-image img {
   position: relative;
   z-index: 1;
-  width: min(430px, 100%);
-  max-height: clamp(260px, 34vw, 420px);
+  width: min(380px, 100%);
+  max-height: clamp(230px, 30vw, 360px);
   display: block;
   object-fit: contain;
   filter:
@@ -241,7 +241,7 @@ button {
   position: relative;
   display: grid;
   gap: 8px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border: 1px solid rgba(214, 173, 53, 0.24);
   border-radius: 8px;
   background:
@@ -264,8 +264,8 @@ button {
 .artefatos-right {
   display: grid;
   align-content: start;
-  gap: 12px;
-  padding: clamp(16px, 2.4vw, 22px);
+  gap: 10px;
+  padding: clamp(14px, 2.1vw, 20px);
   overflow: hidden;
 }
 
@@ -274,9 +274,9 @@ button {
 }
 
 .artefato-title {
-  min-height: 2.2rem;
+  min-height: 2rem;
   color: var(--sd-gold-light);
-  font-size: clamp(1.05rem, 2vw, 1.55rem);
+  font-size: clamp(1rem, 1.7vw, 1.38rem);
   text-align: center;
 }
 
@@ -288,8 +288,8 @@ button {
 }
 
 .carousel-arrow {
-  width: 42px;
-  height: 50px;
+  width: 38px;
+  height: 46px;
   display: grid;
   place-items: center;
   padding: 0;
@@ -319,7 +319,7 @@ button {
 .carousel-frame {
   position: relative;
   width: 100%;
-  max-width: 420px;
+  max-width: 380px;
   aspect-ratio: 4 / 3;
   margin: 0 auto;
   display: grid;
@@ -443,10 +443,10 @@ button {
 
 .artefato-description {
   position: relative;
-  height: clamp(210px, 24vw, 260px);
+  height: clamp(190px, 21vw, 235px);
   margin-top: 2px;
-  padding: 16px 18px;
-  padding-right: 22px;
+  padding: 14px 16px;
+  padding-right: 20px;
   overflow-y: auto;
   scrollbar-gutter: stable;
   border: 1px solid rgba(214, 173, 53, 0.28);

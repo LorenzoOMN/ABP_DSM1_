@@ -31,7 +31,7 @@
   isolation: isolate;
   min-height: calc(100vh - var(--header-height, 72px));
   margin: 0;
-  padding: clamp(72px, 7vw, 96px) clamp(14px, 2.5vw, 26px) 110px;
+  padding: clamp(66px, 6.4vw, 88px) clamp(14px, 2.2vw, 24px) 96px;
   overflow: hidden;
   background:
     radial-gradient(720px 380px at 72% 18%, rgba(139, 77, 255, 0.16), transparent 72%),
@@ -67,12 +67,12 @@
 }
 
 .pagina-questionario .tela {
-  width: min(1040px, 100%);
+  width: min(1020px, 100%);
   margin: 0 auto;
   position: relative;
   z-index: 1;
   display: grid;
-  gap: clamp(12px, 1.8vw, 18px);
+  gap: clamp(10px, 1.5vw, 16px);
   opacity: 1;
   transform: scale(1);
 }
@@ -95,14 +95,14 @@
 }
 
 .pagina-questionario .boss-box {
-  padding: clamp(14px, 2vw, 20px);
+  padding: clamp(12px, 1.8vw, 18px);
 }
 
 .pagina-questionario .boss-conteudo {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(120px, 180px);
+  grid-template-columns: minmax(0, 1fr) minmax(112px, 160px);
   align-items: center;
-  gap: clamp(14px, 2.6vw, 26px);
+  gap: clamp(12px, 2vw, 22px);
 }
 
 .pagina-questionario .boss-info {
@@ -124,10 +124,10 @@
 }
 
 .pagina-questionario .boss-nome {
-  margin: 0.35rem 0 0.85rem;
+  margin: 0.3rem 0 0.72rem;
   color: #fff0ca;
   font-family: "Cinzel", serif;
-  font-size: clamp(1.25rem, 2.4vw, 2rem);
+  font-size: clamp(1.18rem, 2.05vw, 1.72rem);
   line-height: 1.08;
   text-shadow: 0 0 18px rgba(255, 187, 51, 0.16);
 }
@@ -141,7 +141,7 @@
 
 .pagina-questionario .boss-hp-barra {
   width: 100%;
-  height: clamp(14px, 1.6vw, 18px);
+  height: clamp(12px, 1.35vw, 16px);
   overflow: hidden;
   border: 1px solid rgba(255, 174, 0, 0.28);
   border-radius: 999px;
@@ -170,7 +170,7 @@
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 132px;
+  min-height: 118px;
 }
 
 .pagina-questionario .boss-imagem-area::before {
@@ -188,7 +188,7 @@
 .pagina-questionario .boss-imagem {
   position: relative;
   z-index: 1;
-  width: clamp(110px, 13vw, 160px);
+  width: clamp(100px, 11vw, 138px);
   display: block;
   image-rendering: pixelated;
   filter:
@@ -210,12 +210,12 @@
 }
 
 .pagina-questionario .battle-status {
-  margin-top: 14px;
+  margin-top: 12px;
   display: grid;
   grid-template-columns: minmax(130px, auto) minmax(180px, 1fr) auto;
   align-items: center;
-  gap: 12px;
-  padding-top: 14px;
+  gap: 10px;
+  padding-top: 12px;
   border-top: 1px solid rgba(214, 173, 53, 0.18);
 }
 
@@ -251,8 +251,8 @@
   position: absolute;
   inset: 0 auto 0 0;
   width: 0;
-  background: linear-gradient(90deg, var(--boss-gold-light), var(--boss-fire));
-  box-shadow: 0 0 12px rgba(255, 138, 31, 0.28);
+  background: linear-gradient(90deg, #6d2bd9, #a855f7);
+  box-shadow: 0 0 10px rgba(139, 77, 255, 0.35);
   transition: width 420ms ease;
 }
 
@@ -305,8 +305,8 @@
 
 .pagina-questionario .questao-box {
   display: grid;
-  gap: 0.78rem;
-  padding: clamp(16px, 2.2vw, 22px);
+  gap: 0.68rem;
+  padding: clamp(14px, 1.9vw, 20px);
   color: var(--boss-text);
   overflow: visible;
 }
@@ -331,7 +331,7 @@
   margin: 0;
   color: #f8edd6;
   font-family: "Source Serif 4", serif;
-  font-size: clamp(1rem, 1.65vw, 1.22rem);
+  font-size: clamp(0.96rem, 1.45vw, 1.12rem);
   line-height: 1.42;
   overflow-wrap: break-word;
 }
@@ -360,16 +360,16 @@
 .pagina-questionario .respostas {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(10px, 1.4vw, 14px);
+  gap: clamp(8px, 1.2vw, 12px);
 }
 
 .pagina-questionario .botaoresposta {
   width: 100%;
-  min-height: clamp(58px, 6vw, 70px);
+  min-height: clamp(54px, 5.4vw, 64px);
   display: flex;
   align-items: center;
   gap: 0.78rem;
-  padding: 0.7rem 0.9rem;
+  padding: 0.64rem 0.84rem;
   border: 1px solid rgba(214, 173, 53, 0.34);
   background:
     radial-gradient(circle at 18% 10%, rgba(255, 138, 31, 0.08), transparent 44%),
@@ -452,8 +452,8 @@
 }
 
 .pagina-questionario .confirmar {
-  width: min(360px, 100%);
-  min-height: 48px;
+  width: min(330px, 100%);
+  min-height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;

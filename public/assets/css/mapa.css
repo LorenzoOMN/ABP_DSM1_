@@ -79,7 +79,7 @@ button {
   position: relative;
   isolation: isolate;
   min-height: calc(100vh - 140px);
-  padding: clamp(76px, 8.5vw, 108px) clamp(14px, 2.5vw, 26px) 96px;
+  padding: clamp(70px, 7.5vw, 96px) clamp(14px, 2.4vw, 24px) 88px;
   background:
     linear-gradient(180deg, rgba(5, 4, 3, 0.18), rgba(5, 4, 3, 0.72)),
     linear-gradient(90deg, rgba(0, 0, 0, 0.46), transparent 28% 70%, rgba(0, 0, 0, 0.52)),
@@ -104,8 +104,8 @@ button {
 }
 
 .mapa-custom-2-header {
-  width: min(1040px, 100%);
-  margin: 0 auto clamp(1.25rem, 3vw, 2.2rem);
+  width: min(1000px, 100%);
+  margin: 0 auto clamp(1.1rem, 2.6vw, 1.9rem);
   display: grid;
   justify-items: start;
   gap: 12px;
@@ -120,7 +120,7 @@ button {
   border-radius: 8px;
   color: #f7eed9;
   font-family: "Cinzel", serif;
-  font-size: clamp(1.65rem, 3.5vw, 2.9rem);
+  font-size: clamp(1.55rem, 3vw, 2.55rem);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.26), 0 10px 24px rgba(0, 0, 0, 0.48);
@@ -151,11 +151,11 @@ button {
 }
 
 .mapa-shell {
-  width: min(1180px, 100%);
+  width: min(1120px, 100%);
   margin: 0 auto;
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 258px);
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 244px);
   gap: clamp(0.9rem, 1.7vw, 1.2rem);
   align-items: stretch;
   overflow: visible;
@@ -172,7 +172,7 @@ button {
 .mapa-stage {
   position: relative;
   z-index: 2;
-  min-height: clamp(520px, 46vw, 640px);
+  min-height: clamp(490px, 43vw, 600px);
   overflow: visible;
 }
 
@@ -208,11 +208,11 @@ button {
   grid-template-areas:
     "porta1 . porta2 . porta3"
     ". porta4 . porta5 .";
-  grid-template-columns: repeat(5, minmax(88px, 132px));
+  grid-template-columns: repeat(5, minmax(82px, 124px));
   justify-items: center;
   justify-content: center;
   align-content: center;
-  gap: clamp(12px, 2vw, 24px) clamp(6px, 1vw, 12px);
+  gap: clamp(10px, 1.8vw, 22px) clamp(5px, 0.9vw, 10px);
   padding: clamp(16px, 2.5vw, 28px);
 }
 
@@ -244,7 +244,7 @@ button {
 .certificado-botao {
   width: 100%;
   height: 100%;
-  min-height: 124px;
+  min-height: 116px;
   position: relative;
   display: grid;
   justify-items: center;
@@ -341,7 +341,7 @@ button {
 }
 
 .certificado-botao {
-  min-height: 132px;
+  min-height: 124px;
 }
 
 .certificado-imagem {
@@ -366,7 +366,7 @@ button {
 }
 
 .porta-card {
-  width: clamp(136px, 13vw, 176px);
+  width: clamp(130px, 12vw, 164px);
   min-height: 0;
   position: relative;
   z-index: 1;
@@ -479,8 +479,8 @@ button {
   position: relative;
   z-index: 1;
   display: block;
-  width: clamp(112px, 8vw, 146px);
-  height: clamp(160px, 11.6vw, 207px);
+  width: clamp(106px, 7.5vw, 136px);
+  height: clamp(152px, 10.8vw, 194px);
   background: center / contain no-repeat;
   filter: var(--mapa-door-shadow);
   transition: transform 200ms ease, filter 200ms ease;
