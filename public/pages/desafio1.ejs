@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/desafio1.css" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
   </head>
 
   <body class="pagina-desafio1">
@@ -17,11 +18,43 @@
       <section class="desafio1-wrapper">
         <header class="desafio1-title reveal-step step-1">
           <div class="title-box">
-            <h1>Capítulo 1: Boss Fight</h1>
+            <span>Entrada da arena</span>
+            <h1>Cap&iacute;tulo 1: Boss Fight</h1>
           </div>
         </header>
 
         <section class="boss-intro-card">
+          <div class="boss-briefing reveal-step step-3">
+            <span class="boss-kicker">Briefing do confronto</span>
+
+            <div class="boss-type-box">
+              <h3 id="bossName"></h3>
+              <p id="bossTypeText"></p>
+            </div>
+
+            <section class="rules-card reveal-step step-5">
+              <button class="rules-toggle" id="btnToggleRegras" type="button">
+                Regras do confronto
+              </button>
+
+              <div class="rules-content" id="rulesContent">
+                <ul>
+                  <li>Voc&ecirc; enfrentar&aacute; 10 quest&otilde;es.</li>
+                  <li>O desafio ter&aacute; tempo limite de 20 minutos.</li>
+                  <li>
+                    Ao sair antes do fim, o desafio poder&aacute; ser reiniciado
+                    futuramente.
+                  </li>
+                  <li>
+                    Quando o tempo acabar, quest&otilde;es n&atilde;o respondidas
+                    contar&atilde;o como erradas.
+                  </li>
+                  <li>Voc&ecirc; possui 2 tentativas para derrotar este boss.</li>
+                </ul>
+              </div>
+            </section>
+          </div>
+
           <div class="boss-image-frame reveal-step step-2">
             <img
               id="bossImage"
@@ -29,19 +62,6 @@
               alt="Boss do desafio"
               class="boss-scene-img"
             />
-          </div>
-
-          <div class="boss-type-box reveal-step step-3">
-            <h3
-              id="bossName"
-              style="
-                color: #f7e6aa;
-                text-align: center;
-                margin: 0 0 0.5rem 0;
-                font-size: 1.3rem;
-              "
-            ></h3>
-            <p id="bossTypeText"></p>
           </div>
         </section>
 
@@ -62,34 +82,12 @@
             ></div>
           </div>
         </section>
-
-        <section class="rules-card reveal-step step-5">
-          <button class="rules-toggle" id="btnToggleRegras" type="button">
-            Regras do confronto
-          </button>
-
-          <div class="rules-content" id="rulesContent">
-            <ul>
-              <li>Você enfrentará 10 questões.</li>
-              <li>O desafio terá tempo limite de 20 minutos.</li>
-              <li>
-                Ao sair antes do fim, o desafio poderá ser reiniciado
-                futuramente.
-              </li>
-              <li>
-                Quando o tempo acabar, questões não respondidas contarão como
-                erradas.
-              </li>
-              <li>Você possui 2 tentativas para derrotar este boss.</li>
-            </ul>
-          </div>
-        </section>
       </section>
     </main>
 
     <%- include('partials/footer') %>
-    <script src="../assets/js/audio.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/desafio1.js"></script>
+    <script src="/assets/js/audio.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/desafio1.js"></script>
   </body>
 </html>

@@ -640,74 +640,74 @@ function configurarPortaDesafio() {
  * Desbloqueia navbar ao rolar até o final do capítulo - VERSÃO DEBUG
  */
 function configurarDesbloqueioPorScroll() {
-  console.log("🔍 [DEBUG] configurarDesbloqueioPorScroll iniciado");
+  // console.log("configurarDesbloqueioPorScroll iniciado"); /*Descomente para ver o debug no console*/
 
   const secaoFinal = document.getElementById("porta");
 
   if (!secaoFinal) {
-    console.error("❌ [DEBUG] Elemento #porta NÃO encontrado!");
+    // console.error("[DEBUG] Elemento #porta NÃO encontrado!"); /*Descomente para ver o debug no console*/
     return;
   }
 
-  console.log("✅ [DEBUG] Elemento #porta encontrado:", secaoFinal);
+  // console.log("[DEBUG] Elemento #porta encontrado:", secaoFinal); /*Descomente para ver o debug no console*/
 
   // Verifica se funções do main.js estão disponíveis
   if (typeof usuarioConcluiuCapitulo1 !== "function") {
-    console.error(
-      "❌ [DEBUG] Função usuarioConcluiuCapitulo1 NÃO encontrada! main.js carregou depois?",
-    );
+    // console.error( 
+    //   "❌ [DEBUG] Função usuarioConcluiuCapitulo1 NÃO encontrada! main.js carregou depois?", /*Descomente para ver o debug no console*/
+    // );
   }
 
   if (typeof marcarCapitulo1Concluido !== "function") {
-    console.error(
-      "❌ [DEBUG] Função marcarCapitulo1Concluido NÃO encontrada! main.js carregou depois?",
-    );
+    // console.error(
+    //   "❌ [DEBUG] Função marcarCapitulo1Concluido NÃO encontrada! main.js carregou depois?", /*Descomente para ver o debug no console*/
+    // );
   }
 
   const observer = new IntersectionObserver(
     (entries) => {
-      console.log("👁️ [DEBUG] IntersectionObserver acionado:", entries);
+      // console.log("👁️ [DEBUG] IntersectionObserver acionado:", entries); /*Descomente para ver o debug no console*/
 
       // Verifica se já concluiu
       if (
         typeof usuarioConcluiuCapitulo1 === "function" &&
         usuarioConcluiuCapitulo1()
       ) {
-        console.log(
-          "✅ [DEBUG] Usuário já concluiu capítulo - observer desconectado",
-        );
+        // console.log(
+        //   "✅ [DEBUG] Usuário já concluiu capítulo - observer desconectado", /*Descomente para ver o debug no console*/
+        // );
         observer.disconnect();
         return;
       }
 
       entries.forEach((entry) => {
-        console.log("📊 [DEBUG] Entry:", {
-          isIntersecting: entry.isIntersecting,
-          intersectionRatio: entry.intersectionRatio,
-          target: entry.target.id,
-        });
+        // console.log("📊 [DEBUG] Entry:", {
+        //   isIntersecting: entry.isIntersecting,
+        //   intersectionRatio: entry.intersectionRatio,
+        //   target: entry.target.id,
+        // }); /*Descomente para ver o debug no console*/
 
         if (entry.isIntersecting) {
-          console.log(
-            "🎯 [DEBUG] Seção final visível! Desbloqueando navbar...",
-          );
+          // console.log(
+          //   "🎯 [DEBUG] Seção final visível! Desbloqueando navbar...",
+          // ); /*Descomente para ver o debug no console*/
 
           if (typeof marcarCapitulo1Concluido === "function") {
             marcarCapitulo1Concluido(); // localStorage
             desbloquearNavbarNoBackend().then((sucesso) => {
               if (sucesso) {
-                console.log("✅ [DEBUG] Navbar desbloqueada no backend");
+                // console.log("✅ [DEBUG] Navbar desbloqueada no backend"); /*Descomente para ver o debug no console*/
                 mostrarNavbarInferior(); // Mostra imediatamente
               }
             });
           } else {
-            console.error(
-              "❌ [DEBUG] marcarCapitulo1Concluido NÃO é uma função!",
-            );
+            // console.error(
+            //   "❌ [DEBUG] marcarCapitulo1Concluido NÃO é uma função!",
+            // ); /*Descomente para ver o debug no console*/
           }
 
           observer.disconnect();
-          console.log("🔌 [DEBUG] Observer desconectado após desbloqueio");
+          // console.log("🔌 [DEBUG] Observer desconectado após desbloqueio"); /*Descomente para ver o debug no console*/
         }
       });
     },
@@ -717,7 +717,7 @@ function configurarDesbloqueioPorScroll() {
   );
 
   observer.observe(secaoFinal);
-  console.log("👁️ [DEBUG] Observer observando elemento #porta");
+  // console.log("👁️ [DEBUG] Observer observando elemento #porta"); /*Descomente para ver o debug no console*/
 }
 
 // Exemplo: quando completar o capítulo

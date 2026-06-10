@@ -110,7 +110,7 @@ if (formLoginPopup) {
 
       const data = await response.json();
 
-      console.log(data);
+      // console.log(data); /*Descomente para ver o debug no console*/
 
       if (!response.ok) {
         mostrarAlerta(data.message || "Erro ao fazer login", "erro");

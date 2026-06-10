@@ -1,5 +1,6 @@
 const ID_MODULO = 3;
 const SCROLL_OFFSET = 150;
+let historiaConcluida = false;
 
 function obterToken() {
   const token = localStorage.getItem("token");
@@ -105,6 +106,39 @@ function configurarProgressoVisual() {
   secoes.forEach((secao) => observer.observe(secao));
 }
 
+function configurarBarraProgressoResponsiva() {
+  const barra = document.querySelector(".chapter-progress-wrap");
+
+  if (!barra) return;
+
+  const espaco = document.createElement("div");
+  barra.before(espaco);
+
+  function atualizarBarra() {
+    const mobile = window.innerWidth <= 768;
+
+    if (!mobile) {
+      barra.classList.remove("is-fixed");
+      espaco.style.height = "";
+      return;
+    }
+
+    if (!barra.classList.contains("is-fixed")) {
+      espaco.style.height = "";
+    }
+
+    const limite = espaco.getBoundingClientRect().top + window.scrollY;
+    const fixa = window.scrollY >= limite;
+
+    espaco.style.height = fixa ? `${barra.offsetHeight}px` : "";
+    barra.classList.toggle("is-fixed", fixa);
+  }
+
+  window.addEventListener("scroll", atualizarBarra, { passive: true });
+  window.addEventListener("resize", atualizarBarra);
+  atualizarBarra();
+}
+
 function configurarDailyBook() {
   const dailyBook = document.querySelector(".daily-book");
 
@@ -145,6 +179,43 @@ function configurarFogueiraBurningdown() {
     sessionStorage.setItem("retornoBurningdown", "/capitulo3#fogueira");
 
     window.location.href = "/burningdown";
+  });
+}
+
+function definirPortalLiberado(liberado) {
+  historiaConcluida = liberado;
+
+  const portal = document.getElementById("portalScene");
+  const linkPortal = document.querySelector(".ampulheta-link");
+
+  if (portal) {
+    portal.classList.toggle("is-locked", !liberado);
+  }
+
+  if (!linkPortal) return;
+
+  if (liberado) {
+    linkPortal.href = linkPortal.dataset.href || "/desafio3";
+    linkPortal.removeAttribute("aria-disabled");
+    linkPortal.removeAttribute("tabindex");
+  } else {
+    linkPortal.removeAttribute("href");
+    linkPortal.setAttribute("aria-disabled", "true");
+    linkPortal.setAttribute("tabindex", "-1");
+  }
+}
+
+function configurarPortalDoDesafio() {
+  definirPortalLiberado(false);
+
+  const linkPortal = document.querySelector(".ampulheta-link");
+
+  if (!linkPortal) return;
+
+  linkPortal.addEventListener("click", (event) => {
+    if (historiaConcluida) return;
+
+    event.preventDefault();
   });
 }
 
@@ -193,6 +264,8 @@ async function concluirHistoria() {
       status.textContent =
         "Historia concluida. A terceira porta foi liberada. Entre pela ampulheta para enfrentar o desafio.";
     }
+
+    definirPortalLiberado(true);
   } catch (error) {
     console.error(error);
 
@@ -246,6 +319,8 @@ async function carregarEstadoHistoria() {
       status.textContent =
         "Historia concluida. A terceira porta foi liberada. Entre pela ampulheta para enfrentar o desafio.";
     }
+
+    definirPortalLiberado(true);
   } catch (error) {
     console.error(error);
   }
@@ -253,12 +328,14 @@ async function carregarEstadoHistoria() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
+  configurarPortalDoDesafio();
   await carregarEstadoHistoria();
 
   configurarScrollParaBotoes();
   ajustarScrollPorHashInicial();
   configurarRevealNoScroll();
   configurarProgressoVisual();
+  configurarBarraProgressoResponsiva();
   configurarDailyBook();
   configurarPergaminhoRetrospectiva();
   configurarConclusaoHistoria();

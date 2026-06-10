@@ -271,13 +271,12 @@
 
       if (!response.ok) {
         console.warn(
-          "⚠️ Não foi possível carregar progresso do mapa, usando módulo 1",
+          "Não foi possível carregar progresso do mapa, usando módulo 1",
         );
         return 1;
       }
 
       const data = await response.json();
-      console.log("📦 Dados do mapa:", data);
 
       let moduloDoBanco = null;
 
@@ -302,10 +301,9 @@
           ? moduloDoBanco
           : 1;
 
-      console.log("✅ Módulo atual detectado:", moduloFinal);
       return moduloFinal;
     } catch (error) {
-      console.error("❌ Erro ao carregar módulo atual:", error);
+      console.error("Erro ao carregar módulo atual:", error);
       return 1;
     }
   }
@@ -540,7 +538,6 @@
   (async function iniciar() {
     // Primeiro detecta o módulo atual
     moduloAtual = await carregarModuloAtual();
-    console.log("🎯 Módulo configurado para imagens:", moduloAtual);
 
     // Depois carrega o resultado
     await carregarResultado();

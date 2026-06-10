@@ -367,8 +367,6 @@ async function concluirHistoriaCapitulo2() {
 
   const btnConcluir = document.getElementById("btnConcluirHistoriaCapitulo2");
   const btnDesafio = document.getElementById("btnIrDesafioCapitulo2");
-  const porta = document.getElementById("porta2Scene");
-  const portal = document.querySelector(".guardioes-final-portal");
 
   if (btnConcluir) {
     btnConcluir.disabled = true;
@@ -399,14 +397,7 @@ async function concluirHistoriaCapitulo2() {
       btnDesafio.classList.remove("hidden");
     }
 
-    if (porta) {
-      tocarSomPortal()
-      porta.classList.add("porta-liberada");
-    }
-
-    if (portal) {
-      portal.classList.add("is-portal-active");
-    }
+    liberarPortaDesafioCapitulo2();
   } catch (error) {
     console.error(error);
 
@@ -414,6 +405,19 @@ async function concluirHistoriaCapitulo2() {
       btnConcluir.disabled = false;
       btnConcluir.textContent = "Tentar concluir novamente";
     }
+  }
+}
+
+function liberarPortaDesafioCapitulo2() {
+  const porta = document.getElementById("porta2Scene");
+  const portal = document.querySelector(".guardioes-final-portal");
+
+  if (porta) {
+    porta.classList.add("porta-liberada");
+  }
+
+  if (portal) {
+    portal.classList.add("is-portal-active");
   }
 }
 
@@ -440,6 +444,43 @@ function configurarConclusaoCapitulo2() {
       if (!porta.classList.contains("porta-liberada")) return;
       entrarNoDesafioCapitulo2();
     });
+  }
+}
+
+async function carregarEstadoHistoriaCapitulo2() {
+  const token = obterTokenCapitulo2();
+
+  if (!token) return;
+
+  try {
+    const response = await fetch("/api/progresso/mapa", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !Array.isArray(data.modulos)) return;
+
+    const modulo = data.modulos.find((item) => Number(item.id_modulo) === ID_MODULO);
+
+    if (!modulo?.historia_concluida) return;
+
+    const btnConcluir = document.getElementById("btnConcluirHistoriaCapitulo2");
+    const btnDesafio = document.getElementById("btnIrDesafioCapitulo2");
+
+    if (btnConcluir) {
+      btnConcluir.classList.add("hidden");
+    }
+
+    if (btnDesafio) {
+      btnDesafio.classList.remove("hidden");
+    }
+
+    liberarPortaDesafioCapitulo2();
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -486,7 +527,7 @@ function configurarDesbloqueioNavbarCapitulo2() {
   observer.observe(secaoFinal);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   configurarMangaIntroCapitulo2();
   configurarMangaFinalCapitulo2();
   configurarScrollCapitulo2();
@@ -495,6 +536,7 @@ document.addEventListener("DOMContentLoaded", () => {
   configurarGuardioes();
   configurarPreparoDesafio();
   configurarConclusaoCapitulo2();
+  await carregarEstadoHistoriaCapitulo2();
   configurarParallaxPortalCapitulo2();
   configurarDesbloqueioNavbarCapitulo2();
   ajustarHashInicialCapitulo2();

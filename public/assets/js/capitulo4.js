@@ -114,6 +114,21 @@ function tocarSomArcano() {
   });
 }
 
+function tocarSomPorta() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/porta.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function rolarParaElemento(selector, offset = SCROLL_OFFSET) {
   const target = document.querySelector(selector);
 
@@ -183,7 +198,7 @@ function concluirMinigame(minigame, options = {}) {
   atualizarBloqueiosHistoria();
 
   const nextSectionSelector = options.scrollTo || (sectionsToUnlock[0] ? `#${sectionsToUnlock[0].id}` : "");
-  const scrollDelay = typeof options.scrollDelay === "number" ? options.scrollDelay : 700;
+  const scrollDelay = typeof options.scrollDelay === "number" ? options.scrollDelay : 250;
 
   if (nextSectionSelector) {
     setTimeout(() => rolarParaElemento(nextSectionSelector), scrollDelay);
@@ -559,7 +574,7 @@ function configurarDod() {
     button.textContent = "Liberando próximo trecho...";
 
     if (status) {
-      tocarSomArcano()
+      tocarSomPorta()
       status.textContent = "DoD completa. O próximo trecho está sendo liberado.";
     }
 

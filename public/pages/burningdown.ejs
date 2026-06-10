@@ -9,19 +9,14 @@
 
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/burningdown.css" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
   </head>
 
-  <body>
-    <%- include('partials/alert') %> <%- include('partials/header') %>
+  <body class="pagina-burningdown">
+    <%- include('partials/alert') %> 
+    <%- include('partials/header') %>
 
     <main class="burningdown-container">
-      <div class="pagina-acoes">
-        <button class="botao-voltar" type="button" onclick="history.back()">
-          <span>↩</span>
-          <span>Voltar</span>
-        </button>
-      </div>
-
       <section class="burningdown-header">
         <div class="title-box">
           <h1>Burning Down</h1>
@@ -38,10 +33,16 @@
 
       <section class="burningdown-content">
         <div class="burningdown-left">
-          <img
-            src="/assets/img/fogueira_burningdown_progresso.png"
-            alt="Fogueira do Burning Down"
-          />
+          <div class="fogueira-card" aria-label="Checkpoint de progresso">
+            <span class="brasa brasa-1" aria-hidden="true"></span>
+            <span class="brasa brasa-2" aria-hidden="true"></span>
+            <span class="brasa brasa-3" aria-hidden="true"></span>
+            <img
+              src="/assets/img/fogueira_burningdown_progresso.png"
+              alt="Fogueira do Burning Down"
+            />
+            <p>Checkpoint da jornada</p>
+          </div>
         </div>
 
         <div class="burningdown-right">
@@ -49,6 +50,42 @@
             <span>Capítulo atual:</span>
             <strong id="capituloAtual">01</strong>
           </div>
+
+          <section
+            class="burndown-panel"
+            aria-label="Grafico de progresso Burning Down"
+          >
+            <div class="burndown-panel__header">
+              <span>Desafios restantes</span>
+              <strong id="restanteTotal">10</strong>
+            </div>
+
+            <div class="burndown-chart" aria-hidden="true">
+              <svg viewBox="0 0 420 190" role="img">
+                <path
+                  class="burndown-grid"
+                  d="M36 24H390M36 70H390M36 116H390M36 162H390"
+                />
+                <path
+                  class="burndown-ideal"
+                  d="M42 26L128 60L214 94L300 128L386 162"
+                />
+                <polyline
+                  id="linhaBurningdownAtual"
+                  class="burndown-atual"
+                  points="42,26 128,60 214,94 300,128 386,162"
+                />
+              </svg>
+
+              <div class="burndown-pontos" id="pontosBurningdown">
+                <span>I</span>
+                <span>II</span>
+                <span>III</span>
+                <span>IV</span>
+                <span>V</span>
+              </div>
+            </div>
+          </section>
 
           <div class="stats-box">
             <div class="stat">
@@ -90,8 +127,8 @@
     <%- include('partials/navegacao_inferior') %> <%- include('partials/footer')
     %>
 
-    <script src="../assets/js/audio.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/burningdown.js"></script>
+    <script src="/assets/js/audio.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/burningdown.js"></script>
   </body>
 </html>

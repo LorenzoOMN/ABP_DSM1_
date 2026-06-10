@@ -269,6 +269,57 @@ function tocarSomConflito() {
   });
 }
 
+const somRosnado = new Audio("/assets/audio/rosnado.mp3");
+
+function tocarSomRosnado() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/rosnado.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somAcerto = new Audio("/assets/audio/acerto.mp3");
+
+function tocarSomAcerto() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/acerto.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somDesmoronamento = new Audio("/assets/audio/desmoronamento.mp3");
+
+function tocarSomDesmoronamento() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/desmoronamento.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 async function concluirHistoria() {
   const token = obterToken();
 
@@ -1596,6 +1647,7 @@ function configurarDesafioStakeholder() {
         botoes.forEach((b) => (b.disabled = true));
 
         if (index === turno.correta) {
+          tocarSomAcerto();
           botao.classList.add("correta");
           stakeholderFeedback.className = "stakeholder-feedback sucesso";
           stakeholderFeedback.textContent = turno.feedback;
@@ -1628,6 +1680,7 @@ function configurarDesafioStakeholder() {
             }
           }, 1400);
         } else {
+          tocarSomRosnado();
           botao.classList.add("errada");
           stakeholderFeedback.className = "stakeholder-feedback erro";
           stakeholderFeedback.textContent =
@@ -1816,6 +1869,7 @@ function configurarDesafioNecrobranch() {
       necroAmpulhetaDropzone.classList.add("hidden");
 
       if (necroAmpulhetaAtivacao) {
+        tocarSomArtefatos();
         necroAmpulhetaAtivacao.classList.remove("hidden");
       }
 
@@ -1831,6 +1885,7 @@ function configurarDesafioNecrobranch() {
   }
 
   btnIniciarNecrobranch.addEventListener("click", () => {
+    tocarSomDesmoronamento();
     necroAnaliseWrap.classList.remove("hidden");
     necroAnaliseWrap.scrollIntoView({
       behavior: "smooth",
