@@ -542,10 +542,7 @@ function fazerLogout() {
 // Torna disponível globalmente
 window.fazerLogout = fazerLogout;
 
-/* =========================================================
-   SINCRONIZAÇÃO DE LOGOUT ENTRE ABAS
-========================================================= */
-
+  //=========== SINCRONIZAÇÃO DE LOGOUT ENTRE ABAS ===========
 window.addEventListener("storage", (event) => {
   // Quando o token for removido em outra aba, remove nesta também
   if (event.key === "token" && !event.newValue) {
@@ -554,10 +551,30 @@ window.addEventListener("storage", (event) => {
   }
 });
 
-/*========FUNÇAO LOGOUT===========*/
+/*=========== FUNÇAO LOGOUT ===========*/
 function logout() {
   fazerLogout();
 }
+
+  //===========  INICIALIZAÇÃO DO BOTÃO DE LOGOUT ===========
+document.addEventListener("DOMContentLoaded", async () => {
+  // Configura botão de logout
+  const botaoLogout = document.getElementById("botao-logout");
+  const token = localStorage.getItem("token");
+  
+  if (botaoLogout) {
+    if (token) {
+      // Remove o hidden e adiciona o evento de click
+      botaoLogout.removeAttribute("hidden");
+      botaoLogout.style.display = "block";
+      botaoLogout.addEventListener("click", logout);
+    } else {
+      // Garante que esteja escondido
+      botaoLogout.setAttribute("hidden", "");
+      botaoLogout.style.display = "none";
+    }
+  }
+});
 
 /**
  * Marca capítulo 1 como concluído para o usuário atual
@@ -704,7 +721,7 @@ async function desbloquearNavbarNoBackend() {
     // 👇 MOSTRA O ALERTA (antes do return!)
    mostrarModalNavbarDesbloqueada();
 
-    console.log("Navbar desbloqueada:", data.mensagem);
+    console.log("Navbar desbloqueada");
     return data.sucesso !== false; // retorna true se sucesso for true ou undefined
   } catch (error) {
     console.error("Erro ao desbloquear navbar:", error);
@@ -901,7 +918,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function iniciarSessaoGlobal() {
     try {
         const token = localStorage.getItem("token");
-        if (!token) return;
+        if (!token) {
+            // Sem token, não tenta iniciar sessão (página pública)
+            return;
+        }
         
         // Finaliza qualquer sessão anterior pendente
         if (idSessaoGlobal && !sessaoFinalizada) {
@@ -919,9 +939,19 @@ async function iniciarSessaoGlobal() {
             tempoInicioSessao = Date.now();
             sessaoFinalizada = false;
             console.log("Sessão iniciada");
+        } else if (response.status === 401) {
+            // Token inválido ou expirado - limpa e não mostra erro
+            localStorage.removeItem("token");
+            localStorage.removeItem("nome");
+            localStorage.removeItem("cpf");
+            localStorage.removeItem("usuario");
         }
+        // Outros erros são ignorados silenciosamente (página pública)
     } catch (error) {
-        console.error("Erro ao iniciar sessão:", error);
+        // Erros de rede são ignorados em páginas públicas
+        if (error.message !== "Failed to fetch") {
+            console.error("Erro ao iniciar sessão:", error);
+        }
     }
 }
 
@@ -956,7 +986,6 @@ async function finalizarSessaoGlobal(forçado = false) {
             clearTimeout(timeoutId);
             
             if (response.ok) {
-                console.log("Sessão finalizada com sucesso");
             }
         } catch (fetchError) {
             console.log("Fetch falhou, tentando sendBeacon...");
@@ -967,7 +996,7 @@ async function finalizarSessaoGlobal(forçado = false) {
             
             if (navigator.sendBeacon) {
                 const enviado = navigator.sendBeacon("/api/perfil/sessao/finalizar", blob);
-                console.log("📤 sendBeacon:", enviado ? "enviado" : "falhou");
+                console.log("sendBeacon:", enviado ? "enviado" : "falhou");
             }
         }
         
