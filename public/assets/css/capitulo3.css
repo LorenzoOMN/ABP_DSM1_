@@ -1091,7 +1091,6 @@ strong{
   html,
   body {
     background-color: #090908;
-    overflow-x: hidden;
   }
 
 html {
@@ -1284,6 +1283,16 @@ body::-webkit-scrollbar-thumb {
 @media (max-width: 768px) {
   .chapter-progress-wrap {
     padding: 0.65rem 0;
+  }
+
+  .chapter-progress-wrap.is-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: transparent;
+    backdrop-filter: none;
   }
 
   .chapter-progress {

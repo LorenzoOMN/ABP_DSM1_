@@ -89,6 +89,39 @@ function configurarProgressoVisual() {
   secoes.forEach((secao) => observer.observe(secao));
 }
 
+function configurarBarraProgressoResponsiva() {
+  const barra = document.querySelector(".chapter-progress-wrap");
+
+  if (!barra) return;
+
+  const espaco = document.createElement("div");
+  barra.before(espaco);
+
+  function atualizarBarra() {
+    const mobile = window.innerWidth <= 768;
+
+    if (!mobile) {
+      barra.classList.remove("is-fixed");
+      espaco.style.height = "";
+      return;
+    }
+
+    if (!barra.classList.contains("is-fixed")) {
+      espaco.style.height = "";
+    }
+
+    const limite = espaco.getBoundingClientRect().top + window.scrollY;
+    const fixa = window.scrollY >= limite;
+
+    espaco.style.height = fixa ? `${barra.offsetHeight}px` : "";
+    barra.classList.toggle("is-fixed", fixa);
+  }
+
+  window.addEventListener("scroll", atualizarBarra, { passive: true });
+  window.addEventListener("resize", atualizarBarra);
+  atualizarBarra();
+}
+
 function configurarDailyBook() {
   const dailyBook = document.querySelector(".daily-book");
 
@@ -283,6 +316,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   ajustarScrollPorHashInicial();
   configurarRevealNoScroll();
   configurarProgressoVisual();
+  configurarBarraProgressoResponsiva();
   configurarDailyBook();
   configurarPergaminhoRetrospectiva();
   configurarConclusaoHistoria();
