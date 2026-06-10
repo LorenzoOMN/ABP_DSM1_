@@ -114,10 +114,13 @@ function podeAcessarRotaDaJornada(rota, modulos) {
 
   if (rota === "/coleta-artefato") {
     const idModulo = Number(new URLSearchParams(window.location.search).get("modulo"));
+    const moduloSessao = Number(sessionStorage.getItem("modulo_artefato_pendente"));
     const modulo = modulos.find((item) => Number(item.id_modulo) === idModulo);
+
     return Boolean(
       idModulo &&
         modulo &&
+        moduloSessao === idModulo &&
         (!modulo.desafio_atual || modulo.certificado_liberado)
     );
   }
