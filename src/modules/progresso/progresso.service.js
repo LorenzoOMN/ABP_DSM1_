@@ -22,7 +22,7 @@ async function getProgressoMapaService(idUsuario) {
         throw new Error("ID do usuário é obrigatório");
     }
 
-    // Busca dados crus do banco
+    // Busca dados crus do banco (PRECISA VIR ANTES!)
     const progressoRaw = await findProgressoMapa(idUsuario);
 
     // Transforma os dados (regra de apresentação/negócio)
@@ -35,6 +35,11 @@ async function getProgressoMapaService(idUsuario) {
             Number(modulo.id_modulo) <= Number(modulo.modulo_desafio_atual),
         // Regra: questionário só libera após concluir história
         questionario_liberado: modulo.historia_concluida,
+        
+        // === ADICIONE ESTA LINHA AQUI ===
+        desafio_concluido: modulo.certificado_liberado && Number(modulo.id_modulo) === 5,
+        // ==================================
+        
         // Regra: destaca o módulo que é o desafio atual
         desafio_atual: Number(modulo.id_modulo) === Number(modulo.modulo_desafio_atual),
         falhas_no_modulo: modulo.falhas_no_modulo,

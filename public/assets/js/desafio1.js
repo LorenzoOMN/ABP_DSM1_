@@ -15,17 +15,17 @@ const BOSSES = {
   },
   3: {
     nome: "Névoa da Improvisação",
-    imagem: "/assets/img/capitulo_3/inimigos/confronto-3.jpeg",
+    imagem: "/assets/img/capitulo_3/inimigos/confronto-3.png",
     descricao: "Requisitos mudam a cada segundo. Mantenha o foco ou será esmagado pelas novas demandas!"
   },
   4: {
     nome: "Colosso do Escopo Selvagem",
-    imagem: "/assets/img/capitulo_4/inimigos/confronto-4.jpeg",
+    imagem: "/assets/img/capitulo_4/inimigos/confronto-4.png",
     descricao: "Encontre e elimine os erros antes que eles corrompam seu progresso!"
   },
   5: {
     nome: "Guardião do Fluxo Perpétuo",
-    imagem: "/assets/img/capitulo_5/inimigos/confronto-5.jpeg",
+    imagem: "/assets/img/capitulo_5/inimigos/confronto-5.png",
     descricao: "A produção caiu! Restaure o sistema respondendo corretamente antes do caos total."
   }
 };
