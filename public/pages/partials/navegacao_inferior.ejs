@@ -1,7 +1,5 @@
-<div class="navbar-hover-zone">
+<div class="navbar-container-fixo">
   <section class="navegacao-inferior" id="navbarPrincipal">
-    <!-- Barra fina que fica sempre visível -->
-    <div class="trigger-barra"></div>
     <nav class="navegacao-inferior__nav" aria-label="Navegação inferior">
 
       <a href="/mapa" class="navegacao-inferior__item" data-rota="/mapa">
@@ -23,6 +21,49 @@
         <img src="/assets/img/perfil_icon.png" alt="" class="navegacao-inferior__icone" />
         <span>Perfil</span>
       </a>
+
     </nav>
   </section>
+</div>
+
+<button
+  type="button"
+  class="navbar-toggle-btn"
+  id="btnToggleNavbar"
+  data-tooltip="Menu"
+  aria-label="Alternar menu de navegação"
+>
+  <img
+    class="toggle-icon"
+    src="/assets/img/espadas_icon.png"
+    alt=""
+    aria-hidden="true"
+  />
+</button>
+
+<div class="navbar-unlock-modal hidden" id="navbarUnlockModal">
+  <div class="navbar-unlock-card">
+    <img
+      class="navbar-unlock-icon"
+      src="/assets/img/espadas_icon.png"
+      alt="Duas espadas cruzadas"
+    />
+
+    <div class="navbar-unlock-content">
+      <h2>Barra de navegação</h2>
+
+      <p>
+        Barra de navegação desbloqueada com sucesso! Clique no ícone abaixo
+        para acessar as novas funcionalidades.
+      </p>
+
+      <button
+        type="button"
+        class="navbar-unlock-btn"
+        id="btnContinuarAventura"
+      >
+        Continuar aventura
+      </button>
+    </div>
+  </div>
 </div>

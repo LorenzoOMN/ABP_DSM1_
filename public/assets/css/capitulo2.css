@@ -1,0 +1,1776 @@
+/*
+  Capítulo 2 reaproveita o visual do Capítulo 1.
+  Este arquivo só sobrescreve/adiciona o que é específico do capítulo 2.
+*/
+
+.capitulo2-page {
+  background:
+    linear-gradient(
+      to top,
+      #303030 0%,
+      #000000 3%,
+      rgba(0, 0, 0, 0.9) 40%,
+      rgb(20, 20, 20) 70%,
+      rgba(0, 0, 0, 0.5) 100%
+    ),
+    #050505;
+
+  background-size: cover;
+  background-position: center;
+  padding-bottom: 0;
+}
+
+/* ============================================================
+   INTRO ESTILO MANGÁ DIGITAL
+============================================================ */
+
+.manga-intro {
+  position: relative;
+  min-height: 430vh;
+  background: #000;
+  border-bottom: 0;
+}
+
+.manga-intro::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  z-index: 3;
+  height: clamp(72px, 12vw, 150px);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), #020202 78%);
+  pointer-events: none;
+}
+
+.manga-stage {
+  position: sticky;
+  top: 0;
+  min-height: var(--mobile-viewport-height, 100vh);
+  overflow: hidden;
+  display: block;
+  background:
+    radial-gradient(circle at 50% 78%, rgba(212, 175, 55, 0.07), transparent 22%),
+    #000;
+}
+
+.manga-frase {
+  position: absolute;
+  max-width: min(520px, 82vw);
+  margin: 0;
+  color: #f2f2f2;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.25rem, 2.4vw, 2.3rem);
+  line-height: 1.28;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.24),
+    0 0 28px rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  filter: blur(4px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease,
+    filter 0.55s ease;
+}
+
+.manga-frase.is-active {
+  opacity: 0.92;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.manga-frase.is-past {
+  opacity: 0.25;
+  transform: translateY(-12px) scale(0.98);
+  filter: blur(1px);
+}
+
+.manga-frase-1 {
+  top: 13%;
+  left: 8%;
+}
+
+.manga-frase-2 {
+  top: 27%;
+  right: 9%;
+  text-align: center;
+}
+
+.manga-frase-3 {
+  top: 44%;
+  left: 12%;
+}
+
+.manga-frase-4 {
+  top: 58%;
+  right: 17%;
+}
+
+.manga-frase-5 {
+  top: 74%;
+  left: 50%;
+  transform: translate(-50%, 40px) scale(0.98);
+  text-align: center;
+}
+
+.manga-frase-5.is-active {
+  transform: translate(-50%, 0) scale(1);
+}
+
+.manga-frase-5.is-past {
+  transform: translate(-50%, -12px) scale(0.98);
+}
+
+.corredor-wide {
+  position: relative;
+  width: 100%;
+  min-height: clamp(280px, 38vw, 540px);
+  margin: 0 0 2rem;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.55);
+  background: #020202;
+}
+
+.corredor-wide::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  height: clamp(84px, 14vw, 180px);
+  background: linear-gradient(180deg, #020202, rgba(2, 2, 2, 0));
+  pointer-events: none;
+}
+
+.corredor-wide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.55), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.55)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.25), transparent 38%, rgba(0, 0, 0, 0.78));
+  pointer-events: none;
+}
+
+.corredor-wide img {
+  width: 100%;
+  height: 100%;
+  min-height: clamp(280px, 38vw, 540px);
+  object-fit: cover;
+  object-position: center 48%;
+  display: block;
+}
+
+.corredor-wide-content {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.5rem, 6vw, 4.5rem);
+  z-index: 4;
+  width: min(640px, calc(100% - 2rem));
+  transform: translateX(-50%);
+  color: #fff4d8;
+  text-align: center;
+  text-shadow:
+    0 2px 0 rgba(54, 26, 4, 0.85),
+    0 0 18px rgba(255, 218, 139, 0.42),
+    0 12px 28px rgba(0, 0, 0, 0.86);
+}
+
+.corredor-wide-content .chapter-kicker {
+  margin: 0 0 0.45rem;
+  color: #f1d37a;
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.8rem, 1.25vw, 1.05rem);
+  font-weight: 700;
+}
+
+.corredor-wide-content h1 {
+  margin: 0;
+  color: #fff7df;
+  font-family: "Cinzel", serif;
+  font-size: clamp(2.45rem, 5.6vw, 5.35rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.corredor-wide-content::after {
+  content: "";
+  display: block;
+  width: min(460px, 74%);
+  height: 1px;
+  margin: 1rem auto 0.85rem;
+  background: linear-gradient(90deg, transparent, #d6ad35, transparent);
+  box-shadow: 0 0 14px rgba(214, 173, 53, 0.55);
+}
+
+.corredor-wide-content > p:last-child {
+  width: min(610px, 100%);
+  margin: 0 auto;
+  color: #f1dfba;
+  font-size: clamp(0.95rem, 1.45vw, 1.18rem);
+  line-height: 1.55;
+}
+
+.corredor-only {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 4rem auto;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.corredor-only img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.22),
+    0 24px 44px rgba(0, 0, 0, 0.58);
+}
+
+/* ============================================================
+   BARRA DO CAPÍTULO 2
+============================================================ */
+
+.capitulo2-progress-wrap {
+  margin-top: 0;
+  background: transparent;
+  backdrop-filter: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    visibility 0.28s ease;
+}
+
+.capitulo2-progress-wrap.is-hidden-for-final {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-120%);
+}
+
+.capitulo2-progress-wrap .chapter-progress {
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 5, 0.65),
+    rgba(5, 5, 5, 0.35)
+  );
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.capitulo2-progress-wrap .progress-item img {
+  filter:
+    drop-shadow(0 0 7px rgba(214, 173, 53, 0.2))
+    drop-shadow(0 8px 12px rgba(0, 0, 0, 0.45));
+}
+
+/* ============================================================
+   AJUSTES SOBRE CLASSES DO CAPÍTULO 1
+============================================================ */
+
+.capitulo2-page .story-block {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 4rem auto;
+}
+
+.capitulo2-page .story-text h2 {
+  white-space: normal;
+}
+
+.capitulo2-page .story-art img {
+  border-radius: 12px;
+}
+
+.capitulo2-page #corredor {
+  grid-template-columns: minmax(0, 0.85fr) minmax(360px, 1.25fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.capitulo2-page #corredor .story-art {
+  width: 100%;
+}
+
+.capitulo2-page #corredor .story-art img {
+  width: 100%;
+  max-height: none;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: center;
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.22),
+    0 24px 44px rgba(0, 0, 0, 0.58);
+}
+
+.papel-kicker {
+  margin-top: -0.65rem;
+  color: #d6ad35 !important;
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card-conceito {
+  margin-top: 1rem;
+  grid-column: 1 / -1;
+}
+
+.artefatos-block {
+  padding-left: clamp(5.5rem, 9vw, 7.5rem);
+}
+
+.lista-conceitos ul {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+  color: #ddd2bd;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   SALA DOS GUARDIÕES COM PERSONAGENS SEPARADOS
+============================================================ */
+
+.guardioes-block {
+  display: block;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  padding-left: clamp(5.5rem, 9vw, 7.5rem);
+}
+
+.guardioes-block .story-side-icon {
+  z-index: 3;
+}
+
+.guardioes-intro {
+  max-width: 920px;
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
+
+.guardioes-intro h2 {
+  margin: 0.2rem 0 1rem;
+  color: #f5e6b0;
+  font-family: "Cinzel", serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.guardioes-intro p {
+  margin: 0.6rem 0;
+  color: #ddd2bd;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+.guardioes-scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.34);
+  border-radius: 16px;
+  background: #050505;
+  box-shadow: inset 0 0 65px rgba(0, 0, 0, 0.5);
+}
+
+.guardioes-bg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  filter: brightness(0.7) contrast(1.08);
+}
+
+.guardiao-personagem {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: end center;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: contain;
+  cursor: pointer;
+  transform-origin: center bottom;
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease;
+}
+
+.guardiao-personagem::before {
+  content: "";
+  position: absolute;
+  inset: 8% 2% -4%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(244, 211, 94, 0.1), transparent 50%),
+    radial-gradient(circle at 50% 58%, rgba(214, 173, 53, 0.1), transparent 58%);
+  opacity: 0;
+  filter: blur(18px);
+  transform: scale(0.82);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+  pointer-events: none;
+}
+
+.guardiao-personagem:hover,
+.guardiao-personagem:focus-visible,
+.guardiao-personagem.is-selected {
+  transform: translateY(-8px) scale(1.04);
+  filter: drop-shadow(0 0 18px rgba(244, 211, 94, 0.45));
+  outline: none;
+}
+
+.guardiao-personagem:hover::before,
+.guardiao-personagem:focus-visible::before,
+.guardiao-personagem.is-selected::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.guardiao-bardo {
+  left: 1.8%;
+  bottom: 5%;
+  width: 28%;
+  height: 58%;
+}
+
+.guardiao-equipe {
+  left: 22%;
+  bottom: 7%;
+  width: 56%;
+  height: 70%;
+}
+
+.guardiao-equipe::before {
+  inset: 8% -12% -4%;
+  background:
+    radial-gradient(ellipse at 50% 44%, rgba(244, 211, 94, 0.10), transparent 50%),
+    radial-gradient(ellipse at 50% 58%, rgba(214, 173, 53, 0.1), transparent 64%);
+}
+
+.guardiao-corvo {
+  right: 1.5%;
+  bottom: 4%;
+  width: 29%;
+  height: 65%;
+}
+
+.guardiao-info {
+  margin: 1rem auto 0;
+  width: min(860px, 100%);
+}
+
+.guardiao-info:not(.guardiao-info-aberto) {
+  width: min(680px, 100%);
+  padding: clamp(1.45rem, 3vw, 1.9rem);
+  text-align: center;
+  background:
+    radial-gradient(ellipse at center, rgba(212, 175, 55, 0.08), transparent 68%),
+    linear-gradient(135deg, rgba(11, 6, 16, 0.94), rgba(28, 21, 20, 0.92));
+  border-color: rgba(212, 175, 55, 0.72);
+  border-radius: 14px;
+  box-shadow:
+    0 0 34px rgba(212, 175, 55, 0.08),
+    inset 0 0 28px rgba(244, 211, 94, 0.04);
+}
+
+.guardiao-info:not(.guardiao-info-aberto) p {
+  margin: 0;
+  color: #f4e4b7;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.05rem, 1.8vw, 1.32rem);
+  font-weight: 700;
+  line-height: 1.55;
+  text-transform: uppercase;
+}
+
+.guardiao-info:not(.guardiao-info-aberto) p + p {
+  margin-top: 0.35rem;
+}
+
+.guardiao-info-aberto {
+  width: min(980px, 100%);
+  padding: clamp(1rem, 2vw, 1.35rem);
+  background:
+    radial-gradient(circle at center top, rgba(214, 173, 53, 0.1), transparent 42%),
+    rgba(7, 7, 6, 0.86);
+  border-color: rgba(212, 175, 55, 0.38);
+}
+
+.guardiao-banner {
+  border-radius: 12px;
+}
+
+.guardiao-banner img {
+  aspect-ratio: 16 / 8.5;
+}
+
+.guardiao-texto {
+  max-width: 900px;
+  margin: 1.35rem auto 0;
+  padding-left: 0;
+}
+
+.guardiao-texto h2 {
+  white-space: normal;
+}
+
+.personagem-banner {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  border-radius: 16px;
+  background: #050505;
+  box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.48);
+}
+
+.personagem-banner img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9.5;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.78) contrast(1.08);
+}
+
+.personagem-texto {
+  max-width: 900px;
+  margin: 1.5rem auto 0;
+  padding-left: 0;
+}
+
+/* ============================================================
+   FLUXO / ARTEFATOS
+============================================================ */
+
+.story-text-full {
+  grid-column: 1 / -1;
+  max-width: 850px;
+  margin: 0 auto;
+  padding-left: 0;
+  text-align: center;
+}
+
+.artefatos-grid {
+  grid-column: 1 / -1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.artefato-card {
+  padding: 1.25rem;
+  text-align: center;
+  border: 1px solid rgba(212, 175, 55, 0.38);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at center top, rgba(214, 173, 53, 0.1), transparent 45%),
+    rgba(7, 7, 6, 0.82);
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.38);
+}
+
+.artefato-card img {
+  width: 130px;
+  height: 110px;
+  object-fit: contain;
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 0 14px rgba(214, 173, 53, 0.2));
+}
+
+.artefato-card h3 {
+  margin: 0 0 0.45rem;
+  color: #f5e6b0;
+  font-family: "Cinzel", serif;
+  text-transform: uppercase;
+}
+
+.artefato-card p {
+  margin: 0;
+  color: #ddd2bd;
+  line-height: 1.55;
+}
+
+.artefato-card span {
+  display: block;
+  margin-top: 0.75rem;
+  color: #d6ad35;
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+}
+
+.dod-block {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.85fr);
+}
+
+.dod-block .story-art img {
+  max-height: 360px;
+  object-fit: contain;
+}
+
+.pre-desafio-block {
+  display: block;
+  padding: clamp(1.5rem, 3vw, 2.4rem);
+}
+
+.pre-desafio-refinamento,
+.pre-desafio-conselho {
+  background: rgba(7, 7, 6, 0.82);
+}
+
+.pre-desafio-experiencia {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  gap: clamp(1rem, 2.4vw, 1.7rem);
+  align-items: stretch;
+  margin-top: 1.5rem;
+}
+
+.pre-desafio-experiencia-reversa {
+  grid-template-columns: minmax(300px, 0.88fr) minmax(0, 1.12fr);
+}
+
+.pre-desafio-imagem {
+  position: relative;
+  grid-row: span 2;
+  min-height: 320px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.34);
+  border-radius: 14px;
+  background: #050505;
+  box-shadow: none;
+}
+
+.pre-desafio-imagem::after {
+  content: none;
+}
+
+.pre-desafio-imagem img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.82) contrast(1.08) saturate(0.96);
+}
+
+.pre-desafio-tabs,
+.conselho-selos {
+  grid-column: 2;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.pre-desafio-experiencia-reversa .pre-desafio-imagem {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.pre-desafio-experiencia-reversa .conselho-selos {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.pre-desafio-experiencia-reversa .pre-desafio-painel {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 100%;
+}
+
+.pre-desafio-tab,
+.conselho-selo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 54px;
+  padding: 0.75rem 0.9rem;
+  color: #d8c9a9;
+  font-family: "Cinzel", serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+  text-transform: uppercase;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 10px;
+  background: rgba(7, 7, 6, 0.78);
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.pre-desafio-tab:hover,
+.pre-desafio-tab:focus-visible,
+.conselho-selo:hover,
+.conselho-selo:focus-visible,
+.pre-desafio-tab.is-active,
+.conselho-selo.is-active {
+  color: #fff0b5;
+  border-color: rgba(244, 211, 94, 0.72);
+  background: rgba(10, 10, 9, 0.92);
+  box-shadow: none;
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.conselho-selo {
+  gap: 0.75rem;
+}
+
+.conselho-selo span {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: #fff0b5;
+  border: 1px solid rgba(244, 211, 94, 0.48);
+  border-radius: 50%;
+  background: rgba(16, 10, 21, 0.92);
+  box-shadow: none;
+}
+
+.pre-desafio-painel {
+  position: relative;
+  grid-column: 2;
+  min-height: 220px;
+  margin-top: 0.85rem;
+  padding: 1.35rem;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.46);
+  border-radius: 12px;
+  background: rgba(7, 7, 6, 0.86);
+  box-shadow: none;
+}
+
+.pre-desafio-numero {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 0.8rem;
+  color: #fff1b8;
+  font-family: "Cinzel", serif;
+  font-weight: 800;
+  border: 1px solid rgba(244, 211, 94, 0.58);
+  border-radius: 50%;
+  background: rgba(14, 9, 20, 0.9);
+}
+
+.pre-desafio-painel h3 {
+  margin: 0 0 0.6rem;
+  color: #f5e6b0;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.pre-desafio-painel p {
+  margin: 0;
+  color: #ddd2bd;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.pre-desafio-refinamento {
+  width: min(1120px, calc(100% - 2rem));
+}
+
+.mesa-refinamento-titulo {
+  width: 100%;
+  margin: 0 0 2.2rem;
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  text-align: center;
+  border: 1px solid rgba(244, 211, 94, 0.72);
+  border-radius: 12px;
+  background: rgba(7, 7, 6, 0.72);
+  box-shadow: none;
+}
+
+.mesa-refinamento-titulo h2 {
+  margin: 0.25rem 0 0.6rem;
+  font-size: clamp(2rem, 4.2vw, 3.9rem);
+}
+
+.mesa-refinamento-titulo p:last-child {
+  width: min(760px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mesa-refinamento-titulo p:last-child {
+  margin-bottom: 0;
+}
+
+.mesa-refinamento-layout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: clamp(1.5rem, 3vw, 2.4rem);
+  margin: 0 auto;
+}
+
+.mesa-refinamento-layout .pre-desafio-tabs {
+  grid-column: auto;
+  width: 100%;
+  display: flex;
+  justify-content: stretch;
+  gap: 0.55rem;
+}
+
+.mesa-refinamento-layout .pre-desafio-tab {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: rgba(7, 7, 6, 0.62);
+}
+
+.mesa-refinamento-imagem {
+  grid-row: auto;
+  width: min(860px, 100%);
+  min-height: 340px;
+  aspect-ratio: 16 / 7.5;
+}
+
+.mesa-refinamento-layout .pre-desafio-painel {
+  grid-column: auto;
+  width: 100%;
+  min-height: 0;
+  margin-top: 0;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   RESPONSIVO
+============================================================ */
+
+@media (max-width: 900px) {
+  .manga-intro {
+    min-height: 380vh;
+  }
+
+  .manga-frase {
+    font-size: 1.15rem;
+  }
+
+  .manga-frase-2,
+  .manga-frase-4 {
+    right: 6%;
+  }
+
+  .capitulo2-page #corredor {
+    grid-template-columns: 1fr;
+  }
+
+  .guardioes-block,
+  .artefatos-block {
+    padding-left: 1.25rem;
+  }
+
+  .capitulo2-page .story-block {
+    padding-top: clamp(1.2rem, 4vw, 2rem);
+  }
+
+  .capitulo2-page .story-side-icon {
+    position: static;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    transform: none;
+  }
+
+  .capitulo2-page .story-side-icon img {
+    max-width: 42px;
+    max-height: 42px;
+  }
+
+  .guardioes-intro {
+    padding-top: 0;
+  }
+
+  .guardioes-bg {
+    object-position: center bottom;
+  }
+
+  .personagem-banner img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .dod-block {
+    grid-template-columns: 1fr;
+  }
+
+  .artefatos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pre-desafio-experiencia,
+  .pre-desafio-experiencia-reversa {
+    grid-template-columns: 1fr;
+  }
+
+  .pre-desafio-imagem,
+  .pre-desafio-painel,
+  .pre-desafio-tabs,
+  .conselho-selos,
+  .pre-desafio-experiencia-reversa .pre-desafio-imagem,
+  .pre-desafio-experiencia-reversa .conselho-selos,
+  .pre-desafio-experiencia-reversa .pre-desafio-painel {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+}
+
+@media (max-width: 620px) {
+  .manga-intro {
+    min-height: 340vh;
+  }
+
+  .manga-frase-1,
+  .manga-frase-3 {
+    left: 5%;
+  }
+
+  .manga-frase-2,
+  .manga-frase-4 {
+    right: 5%;
+  }
+
+  .manga-frase-5 {
+    left: 50%;
+    top: 70%;
+  }
+
+  .corredor-wide-content {
+    bottom: 1rem;
+  }
+
+  .corredor-wide-content h1 {
+    font-size: 2.1rem;
+  }
+
+  .corredor-wide-content > p:last-child {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .guardioes-bg {
+    object-position: center;
+  }
+
+  .guardiao-bardo {
+    left: -2%;
+    z-index: 3;
+    width: 32%;
+    height: 50%;
+  }
+
+  .guardiao-equipe {
+    left: 32%;
+    z-index: 2;
+    width: 36%;
+    height: 58%;
+  }
+
+  .guardiao-corvo {
+    right: -5%;
+    z-index: 3;
+    width: 34%;
+    height: 56%;
+  }
+
+  .pre-desafio-block {
+    padding: 1rem;
+  }
+
+  .pre-desafio-imagem {
+    min-height: 220px;
+  }
+
+  .pre-desafio-tabs,
+  .conselho-selos {
+    gap: 0.5rem;
+  }
+
+  .pre-desafio-tab,
+  .conselho-selo {
+    min-height: 48px;
+    font-size: 0.76rem;
+  }
+
+  .mesa-refinamento-titulo {
+    width: 100%;
+  }
+
+  .mesa-refinamento-layout {
+    width: 100%;
+    gap: 1.4rem;
+  }
+
+  .mesa-refinamento-layout .pre-desafio-tabs {
+    flex-wrap: wrap;
+  }
+
+  .mesa-refinamento-layout .pre-desafio-tab {
+    flex: 1 1 46%;
+    border-right-width: 1px;
+  }
+
+  .mesa-refinamento-imagem {
+    width: 100%;
+    min-height: 190px;
+    aspect-ratio: 16 / 9;
+  }
+
+  .pre-desafio-painel {
+    min-height: auto;
+    padding: 1rem;
+  }
+}
+
+.porta2-kicker {
+  margin: 0 0 0.55rem;
+  color: #d6ad35;
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.82rem, 1.3vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.porta2-actions .btn-primary,
+.porta2-actions .btn-secondary {
+  min-width: min(500px, 100%);
+  min-height: 58px;
+  padding: 0.95rem 1.4rem;
+  color: #fff4d6;
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(204, 82, 255, 0.22), transparent 62%),
+    linear-gradient(180deg, rgba(56, 17, 82, 0.86), rgba(18, 8, 34, 0.94));
+  border: 1px solid rgba(214, 173, 53, 0.88);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 18px rgba(188, 69, 255, 0.16),
+    0 0 24px rgba(120, 48, 196, 0.32);
+}
+
+/* ============================================================
+   QUADRO FINAL DOS GUARDIOES - classes isoladas
+============================================================ */
+
+.guardioes-final-scroll {
+  position: relative;
+  min-height: 460vh;
+  margin: 0;
+  padding-top: 0;
+  background: #000;
+  --guardioes-final-curtain: 0;
+  --guardioes-final-stage-opacity: 0;
+  --guardioes-final-text-opacity: 0;
+}
+
+.guardioes-final-scroll::before {
+  content: "";
+  display: block;
+  height: clamp(8rem, 18vh, 14rem);
+  background: transparent;
+  pointer-events: none;
+}
+
+.guardioes-final-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: #000;
+  opacity: var(--guardioes-final-curtain);
+  pointer-events: none;
+  transition: opacity 0.06s linear;
+}
+
+.guardioes-final-curtain p {
+  width: min(980px, calc(100% - 2rem));
+  margin: 0;
+  color: #fff4d6;
+  font-family: "Cinzel", serif;
+  font-size: clamp(2.4rem, 7vw, 7rem);
+  font-weight: 800;
+  line-height: 0.98;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 16px rgba(255, 255, 255, 0.22),
+    0 0 34px rgba(244, 211, 94, 0.22),
+    0 10px 28px rgba(0, 0, 0, 0.86);
+  opacity: var(--guardioes-final-text-opacity);
+  transform: translateY(calc((1 - var(--guardioes-final-text-opacity)) * 18px));
+  transition: opacity 0.08s linear, transform 0.08s linear;
+}
+
+.guardioes-final-stage {
+  position: sticky;
+  top: 0;
+  height: var(--mobile-viewport-height, 100vh);
+  min-height: var(--mobile-viewport-height, 100vh);
+  overflow: hidden;
+  background: #000;
+  opacity: var(--guardioes-final-stage-opacity);
+  transition: opacity 0.08s linear;
+}
+
+.guardioes-final-stage::before,
+.guardioes-final-stage::after {
+  content: none;
+}
+
+.guardioes-final-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000;
+  pointer-events: none;
+}
+
+.guardioes-final-slice {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 33.3334%;
+  display: grid;
+  align-items: end;
+  padding: clamp(4.5rem, 8vh, 6rem) clamp(0.65rem, 1.4vw, 1.25rem) clamp(3.2rem, 5vh, 4.25rem);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(28px) scale(1.04);
+  filter: blur(7px) grayscale(0.28);
+  transition:
+    opacity 0.55s ease,
+    visibility 0.55s ease,
+    transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.55s ease;
+}
+
+.guardioes-final-bardo {
+  left: 0;
+}
+
+.guardioes-final-equipe {
+  left: 33.3334%;
+}
+
+.guardioes-final-corvo {
+  left: 66.6667%;
+}
+
+.guardioes-final-slice::before,
+.guardioes-final-slice::after {
+  content: none;
+}
+
+.guardioes-final-corvo::after {
+  content: none;
+}
+
+.guardioes-final-image-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.guardioes-final-image-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 28%, rgba(0, 0, 0, 0.72)),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.5), transparent 46%, rgba(0, 0, 0, 0.42));
+  pointer-events: none;
+}
+
+.guardioes-final-image-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 68%;
+  filter: brightness(1.08) contrast(1.14) saturate(1.08);
+}
+
+.guardioes-final-bardo .guardioes-final-image-wrap img {
+  object-position: 18% 68%;
+}
+
+.guardioes-final-corvo .guardioes-final-image-wrap img {
+  object-position: 82% 68%;
+}
+
+.guardioes-final-dialogo {
+  position: relative;
+  z-index: 5;
+  width: min(420px, 96%);
+  margin: 0 auto;
+  padding: clamp(0.75rem, 1.5vw, 1.1rem);
+  color: #fff4d6;
+  border-left: 2px solid #f5e6b0;
+  background: rgba(0, 0, 0, 0.76);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.guardioes-final-dialogo h2 {
+  margin: 0;
+  color: #fff6dc;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.15rem, 2.6vw, 2.7rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.guardioes-final-dialogo blockquote {
+  margin: 0.8rem 0 0;
+  color: #f3ddb1;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.82rem, 1.35vw, 1.18rem);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.guardioes-final-scroll[data-final-index="0"] .guardioes-final-bardo,
+.guardioes-final-scroll[data-final-index="1"] .guardioes-final-bardo,
+.guardioes-final-scroll[data-final-index="2"] .guardioes-final-bardo,
+.guardioes-final-scroll[data-final-index="1"] .guardioes-final-equipe,
+.guardioes-final-scroll[data-final-index="2"] .guardioes-final-equipe,
+.guardioes-final-scroll[data-final-index="2"] .guardioes-final-corvo {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  filter: none;
+}
+
+.guardioes-final-scroll[data-final-index="0"] .guardioes-final-bardo .guardioes-final-dialogo,
+.guardioes-final-scroll[data-final-index="1"] .guardioes-final-equipe .guardioes-final-dialogo,
+.guardioes-final-scroll[data-final-index="2"] .guardioes-final-corvo .guardioes-final-dialogo {
+  opacity: 1;
+  transform: translateY(10px);
+}
+
+.guardioes-final-portal {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  --portal-mouse-x: 0;
+  --portal-mouse-y: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 58vh) auto;
+  justify-items: center;
+  align-items: center;
+  padding: 1.35rem 1rem 9.7rem;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(166, 58, 255, 0.46) 0, rgba(119, 41, 191, 0.24) 18rem, transparent 34rem),
+    radial-gradient(ellipse at 50% 92%, rgba(142, 45, 224, 0.34) 0, rgba(88, 30, 148, 0.2) 18rem, transparent 34rem),
+    radial-gradient(ellipse at 50% 72%, rgba(105, 36, 168, 0.22), transparent 24rem),
+    radial-gradient(ellipse at 24% 26%, rgba(70, 95, 255, 0.14), transparent 20rem),
+    linear-gradient(180deg, #05020a 0%, #0b0617 46%, #19082d 76%, #150826 100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.guardioes-final-portal::before,
+.guardioes-final-portal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.guardioes-final-portal::before {
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(207, 115, 255, 0.18), transparent 26rem),
+    radial-gradient(ellipse at 50% 100%, rgba(118, 42, 194, 0.26), transparent 42%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 42%, rgba(25, 8, 45, 0.18));
+  opacity: 0.95;
+}
+
+.guardioes-final-portal::after {
+  z-index: 1;
+  background:
+    radial-gradient(circle at 31% 22%, rgba(244, 225, 170, 0.64) 0 1px, transparent 3px),
+    radial-gradient(circle at 73% 18%, rgba(242, 75, 255, 0.52) 0 1px, transparent 3px),
+    radial-gradient(circle at 82% 40%, rgba(112, 170, 255, 0.46) 0 1px, transparent 3px);
+  opacity: 0.36;
+  transform: translate(
+    calc(var(--portal-mouse-x) * 14px),
+    calc(var(--portal-mouse-y) * 10px)
+  );
+  transition: opacity 0.45s ease, background 0.45s ease;
+}
+
+.guardioes-final-portal.is-portal-active::after {
+  background:
+    radial-gradient(circle at 18% 55%, rgba(228, 75, 255, 0.86) 0 2px, transparent 5px),
+    radial-gradient(circle at 28% 23%, rgba(244, 225, 170, 0.82) 0 1px, transparent 3px),
+    radial-gradient(circle at 41% 15%, rgba(130, 167, 255, 0.62) 0 1px, transparent 3px),
+    radial-gradient(circle at 56% 33%, rgba(255, 98, 239, 0.72) 0 1px, transparent 3px),
+    radial-gradient(circle at 69% 17%, rgba(242, 75, 255, 0.75) 0 1px, transparent 3px),
+    radial-gradient(circle at 82% 38%, rgba(112, 170, 255, 0.72) 0 1px, transparent 3px),
+    radial-gradient(circle at 87% 68%, rgba(244, 225, 170, 0.62) 0 1px, transparent 3px);
+  opacity: 0.78;
+}
+
+.guardioes-final-scroll[data-final-index="3"] .guardioes-final-slice {
+  opacity: 0.25;
+  visibility: visible;
+  transform: none;
+  filter: brightness(0.35) grayscale(0.8);
+}
+
+.guardioes-final-scroll[data-final-index="3"] .guardioes-final-portal {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.guardioes-final-portal-core {
+  position: relative;
+  z-index: 3;
+  align-self: end;
+  width: min(650px, 76vw);
+  aspect-ratio: 1.25;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  transform: translateY(clamp(4rem, 7vh, 5.2rem));
+  filter: drop-shadow(0 0 18px rgba(176, 52, 255, 0.18));
+  transition: filter 0.45s ease;
+}
+
+.portal-layer {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.portal-fog {
+  background:
+    radial-gradient(ellipse at 48% 58%, rgba(203, 94, 255, 0.42), transparent 48%),
+    radial-gradient(ellipse at 58% 62%, rgba(104, 77, 255, 0.28), transparent 54%),
+    radial-gradient(ellipse at 42% 72%, rgba(255, 255, 255, 0.16), transparent 46%);
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 52%, #000 0 48%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 50% 52%, #000 0 48%, transparent 72%);
+}
+
+.portal-fog-back {
+  inset: -7% -8% -6%;
+  z-index: 0;
+  opacity: 0.42;
+  filter: blur(8px) saturate(1.18);
+  animation: portalFogBackDrift 6.5s ease-in-out infinite;
+}
+
+.portal-vortex {
+  top: 16%;
+  left: 50%;
+  z-index: 2;
+  width: 59%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  transform: translateX(-50%);
+  box-shadow: 0 0 32px rgba(241, 69, 255, 0.65), 0 0 74px rgba(106, 66, 255, 0.44);
+  animation: portalVortexBreath 3.2s ease-in-out infinite;
+}
+
+.portal-vortex::before {
+  content: "";
+  position: absolute;
+  width: 128%;
+  height: 128%;
+  left: -15.4%;
+  top: -11%;
+  border-radius: inherit;
+  background: url("/assets/img/capitulo_2/final/portal-vortex.png") center / cover no-repeat;
+  transform-origin: 50.8% 47.6%;
+  animation: portalVortexSpin 11s linear infinite;
+}
+
+.portal-frame {
+  inset: 0;
+  z-index: 6;
+  background: url("/assets/img/capitulo_2/final/portal-frame.png") center / contain no-repeat;
+}
+
+.portal-fog-front {
+  left: -8%;
+  right: -8%;
+  bottom: -9%;
+  z-index: 11;
+  height: 48%;
+  opacity: 0.34;
+  filter: blur(5px) saturate(1.25);
+  transform-origin: center bottom;
+  animation: portalFogFrontDrift 5.8s ease-in-out infinite;
+}
+
+.portal-sparks {
+  inset: -3% -5% -1%;
+  z-index: 12;
+  background:
+    radial-gradient(circle at 17% 45%, rgba(230, 92, 255, 0.86) 0 2px, transparent 5px),
+    radial-gradient(circle at 25% 18%, rgba(255, 255, 255, 0.82) 0 1px, transparent 3px),
+    radial-gradient(circle at 63% 7%, rgba(255, 72, 238, 0.9) 0 1px, transparent 3px),
+    radial-gradient(circle at 86% 34%, rgba(151, 191, 255, 0.86) 0 1px, transparent 3px),
+    radial-gradient(circle at 76% 78%, rgba(230, 92, 255, 0.76) 0 2px, transparent 5px),
+    radial-gradient(circle at 34% 86%, rgba(255, 255, 255, 0.76) 0 1px, transparent 3px);
+  animation: portalSparksDrift 2.8s ease-in-out infinite;
+}
+
+.portal-vortex,
+.portal-fog,
+.portal-sparks {
+  opacity: 0;
+  transition: opacity 0.45s ease, filter 0.45s ease;
+}
+
+.guardioes-final-portal:not(.is-portal-active) .portal-vortex,
+.guardioes-final-portal:not(.is-portal-active) .portal-fog,
+.guardioes-final-portal:not(.is-portal-active) .portal-sparks {
+  animation: none;
+}
+
+.guardioes-final-portal.is-portal-active .guardioes-final-portal-core {
+  filter:
+    drop-shadow(0 0 30px rgba(176, 52, 255, 0.56))
+    drop-shadow(0 0 96px rgba(104, 36, 255, 0.34));
+}
+
+.guardioes-final-portal.is-portal-active .portal-vortex {
+  opacity: 1;
+  animation: portalVortexBreath 3.2s ease-in-out infinite;
+}
+
+.guardioes-final-portal.is-portal-active .portal-fog-back {
+  opacity: 0.42;
+  animation: portalFogBackDrift 6.5s ease-in-out infinite;
+}
+
+.guardioes-final-portal.is-portal-active .portal-fog-front {
+  opacity: 0.34;
+  animation: portalFogFrontDrift 5.8s ease-in-out infinite;
+}
+
+.guardioes-final-portal.is-portal-active .portal-sparks {
+  opacity: 1;
+  animation: portalSparksDrift 2.8s ease-in-out infinite;
+}
+
+.guardioes-final-portal.porta-concluida {
+  filter: grayscale(1) brightness(0.7);
+}
+
+.guardioes-final-portal.porta-concluida .portal-vortex,
+.guardioes-final-portal.porta-concluida .portal-fog,
+.guardioes-final-portal.porta-concluida .portal-sparks {
+  opacity: 0;
+  animation: none;
+}
+
+.guardioes-final-portal-button.porta-concluida {
+  cursor: default;
+  pointer-events: none;
+}
+
+@keyframes portalFogBackDrift {
+  0%,
+  100% {
+    opacity: 0.34;
+    transform: translateX(-1.5%) scale(0.98);
+  }
+
+  50% {
+    opacity: 0.52;
+    transform: translateX(1.5%) scale(1.03);
+  }
+}
+
+@keyframes portalVortexSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes portalVortexBreath {
+  0%,
+  100% {
+    filter: brightness(0.95) saturate(1.05);
+  }
+
+  50% {
+    filter: brightness(1.18) saturate(1.25);
+  }
+}
+
+@keyframes portalFogFrontDrift {
+  0%,
+  100% {
+    opacity: 0.24;
+    transform: translateX(2%) translateY(7px) scaleX(1.02);
+  }
+
+  50% {
+    opacity: 0.42;
+    transform: translateX(-2%) translateY(-5px) scaleX(1.08);
+  }
+}
+
+@keyframes portalSparksDrift {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translate(
+        calc(var(--portal-mouse-x) * -18px),
+        calc(8px + var(--portal-mouse-y) * -12px)
+      )
+      scale(0.98);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(
+        calc(var(--portal-mouse-x) * -26px),
+        calc(-8px + var(--portal-mouse-y) * -18px)
+      )
+      scale(1.02);
+  }
+}
+
+.guardioes-final-dialogo-portal {
+  z-index: 4;
+  position: relative;
+  width: min(820px, calc(100% - 2rem));
+  margin-top: 1.15rem;
+  padding: 1.5rem 3rem 1.45rem;
+  border-left: 0;
+  border: 1px solid rgba(214, 173, 53, 0.78);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(15, 7, 27, 0.82), rgba(8, 5, 17, 0.9)),
+    radial-gradient(ellipse at 50% 0%, rgba(214, 173, 53, 0.12), transparent 56%);
+  box-shadow:
+    inset 0 0 32px rgba(88, 35, 142, 0.18),
+    0 0 0 1px rgba(89, 45, 139, 0.18),
+    0 22px 62px rgba(0, 0, 0, 0.44);
+  text-align: center;
+  opacity: 1;
+  transform: none;
+}
+
+.guardioes-final-dialogo-portal::before,
+.guardioes-final-dialogo-portal::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  background: #d6ad35;
+  border: 1px solid rgba(255, 244, 214, 0.62);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.guardioes-final-dialogo-portal::before {
+  top: -5px;
+}
+
+.guardioes-final-dialogo-portal::after {
+  bottom: -5px;
+}
+
+.guardioes-final-dialogo-portal .porta2-kicker {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 120px auto 120px;
+  align-items: center;
+  gap: 1.15rem;
+  margin-bottom: 0.8rem;
+  color: #f0c84f;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+}
+
+.guardioes-final-dialogo-portal .porta2-kicker::before,
+.guardioes-final-dialogo-portal .porta2-kicker::after {
+  content: "";
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(214, 173, 53, 0.72));
+}
+
+.guardioes-final-dialogo-portal .porta2-kicker::after {
+  background: linear-gradient(90deg, rgba(214, 173, 53, 0.72), transparent);
+}
+
+.guardioes-final-dialogo-portal h2 {
+  font-size: 2.85rem;
+  letter-spacing: 0.08em;
+}
+
+.guardioes-final-dialogo-portal blockquote {
+  max-width: 58ch;
+  margin: 1rem auto 0;
+  padding-top: 1rem;
+  color: #f8e8bd;
+  border-top: 1px solid rgba(214, 173, 53, 0.48);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.guardioes-final-portal-button {
+  position: absolute;
+  top: 1.35rem;
+  left: 50%;
+  z-index: 12;
+  width: min(650px, 76vw);
+  aspect-ratio: 1.25;
+  transform: translateX(-50%);
+  border: 0;
+  border-radius: 50% 50% 18% 18% / 58% 58% 18% 18%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.guardioes-final-scroll .porta2-actions {
+  position: absolute;
+  left: 50%;
+  bottom: 1.8rem;
+  z-index: 16;
+  width: min(540px, calc(100% - 2rem));
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.guardioes-final-scroll .porta2-actions::before {
+  content: none;
+}
+
+.guardioes-final-scroll.is-at-portal .porta2-actions {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 820px) {
+  .guardioes-final-portal {
+    grid-template-rows: minmax(0, 48vh) auto;
+    padding: 0.9rem 0.75rem 7.6rem;
+  }
+
+  .guardioes-final-portal-core,
+  .guardioes-final-portal-button {
+    width: min(430px, 92vw);
+  }
+
+  .guardioes-final-portal-button {
+    top: 0.9rem;
+  }
+
+  .guardioes-final-slice {
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
+  }
+
+  .guardioes-final-dialogo {
+    width: min(280px, 98%);
+    padding: 0.7rem;
+  }
+
+  .guardioes-final-dialogo h2 {
+    font-size: clamp(1rem, 4.2vw, 1.55rem);
+  }
+
+  .guardioes-final-dialogo blockquote {
+    font-size: 0.78rem;
+  }
+
+  .guardioes-final-dialogo-portal {
+    width: min(460px, calc(100% - 0.5rem));
+    margin-top: 0.6rem;
+    padding: 1rem 0.9rem;
+  }
+
+  .guardioes-final-dialogo-portal .porta2-kicker {
+    grid-template-columns: 42px auto 42px;
+    gap: 0.65rem;
+    font-size: 0.7rem;
+  }
+
+  .guardioes-final-dialogo-portal h2 {
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+  }
+
+  .guardioes-final-dialogo-portal blockquote {
+    font-size: 0.9rem;
+  }
+
+  .guardioes-final-scroll .porta2-actions {
+    bottom: 1rem;
+  }
+
+  .porta2-actions .btn-primary,
+  .porta2-actions .btn-secondary {
+    min-height: 52px;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+  }
+}

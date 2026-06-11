@@ -5,20 +5,43 @@ CREATE TABLE IF NOT EXISTS public.usuarios (
   cpf VARCHAR(11) NOT NULL,
   senha VARCHAR(200),
   certificado_hash VARCHAR(96),
-  barra_desbloqueada BOOLEAN DEFAULT FALSE
+  barra_desbloqueada BOOLEAN DEFAULT FALSE,
+  is_admin BOOLEAN DEFAULT false,
+  musica_ativa BOOLEAN DEFAULT true,
+  efeitos_ativos BOOLEAN DEFAULT true,
+  avatar VARCHAR(255) DEFAULT 'default.png'
 );
 
+-- Configurações de áudio (caso a tabela já exista)
 ALTER TABLE public.usuarios
-ADD COLUMN IF NOT EXISTS barra_desbloqueada BOOLEAN DEFAULT FALSE;
+ADD COLUMN IF NOT EXISTS musica_ativa BOOLEAN DEFAULT true;
 
+ALTER TABLE public.usuarios
+ADD COLUMN IF NOT EXISTS efeitos_ativos BOOLEAN DEFAULT true;
+
+-- NOVO: Coluna de avatar
+ALTER TABLE public.usuarios
+ADD COLUMN IF NOT EXISTS avatar VARCHAR(255) DEFAULT 'default.png';
+
+-- ==========================================
+-- CORREÇÃO: Mover os índices únicos para ANTES do INSERT
+-- e remover o "WHERE ... IS NOT NULL"
+-- ==========================================
 CREATE UNIQUE INDEX IF NOT EXISTS uq_usuarios_cpf
-  ON public.usuarios (cpf)
-  WHERE cpf IS NOT NULL;
+  ON public.usuarios (cpf);
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_usuarios_email
-  ON public.usuarios (email)
-  WHERE email IS NOT NULL;
+  ON public.usuarios (email);
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_usuarios_certificado_hash
-  ON public.usuarios (certificado_hash)
-  WHERE certificado_hash IS NOT NULL;
+  ON public.usuarios (certificado_hash);
+
+-- Índice comum para avatar (como não é UNIQUE, o WHERE não afeta o ON CONFLICT)
+CREATE INDEX IF NOT EXISTS idx_usuarios_avatar
+  ON public.usuarios (avatar)
+  WHERE avatar IS NOT NULL;
+
+-- -- Define SEU usuário como admin
+-- INSERT INTO public.usuarios (nome, email, cpf, senha, is_admin)
+-- VALUES ('44', '44@44', '44444444444', '444444', true)
+-- ON CONFLICT (email) DO NOTHING;

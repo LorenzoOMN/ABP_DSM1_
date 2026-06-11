@@ -1,2 +1,14 @@
 node_modules
 .env
+.superpowers/
+.vscode/
+
+
+
+# Artefatos gerados pelo fluxo Superpowers
+docs/superpowers/plans/
+docs/superpowers/specs/
+
+roteiro-capitulo4-v2.md
+
+scripts/tests/

@@ -15,7 +15,7 @@
 
 [![▶ Entrar na Dungeon](https://img.shields.io/badge/▶_Entrar_na_Dungeon-7B4FBF?style=plastic)](https://github.com/octopusCode26/ABP_DSM1_)
 [![Protótipo](https://img.shields.io/badge/Ver_Protótipo-c8922a?style=plastic&logo=figma&logoColor=white)](https://www.figma.com/design/96DMn9UVu2MT9xJIi5pBiQ/Prototipo_Scrum-Dungeon)
-[![Sprint Atual](https://img.shields.io/badge/Sprint_3_·_Em_Andamento-5865F2?style=plastic)](https://github.com/users/octopusCode26/projects/)
+[![Sprint Atual](https://img.shields.io/badge/Sprint_3_·_Finalizada-5865F2?style=plastic)](https://github.com/users/octopusCode26/projects/)
 [![Docs](https://img.shields.io/badge/Documentação-2d2d2d?style=plastic&logo=gitbook&logoColor=white)](./docs)
 
 </div>
@@ -116,19 +116,24 @@ POSTGRES_DB=abp
 POSTGRES_PORT=5432
 
 JWT_SECRET=sua_chave_secreta
-DEFAULT_EXPIRES_IN_SECONDS=600
+DEFAULT_EXPIRES_IN_SECONDS=7200
 ```
 
 > ⚠️ Nunca commite o `.env` — ele já está no `.gitignore`.
 
 **3. Inicialize o banco**
 
-Crie um banco chamado `abp` no PostgreSQL, depois execute:
+Crie um banco chamado `abp` no pgAdmin 4 (PostgreSQL), depois execute:
 ```bash
 npm run db:init
 ```
 
-**4. Inicie o servidor**
+**4. Inserir cadastro de Admin (Somente se necessitar acessar painel para efetuar alterações nas questões cadastradas)**
+```bash
+npm run db:admin
+```
+
+**5. Inicie o servidor**
 ```bash
 npm run dev
 ```
@@ -143,8 +148,7 @@ Acesse em `http://localhost:3000`
 |--------|---------|---------------------|--------|
 | [**Sprint 1**](./docs/sprints/sprint-1.md) | 13/04 — 30/04/2026 | Prototipação · Diagramas UML · Nível 1 | ✔️ Finalizada |
 | [**Sprint 2**](./docs/sprints/sprint-2.md) | 04/05 — 21/05/2026 | Cadastro · Login · Sistema de avaliação · Mapa | ✔️ Finalizada |
-| [**Sprint 3**](./docs/sprints/sprint-3.md) | 25/05 — 11/06/2026 | Capítulos finais · Histórico · Resultado final | 🔵 Em Andamento |
-| **Apresentação** | 22/06/2026 | Entrega e demonstração na FATEC Jacareí | ⚪ Aguardando |
+| [**Sprint 3**](./docs/sprints/sprint-3.md) | 25/05 — 11/06/2026 | Capítulos finais · Histórico · Resultado final | ✔️ Finalizada |
 
 ---
 
@@ -247,6 +251,6 @@ A documentação completa está organizada em [`/docs`](./docs):
 
 *"Obrigado por explorar a Scrum Dungeon."*
 
-`1DSM · FATEC Jacareí · 2026/1`
+`1DSM · FATEC Jacareí · 2026`
 
 </div>

@@ -11,12 +11,20 @@ CREATE TABLE IF NOT EXISTS public.questoes (
   alternativa_c TEXT,
   alternativa_d TEXT,
   imagem VARCHAR(255),
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- 👈 COLUNA ADICIONADA
   CONSTRAINT fk_questoes_modulo
     FOREIGN KEY (id_modulo)
     REFERENCES public.modulos (id_modulo)
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
 );
+
+ALTER TABLE public.questoes
+  ADD COLUMN IF NOT EXISTS criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+UPDATE public.questoes
+SET criado_em = CURRENT_TIMESTAMP
+WHERE criado_em IS NULL;
 
 CREATE INDEX IF NOT EXISTS idx_questoes_modulo_grupo
   ON public.questoes (id_modulo, grupo);

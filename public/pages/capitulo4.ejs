@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capítulo 4 | Scrum Dungeon</title>
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/capitulo4.css?v=hourglass-force" />
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+</head>
+
+<body>
+  <%- include('partials/alert') %>
+    <%- include('partials/header') %>
+        <div class="viewport-blackout" id="viewportBlackout" aria-hidden="true"></div>
+        <section class="capitulo4-intro" id="capitulo4IntroNarrativa" aria-live="polite"
+          aria-label="Introdução narrativa do capítulo 4">
+          <p class="intro-prelude" id="introPrelude">
+            A areia não cai.
+          </p>
+
+          <div class="intro-hourglass-frame">
+            <img class="intro-hourglass-image" id="introHourglassImage"
+              src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png"
+              alt="Ampulheta travada do capítulo 4">
+          </div>
+
+          <div class="intro-lines" id="introLines">
+            <p class="capitulo4-intro-line" data-intro-line>
+              A terceira porta ficou para trás.
+            </p>
+            <p class="capitulo4-intro-line" data-intro-line>
+              A Ampulheta da Sprint foi conquistada, mas o tempo não obedece.
+            </p>
+            <p class="capitulo4-intro-line" data-intro-line>
+              O ciclo existe. O fluxo falhou.
+            </p>
+            <p class="capitulo4-intro-line" data-intro-line>
+              Cada passo adiante agora cobra clareza, ritmo e entrega real.
+            </p>
+            <p class="capitulo4-intro-line" data-intro-line>
+              É na travessia do tempo quebrado que a quarta jornada começa.
+            </p>
+          </div>
+
+          <p class="intro-scroll-hint" id="introScrollHint" aria-hidden="true">
+            Role para continuar
+          </p>
+        </section>
+
+        <main class="capitulo-page" id="capitulo4">
+          <section class="capitulo-hero" id="inicio-capitulo4">
+            <div class="hero-overlay" aria-hidden="true"></div>
+
+            <div class="hero-content">
+              <p class="chapter-kicker">Capítulo 4</p>
+              <h1>Travessia Viva do Tempo Quebrado</h1>
+              <p>
+                A terceira porta ficou para trás. A Ampulheta da Sprint está em suas mãos,
+                mas a areia não cai. O ciclo existe. O fluxo, ainda não.
+              </p>
+
+              <button class="btn-primary" type="button" data-scroll-to-hourglass>
+                Entrar na névoa
+              </button>
+            </div>
+          </section>
+
+          <section class="intro-scroll-space" id="introScrollSpace" aria-hidden="true"></section>
+
+          <section class="chapter-progress-wrap" aria-label="Progresso do capítulo 4">
+            <nav class="chapter-progress">
+              <button class="progress-item active" data-scroll-to="#cena-ampulheta" type="button">
+                <span>01</span>
+                <small>Ampulheta</small>
+              </button>
+              <button class="progress-item" data-scroll-to="#cena-kanban" type="button">
+                <span>02</span>
+                <small>Kanban</small>
+              </button>
+              <button class="progress-item" data-scroll-to="#cena-forja" type="button">
+                <span>03</span>
+                <small>Forja</small>
+              </button>
+              <button class="progress-item" data-scroll-to="#cena-ponte" type="button">
+                <span>04</span>
+                <small>Ponte</small>
+              </button>
+              <button class="progress-item" data-scroll-to="#cena-divida" type="button">
+                <span>05</span>
+                <small>Refatoração</small>
+              </button>
+              <button class="progress-item" data-scroll-to="#cena-metricas" type="button">
+                <span>06</span>
+                <small>Métricas</small>
+              </button>
+              <button class="progress-item" data-scroll-to="#cena-stakeholders" type="button">
+                <span>07</span>
+                <small>Valor</small>
+              </button>
+              <button class="progress-item" data-scroll-to="#cena-retrospectiva" type="button">
+                <span>08</span>
+                <small>Retro</small>
+              </button>
+            </nav>
+          </section>
+
+          <section id="cena-ampulheta" class="story-block immersive-scene reveal">
+            <div class="scene-atmosphere" aria-hidden="true"></div>
+
+            <div class="story-text">
+              <h2>A Ampulheta Parada</h2>
+              <p class="scene-impact">
+                A Sprint existe, mas a areia não cai.
+              </p>
+              <p>
+                Depois da terceira porta, o grupo ainda está no pântano nebuloso. A Ampulheta da sprint
+                flutua no centro do caminho, imóvel, como se o próprio tempo recusasse avançar.
+              </p>
+              <p>
+                O <span class="glossario" data-g="product-backlog">Product Backlog</span> e o <span class="glossario"
+                  data-g="sprint-backlog">Sprint Backlog</span> se abrem no chão. As tarefas brilham como marcas de luz:
+                algumas avançam, outras piscam, outras ficam presas no mesmo ponto.
+              </p>
+              <p>
+                As marcas não formam uma trilha contínua. Elas quebram no meio do caminho,
+                como se cada tarefa parada segurasse a próxima.
+              </p>
+              <p>
+                O Bardo tenta começar tudo de uma vez, mas o Corvo interrompe: uma sprint é um ciclo de trabalho,
+                e um ciclo saudável precisa de foco, fluxo e entrega de valor.
+              </p>
+              <p>
+                A Sprint só respira quando o trabalho flui.
+              </p>
+            </div>
+
+            <div class="story-art">
+              <figure class="hourglass-hover" tabindex="0"
+                data-corvo-hover="Trabalho iniciado não é trabalho concluído."
+                aria-label="Ampulheta travada. Trabalho iniciado não é trabalho concluído.">
+                <img src="/assets/img/capitulo_4/ampulheta-travada-pixel-transparente.png"
+                  alt="Ampulheta travada do capítulo 4">
+              </figure>
+            </div>
+          </section>
+
+          <section class="story-block kanban-scene reveal" id="cena-kanban">
+            <div class="kanban-layout">
+              <div class="story-text kanban-copy">
+                <h2>O Quadro das Tarefas Presas</h2>
+                <p class="scene-impact">
+                  A névoa se abre e revela uma parede dividida em colunas.
+                </p>
+                <p>
+                  O Bardo aponta para as inscrições: A Fazer, Em Desenvolvimento, Teste e Concluído.
+                  "Isto é um quadro Kanban. Ele mostra o caminho do
+                  trabalho."
+                </p>
+                <p>
+                  Os cartões se acumulam em Em Desenvolvimento. A coluna de Teste quase não se move.
+                  O Corvo corta a discussão antes que o grupo confunda movimento com avanço.
+                </p>
+                <p>
+                  No chão, as marcas da cena anterior se juntam em pequenos elos de luz.
+                  Cada cartão parado prende um elo ao quadro.
+                </p>
+                <p>
+                  O Kanban enfatiza fluxo contínuo. Quando uma etapa
+                  acumula mais itens que as demais,
+                  o problema tem nome: gargalo.
+                </p>
+                <p class="crow-note">
+                  "Não confundam muitas tarefas iniciadas com progresso."
+                </p>
+                <blockquote>Começar menos pode ser o caminho para terminar mais.</blockquote>
+              </div>
+
+              <div class="story-art kanban-art">
+                <div class="kanban-panel">
+                  <div class="kanban-panel-header">
+                    <span>Fluxo do time</span>
+                    <strong>WIP revela o gargalo</strong>
+                  </div>
+                  <p class="kanban-wip-note">
+                    WIP é o limite de trabalho em andamento. Ele impede que o time comece mais tarefas do que consegue
+                    terminar.
+                  </p>
+
+                  <div class="minigame-guide minigame-guide--kanban" aria-label="Como resolver o Kanban">
+                    <span class="minigame-guide__eyebrow">Como resolver</span>
+                    <ol>
+                      <li class="minigame-guide__step">Clique nos cartões em Em Desenvolvimento.</li>
+                      <li class="minigame-guide__step">Depois, leve todos até Concluído, um passo por vez.</li>
+                      <li class="minigame-guide__step">Não puxe mais trabalho enquanto o WIP estiver estourado.</li>
+                    </ol>
+                  </div>
+
+                  <div class="kanban-board" aria-label="Quadro Kanban interativo com limite WIP">
+                    <div class="kanban-column" data-column="todo">
+                      <div class="kanban-column-header">
+                        <h3>A Fazer</h3>
+                        <span>Fila</span>
+                      </div>
+                      <button class="kanban-card" type="button" data-kanban-card>
+                        Refinar história
+                      </button>
+                      <button class="kanban-card" type="button" data-kanban-card>
+                        Preparar critério
+                      </button>
+                    </div>
+
+                    <div class="kanban-column" data-column="doing" data-wip-limit="2">
+                      <div class="kanban-column-header">
+                        <h3>Em Desenvolvimento</h3>
+                        <span data-wip-counter>WIP 3/2</span>
+                      </div>
+                      <button class="kanban-card" type="button" data-kanban-card>
+                        API de progresso
+                      </button>
+                      <button class="kanban-card" type="button" data-kanban-card>
+                        Tela do desafio
+                      </button>
+                      <button class="kanban-card" type="button" data-kanban-card>
+                        Ajuste de layout
+                      </button>
+                    </div>
+
+                    <div class="kanban-column" data-column="test">
+                      <div class="kanban-column-header">
+                        <h3>Teste</h3>
+                        <span>Parado</span>
+                      </div>
+                    </div>
+
+                    <div class="kanban-column" data-column="done">
+                      <div class="kanban-column-header">
+                        <h3>Concluído</h3>
+                        <span>Entrega</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="kanban-status kanban-status--warning" id="kanbanStatus" aria-live="polite">
+                    Em Desenvolvimento está acima do WIP. Leve cartões para Teste antes de iniciar mais trabalho.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="story-block reveal" id="cena-forja" data-locked-by="kanban"
+            aria-describedby="lock-cena-forja">
+            <div class="story-text">
+              <h2>A Porta da DoD</h2>
+              <p class="scene-impact">
+                Somente incrementos prontos atravessam.
+              </p>
+              <p>
+                Quando o fluxo melhora, uma porta de ferro aparece dentro da forja. O guerreiro tenta empurrar
+                uma tarefa quase finalizada, mas as marcas gravadas na porta permanecem apagadas.
+              </p>
+              <p>
+                Os elos soltos do Kanban arrastam a tarefa até a porta, mas ela não atravessa.
+                Sem critérios claros de pronto, o caminho continua preso.
+              </p>
+              <p>
+                O Bardo lê a inscrição: <span class="glossario" data-g="definition-of-done">Definition of Done</span>. A
+                DoD é o acordo que define quando
+                um <span class="glossario" data-g="increment">incremento</span> pode ser considerado realmente pronto.
+              </p>
+              <p>
+                Ela protege a qualidade do incremento, cria
+                consistência entre entregas e lembra
+                que qualidade é responsabilidade compartilhada pelo time.
+              </p>
+              <blockquote>Pronto é um acordo visível, não uma sensação.</blockquote>
+            </div>
+
+            <div class="story-art dod-art">
+              <div class="dod-forge" aria-live="polite">
+                <div class="minigame-guide minigame-guide--dod" aria-label="Como abrir a Porta da DoD">
+                  <span class="minigame-guide__eyebrow">Como resolver</span>
+                  <ol>
+                    <li class="minigame-guide__step">Primeiro, marque os cinco critérios de pronto.</li>
+                    <li class="minigame-guide__step">Depois aperte Abrir a porta.</li>
+                  </ol>
+                </div>
+                <div class="dod-door" aria-label="Porta da Definition of Done">
+                  <div class="dod-checklist" aria-label="Checklist gravado na porta">
+                    <label class="dod-criterion" data-dod-criterion="codigo">
+                      <input type="checkbox" data-dod-check="codigo">
+                      <span>Código integrado</span>
+                    </label>
+                    <label class="dod-criterion" data-dod-criterion="testes">
+                      <input type="checkbox" data-dod-check="testes">
+                      <span>Testes executados</span>
+                    </label>
+                    <label class="dod-criterion" data-dod-criterion="criterios">
+                      <input type="checkbox" data-dod-check="criterios">
+                      <span>Critérios de aceitação atendidos</span>
+                    </label>
+                    <label class="dod-criterion" data-dod-criterion="revisao">
+                      <input type="checkbox" data-dod-check="revisao">
+                      <span>Revisão realizada</span>
+                    </label>
+                    <label class="dod-criterion" data-dod-criterion="defeitos">
+                      <input type="checkbox" data-dod-check="defeitos">
+                      <span>Sem defeitos críticos conhecidos</span>
+                    </label>
+                  </div>
+                </div>
+
+                <button class="btn-primary dod-button" id="btnValidarDod" type="button">
+                  Abrir a porta
+                </button>
+                <p class="dod-status">
+                  Marque os cinco critérios e aperte Abrir a porta.
+                </p>
+              </div>
+            </div>
+
+            <div class="scene-lock" id="lock-cena-forja" role="status" aria-live="polite">
+              <span class="scene-lock__icon" aria-hidden="true"></span>
+              <strong>Bloqueado</strong>
+              <p>Conclua o Kanban para liberar a Porta da DoD.</p>
+            </div>
+          </section>
+
+          <section class="story-block reveal pipeline-scene" id="cena-ponte" data-locked-by="dod"
+            aria-describedby="lock-cena-ponte">
+            <div class="story-text">
+              <h2>A Ponte Contínua CI/CD</h2>
+              <p class="scene-impact">
+                A ponte só acende na ordem certa.
+              </p>
+              <p>
+                A Porta da DoD se fecha atrás do grupo. À frente, uma ponte mecânica
+                desaparece na névoa. No chão, duas runas apagadas esperam: CI e CD.
+              </p>
+              <p>
+                Os elos que antes prendiam tarefas agora acompanham o grupo pela ponte.
+                Eles só afrouxam quando cada etapa confirma que o incremento segue pelo caminho certo.
+              </p>
+              <p>
+                O Corvo fala baixo: "A partir daqui, não basta estar pronto. O incremento
+                precisa seguir o caminho certo."
+              </p>
+              <p>
+                CI significa Integração Contínua: integrar e testar frequentemente o código
+                produzido. CD significa Entrega Contínua: automatizar a entrega quando o
+                caminho está validado.
+              </p>
+              <p>
+                Então tudo fica escuro. A ponte só revela o próximo passo por instantes.
+                O time precisa memorizar a sequência do fluxo.
+              </p>
+              <blockquote>Código, integração, testes, build e deploy. Lembre a ordem.</blockquote>
+            </div>
+
+            <div class="pipeline-scroll-blackout" id="pipelineScrollBlackout" aria-hidden="true"></div>
+
+            <div class="pipeline-void" id="pipelineVoid" aria-label="Ponte Contínua no escuro">
+              <div class="pipeline-void__inner">
+                <div class="pipeline-void__copy" aria-live="polite">
+                  <span id="commitStep">A ponte ainda aparece na escuridão</span>
+                  <strong id="commitTitle">Role até o breu completo</strong>
+                  <p id="commitDescription">A imagem da ponte vai sumir com o scroll. Quando tudo apagar, observe o
+                    brilho atrás dos ícones.</p>
+                </div>
+
+                <div class="minigame-guide minigame-guide--pipeline" aria-label="Como atravessar a Ponte CI/CD">
+                  <span class="minigame-guide__eyebrow">Como resolver</span>
+                  <ol>
+                    <li class="minigame-guide__step">Ao escurecer, observe a sequência quando as runas piscarem.</li>
+                    <li class="minigame-guide__step">Depois repita as runas na mesma ordem.</li>
+                  </ol>
+                </div>
+
+                <div class="pipeline-neon-board" aria-label="Repita a sequência correta do pipeline">
+                  <button class="pipeline-neon-step" type="button" data-pipeline-step="codigo" aria-label="Código">
+                    <span class="pipeline-neon-orbit" aria-hidden="true"></span>
+                    <span class="pipeline-neon-glow" aria-hidden="true"></span>
+                    <img class="pipeline-neon-icon pipeline-bridge-piece"
+                      src="/assets/img/capitulo_4/bridge-piece-codigo.png" alt="" aria-hidden="true">
+                    <strong>Código</strong>
+                  </button>
+                  <button class="pipeline-neon-step" type="button" data-pipeline-step="integrar" aria-label="Integrar">
+                    <span class="pipeline-neon-orbit" aria-hidden="true"></span>
+                    <span class="pipeline-neon-glow" aria-hidden="true"></span>
+                    <img class="pipeline-neon-icon pipeline-bridge-piece"
+                      src="/assets/img/capitulo_4/bridge-piece-integrar.png" alt="" aria-hidden="true">
+                    <strong>Integrar</strong>
+                  </button>
+                  <button class="pipeline-neon-step" type="button" data-pipeline-step="testes" aria-label="Testes">
+                    <span class="pipeline-neon-orbit" aria-hidden="true"></span>
+                    <span class="pipeline-neon-glow" aria-hidden="true"></span>
+                    <img class="pipeline-neon-icon pipeline-bridge-piece"
+                      src="/assets/img/capitulo_4/bridge-piece-testes.png" alt="" aria-hidden="true">
+                    <strong>Testes</strong>
+                  </button>
+                  <button class="pipeline-neon-step" type="button" data-pipeline-step="build" aria-label="Build">
+                    <span class="pipeline-neon-orbit" aria-hidden="true"></span>
+                    <span class="pipeline-neon-glow" aria-hidden="true"></span>
+                    <img class="pipeline-neon-icon pipeline-bridge-piece"
+                      src="/assets/img/capitulo_4/bridge-piece-build.png" alt="" aria-hidden="true">
+                    <strong>Build</strong>
+                  </button>
+                  <button class="pipeline-neon-step" type="button" data-pipeline-step="deploy" aria-label="Deploy">
+                    <span class="pipeline-neon-orbit" aria-hidden="true"></span>
+                    <span class="pipeline-neon-glow" aria-hidden="true"></span>
+                    <img class="pipeline-neon-icon pipeline-bridge-piece"
+                      src="/assets/img/capitulo_4/bridge-piece-deploy.png" alt="" aria-hidden="true">
+                    <strong>Deploy</strong>
+                  </button>
+                </div>
+
+                <div class="pipeline-void__footer">
+                  <div class="pipeline-memory-progress" aria-hidden="true">
+                    <span data-pipeline-progress></span>
+                  </div>
+                  <button class="pipeline-replay-button" id="btnRepetirPipeline" type="button">
+                    Rever sequência
+                  </button>
+                  <p class="pipeline-status" id="pipelineStatus" aria-live="polite">
+                    Continue descendo. Quando a sequência piscar, repita as runas na mesma ordem.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="scene-lock" id="lock-cena-ponte" role="status" aria-live="polite">
+              <span class="scene-lock__icon" aria-hidden="true"></span>
+              <strong>Bloqueado</strong>
+              <p>Conclua a Porta da DoD para liberar o próximo trecho.</p>
+            </div>
+          </section>
+
+          <section class="story-block reveal debt-scene" id="cena-divida" data-locked-by="pipeline"
+            aria-describedby="lock-cena-divida">
+            <div class="story-text refactor-intro-card">
+              <h2>O Caminho da Refatoração</h2>
+              <p class="scene-impact">
+                Por fora, o usuário recebe o mesmo resultado. Por dentro, o caminho precisa respirar.
+              </p>
+              <p>
+                A ponte CI/CD agora consegue levar o incremento adiante. Mesmo assim, o grupo sente
+                o chão pesado. O caminho de entrega funciona, mas o caminho interno ainda cobra seus atalhos.
+              </p>
+              <p>
+                Os elos acumulados desde o quadro, a forja e a ponte se fecham em correntes.
+                Elas não nasceram de um erro só. Nasceram de várias decisões pequenas que ficaram para depois.
+              </p>
+              <p>
+                Dívida técnica nasce quando decisões rápidas aliviam o presente, mas aumentam retrabalho,
+                risco e lentidão nas próximas mudanças. Ela não impede toda entrega. Ela torna cada próxima
+                mudança mais cara.
+              </p>
+              <p>
+                Refatorar é reorganizar a estrutura interna sem alterar o comportamento externo.
+                O usuário continua recebendo o mesmo valor. O time ganha clareza para evoluir.
+              </p>
+              <p>
+                Então tudo apaga de novo. No escuro, só resta o caminho interno do sistema.
+                Se as peças continuarem travadas, a entrega até passa pela ponte, mas o fluxo sufoca por dentro.
+              </p>
+              <blockquote>Atalho salva um instante. Estrutura salva o fluxo.</blockquote>
+            </div>
+
+            <div class="refactor-scroll-blackout" id="refactorScrollBlackout" aria-hidden="true"></div>
+
+            <div class="refactor-void" id="refactorVoid" aria-label="Santuário escuro da refatoração">
+              <div class="refactor-void__inner">
+                <div class="refactor-panel" aria-label="Painel interativo de refatoração do fluxo">
+                  <div class="refactor-stage-copy" aria-live="polite">
+                    <span id="refactorStep">O caminho ainda está escondido</span>
+                    <strong id="refactorTitle">Role até o breu completo</strong>
+                    <p id="refactorDescription">Quando a tela escurecer por completo, o caminho interno vai aparecer
+                      peça por peça.</p>
+                  </div>
+
+                  <div class="refactor-mission" aria-label="Instruções do terminal de refatoração">
+                    <div>
+                      <span>Terminal arcano</span>
+                      <strong>Reconecte o fluxo interno sem mudar a entrega.</strong>
+                    </div>
+                    <ol class="refactor-steps">
+                      <li>Clique em uma placa para girar 90°. Clique nas placas para girar o caminho.</li>
+                      <li>Conecte Banco de Dados ao Usuário.</li>
+                      <li>Azul mostra o caminho já conectado. Verde confirma a refatoração.</li>
+                    </ol>
+                  </div>
+
+                  <div class="refactor-board-shell">
+                    <div class="refactor-board-label refactor-board-label--banco">
+                      <img src="/assets/img/capitulo_4/refatoracao-banco-dados.svg" alt="" aria-hidden="true">
+                      <span>Banco de Dados</span>
+                    </div>
+                    <div class="refactor-board-label refactor-board-label--usuario">
+                      <img src="/assets/img/capitulo_4/refatoracao-usuario.svg" alt="" aria-hidden="true">
+                      <span>Usuário</span>
+                    </div>
+
+                    <div class="refactor-board" data-refactor-board
+                      aria-label="Tabuleiro 3 por 3 do fluxo de refatoração">
+                      <button type="button" class="refactor-tile refactor-tile--decoy" data-refactor-tile data-tile
+                        data-row="1" data-col="1" data-tile-type="decoy" data-rotation="90"
+                        aria-label="Peça 1 1 quebrada">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="refactor-tile refactor-tile--decoy" data-refactor-tile data-tile
+                        data-row="1" data-col="2" data-tile-type="decoy" data-rotation="180"
+                        aria-label="Peça 1 2 quebrada">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="refactor-tile refactor-tile--corner" data-refactor-tile data-tile
+                        data-row="1" data-col="3" data-tile-type="corner" data-rotation="0" aria-label="Peça 1 3 curva">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="refactor-tile refactor-tile--straight" data-refactor-tile data-tile
+                        data-row="2" data-col="1" data-tile-type="straight" data-rotation="90"
+                        aria-label="Peça 2 1 reta">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="refactor-tile refactor-tile--corner" data-refactor-tile data-tile
+                        data-row="2" data-col="2" data-tile-type="corner" data-rotation="0" aria-label="Peça 2 2 curva">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="refactor-tile refactor-tile--straight" data-refactor-tile data-tile
+                        data-row="2" data-col="3" data-tile-type="straight" data-rotation="0"
+                        aria-label="Peça 2 3 reta">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="refactor-tile refactor-tile--decoy" data-refactor-tile data-tile
+                        data-row="3" data-col="1" data-tile-type="decoy" data-rotation="270"
+                        aria-label="Peça 3 1 quebrada">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="refactor-tile refactor-tile--corner" data-refactor-tile data-tile
+                        data-row="3" data-col="2" data-tile-type="corner" data-rotation="180"
+                        aria-label="Peça 3 2 curva">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="refactor-tile refactor-tile--corner" data-refactor-tile data-tile
+                        data-row="3" data-col="3" data-tile-type="corner" data-rotation="90"
+                        aria-label="Peça 3 3 curva">
+                        <span class="refactor-tile__path"></span>
+                        <span class="refactor-tile__frame" aria-hidden="true"></span>
+                      </button>
+                    </div>
+
+                  </div>
+
+                  <div class="refactor-hud" aria-label="Estado do fluxo">
+                    <span>Início: Banco de Dados</span>
+                    <span data-refactor-flow-count>0/6 peças conectadas</span>
+                    <span>Final: Usuário</span>
+                  </div>
+
+                  <p class="refactor-status" data-refactor-status aria-live="polite">
+                    Gire as peças até restaurar o fluxo do Banco de Dados ao Usuário.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="scene-lock" id="lock-cena-divida" role="status" aria-live="polite">
+              <span class="scene-lock__icon" aria-hidden="true"></span>
+              <strong>Bloqueado</strong>
+              <p>Conclua a Ponte CI/CD para liberar o Caminho da Refatoração.</p>
+            </div>
+          </section>
+
+          <section class="story-block reveal oracle-scene" id="cena-metricas">
+            <div class="story-text">
+              <h2>O Oráculo das Métricas</h2>
+              <p class="scene-impact">
+                Métrica é bússola, não chicote.
+              </p>
+              <p>
+                Com o caminho interno restaurado, as correntes da dívida técnica caem no chão.
+                Elas não somem deixando rastros luminosos no corredor.
+              </p>
+              <p>
+                O grupo segue essas marcas até uma sala circular. Relógios, gráficos e ampulhetas
+                flutuam no escuro. Cada instrumento traduz uma consequência do caminho percorrido.
+              </p>
+              <p>
+                O que antes parecia sensação ganha forma: trabalho parado, entregas concluídas,
+                tempo perdido, ritmo do time e espera do cliente.
+              </p>
+              <p>
+                O Oráculo apresenta cinco instrumentos: Burndown,
+                Burnup, velocity,
+                Lead Time e Cycle Time. Eles servem para criar transparência e melhoria contínua.
+              </p>
+              <p>
+                Quando métricas viram punição, os números se distorcem e a confiança morre.
+                Quando viram aprendizado, o time enxerga o fluxo sem procurar culpados.
+              </p>
+              <blockquote>Eu não mostro culpa. Mostro evidências.</blockquote>
+            </div>
+
+          </section>
+
+          <section class="story-block reveal metric-artifacts-scene" id="cena-artefatos-metricas"
+            aria-labelledby="metricArtifactsTitle">
+            <div class="story-text">
+              <span class="section-number">Artefatos do Oráculo</span>
+              <h2 id="metricArtifactsTitle">Os Instrumentos de Evidência</h2>
+              <p class="scene-impact">
+                Cada métrica responde uma pergunta diferente.
+              </p>
+              <p>
+                Antes de seguir para o Conselho do Valor, o grupo observa os cinco artefatos
+                deixados pelo Oráculo. Eles não servem para vigiar pessoas. Servem para
+                enxergar o fluxo, antecipar riscos e conversar com evidência.
+              </p>
+            </div>
+
+            <div class="metric-artifacts-panel" aria-label="Artefatos apresentados pelo Oráculo das Métricas">
+              <div class="metric-artifacts-list" role="list">
+                <button class="metric-artifact-card metric-artifact-card--active" type="button" data-metric-artifact
+                  data-title="Burndown" data-image="/assets/img/capitulo_4/artefato-burndown.png"
+                  data-alt="Artefato pixelado do gráfico Burndown"
+                  data-description="Mostra quanto trabalho ainda falta para terminar a Sprint."
+                  data-evidence="Ajuda o time a perceber se o trabalho restante está caindo no ritmo esperado.">
+                  <img src="/assets/img/capitulo_4/artefato-burndown.png" alt="Artefato pixelado do gráfico Burndown">
+                  <span>Burndown</span>
+                </button>
+                <button class="metric-artifact-card" type="button" data-metric-artifact data-title="Burnup"
+                  data-image="/assets/img/capitulo_4/artefato-burnup.png" data-alt="Artefato pixelado do gráfico Burnup"
+                  data-description="Mostra quanto trabalho já foi concluído ao longo do tempo."
+                  data-evidence="Deixa visível o progresso real e ajuda a comparar escopo planejado com escopo entregue.">
+                  <img src="/assets/img/capitulo_4/artefato-burnup.png" alt="Artefato pixelado do gráfico Burnup">
+                  <span>Burnup</span>
+                </button>
+                <button class="metric-artifact-card" type="button" data-metric-artifact data-title="Velocity"
+                  data-image="/assets/img/capitulo_4/artefato-velocity.png"
+                  data-alt="Artefato pixelado da métrica Velocity"
+                  data-description="Mostra o ritmo médio de entrega do time em Sprints anteriores."
+                  data-evidence="Ajuda em previsões internas, sem transformar velocidade em cobrança individual.">
+                  <img src="/assets/img/capitulo_4/artefato-velocity.png" alt="Artefato pixelado da métrica Velocity">
+                  <span>Velocity</span>
+                </button>
+                <button class="metric-artifact-card" type="button" data-metric-artifact data-title="Lead Time"
+                  data-image="/assets/img/capitulo_4/artefato-lead-time.png"
+                  data-alt="Artefato pixelado da métrica Lead Time"
+                  data-description="Mede o tempo entre o pedido surgir e a entrega chegar ao usuário."
+                  data-evidence="Mostra a espera total do cliente e revela gargalos antes mesmo do desenvolvimento começar.">
+                  <img src="/assets/img/capitulo_4/artefato-lead-time.png" alt="Artefato pixelado da métrica Lead Time">
+                  <span>Lead Time</span>
+                </button>
+                <button class="metric-artifact-card" type="button" data-metric-artifact data-title="Cycle Time"
+                  data-image="/assets/img/capitulo_4/artefato-cycle-time.png"
+                  data-alt="Artefato pixelado da métrica Cycle Time"
+                  data-description="Mede o tempo entre o início real do trabalho e sua conclusão."
+                  data-evidence="Mostra quanto tempo uma tarefa leva para atravessar o fluxo depois que começa.">
+                  <img src="/assets/img/capitulo_4/artefato-cycle-time.png"
+                    alt="Artefato pixelado da métrica Cycle Time">
+                  <span>Cycle Time</span>
+                </button>
+              </div>
+
+              <div class="metric-artifact-detail" aria-live="polite">
+                <div class="metric-artifact-preview">
+                  <img data-metric-artifact-preview src="/assets/img/capitulo_4/artefato-burndown.png"
+                    alt="Artefato pixelado do gráfico Burndown">
+                </div>
+                <div class="metric-artifact-copy">
+                  <span>Artefato em foco</span>
+                  <strong data-metric-artifact-title>Burndown</strong>
+                  <p data-metric-artifact-description>Mostra quanto trabalho ainda falta para terminar a Sprint.</p>
+                  <p data-metric-artifact-evidence>Ajuda o time a perceber se o trabalho restante está caindo no ritmo
+                    esperado.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="story-block reveal stakeholder-scene" id="cena-stakeholders">
+            <div class="story-text">
+              <h2>O Conselho do Valor</h2>
+              <p class="scene-impact">
+                Nem toda voz alta representa valor.
+              </p>
+              <p>
+                A saída do Oráculo leva o grupo a uma sala circular. No centro, as métricas
+                continuam suspensas como evidências: tempo de espera, fluxo, ritmo, gargalos
+                e entregas concluídas.
+              </p>
+              <p>
+                Ao redor da sala, surgem as vozes dos Stakeholders. Algumas trazem necessidade
+                real. Outras trazem pressa, preferência pessoal, medo, cobrança e mudanças de
+                direção disfarçadas de prioridade.
+              </p>
+              <p>
+                Uma voz exige mais velocidade. Outra pede uma nova tela. Outra aponta para o
+                Burndown como se o gráfico, sozinho, provasse sucesso. O Corvo interrompe:
+                métrica não decide valor. Métrica revela evidência para uma conversa melhor.
+              </p>
+              <p>
+                O Product Owner assume o centro da sala. Ele não aceita tudo. Também não ignora
+                quem será impactado pela entrega. Ele escuta, compara impacto, risco,
+                aprendizado e objetivo da Sprint.
+              </p>
+              <p>
+                O que aproxima o produto de valor real entra no Product Backlog. O que é
+                importante, mas não cabe agora, espera com transparência. O que só aumenta
+                ruído fica fora do caminho.
+              </p>
+              <p>
+                O time entende a lição antes de seguir: entregar mais não basta. Entregar certo,
+                com qualidade, foco e aprendizado, é o que mantém a Sprint viva.
+              </p>
+              <blockquote>Sem conversa sobre valor, velocidade vira apenas pressa organizada.</blockquote>
+            </div>
+          </section>
+
+          <section class="story-block reveal retrospective-scene" id="cena-retrospectiva">
+            <div class="story-text">
+              <h2>O Baú da Melhoria Contínua</h2>
+              <p class="scene-impact">
+                Melhorar o sistema vale mais que procurar culpados.
+              </p>
+              <p>
+                Depois do conselho, as vozes desaparecem. Não há nova criatura no caminho.
+                O que resta é o rastro inteiro da Sprint: marcas, elos, correntes, ponte,
+                métricas e escolhas de valor.
+              </p>
+              <p>
+                O grupo olha para trás. Começaram tarefas demais. Quase atravessaram com
+                trabalho incompleto. Automatizaram a entrega, mas descobriram peso interno.
+                Refatoraram. Mediram. Ouviram Stakeholders sem virar reféns do ruído.
+              </p>
+              <p>
+                Um baú aparece no centro da sala. Ele não se abre quando o time lista muitos
+                problemas. Ele se abre quando escolhe uma melhoria pequena, clara e aplicável
+                para a próxima Sprint.
+              </p>
+              <p>
+                O Corvo fecha a jornada: uma retrospectiva não existe para culpar. Existe para
+                transformar evidência em melhoria contínua.
+              </p>
+
+              <p>
+                O baú então revela três espaços vazios. O primeiro pede o que fortaleceu o time.
+                O segundo pede o que travou o fluxo. O terceiro pede uma ação concreta para o
+                próximo ciclo. Sem essas respostas, a quarta porta não reconhece aprendizado.
+              </p>
+
+              <form class="retro-form" id="retroForm" aria-label="Retrospectiva da Sprint">
+                <div class="minigame-guide minigame-guide--retro" aria-label="Como registrar a retrospectiva">
+                  <span class="minigame-guide__eyebrow">Como resolver</span>
+                  <ol>
+                    <li class="minigame-guide__step">No baú, preencha pelo menos uma resposta.</li>
+                    <li class="minigame-guide__step">Depois registre a reflexão para abrir a próxima porta.</li>
+                  </ol>
+                </div>
+                <label class="retro-field">
+                  <span>1. O que fortaleceu o caminho?</span>
+                  <textarea id="retroPositivo" name="positivo" rows="3"
+                    placeholder="Ex.: reduzimos o gargalo e terminamos antes de iniciar novas tarefas."></textarea>
+                </label>
+
+                <label class="retro-field">
+                  <span>2. O que travou o fluxo?</span>
+                  <textarea id="retroNegativo" name="negativo" rows="3"
+                    placeholder="Ex.: começamos tarefas demais e pulamos validações importantes."></textarea>
+                </label>
+
+                <label class="retro-field">
+                  <span>3. Qual melhoria o time leva para a próxima Sprint?</span>
+                  <textarea id="retroMelhoria" name="melhoria" rows="3"
+                    placeholder="Ex.: limitar WIP, reforçar DoD e reservar tempo para refatoração."></textarea>
+                </label>
+
+                <button class="btn-primary retro-button" type="submit">
+                  Registrar reflexão
+                </button>
+
+                <p class="retro-feedback" id="retroFeedback" aria-live="polite">
+                  Preencha pelo menos uma resposta para transformar a Sprint em aprendizado.
+                </p>
+              </form>
+
+              <blockquote>Equipes fortes não nascem prontas. Elas evoluem a cada ciclo.</blockquote>
+            </div>
+          </section>
+
+          <section class="story-block reveal final-block" id="cena-finalizar-historia" data-locked-by="retrospectiva"
+            aria-describedby="lock-cena-finalizar-historia">
+            <div class="story-text">
+              <h2>A Quarta Porta</h2>
+              <p>
+                A Ampulheta da Sprint volta a funcionar. A areia cai no ritmo certo.
+                O time não aprendeu apenas a correr. Aprendeu a proteger o fluxo.
+              </p>
+              <p>
+                A quarta porta se abre. Para atravessar, prove que entende fluxo,
+                qualidade, métricas, valor e melhoria contínua.
+              </p>
+
+              <button class="btn-primary" id="btnConcluirHistoria" type="button">
+                Registrar conclusão
+              </button>
+
+              <p class="status-historia" id="statusHistoria" aria-live="polite">
+                Registre o progresso para liberar a próxima etapa do capítulo.
+              </p>
+            </div>
+
+            <div class="story-art">
+              <div class="porta-boss-scene" id="portaBossScene" aria-label="Porta do desafio do módulo 4">
+                <img class="porta-boss-img" src="/assets/img/capitulo_4/porta-final-capitulo4.png"
+                  alt="Quarta porta do Capítulo 4 com ampulheta, fluxo Kanban, DoD, CI/CD, refatoração, métricas e retrospectiva">
+                <span class="porta-boss-state">Desafio bloqueado</span>
+              </div>
+            </div>
+
+            <div class="scene-lock" id="lock-cena-finalizar-historia" role="status" aria-live="polite">
+              <span class="scene-lock__icon" aria-hidden="true"></span>
+              <strong>Bloqueado</strong>
+              <p>Registre a reflexão da retrospectiva para liberar a Quarta Porta.</p>
+            </div>
+          </section>
+        </main>
+
+        <%- include('partials/navegacao_inferior') %>
+          <%- include('partials/footer') %>
+
+            <script src="/assets/js/audio.js"></script>
+            <script src="/assets/js/main.js"></script>
+            <script src="/assets/js/capitulo4.js?v=hourglass-scroll-hint"></script>
+</body>
+
+</html>
