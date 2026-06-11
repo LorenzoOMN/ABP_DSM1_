@@ -598,6 +598,14 @@ a.navegacao-inferior__item.item-ativo span {
    REGRAS MOBILE (Menu de ponta a ponta com bordas apenas top/bottom)
 ========================================================= */
 @media (max-width: 768px) {
+    body:has(.navbar-container-fixo) {
+        --mobile-viewport-height: calc(100dvh - var(--mobile-navbar-height, 76px) - env(safe-area-inset-bottom, 0px));
+    }
+
+    body:has(.navbar-container-fixo) main {
+        min-height: var(--mobile-viewport-height) !important;
+    }
+
     .navbar-toggle-btn {
         display: none !important;
     }
@@ -612,10 +620,16 @@ a.navegacao-inferior__item.item-ativo span {
         pointer-events: auto !important;
         padding: 0 !important;
         display: block !important;
+        height: calc(var(--mobile-navbar-height, 76px) + env(safe-area-inset-bottom, 0px)) !important;
+        z-index: 1000 !important;
     }
 
     .navegacao-inferior {
-        position: relative !important;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + var(--mobile-navbar-footer-offset, 0px)) !important;
+        z-index: 1000 !important;
         display: flex !important;
         opacity: 1 !important;
         visibility: visible !important;
@@ -627,7 +641,6 @@ a.navegacao-inferior__item.item-ativo span {
         border: none !important;
         border-top: 2px solid rgba(153, 107, 15, 0.5) !important;
         border-bottom: 2px solid rgba(153, 107, 15, 0.5) !important;
-        bottom: 0px !important; 
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
     }
 }
