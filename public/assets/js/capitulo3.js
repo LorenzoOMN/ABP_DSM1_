@@ -13,6 +13,23 @@ function obterToken() {
   return token;
 }
 
+const somClick = new Audio("/assets/audio/click.mp3");
+
+function tocarSomClick() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/click.mp3");
+
+  som.volume = 0.05;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 const somPapel = new Audio("/assets/audio/papel.mp3");
 
 function tocarSomPapel() {
@@ -22,23 +39,6 @@ function tocarSomPapel() {
   }
 
   const som = new Audio("/assets/audio/papel.mp3");
-
-  som.volume = 0.2;
-
-  som.play().catch((erro) => {
-    console.error("Erro ao tocar áudio:", erro);
-  });
-}
-
-const somPortal = new Audio("/assets/audio/portal.mp3");
-
-function tocarSomPortal() {
-
-  if (!efeitosSonorosAtivos()) {
-    return;
-  }
-
-  const som = new Audio("/assets/audio/portal.mp3");
 
   som.volume = 0.2;
 
@@ -65,6 +65,7 @@ function configurarScrollParaBotoes() {
   document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
     botao.addEventListener("click", () => {
       rolarParaElemento(botao.dataset.scrollTo);
+      tocarSomClick()
     });
   });
 }
@@ -206,7 +207,6 @@ function definirPortalLiberado(liberado) {
   const linkPortal = document.querySelector(".ampulheta-link");
 
   if (portal) {
-    tocarSomPortal()
     portal.classList.toggle("is-locked", !liberado);
   }
 
