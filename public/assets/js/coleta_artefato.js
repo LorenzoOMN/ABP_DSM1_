@@ -387,7 +387,7 @@
 
     if (artefato.desbloqueado && artefatoEstaPendenteNaSessao(artefato)) {
       btnColetarArtefato.textContent = moduloEhFinal(artefato)
-        ? "Coletar chapÃ©u"
+        ? "Coletar chapéu"
         : "Coletar artefato";
       return;
     }
