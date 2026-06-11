@@ -13,6 +13,40 @@ function obterToken() {
   return token;
 }
 
+const somClick = new Audio("/assets/audio/click.mp3");
+
+function tocarSomClick() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/click.mp3");
+
+  som.volume = 0.05;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somPapel = new Audio("/assets/audio/papel.mp3");
+
+function tocarSomPapel() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/papel.mp3");
+
+  som.volume = 0.2;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function rolarParaElemento(seletor, offset = SCROLL_OFFSET) {
   const alvo = document.querySelector(seletor);
 
@@ -31,6 +65,7 @@ function configurarScrollParaBotoes() {
   document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
     botao.addEventListener("click", () => {
       rolarParaElemento(botao.dataset.scrollTo);
+      tocarSomClick()
     });
   });
 }
@@ -128,6 +163,7 @@ function configurarDailyBook() {
   if (!dailyBook) return;
 
   dailyBook.addEventListener("click", () => {
+    tocarSomPapel()
     dailyBook.classList.toggle("is-open");
     dailyBook.setAttribute(
       "aria-expanded",
@@ -142,6 +178,7 @@ function configurarPergaminhoRetrospectiva() {
   if (!pergaminho) return;
 
   pergaminho.addEventListener("click", () => {
+    tocarSomPapel()
     pergaminho.classList.toggle("is-open");
     pergaminho.setAttribute(
       "aria-expanded",
