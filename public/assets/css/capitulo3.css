@@ -1010,6 +1010,17 @@ strong{
     brightness(0.72);
 }
 
+.portal.porta-concluida {
+  cursor: default;
+  filter: grayscale(1) brightness(0.7);
+}
+
+.portal.porta-concluida .portal-img,
+.portal.porta-concluida .ampulheta-img,
+.portal.porta-concluida .ampulheta2-img {
+  animation: none;
+}
+
 .ampulheta-link {
   position: absolute;
   left: 50%;

@@ -29,9 +29,11 @@ Prototipação no Figma · Diagramas UML · Organização da arquitetura · Nív
 | Nível 1 (Front-end) | 3 | Renan, Thiago, Lorenzo | `RNF-01` `RNF-02` | Baixa | Fácil | ✔️ | ✔️ |
 
 ---
-## 📁 Atas Daily
+## 📁 Documentações
 
 [Ata Sprint 1](https://docs.google.com/document/d/1i2Qys-QMGjRbHQBXx72YsXLIKSJUncoZE_PGJq3DvGs/edit?tab=t.g1b8do1k45e8)
+
+[Sprint Retrospective](https://docs.google.com/document/d/1i2Qys-QMGjRbHQBXx72YsXLIKSJUncoZE_PGJq3DvGs/edit?tab=t.pmjagsu2ikr9)
 
 ---
 ## 📉 Burndown

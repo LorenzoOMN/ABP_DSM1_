@@ -136,12 +136,12 @@ async function findUsuarioByCpfAndSenha(cpf, senha) {
   const usuario = result.rows[0];
 
   if (!usuario) {
-    throw new Error("usuário inexistente");
+    throw new Error("Usuário não encontrado");  // ← ALTERE AQUI
   }
 
   const senhaValida = verifyPassword(senha, usuario.senha);
   if (!senhaValida) {
-    throw new Error("dados de login incorretos");
+    throw new Error("Senha incorreta");  // ← ALTERE AQUI
   }
 
   // Retornar barra_desbloqueada junto com os dados do usuário

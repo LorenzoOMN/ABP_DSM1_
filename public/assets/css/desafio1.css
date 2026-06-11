@@ -19,6 +19,12 @@
   color: var(--boss-text);
 }
 
+.pagina-desafio1 *,
+.pagina-desafio1 *::before,
+.pagina-desafio1 *::after {
+  box-sizing: border-box;
+}
+
 .desafio1-main {
   position: relative;
   isolation: isolate;
@@ -60,17 +66,20 @@
   position: relative;
   z-index: 1;
   display: grid;
-  gap: clamp(12px, 1.7vw, 18px);
+  gap: clamp(22px, 3vw, 34px);
 }
 
 .desafio1-title {
   width: min(560px, 100%);
+  position: relative;
+  z-index: 2;
+  margin-bottom: clamp(2px, 0.8vw, 8px);
 }
 
 .desafio1-title .title-box {
   display: grid;
   justify-items: start;
-  gap: 8px;
+  gap: clamp(10px, 1.4vw, 14px);
 }
 
 .desafio1-title span,
@@ -92,7 +101,7 @@
   font-family: "Cinzel", serif;
   font-size: clamp(1.38rem, 2.6vw, 2.18rem);
   letter-spacing: 0.04em;
-  line-height: 1.12;
+  line-height: 1.18;
   text-transform: uppercase;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 10px 22px rgba(0, 0, 0, 0.48);
   background:
@@ -102,6 +111,8 @@
 }
 
 .boss-intro-card {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(300px, 0.9fr) minmax(360px, 1.1fr);
   gap: clamp(14px, 2vw, 22px);
@@ -378,27 +389,180 @@
   }
 }
 
+@media (max-width: 700px) {
+  .desafio1-main {
+    overflow: visible;
+  }
+
+  .desafio1-wrapper {
+    gap: clamp(12px, 3vw, 18px);
+  }
+
+  .boss-intro-card {
+    display: contents;
+  }
+
+  .boss-briefing {
+    order: 2;
+  }
+
+  .boss-actions {
+    order: 3;
+    width: 100%;
+  }
+
+  .boss-image-frame {
+    order: 4;
+  }
+}
+
 @media (max-width: 560px) {
   .desafio1-main {
-    padding: 22px 12px 82px;
+    min-height: auto;
+    padding: 18px 10px 72px;
+    overflow: visible;
+  }
+
+  .desafio1-wrapper {
+    gap: 12px;
+  }
+
+  .desafio1-title,
+  .desafio1-title .title-box,
+  .boss-briefing,
+  .boss-image-frame,
+  .boss-actions {
+    width: 100%;
+    min-width: 0;
   }
 
   .desafio1-title h1 {
-    width: min(330px, 100%);
-    padding: 11px 18px;
-    font-size: 21px;
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 14px;
+    font-size: clamp(1.28rem, 6.2vw, 1.62rem);
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+  }
+
+  .desafio1-title span,
+  .boss-kicker {
+    font-size: 0.66rem;
+  }
+
+  .boss-briefing {
+    gap: 10px;
   }
 
   .boss-briefing,
   .boss-image-frame {
-    padding: 14px;
+    padding: 12px;
+  }
+
+  .boss-type-box,
+  .boss-type-box p {
+    min-height: 0;
+  }
+
+  .boss-type-box {
+    gap: 8px;
+  }
+
+  .boss-type-box h3 {
+    font-size: clamp(1rem, 5vw, 1.18rem);
+  }
+
+  .boss-type-box p {
+    font-size: 0.92rem;
+    line-height: 1.38;
   }
 
   .boss-image-frame {
-    min-height: 260px;
+    min-height: 190px;
   }
 
   .boss-scene-img {
-    max-height: 230px;
+    max-height: 176px;
+  }
+
+  .rules-toggle {
+    padding: 0.58rem 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  .rules-card.is-open .rules-content {
+    max-height: none;
+    padding: 0.16rem 0.72rem 0.72rem;
+  }
+
+  .rules-content ul {
+    gap: 0.22rem;
+    padding-left: 0.95rem;
+    font-size: 0.78rem;
+    line-height: 1.28;
+  }
+
+  .boss-actions {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .btn-boss-start,
+  .btn-boss-secondary {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.78rem;
+    line-height: 1.12;
+  }
+
+  .boss-lives-box {
+    min-width: 0;
+    justify-self: stretch;
+    gap: 0.24rem;
+  }
+
+  .boss-lives-icons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .boss-lives-icons img {
+    width: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .desafio1-main {
+    padding-inline: 8px;
+  }
+
+  .desafio1-title h1 {
+    padding-inline: 12px;
+    font-size: 1.22rem;
+  }
+
+  .boss-briefing,
+  .boss-image-frame,
+  .boss-actions {
+    border-radius: 7px;
+  }
+
+  .boss-type-box p {
+    font-size: 0.88rem;
+  }
+
+  .rules-content ul {
+    font-size: 0.75rem;
+  }
+
+  .boss-image-frame {
+    min-height: 170px;
+  }
+
+  .boss-scene-img {
+    max-height: 156px;
   }
 }
