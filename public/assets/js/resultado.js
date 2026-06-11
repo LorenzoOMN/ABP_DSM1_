@@ -507,7 +507,7 @@
       if (!data.aprovado && data.exame?.id_exame) {
         sessionStorage.setItem("ultimo_id_exame", String(data.exame.id_exame));
         mostrarAlerta("Nova tentativa disponível. Boa sorte!", "info");
-        window.location.href = "/questionario";
+        window.location.href = "/desafio1";
         return;
       }
 
