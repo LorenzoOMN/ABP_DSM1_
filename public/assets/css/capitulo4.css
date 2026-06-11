@@ -1483,7 +1483,7 @@ blockquote {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  min-height: 100svh;
+  min-height: var(--mobile-viewport-height, 100svh);
   display: grid;
   grid-template-rows: minmax(7rem, auto) 1fr minmax(7rem, auto);
   align-items: center;
@@ -4182,7 +4182,7 @@ transition: opacity 1.4s ease;
 
   .refactor-void__inner {
     width: min(100%, calc(100% - 1rem));
-    min-height: 100svh;
+    min-height: var(--mobile-viewport-height, 100svh);
     padding: 1.5rem 0 2.5rem;
   }
 
@@ -4257,7 +4257,7 @@ transition: opacity 1.4s ease;
   }
 
   .capitulo-hero {
-    min-height: 100svh;
+    min-height: var(--mobile-viewport-height, 100svh);
     background-position: center;
   }
 
