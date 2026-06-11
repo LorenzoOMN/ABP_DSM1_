@@ -18,10 +18,13 @@ Níveis 2–5 (histórias e desafios) · Polimento geral · Melhorias de Seguran
 
 | Tarefa | Pontuação | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
 |--------|:---------:|:-----------:|:----------:|:----------:|:-----------:|:--------:|:---------:|
+|Refatoramento Código | 5 | Cauã, Enzo, Lorenzo | `RNF-00` | Alta | Médio | ✔️ | ✔️ |
+|Aperfeiçoamento tentativas | 13 | Vitor | `RNF-06` `RNF-07` | Alta | Médio | ✔️ | ✔️ |
 | Nível 2 (História + Desafio) | 8 | Alef | `RNF-01` `RNF-02` | Alta | Médio | ✔️ | — |
 | Nível 3 (História + Desafio) | 8 | Patricia | `RNF-01` `RNF-02` | Alta | Médio | ✔️ | — |
 | Nível 4 (História + Desafio) | 8 | Renan | `RNF-01` `RNF-02` | Alta | Médio | ✔️ | — |
 | Nível 5 (História + Desafio) | 8 | Vitor | `RNF-01` `RNF-02` | Alta | Médio | ✔️ | — |
+| Questionário Dinâmico | 8 | Igor | `RNF-00` | Médio | Alta | ✔️ | ✔️|
 | Testes e ajustes gerais | — | — | `RNF-03` | Alta | Médio | ✔️ | — |
 | Documentação final (README + docs) | — | — | `RNF-05` `RNF-06` | Média | Fácil | ✔️ | — |
 
