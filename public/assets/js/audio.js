@@ -28,11 +28,6 @@
 
   const caminhoAudio = trilhasPorPagina[window.location.pathname];
 
-  //if (!caminhoAudio) {
-  //  botaoAudio.hidden = true;
-  //  return;
-  //}
-
   const audio = new Audio(caminhoAudio);
   audio.loop = true;
   audio.volume = 0.35;
@@ -68,10 +63,21 @@
     audio.pause();
   }
 
+  // ✅ Função para sincronizar com o toggle do perfil
+  function sincronizarComPerfil() {
+    const toggleMusica = document.getElementById("toggleMusica");
+    if (toggleMusica) {
+      toggleMusica.classList.toggle("desativado", !ligado);
+    }
+  }
+
   botaoAudio.addEventListener("click", async () => {
     ligado = !ligado;
     localStorage.setItem("audioLigado", String(ligado));
     await aplicarEstado();
+    
+    // ✅ Sincroniza com o toggle do perfil na mesma página
+    sincronizarComPerfil();
   });
 
   document.addEventListener(
@@ -83,6 +89,15 @@
     },
     { once: true },
   );
+
+  // ✅ Sincroniza entre abas diferentes
+  window.addEventListener("storage", (event) => {
+    if (event.key === "audioLigado") {
+      ligado = event.newValue !== "false";
+      aplicarEstado();
+      sincronizarComPerfil();
+    }
+  });
 
   aplicarEstado();
 })();
