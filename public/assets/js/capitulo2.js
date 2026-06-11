@@ -130,6 +130,40 @@ const preparoDesafioData = {
   },
 };
 
+const somClick = new Audio("/assets/audio/click.mp3");
+
+function tocarSomClick() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/click.mp3");
+
+  som.volume = 0.06;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somPapel = new Audio("/assets/audio/papel.mp3");
+
+function tocarSomPapel() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/papel.mp3");
+
+  som.volume = 0.2;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 function obterTokenCapitulo2() {
   const token = localStorage.getItem("token");
 
@@ -160,6 +194,7 @@ function configurarScrollCapitulo2() {
 
     if (!botao) return;
 
+    tocarSomClick();
     rolarParaElementoCapitulo2(botao.dataset.scrollTo);
   });
 }
@@ -330,6 +365,7 @@ function configurarPreparoDesafio() {
         const conceito = preparoDesafioData[tipo]?.[chave];
 
         if (!conceito || !painel) return;
+        tocarSomPapel();
 
         botoes.forEach((item) => item.classList.toggle("is-active", item === botao));
 

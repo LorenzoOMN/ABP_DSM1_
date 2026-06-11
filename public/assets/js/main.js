@@ -1056,7 +1056,7 @@ function tocarSomClick() {
     return;
   }
 
-  somClickGlobal.volume = 0.15;
+  somClickGlobal.volume = 0.06;
   somClickGlobal.currentTime = 0;
 
   somClickGlobal.play().catch((erro) => {
@@ -1065,6 +1065,20 @@ function tocarSomClick() {
 }
 
 document.addEventListener("click", (event) => {
+
+  // Se estiver em uma página de questionário, não toca o som
+  if (document.body.classList.contains("pagina-questionario")) {
+    return;
+  }
+
+  if (
+    [...document.body.classList].some((classe) =>
+      classe.startsWith("capitulo")
+    )
+  ) {
+    return;
+  }
+
 
   const botao = event.target.closest("button");
 

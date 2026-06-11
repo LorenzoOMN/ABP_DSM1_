@@ -405,6 +405,142 @@ function restaurarEntradaCapitulo5() {
   }
 }
 
+const somArtefatos = new Audio("/assets/audio/artefatos.mp3");
+
+function tocarSomArtefatos() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/artefatos.mp3");
+
+  som.volume = 0.05;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somConflito = new Audio("/assets/audio/conflito.mp3");
+
+function tocarSomConflito() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/conflito.mp3");
+
+  som.volume = 0.05;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somRosnado = new Audio("/assets/audio/rosnado.mp3");
+
+function tocarSomRosnado() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/rosnado.mp3");
+
+  som.volume = 0.1;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somAcerto = new Audio("/assets/audio/acerto.mp3");
+
+function tocarSomAcerto() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/acerto.mp3");
+
+  som.volume = 0.03;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somDesmoronamento = new Audio("/assets/audio/desmoronamento.mp3");
+
+function tocarSomDesmoronamento() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/desmoronamento.mp3");
+
+  som.volume = 0.02;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somCarta = new Audio("/assets/audio/carta.mp3");
+
+function tocarSomCarta() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/carta.mp3");
+
+  som.volume = 0.1;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somMetal = new Audio("/assets/audio/metal.mp3");
+
+function tocarSomMetal() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/metal.mp3");
+
+  som.volume = 0.02;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somFogo = new Audio("/assets/audio/fogueira.mp3");
+
+function tocarSomFogo() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/fogueira.mp3");
+
+  som.volume = 0.01;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 async function concluirHistoria() {
   const token = obterToken();
 
@@ -1907,6 +2043,7 @@ function configurarDesafioStakeholder() {
         botoes.forEach((b) => (b.disabled = true));
 
         if (index === turno.correta) {
+          tocarSomAcerto();
           botao.classList.add("correta");
           stakeholderFeedback.className = "stakeholder-feedback sucesso";
           stakeholderFeedback.textContent = turno.feedback;
@@ -1939,6 +2076,7 @@ function configurarDesafioStakeholder() {
             }
           }, 1400);
         } else {
+          tocarSomRosnado();
           botao.classList.add("errada");
           stakeholderFeedback.className = "stakeholder-feedback erro";
           stakeholderFeedback.textContent =
@@ -1959,6 +2097,7 @@ function configurarDesafioStakeholder() {
   }
 
   btnIniciarStakeholder.addEventListener("click", () => {
+    tocarSomConflito();
     stakeholderTurnosWrap.classList.remove("hidden");
     stakeholderTurnosWrap.scrollIntoView({
       behavior: "smooth",
@@ -2223,6 +2362,7 @@ function configurarDesafioNecrobranch() {
 
   btnSelarNecrobranch.addEventListener("click", () => {
     if (necroAmpulhetaIcon) {
+      tocarSomArtefatos();
       necroAmpulhetaIcon.classList.add("girando");
     }
 
@@ -2232,6 +2372,7 @@ function configurarDesafioNecrobranch() {
 
       const necroRevealCopy = document.getElementById("necroRevealCopy");
       if (necroRevealCopy) {
+        tocarSomDesmoronamento();
         setTimeout(() => {
           necroRevealCopy.classList.add("show");
         }, 250);
@@ -2443,6 +2584,7 @@ function configurarDesafioBugInfernal() {
 
   if (bugFlipCard) {
     bugFlipCard.addEventListener("click", () => {
+      tocarSomCarta();
       const cartaVirada = bugFlipCard.classList.toggle("is-flipped");
 
       bugFlipCard.setAttribute("aria-pressed", String(cartaVirada));
@@ -2575,12 +2717,13 @@ function configurarFornalhasDaForja() {
 
   if (!fornalhas.length || !btnLiberarMontagemForja || !forjaDropStage) {
     return;
-  }
+  } 
 
   const fornalhasAcesas = new Set();
 
   function atualizarEstadoFornalhas(fornalhaAtiva) {
     fornalhas.forEach((btn) => {
+      tocarSomFogo()
       btn.classList.toggle("is-ativa", btn === fornalhaAtiva);
     });
   }
@@ -2606,6 +2749,7 @@ function configurarFornalhasDaForja() {
   });
 
   btnLiberarMontagemForja.addEventListener("click", () => {
+    tocarSomMetal();
     forjaDropStage.classList.remove("hidden");
     forjaDropStage.scrollIntoView({
       behavior: "smooth",
@@ -2783,6 +2927,7 @@ function configurarForjaMvp() {
     }
 
     if (totalPreenchidos === 3) {
+      tocarSomAcerto();
       btnForjarMvp.disabled = false;
       btnForjarMvp.classList.add("is-pronto");
 
@@ -2857,6 +3002,7 @@ function configurarForjaMvp() {
   }
 
   btnIniciarForja.addEventListener("click", () => {
+    tocarSomMetal();
     forjaAulaWrap.classList.remove("hidden");
     forjaDropStage.classList.add("hidden");
 
@@ -2929,6 +3075,7 @@ function configurarForjaMvp() {
   });
 
   btnForjarMvp.addEventListener("click", () => {
+    tocarSomArtefatos();
     const totalPreenchidos = contarArtefatosPosicionados();
 
     if (totalPreenchidos < 3) {
