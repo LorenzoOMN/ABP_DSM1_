@@ -1579,12 +1579,51 @@ function liberarPortaDesafio() {
   if (!gate) return;
 
   gate.classList.add("porta-liberada");
+  gate.classList.remove("porta-concluida");
+  gate.removeAttribute("aria-disabled");
   gate.setAttribute("role", "button");
   gate.setAttribute("tabindex", "0");
   gate.setAttribute("aria-label", "Entrar no desafio do modulo 4");
 
   if (state) {
     state.textContent = "Entrar no desafio";
+  }
+}
+
+function moduloTemDesafioConcluido(modulo) {
+  return Boolean(
+    modulo?.desafio_concluido ||
+      (modulo?.historia_concluida && !modulo?.desafio_atual),
+  );
+}
+
+function aplicarPortaConcluida() {
+  const gate = document.getElementById("portaBossScene");
+  const state = gate?.querySelector(".porta-boss-state");
+  const button = document.getElementById("btnConcluirHistoria");
+  const status = document.getElementById("statusHistoria");
+
+  if (button) {
+    button.classList.add("hidden");
+  }
+
+  if (status) {
+    status.dataset.completed = "true";
+    status.textContent =
+      "Desafio já vencido. Esta porta agora permanece como registro da sua jornada.";
+  }
+
+  if (!gate) return;
+
+  gate.classList.remove("porta-liberada");
+  gate.classList.add("porta-concluida");
+  gate.removeAttribute("role");
+  gate.removeAttribute("tabindex");
+  gate.setAttribute("aria-disabled", "true");
+  gate.setAttribute("aria-label", "Desafio do módulo 4 já vencido");
+
+  if (state) {
+    state.textContent = "Desafio já vencido";
   }
 }
 
@@ -1602,6 +1641,7 @@ function configurarPortaDesafio() {
   if (!gate) return;
 
   function entrarNoDesafio() {
+    if (gate.classList.contains("porta-concluida")) return;
     if (!gate.classList.contains("porta-liberada")) return;
 
     localStorage.setItem("moduloAtual", ID_MODULO);
@@ -1634,6 +1674,11 @@ async function carregarEstadoHistoria() {
     if (!response.ok || !Array.isArray(data.modulos)) return;
 
     const moduleState = data.modulos.find((module) => Number(module.id_modulo) === ID_MODULO);
+
+    if (moduloTemDesafioConcluido(moduleState)) {
+      aplicarPortaConcluida();
+      return;
+    }
 
     if (!moduleState?.historia_concluida) return;
 

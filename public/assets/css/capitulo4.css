@@ -3912,6 +3912,25 @@ transition: opacity 1.4s ease;
   border-radius: 12px;
 }
 
+.porta-boss-scene.porta-concluida {
+  cursor: default;
+  filter: grayscale(1) brightness(0.72);
+}
+
+.porta-boss-scene.porta-concluida::before {
+  opacity: 0.12;
+  animation: none;
+}
+
+.porta-boss-scene.porta-concluida .porta-boss-img {
+  animation: none;
+}
+
+.porta-boss-scene.porta-concluida .porta-boss-state {
+  opacity: 1;
+  color: #d6c7a0;
+}
+
 @keyframes porta-boss-shadow-flow {
   0%, 100% {
     filter:

@@ -56,6 +56,7 @@ async function carregarDadosDoBackend() {
     if (!response.ok) {
       console.error("❌ Erro ao buscar progresso do mapa");
       aplicarBossNoDOM(BOSSES[1]);
+      atualizarTituloBoss(1);
       configurarAcoesDesafio(1);
       return;
     }
@@ -97,6 +98,7 @@ async function carregarDadosDoBackend() {
     // Atualiza a interface
     const bossCorreto = BOSSES[moduloFinal] || BOSSES[1];
     aplicarBossNoDOM(bossCorreto);
+    atualizarTituloBoss(moduloFinal);
     revelarElementosEmSequencia();
     configurarRegras();
 
@@ -111,6 +113,7 @@ async function carregarDadosDoBackend() {
     // Em caso de erro, usa o módulo 1
     const bossPadrao = BOSSES[1];
     aplicarBossNoDOM(bossPadrao);
+    atualizarTituloBoss(1);
     revelarElementosEmSequencia();
     configurarRegras();
     configurarAcoesDesafio(1);
@@ -134,6 +137,15 @@ function aplicarBossNoDOM(boss) {
   }
 
   configurarTextoDigitado(boss.descricao);
+}
+
+function atualizarTituloBoss(moduloId) {
+  const titleElement = document.getElementById("bossChapterTitle");
+  const modulo = Number(moduloId) || 1;
+
+  if (titleElement) {
+    titleElement.textContent = `Capítulo ${modulo}: Boss Fight`;
+  }
 }
 
 function revelarElementosEmSequencia() {
