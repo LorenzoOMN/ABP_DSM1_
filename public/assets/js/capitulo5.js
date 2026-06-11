@@ -34,17 +34,22 @@ const ENCONTROS_CAPITULO_5 = {
 let etapaAtualCapitulo5 = "duplo";
 let chaveMvpUsadaNaPorta = false;
 let historia5ConcluidaNoBackend = false;
+let restaurandoCapitulo5 = true;
 
 const STORAGE_CAPITULO5 = "scrum_dungeon_capitulo5_estado";
 const STORAGE_CAPITULO5_ENTRADA = "scrum_dungeon_capitulo5_entrada";
 const STORAGE_CAPITULO5_REPLAY = "scrum_dungeon_capitulo5_replay_temporal";
 
 function estaEmReplayTemporalCapitulo5() {
-  return sessionStorage.getItem(STORAGE_CAPITULO5_REPLAY) === "true";
+  return (
+    sessionStorage.getItem(STORAGE_CAPITULO5_REPLAY) === "true" ||
+    localStorage.getItem(STORAGE_CAPITULO5_REPLAY) === "true"
+  );
 }
 
 function encerrarReplayTemporalCapitulo5() {
   sessionStorage.removeItem(STORAGE_CAPITULO5_REPLAY);
+  localStorage.removeItem(STORAGE_CAPITULO5_REPLAY);
 }
 
 function limparEstadoLegadoCapitulo5() {
@@ -343,6 +348,7 @@ function restaurarEstadoCapitulo5Local() {
 
 function resetarJornadaCapitulo5() {
   sessionStorage.setItem(STORAGE_CAPITULO5_REPLAY, "true");
+  localStorage.setItem(STORAGE_CAPITULO5_REPLAY, "true");
 
   sessionStorage.removeItem(STORAGE_CAPITULO5);
   sessionStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
@@ -683,29 +689,29 @@ async function carregarEstadoHistoria() {
 
     if (!modulo || !modulo.historia_concluida) return;
 
-    historia5ConcluidaNoBackend = true;
+historia5ConcluidaNoBackend = true;
 
-    if (moduloTemDesafioConcluido(modulo)) {
-      aplicarPortaFinalConcluida();
-      return;
-    }
+if (estaEmReplayTemporalCapitulo5()) {
+  if (btnConcluir) {
+    btnConcluir.classList.add("hidden");
+  }
 
-    if (estaEmReplayTemporalCapitulo5()) {
-      if (btnConcluir) {
-        btnConcluir.classList.add("hidden");
-      }
+  if (btnEntrarDesafio) {
+    btnEntrarDesafio.classList.add("hidden");
+  }
 
-      if (btnEntrarDesafio) {
-        btnEntrarDesafio.classList.add("hidden");
-      }
+  if (status) {
+    status.textContent =
+      "Replay temporal ativo. Avance novamente pela ponte até a porta final.";
+  }
 
-      if (status) {
-        status.textContent =
-          "História já registrada no sistema. Replay temporal ativo.";
-      }
+  return;
+}
 
-      return;
-    }
+if (moduloTemDesafioConcluido(modulo)) {
+  aplicarPortaFinalConcluida();
+  return;
+}
 
     aplicarEstadoCapitulo5ConcluidoPeloBackend();
 
@@ -2922,7 +2928,7 @@ function configurarForjaMvp() {
     const jaEstavaPronto = btnForjarMvp.classList.contains("is-pronto");
 
     if (totalPreenchidos === 3) {
-      if (!jaEstavaPronto) {
+      if (!restaurandoCapitulo5) {
         tocarSomAcerto();
       }
 
@@ -3142,12 +3148,12 @@ function configurarPortaFinal() {
 
   let portaFoiAberta = chaveMvpUsadaNaPorta;
 
-  function mostrarFeedbackPorta(mensagem) {
-    if (!portaFinalFeedback) return;
+ function mostrarFeedbackPorta(_mensagem) {
+  if (!portaFinalFeedback) return;
 
-    portaFinalFeedback.textContent = mensagem;
-    portaFinalFeedback.classList.remove("hidden");
-  }
+  portaFinalFeedback.classList.add("hidden");
+  portaFinalFeedback.textContent = "";
+}
 
   function aplicarVisualPortaFechada() {
     portaFoiAberta = false;
@@ -3173,12 +3179,9 @@ function configurarPortaFinal() {
       btnEntrarDesafio.classList.add("hidden");
     }
 
-    if (portaBloqueada) {
-      portaBloqueada.classList.remove("hidden");
-      portaBloqueada.textContent =
-        "O MVP foi forjado. A porta ainda espera a Chave MVP tocar sua fechadura.";
-      portaBloqueada.classList.remove("liberada");
-    }
+if (portaBloqueada) {
+  portaBloqueada.classList.add("hidden");
+}
 
     mostrarFeedbackPorta(
       "Arraste a Chave MVP da mochila até a fechadura para abrir a última porta.",
@@ -3212,8 +3215,7 @@ function configurarPortaFinal() {
     if (btnEntrarDesafio) {
       btnEntrarDesafio.classList.remove("hidden");
     }
-
-     }
+  }
 
   function abrirSalaDaPortaFinal() {
     if (!etapasConcluidas.has("forja-mvp")) {
@@ -3288,10 +3290,7 @@ function configurarPortaFinal() {
     consumirArtefatoDaMochila("chave-mvp");
     salvarEstadoCapitulo5Local();
 
-    mostrarFeedbackPorta(
-      "A fechadura aceita a Chave MVP. A história está sendo registrada automaticamente.",
-    );
-
+    
     if (btnConcluirHistoria) {
       btnConcluirHistoria.classList.add("hidden");
     }
@@ -3316,7 +3315,6 @@ function configurarPortaFinal() {
     if (btnEntrarDesafio) {
       btnEntrarDesafio.classList.remove("hidden");
     }
-   
   }
 
   if (btnIrPortaFinal) {
@@ -3491,8 +3489,8 @@ function sincronizarVisualInicialPortaFinal() {
   }
 
   if (portaFinalFeedback) {
-  portaFinalFeedback.classList.add("hidden");
-}
+    portaFinalFeedback.classList.add("hidden");
+  }
 }
 
 /* =========================================================
@@ -3553,4 +3551,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     stageInicial.classList.remove("hidden");
   }
   sincronizarVisualInicialPortaFinal();
+  restaurandoCapitulo5 = false;
 });
