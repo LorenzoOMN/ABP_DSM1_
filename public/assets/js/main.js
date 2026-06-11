@@ -861,9 +861,14 @@ document.addEventListener("click", (event) => {
     return;
   }
 
-  if (document.body.classList.contains("capitulo")) {
+  if (
+    [...document.body.classList].some((classe) =>
+      classe.startsWith("capitulo")
+    )
+  ) {
     return;
   }
+
 
   const botao = event.target.closest("button");
 
