@@ -198,23 +198,40 @@ window.debugRestaurarRotas = function debugRestaurarRotas() {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
       // Token inválido (usuário deletado, banco reiniciado, etc)
       console.warn("Token inválido, fazendo logout...");
       fazerLogout();
       return;
     }
 
+    if (!response.ok) {
+      throw new Error("Nao foi possivel validar usuario.");
+    }
+
     const progresso = await obterProgressoDaJornada(token);
     const modulos = Array.isArray(progresso?.modulos) ? progresso.modulos : [];
     const moduloAtual = modulos.find((modulo) => modulo.desafio_atual) || modulos[0];
 
-    if (!modulos.length || !podeAcessarRotaDaJornada(rotaAtual, modulos)) {
+    if (
+      rotaAtual !== "/resultado" &&
+      await deveRetomarResultadoDaBatalha(rotaAtual, token)
+    ) {
+      window.location.replace("/resultado");
+      return;
+    }
+
+    const podeAcessar = await podeAcessarRotaDaJornada(
+      rotaAtual,
+      modulos,
+      token,
+    );
+
+    if (!modulos.length || !podeAcessar) {
       window.location.replace(criarRotaSeguraDaJornada(moduloAtual));
     }
   } catch (error) {
     console.warn("Falha ao validar acesso da rota.", error);
-    fazerLogout();
   }
 })();
 
@@ -244,7 +261,7 @@ async function obterProgressoDaJornada(token) {
   return progresso;
 }
 
-function podeAcessarRotaDaJornada(rota, modulos) {
+async function podeAcessarRotaDaJornada(rota, modulos, token) {
   if (isDebugUnlockAllEnabled()) {
     return true;
   }
@@ -283,12 +300,18 @@ function podeAcessarRotaDaJornada(rota, modulos) {
     const moduloSessao = Number(sessionStorage.getItem("modulo_artefato_pendente"));
     const modulo = modulos.find((item) => Number(item.id_modulo) === idModulo);
 
-    return Boolean(
+    const contextoAtualDaColeta = Boolean(
       idModulo &&
         modulo &&
         moduloSessao === idModulo &&
         (!modulo.desafio_atual || modulo.certificado_liberado)
     );
+
+    if (contextoAtualDaColeta) {
+      return true;
+    }
+
+    return await usuarioTemArtefatoDoModulo(token, idModulo);
   }
 
   if (rota === "/resultado") {
@@ -296,6 +319,53 @@ function podeAcessarRotaDaJornada(rota, modulos) {
   }
 
   return true;
+}
+
+async function usuarioTemArtefatoDoModulo(token, idModulo) {
+  if (!token || !Number.isInteger(idModulo) || idModulo <= 0) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(`/api/artefatos/modulo/${idModulo}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const payload = await response.json();
+    return payload?.data?.desbloqueado === true;
+  } catch (error) {
+    console.warn("Falha ao validar artefato desbloqueado.", error);
+    return false;
+  }
+}
+
+async function deveRetomarResultadoDaBatalha(rota, token) {
+  const rotaDesafio = /^\/desafio[1-5]$/.test(rota);
+  const rotaQuestionario = rota === "/questionario" || rota === "/questionario1";
+
+  if (!token || (!rotaDesafio && !rotaQuestionario)) {
+    return false;
+  }
+
+  try {
+    const response = await fetch("/api/questoes/status-atual", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const status = await response.json();
+    return status?.concluido === true;
+  } catch (error) {
+    console.warn("Falha ao verificar retomada do resultado.", error);
+    return false;
+  }
 }
 
 function criarRotaSeguraDaJornada(moduloAtual) {

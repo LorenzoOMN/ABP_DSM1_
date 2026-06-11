@@ -11,6 +11,7 @@ const {
   getProximoModulo, 
   getModulosRespondidos,
   getResultadoAtual,
+  getStatusAtual,
   getTodasQuestoes,
 } = require("./questoes.controller");
 
@@ -37,6 +38,9 @@ router.get("/modulos-respondidos", getModulosRespondidos);
 
 // GET /api/questoes/resultado-atual
 router.get("/resultado-atual", getResultadoAtual);
+
+// GET /api/questoes/status-atual
+router.get("/status-atual", getStatusAtual);
 
 // GET /api/questoes/todas
 router.get("/todas", getTodasQuestoes);

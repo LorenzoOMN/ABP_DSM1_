@@ -7,6 +7,7 @@ const { getProximaQuestaoService,
     getProximoModuloService,
     getModulosRespondidosService,
     getResultadoAtualService,
+    getStatusAtualService,
     getTodasQuestoesService } = require('./questoes.service');
 
 // ============================================================================
@@ -173,6 +174,21 @@ async function getResultadoAtual(req, res) {
     }
 }
 
+async function getStatusAtual(req, res) {
+    const idUsuario = req.usuario?.id_usuario;
+    if (!idUsuario) {
+        return res.status(401).json({ message: "UsuÃ¡rio nÃ£o autenticado" });
+    }
+
+    try {
+        const status = await getStatusAtualService(idUsuario);
+        return res.status(200).json(status);
+    } catch (error) {
+        console.error("Erro em getStatusAtual:", error);
+        return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
 
 // ============================================================================
 // CONTROLLER: BUSCAR TODAS AS QUESTÕES DO EXAME (para navegação local)
@@ -212,5 +228,6 @@ module.exports = {
     getProximoModulo,
     getModulosRespondidos,
     getResultadoAtual,
+    getStatusAtual,
     getTodasQuestoes,
 };

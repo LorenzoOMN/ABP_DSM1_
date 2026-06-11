@@ -360,6 +360,18 @@
     sessionStorage.removeItem("destino_pos_coleta_artefato");
   }
 
+  function artefatoEstaPendenteNaSessao(artefato) {
+    const moduloPendente = Number(
+      sessionStorage.getItem("modulo_artefato_pendente"),
+    );
+
+    return (
+      Number.isInteger(moduloPendente) &&
+      moduloPendente > 0 &&
+      moduloPendente === Number(artefato?.capitulo_requisito)
+    );
+  }
+
   function irParaDestinoFinal() {
     const destino = obterDestinoFinal();
     const tempoTransicao = mostrarTransicaoSaida(destino);
@@ -372,6 +384,13 @@
   }
   function atualizarTextoBotao(artefato) {
     if (!btnColetarArtefato) return;
+
+    if (artefato.desbloqueado && artefatoEstaPendenteNaSessao(artefato)) {
+      btnColetarArtefato.textContent = moduloEhFinal(artefato)
+        ? "Coletar chapÃ©u"
+        : "Coletar artefato";
+      return;
+    }
 
     if (artefato.desbloqueado) {
       btnColetarArtefato.textContent = moduloEhFinal(artefato)
@@ -477,6 +496,13 @@
     }
 
     if (artefatoAtual.desbloqueado) {
+      if (artefatoEstaPendenteNaSessao(artefatoAtual)) {
+        mostrarToastArtefatoColetado(artefatoAtual, () => {
+          irParaDestinoFinal();
+        });
+        return;
+      }
+
       irParaDestinoFinal();
       return;
     }

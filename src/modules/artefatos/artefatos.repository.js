@@ -129,10 +129,32 @@ async function coletarArtefato(idUsuario, idArtefato) {
   return result.rows[0] || null;
 }
 
+async function coletarArtefatoPorModulo(idUsuario, idModulo) {
+  const sql = `
+    INSERT INTO public.usuario_artefatos (
+      id_usuario,
+      id_artefato
+    )
+    SELECT
+      $1,
+      a.id
+    FROM public.artefatos a
+    WHERE a.capitulo_requisito = $2
+    ON CONFLICT (id_usuario, id_artefato)
+    DO UPDATE SET
+      desbloqueado_em = public.usuario_artefatos.desbloqueado_em
+    RETURNING *;
+  `;
+
+  const result = await pool.query(sql, [idUsuario, idModulo]);
+  return result.rows[0] || null;
+}
+
 module.exports = {
   buscarArtefatosPorUsuario,
   buscarArtefatoPorId,
   buscarArtefatoPorModulo,
   usuarioPodeColetarArtefato,
   coletarArtefato,
+  coletarArtefatoPorModulo,
 };
