@@ -563,13 +563,32 @@ async function findExameExistente(idUsuario, idModulo) {
 
 // cria o exame inicial quando o usuário conclui a história
 async function criarExameInicial(idUsuario, idModulo, grupo) {
+  // Garante que o grupo seja válido
+  let grupoValido = grupo;
+  
+  if (!grupoValido || grupoValido === null) {
+    // Busca um grupo disponível para o módulo
+    const result = await pool.query(
+      `
+      SELECT DISTINCT grupo 
+      FROM questoes 
+      WHERE id_modulo = $1 AND grupo IS NOT NULL 
+      ORDER BY grupo 
+      LIMIT 1
+      `,
+      [idModulo]
+    );
+    
+    grupoValido = result.rows[0]?.grupo || 1; // Fallback para grupo 1
+  }
+
   const result = await pool.query(
     `
     INSERT INTO exames (id_usuario, id_modulo, grupo, tentativa)
     VALUES ($1, $2, $3, 1)
     RETURNING id_exame, id_usuario, id_modulo, grupo, tentativa
     `,
-    [idUsuario, idModulo, grupo]
+    [idUsuario, idModulo, grupoValido],
   );
 
   return result.rows[0] || null;

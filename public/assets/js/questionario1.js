@@ -4,50 +4,50 @@
   // ============================================================================
 
   // Bloquear seleção de texto via teclado
-  document.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', function (e) {
     // Bloqueia Ctrl+C, Ctrl+V, Ctrl+A, Ctrl+X, Ctrl+U (ver código fonte)
-    if ((e.ctrlKey || e.metaKey) && 
-        ['c', 'v', 'a', 'x', 'u'].includes(e.key.toLowerCase())) {
+    if ((e.ctrlKey || e.metaKey) &&
+      ['c', 'v', 'a', 'x', 'u'].includes(e.key.toLowerCase())) {
       e.preventDefault();
       return false;
     }
-    
+
     // Bloqueia F12 (DevTools)
     if (e.key === 'F12') {
       e.preventDefault();
       return false;
     }
-    
+
     // Bloqueia Ctrl+Shift+I/J/C (DevTools)
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && 
-        ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey &&
+      ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
       e.preventDefault();
       return false;
     }
   });
 
   // Bloquear menu de contexto (botão direito)
-  document.addEventListener('contextmenu', function(e) {
+  document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     return false;
   });
 
   // Bloquear arrastar/copiar
-  document.addEventListener('dragstart', function(e) {
+  document.addEventListener('dragstart', function (e) {
     e.preventDefault();
     return false;
   });
 
   // Detectar mudança de aba (opcional - para monitoramento)
-  document.addEventListener('visibilitychange', function() {
+  document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
       console.warn('⚠️ Usuário mudou de aba ou minimizou a janela');
       // Aqui você pode adicionar lógica de penalidade se quiser
     }
   });
 
-  
-  
+
+
   // ============================================================================
   // CONSTANTES
   // ============================================================================
@@ -701,35 +701,66 @@
 
   async function carregarTodasQuestoes() {
     const token = obterToken();
-
     if (!token) return;
 
     desabilitarTudo();
 
     try {
+      // console.log('🔍 ===== DEBUG QUESTIONÁRIO =====');
+      // console.log('📡 Fazendo requisição para /api/questoes/todas...');
+
       const res = await fetch("/api/questoes/todas", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (res.status === 401) {
-        await encerrarPorToken();
-        return;
-      }
+      // console.log('📡 Status HTTP:', res.status);
+      // console.log('📡 Status Text:', res.statusText);
+      // console.log('📡 OK?', res.ok);
 
       const data = await res.json();
-
-      if (res.status === 404) {
-        window.location.href = "/resultado";
-        return;
-      }
+      // console.log('📦 Resposta completa:', data);
 
       if (!res.ok) {
+        console.error('❌ ===== ERRO DETECTADO =====');
+        console.error('❌ Mensagem:', data.message);
+        console.error('❌ Código:', data.code);
+        console.error('❌ Módulo:', data.modulo);
+
+        // Mensagem específica baseada no erro
+        if (res.status === 403) {
+          console.error('🎯 PROBLEMA: História não concluída!');
+          console.error('💡 SOLUÇÃO: Complete a história do módulo', data.modulo, 'antes de acessar o questionário');
+        } else if (res.status === 404) {
+          if (data.message.includes('Progresso')) {
+            console.error('🎯 PROBLEMA: Não existe progresso_desafio para este usuário!');
+            console.error('💡 SOLUÇÃO: Execute SQL para criar progresso_desafio');
+          } else if (data.message.includes('Nenhuma questão')) {
+            console.error('🎯 PROBLEMA: Não existe exame ou questões para este grupo!');
+            console.error('💡 SOLUÇÃO: Verifique se existe exame e questões no banco');
+          }
+        }
+
         mostrarAlerta(data.message || "Erro ao carregar questões", "erro");
-        window.location.href = "/mapa";
+
+        // Redirecionamento inteligente baseado no erro
+        if (res.status === 403) {
+          setTimeout(() => {
+            window.location.href = "/mapa";
+          }, 3000);
+        } else {
+          setTimeout(() => {
+            window.location.href = "/mapa";
+          }, 3000);
+        }
         return;
       }
+
+      // console.log('✅ ===== SUCESSO =====');
+      // console.log('📊 Quantidade de questões:', data.length);
+      // console.log('📋 Primeira questão:', data[0]);
+
 
       fila = data;
 
@@ -760,7 +791,7 @@
         // Se detectou um módulo válido, usa ele
         if (moduloDetectado && moduloDetectado >= 1 && moduloDetectado <= 5) {
           questionarioNumero = moduloDetectado;
-          console.log(`Módulo detectado: ${questionarioNumero}`);
+          // console.log(`Módulo detectado: ${questionarioNumero}`);
         } else {
           console.warn("⚠️ Não foi possível detectar o módulo das questões. Usando módulo 1.");
           questionarioNumero = 1;
@@ -853,7 +884,7 @@
       };
     }
 
-    console.log(`Boss atualizado: ${boss.nome}`);
+    // console.log(`Boss atualizado: ${boss.nome}`);
   }
 
   // ============================================================================
