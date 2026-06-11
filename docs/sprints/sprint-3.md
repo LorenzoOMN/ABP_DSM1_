@@ -35,8 +35,8 @@ Níveis 2–5 (histórias e desafios) · Polimento geral · Melhorias de Seguran
 | Efeitos Sonoros | 5 | Cauã | `RF-10` | Baixa | Baixa | ✔️ | ✔️|
 | Trilha Sonora | 5 | Patricia | `RF-10` | Baixa | Baixa | ✔️ | ✔️|
 | Conclusões dos Capitulos | 5 | Vitor, Thiago | `RF-00` | Baixa | Baixa | ✔️ | ✔️|
-| Padronização da Identidade Visual | 20 | Igor | `RFN-01` `RFN-02` | Baixa | Baixa | ✔️ | ✔️|
-| Testes e ajustes gerais | — | - | `RNF-03` | Alta | Médio | ✔️ | — |
+| Padronização da Identidade Visual | 20 | Igor, Renan | `RFN-01` `RFN-02` | Baixa | Baixa | ✔️ | ✔️|
+| Testes e ajustes gerais | — | Todos | `RNF-03` | Alta | Médio | ✔️ | — |
 | Documentação final (README + docs) | — | — | `RNF-05` `RNF-06` | Média | Fácil | ✔️ | — |
 
 ---
