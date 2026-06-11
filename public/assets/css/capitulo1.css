@@ -995,30 +995,6 @@ blockquote {
    BUG PERSEGUIDOR APÓS CONCLUIR HISTÓRIA
 ============================================================ */
 
-.porta-boss-bug.bug-perseguidor {
-  position: fixed;
-  z-index: 9999;
-
-  right: auto;
-  top: auto;
-
-  width: 150px;
-  max-width: 34vw;
-
-  opacity: 1;
-  pointer-events: none;
-
-  transform: translate(-50%, -50%) scale(1) rotate(-4deg);
-
-  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55))
-    drop-shadow(0 0 12px rgba(255, 70, 70, 0.35));
-
-  transition:
-    transform 0.12s linear,
-    filter 0.2s ease;
-
-  animation: bugPerseguidorFlutua 0.85s ease-in-out infinite;
-}
 
 .porta-boss-bug.bug-final {
   position: absolute;

@@ -102,6 +102,27 @@ const principiosData = {
   },
 };
 
+function tocarSomDesmoronamentoInicial() {
+  if (sessionStorage.getItem("tocar_desmoronamento_capitulo1") !== "true") {
+    return;
+  }
+
+  sessionStorage.removeItem("tocar_desmoronamento_capitulo1");
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/desmoronamento.mp3");
+  som.volume = 0.04;
+
+  setTimeout(() => {
+    som.play().catch((erro) => {
+      console.error("Erro ao tocar áudio:", erro);
+    });
+  }, 600);
+}
+
 const somPilar = new Audio("/assets/audio/pilar.mp3");
 
 function tocarSomPilar(botao) {
@@ -513,60 +534,6 @@ function configurarBacklogVivo() {
   atualizarRanks(false);
 }
 
-function ativarBugPerseguidor() {
-  const bug = document.querySelector(".porta-boss-bug");
-  const porta = document.getElementById("portaBossScene");
-
-  if (!bug || !porta) return;
-
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-
-  let bugX = mouseX;
-  let bugY = mouseY;
-
-  let animationFrameId = null;
-
-  bug.classList.remove("bug-final");
-  bug.classList.add("bug-perseguidor");
-
-  function atualizarMouse(event) {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-  }
-
-  function animarBug() {
-    const velocidade = 0.12;
-
-    bugX += (mouseX - bugX) * velocidade;
-    bugY += (mouseY - bugY) * velocidade;
-
-    const inclinacao = Math.max(-10, Math.min(10, (mouseX - bugX) * 0.08));
-
-    bug.style.left = `${bugX}px`;
-    bug.style.top = `${bugY}px`;
-    bug.style.transform = `
-      translate(-50%, -50%)
-      scale(1)
-      rotate(${inclinacao}deg)
-    `;
-
-    animationFrameId = requestAnimationFrame(animarBug);
-  }
-
-  window.addEventListener("mousemove", atualizarMouse);
-  animarBug();
-
-  setTimeout(() => {
-    window.removeEventListener("mousemove", atualizarMouse);
-
-    if (animationFrameId) {
-      cancelAnimationFrame(animationFrameId);
-    }
-
-    posicionarBugPertoDaPorta(bug, porta);
-  }, 5000);
-}
 
 function posicionarBugPertoDaPorta(bug, porta) {
   const portaRect = porta.getBoundingClientRect();
@@ -656,10 +623,7 @@ async function concluirHistoria() {
     if (tooltip) {
       tooltip.textContent = "Seja ágil ou...";
     }
-
-    ativarBugPerseguidor();
-
-    ativarBugPerseguidor();
+    
   } catch (error) {
     console.error(error);
 
@@ -909,6 +873,7 @@ async function carregarEstadoHistoria() {
 document.addEventListener("DOMContentLoaded", async () => {
   // verifica se o usuário está autenticado
   obterToken();
+  tocarSomDesmoronamentoInicial()
   await carregarEstadoHistoria();
 
   configurarScrollParaBotoes();

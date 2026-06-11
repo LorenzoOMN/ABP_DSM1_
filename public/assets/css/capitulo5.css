@@ -3794,8 +3794,11 @@
   margin-bottom: 0.7rem;
   color: #f5d27a;
   font-family: "Cinzel", serif;
-  font-size: 1.6rem;
+  font-size: clamp(0.92rem, 1.25vw, 1.12rem);
   line-height: 1.08;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: none;
 }
 
 .forja-fornalha__trigger {
@@ -3824,10 +3827,10 @@
 .forja-fornalha__media {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   min-height: 210px;
-  padding: 0.5rem;
+  padding: 0.25rem 0.5rem 0.5rem;
   border-radius: 18px;
 }
 
@@ -3852,7 +3855,7 @@
   display: block;
   image-rendering: pixelated;
   opacity: 0;
-  transform: scale(0.82);
+  transform: translateY(-22px) scale(0.82);
   filter: blur(6px) drop-shadow(0 0 8px rgba(255, 170, 60, 0.12));
   transition:
     opacity 0.35s ease,
@@ -3863,7 +3866,7 @@
 .forja-fornalha.is-acesa .forja-fornalha__icon,
 .forja-fornalha.is-ativa .forja-fornalha__icon {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(-38px) scale(1);
   filter: blur(0) drop-shadow(0 0 14px rgba(255, 200, 90, 0.42))
     drop-shadow(0 0 28px rgba(255, 120, 40, 0.2));
 }
@@ -3871,7 +3874,7 @@
 .forja-fornalha__overlay {
   position: absolute;
   inset: auto 0 0 0;
-  padding: 1rem;
+  padding: 0.75rem;
   background: linear-gradient(
     180deg,
     rgba(6, 8, 16, 0) 0%,
@@ -4185,9 +4188,9 @@
 
 .porta-final-lock-hint {
   position: absolute;
-  top: calc(100% + 0.75rem);
+  top: calc(100% + 2.4rem);
   left: 50%;
-  width: 280px;
+  width: 340px;
   margin: 0;
   transform: translateX(-50%);
   color: #f4e2c2;
