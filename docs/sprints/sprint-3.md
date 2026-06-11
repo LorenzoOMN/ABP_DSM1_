@@ -51,7 +51,7 @@ Níveis 2–5 (histórias e desafios) · Polimento geral · Área Administrativa
 ## 📉 Burndown
 
 <!-- Adicione o link ou imagem do burndown quando disponível -->
-[Ver gráfico de burndown](../assets/images/third-sprint-burndown.png)
+![Burndown Sprint 3](../assets/images/third-sprint-burndown.png)
 
 ---
 
