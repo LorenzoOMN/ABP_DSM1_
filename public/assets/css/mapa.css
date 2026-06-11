@@ -79,11 +79,7 @@ button {
   position: relative;
   isolation: isolate;
   min-height: calc(100vh - 140px);
-<<<<<<< HEAD
-padding: clamp(40px, 5vw, 64px) clamp(14px, 3vw, 24px) clamp(56px, 7vw, 80px);
-=======
   padding: clamp(70px, 7.5vw, 96px) clamp(14px, 2.4vw, 24px) 88px;
->>>>>>> b644970ae319a434a94772e20fc6b22d222f53c7
   background:
     linear-gradient(180deg, rgba(5, 4, 3, 0.18), rgba(5, 4, 3, 0.72)),
     linear-gradient(90deg, rgba(0, 0, 0, 0.46), transparent 28% 70%, rgba(0, 0, 0, 0.52)),
@@ -108,13 +104,8 @@ padding: clamp(40px, 5vw, 64px) clamp(14px, 3vw, 24px) clamp(56px, 7vw, 80px);
 }
 
 .mapa-custom-2-header {
-<<<<<<< HEAD
-  width: min(1120px, 100%);
-  margin: 0 auto clamp(1.1rem, 3vw, 2rem);
-=======
   width: min(1000px, 100%);
   margin: 0 auto clamp(1.1rem, 2.6vw, 1.9rem);
->>>>>>> b644970ae319a434a94772e20fc6b22d222f53c7
   display: grid;
   justify-items: start;
   gap: 12px;
