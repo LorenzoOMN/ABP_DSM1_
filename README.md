@@ -128,7 +128,12 @@ Crie um banco chamado `abp` no PostgreSQL, depois execute:
 npm run db:init
 ```
 
-**4. Inicie o servidor**
+**4. Inserir cadastro de Admin (Somente se necessitar acessar painel para efetuar alterações nas questões cadastradas)**
+```bash
+npm run db:admin
+```
+
+**5. Inicie o servidor**
 ```bash
 npm run dev
 ```
