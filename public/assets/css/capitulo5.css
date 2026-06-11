@@ -4336,6 +4336,22 @@
     drop-shadow(0 22px 36px rgba(0, 0, 0, 0.46));
 }
 
+.porta-final-stage.porta-concluida .porta-final-scene,
+.porta-final-stage.porta-concluida .porta-final-image {
+  cursor: default;
+}
+
+.porta-final-stage.porta-concluida .porta-final-image {
+  filter: grayscale(1) brightness(0.74)
+    drop-shadow(0 22px 36px rgba(0, 0, 0, 0.46));
+}
+
+.porta-final-stage.porta-concluida .porta-final-glow,
+.porta-final-stage.porta-concluida .porta-final-entrar-text {
+  opacity: 0;
+  animation: none;
+}
+
 @keyframes portaFinalGlowRoxo {
   0%,
   100% {

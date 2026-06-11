@@ -1108,6 +1108,24 @@ blockquote {
   animation: pulsarEntre 1.4s ease-in-out infinite;
 }
 
+.porta-boss-scene.porta-concluida {
+  cursor: default;
+  filter: grayscale(1) brightness(0.72);
+}
+
+.porta-boss-scene.porta-concluida .porta-boss-glow {
+  opacity: 0;
+}
+
+.porta-boss-scene.porta-concluida .porta-entrar-text {
+  opacity: 0;
+}
+
+.porta-boss-scene.porta-concluida .porta-boss-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 @keyframes pulsarEntre {
   0%, 100% {
     text-shadow:
