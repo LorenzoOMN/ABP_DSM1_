@@ -5488,6 +5488,36 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
     line-height: 1.35;
   }
 
+  .necro-ampulheta-ativacao {
+    left: 50%;
+    bottom: 24px;
+    width: calc(100% - 1.5rem);
+    max-width: 330px;
+    gap: 0.65rem;
+  }
+
+  .necro-ampulheta-icon {
+    width: clamp(104px, 30vw, 132px);
+    height: clamp(104px, 30vw, 132px);
+  }
+
+  .necro-ampulheta-texto {
+    width: 100%;
+    max-width: 28ch;
+    font-size: clamp(0.88rem, 3.8vw, 0.96rem);
+    line-height: 1.34;
+  }
+
+  .btn-ritual-necro {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0.82rem 1rem;
+    font-size: clamp(0.82rem, 3.6vw, 0.94rem);
+    line-height: 1.12;
+    white-space: normal;
+  }
+
   .bug-arena {
     min-height: 680px;
     padding: 1rem;
@@ -5648,6 +5678,21 @@ body.mochila-highlight-medalhao .mochila-item[data-artefato="medalhao"] {
   .necro-ampulheta-hint {
     width: min(220px, 68vw);
     font-size: 0.82rem;
+  }
+
+  .necro-ampulheta-ativacao {
+    bottom: 18px;
+    width: calc(100% - 1rem);
+    max-width: 292px;
+  }
+
+  .necro-ampulheta-icon {
+    width: 104px;
+    height: 104px;
+  }
+
+  .necro-ampulheta-texto {
+    max-width: 25ch;
   }
 
   .ponte-node {
