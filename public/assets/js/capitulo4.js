@@ -81,7 +81,7 @@ function tocarSomSino() {
 
   const som = new Audio("/assets/audio/sino.mp3");
 
-  som.volume = 0.3;
+  som.volume = 0.02;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
