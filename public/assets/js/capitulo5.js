@@ -689,29 +689,29 @@ async function carregarEstadoHistoria() {
 
     if (!modulo || !modulo.historia_concluida) return;
 
-historia5ConcluidaNoBackend = true;
+    historia5ConcluidaNoBackend = true;
 
-if (estaEmReplayTemporalCapitulo5()) {
-  if (btnConcluir) {
-    btnConcluir.classList.add("hidden");
-  }
+    if (estaEmReplayTemporalCapitulo5()) {
+      if (btnConcluir) {
+        btnConcluir.classList.add("hidden");
+      }
 
-  if (btnEntrarDesafio) {
-    btnEntrarDesafio.classList.add("hidden");
-  }
+      if (btnEntrarDesafio) {
+        btnEntrarDesafio.classList.add("hidden");
+      }
 
-  if (status) {
-    status.textContent =
-      "Replay temporal ativo. Avance novamente pela ponte até a porta final.";
-  }
+      if (status) {
+        status.textContent =
+          "Replay temporal ativo. Avance novamente pela ponte até a porta final.";
+      }
 
-  return;
-}
+      return;
+    }
 
-if (moduloTemDesafioConcluido(modulo)) {
-  aplicarPortaFinalConcluida();
-  return;
-}
+    if (moduloTemDesafioConcluido(modulo)) {
+      aplicarPortaFinalConcluida();
+      return;
+    }
 
     aplicarEstadoCapitulo5ConcluidoPeloBackend();
 
@@ -3148,12 +3148,12 @@ function configurarPortaFinal() {
 
   let portaFoiAberta = chaveMvpUsadaNaPorta;
 
- function mostrarFeedbackPorta(_mensagem) {
-  if (!portaFinalFeedback) return;
+  function mostrarFeedbackPorta(_mensagem) {
+    if (!portaFinalFeedback) return;
 
-  portaFinalFeedback.classList.add("hidden");
-  portaFinalFeedback.textContent = "";
-}
+    portaFinalFeedback.classList.add("hidden");
+    portaFinalFeedback.textContent = "";
+  }
 
   function aplicarVisualPortaFechada() {
     portaFoiAberta = false;
@@ -3179,9 +3179,9 @@ function configurarPortaFinal() {
       btnEntrarDesafio.classList.add("hidden");
     }
 
-if (portaBloqueada) {
-  portaBloqueada.classList.add("hidden");
-}
+    if (portaBloqueada) {
+      portaBloqueada.classList.add("hidden");
+    }
 
     mostrarFeedbackPorta(
       "Arraste a Chave MVP da mochila até a fechadura para abrir a última porta.",
@@ -3290,7 +3290,6 @@ if (portaBloqueada) {
     consumirArtefatoDaMochila("chave-mvp");
     salvarEstadoCapitulo5Local();
 
-    
     if (btnConcluirHistoria) {
       btnConcluirHistoria.classList.add("hidden");
     }
