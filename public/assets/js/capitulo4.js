@@ -71,6 +71,21 @@ function calcularEstadoIntroNarrativa(blackoutProgress, introProgress = 0, intro
   };
 }
 
+function tocarSomClick() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/click.mp3");
+
+  som.volume = 0.03;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 const somSino = new Audio("/assets/audio/sino.mp3");
 
 function tocarSomSino() {
@@ -98,7 +113,24 @@ function tocarSomGirando() {
 
   const som = new Audio("/assets/audio/girando.mp3");
 
-  som.volume = 0.3;
+  som.volume = 0.1;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somAcerto = new Audio("/assets/audio/acerto.mp3");
+
+function tocarSomAcerto() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/acerto.mp3");
+
+  som.volume = 0.05;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -124,7 +156,7 @@ function tocarSomArcano() {
 
   const som = new Audio("/assets/audio/arcano.mp3");
 
-  som.volume = 0.3;
+  som.volume = 0.2;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -172,6 +204,7 @@ function rolarAteAmpulhetaIntro() {
   const introSpace = document.getElementById("introScrollSpace");
 
   if (!introSpace) return;
+  tocarSomClick()
 
   introHourglassForced = true;
 
@@ -243,6 +276,7 @@ function configurarScrollGuiado() {
         void lock.offsetWidth;
         lock.classList.add("scene-lock--pulse");
       }
+      tocarSomClick()
     });
   });
 
@@ -521,6 +555,7 @@ function moverCartao(card) {
   if (todosCartoesKanbanConcluidos()) {
     atualizarStatusKanban("Todos os cartões chegaram em Concluído. Os elos do gargalo afrouxaram e revelaram a próxima porta.", "success");
     concluirMinigame("kanban");
+    tocarSomAcerto()
   } else if (!document.querySelector(".kanban-column--over-limit")) {
     atualizarStatusKanban("Gargalo reduzido. Continue movendo os cartões até Concluído.", "success");
   }
@@ -1095,6 +1130,7 @@ function configurarPipelineDecisoes() {
 
     if (replayButton) {
       replayButton.textContent = "Sequência concluída";
+      tocarSomArcano();
     }
 
     setPipelineStatus("CI integrou e testou. CD automatizou a entrega. A ponte está estável, mas revelou o peso interno do sistema.", "success");
@@ -1183,6 +1219,7 @@ function configurarPipelineDecisoes() {
       }
 
       if (pipelineBusy) return;
+      tocarSomClick();
 
       playSequence();
     });
@@ -1419,6 +1456,7 @@ function configurarRefatoracao() {
 
   function girarTile(tile) {
     if (!started || completed || tile.disabled) return;
+    tocarSomGirando();
 
     const nextRotation = (normalizarRotacaoRefatoracao(tile.dataset.rotation) + 90) % 360;
     tile.dataset.rotation = String(nextRotation);
@@ -1535,6 +1573,7 @@ function configurarArtefatosMetricas() {
 
     card.addEventListener("click", () => {
       cards.forEach((item) => {
+        tocarSomClick();
         item.classList.remove("metric-artifact-card--active");
         item.setAttribute("aria-pressed", "false");
       });
