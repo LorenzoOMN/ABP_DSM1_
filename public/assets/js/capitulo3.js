@@ -186,6 +186,43 @@ function definirPortalLiberado(liberado) {
   }
 }
 
+function moduloTemDesafioConcluido(modulo) {
+  return Boolean(
+    modulo?.desafio_concluido ||
+      (modulo?.historia_concluida && !modulo?.desafio_atual),
+  );
+}
+
+function aplicarPortalConcluido() {
+  historiaConcluida = false;
+
+  const portal = document.getElementById("portalScene");
+  const linkPortal = document.querySelector(".ampulheta-link");
+  const btnConcluir = document.getElementById("btnConcluirHistoria");
+  const status = document.getElementById("statusHistoria");
+
+  if (btnConcluir) {
+    btnConcluir.classList.add("hidden");
+  }
+
+  if (status) {
+    status.textContent =
+      "Desafio já vencido. Este portal agora permanece fechado para revisão.";
+  }
+
+  if (portal) {
+    portal.classList.remove("is-locked");
+    portal.classList.add("porta-concluida");
+  }
+
+  if (!linkPortal) return;
+
+  linkPortal.removeAttribute("href");
+  linkPortal.setAttribute("aria-disabled", "true");
+  linkPortal.setAttribute("tabindex", "-1");
+  linkPortal.setAttribute("aria-label", "Desafio do módulo 3 já vencido");
+}
+
 function configurarPortalDoDesafio() {
   definirPortalLiberado(false);
 
@@ -286,6 +323,11 @@ async function carregarEstadoHistoria() {
     if (!response.ok) return;
 
     const modulo = data.modulos.find((m) => Number(m.id_modulo) === ID_MODULO);
+
+    if (moduloTemDesafioConcluido(modulo)) {
+      aplicarPortalConcluido();
+      return;
+    }
 
     if (!modulo?.historia_concluida) return;
 

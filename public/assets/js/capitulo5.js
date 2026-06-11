@@ -297,6 +297,69 @@ async function concluirHistoria() {
   }
 }
 
+function moduloTemDesafioConcluido(modulo) {
+  return Boolean(
+    modulo?.desafio_concluido ||
+      (modulo?.historia_concluida && !modulo?.desafio_atual),
+  );
+}
+
+function aplicarPortaFinalConcluida() {
+  const portaFinalStage = document.getElementById("encounter-porta");
+  const portaFinalLockZone = document.getElementById("portaFinalLockZone");
+  const portaFinalImgFechada = document.getElementById("portaFinalImgFechada");
+  const portaFinalImgAberta = document.getElementById("portaFinalImgAberta");
+  const portaFinalFeedback = document.getElementById("portaFinalFeedback");
+  const portaBloqueada = document.getElementById("portaBloqueada");
+  const btnConcluir = document.getElementById("btnConcluirHistoria");
+  const btnEntrarDesafio = document.getElementById("btnEntrarDesafio");
+  const status = document.getElementById("statusHistoria");
+
+  if (btnConcluir) {
+    btnConcluir.classList.add("hidden");
+  }
+
+  if (btnEntrarDesafio) {
+    btnEntrarDesafio.classList.add("hidden");
+  }
+
+  if (status) {
+    status.textContent =
+      "Desafio final já vencido. Esta porta agora permanece como registro da sua jornada.";
+  }
+
+  if (portaBloqueada) {
+    portaBloqueada.textContent =
+      "Esta porta final já foi vencida. Continue sua jornada pelo mapa ou consulte seu certificado.";
+    portaBloqueada.classList.remove("liberada");
+  }
+
+  if (portaFinalFeedback) {
+    portaFinalFeedback.textContent =
+      "Porta já vencida. O desafio final não pode ser acessado por aqui novamente.";
+    portaFinalFeedback.classList.remove("hidden");
+  }
+
+  if (portaFinalImgFechada) {
+    portaFinalImgFechada.classList.add("hidden");
+  }
+
+  if (portaFinalImgAberta) {
+    portaFinalImgAberta.classList.remove("hidden");
+  }
+
+  if (portaFinalLockZone) {
+    portaFinalLockZone.classList.add("hidden");
+  }
+
+  if (!portaFinalStage) return;
+
+  portaFinalStage.classList.add("porta-final-aberta");
+  portaFinalStage.classList.add("porta-concluida");
+  portaFinalStage.classList.remove("is-unlocked");
+  portaFinalStage.setAttribute("aria-label", "Desafio final já vencido");
+}
+
 async function carregarEstadoHistoria() {
   const token = obterToken();
 
@@ -322,6 +385,11 @@ async function carregarEstadoHistoria() {
     if (!modulo || !modulo.historia_concluida) return;
 
     historia5ConcluidaNoBackend = true;
+
+    if (moduloTemDesafioConcluido(modulo)) {
+      aplicarPortaFinalConcluida();
+      return;
+    }
 
     if (estaEmReplayTemporalCapitulo5()) {
       if (btnConcluir) {
@@ -2704,6 +2772,13 @@ function configurarPortaFinal() {
   }
 
   function entrarNoDesafioFinalPelaPorta() {
+    if (portaFinalStage.classList.contains("porta-concluida")) {
+      mostrarFeedbackPorta(
+        "Esta porta já foi vencida. Continue sua jornada pelo mapa ou consulte seu certificado.",
+      );
+      return;
+    }
+
     if (!portaFoiAberta) {
       mostrarFeedbackPorta(
         "A porta ainda está fechada. Use a Chave MVP na fechadura para liberar o desafio final.",
@@ -2827,6 +2902,10 @@ function configurarEntradaDesafio() {
   if (!btnEntrarDesafio) return;
 
   btnEntrarDesafio.addEventListener("click", () => {
+    const portaFinalStage = document.getElementById("encounter-porta");
+
+    if (portaFinalStage?.classList.contains("porta-concluida")) return;
+
     localStorage.setItem("moduloAtual", ID_MODULO);
     window.location.href = "/desafio1";
   });
@@ -2876,6 +2955,7 @@ function sincronizarVisualInicialPortaFinal() {
   const btnEntrarDesafio = document.getElementById("btnEntrarDesafio");
 
   if (!portaFinalStage) return;
+  if (portaFinalStage.classList.contains("porta-concluida")) return;
   if (etapaAtualCapitulo5 !== "porta-final") return;
   if (!chaveMvpUsadaNaPorta) return;
 

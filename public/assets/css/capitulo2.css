@@ -1510,6 +1510,22 @@
   animation: portalSparksDrift 2.8s ease-in-out infinite;
 }
 
+.guardioes-final-portal.porta-concluida {
+  filter: grayscale(1) brightness(0.7);
+}
+
+.guardioes-final-portal.porta-concluida .portal-vortex,
+.guardioes-final-portal.porta-concluida .portal-fog,
+.guardioes-final-portal.porta-concluida .portal-sparks {
+  opacity: 0;
+  animation: none;
+}
+
+.guardioes-final-portal-button.porta-concluida {
+  cursor: default;
+  pointer-events: none;
+}
+
 @keyframes portalFogBackDrift {
   0%,
   100% {

@@ -613,6 +613,7 @@ function configurarPortaDesafio() {
   if (!portaBoss) return;
 
   function entrarNoDesafio() {
+    if (portaBoss.classList.contains("porta-concluida")) return;
     if (!portaBoss.classList.contains("porta-liberada")) return;
 
     localStorage.setItem("moduloAtual", ID_MODULO);
@@ -723,6 +724,42 @@ function aoConcluirCapitulo1() {
   });
 }
 
+function moduloTemDesafioConcluido(modulo) {
+  return Boolean(
+    modulo?.desafio_concluido ||
+      (modulo?.historia_concluida && !modulo?.desafio_atual),
+  );
+}
+
+function aplicarPortaConcluida() {
+  const portaBoss = document.getElementById("portaBossScene");
+  const btnConcluir = document.getElementById("btnConcluirHistoria");
+  const status = document.getElementById("statusHistoria");
+  const tooltip = document.querySelector(".porta-boss-tooltip");
+
+  if (btnConcluir) {
+    btnConcluir.classList.add("hidden");
+  }
+
+  if (status) {
+    status.textContent =
+      "Desafio já vencido. Esta porta agora permanece como registro da sua jornada.";
+  }
+
+  if (tooltip) {
+    tooltip.textContent = "Porta já vencida. Continue pelo mapa.";
+  }
+
+  if (!portaBoss) return;
+
+  portaBoss.classList.remove("porta-liberada");
+  portaBoss.classList.add("porta-concluida");
+  portaBoss.removeAttribute("role");
+  portaBoss.removeAttribute("tabindex");
+  portaBoss.setAttribute("aria-disabled", "true");
+  portaBoss.setAttribute("aria-label", "Desafio do módulo 1 já vencido");
+}
+
 // isso resolve o problema de o progresso "sumir" quando o usuário atualiza a página.
 async function carregarEstadoHistoria() {
   // pega o token salvo no navegador. Esse token identifica qual usuário está logado.
@@ -749,6 +786,11 @@ async function carregarEstadoHistoria() {
 
     // Procura especificamente o módulo atual (capítulo 1).
     const modulo = data.modulos.find((m) => Number(m.id_modulo) === ID_MODULO);
+
+    if (moduloTemDesafioConcluido(modulo)) {
+      aplicarPortaConcluida();
+      return;
+    }
 
     if (!modulo) return;
 
