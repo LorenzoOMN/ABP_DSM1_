@@ -930,6 +930,7 @@ async function carregarEstadoHistoria() {
 document.addEventListener("DOMContentLoaded", async () => {
   // verifica se o usuário está autenticado
   obterToken();
+  tocarSomDesmoronamentoInicial()
   await carregarEstadoHistoria();
 
   configurarScrollParaBotoes();

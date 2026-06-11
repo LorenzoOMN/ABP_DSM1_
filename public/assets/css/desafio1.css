@@ -66,14 +66,14 @@
   position: relative;
   z-index: 1;
   display: grid;
-  gap: clamp(22px, 3vw, 34px);
+  gap: clamp(28px, 3.4vw, 42px);
 }
 
 .desafio1-title {
   width: min(560px, 100%);
   position: relative;
   z-index: 2;
-  margin-bottom: clamp(2px, 0.8vw, 8px);
+  margin-bottom: clamp(10px, 1.4vw, 18px);
 }
 
 .desafio1-title .title-box {
@@ -375,32 +375,13 @@
 }
 
 @media (max-width: 900px) {
-  .boss-intro-card,
+.boss-intro-card,
   .boss-actions {
     grid-template-columns: 1fr;
   }
 
-  .boss-actions {
-    width: min(640px, 100%);
-  }
-
-  .boss-lives-box {
-    justify-self: center;
-  }
-}
-
-@media (max-width: 700px) {
-  .desafio1-main {
-    overflow: visible;
-  }
-
-  .desafio1-wrapper {
-    gap: clamp(12px, 3vw, 18px);
-  }
-
-   .boss-intro-card {
+  .boss-intro-card {
     display: grid;
-    grid-template-columns: 1fr;
   }
 
   .boss-image-frame {
@@ -413,6 +394,24 @@
 
   .boss-actions {
     order: 3;
+    width: min(640px, 100%);
+  }
+
+  .boss-lives-box {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 700px) {
+ .desafio1-main {
+    overflow: visible;
+  }
+
+  .desafio1-wrapper {
+    gap: clamp(12px, 3vw, 18px);
+  }
+
+  .boss-actions {
     width: 100%;
   }
 
