@@ -97,8 +97,8 @@ ENTRADA
 
 **1. Clone o repositório**
 ```bash
-git clone https://github.com/octopusCode26/ABP_DSM1_.git
-cd ABP_DSM1_
+git clone https://github.com/octopusCode26/scrum-dungeon.git
+cd scrum-dungeon
 npm install
 ```
 
