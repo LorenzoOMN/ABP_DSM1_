@@ -34,17 +34,22 @@ const ENCONTROS_CAPITULO_5 = {
 let etapaAtualCapitulo5 = "duplo";
 let chaveMvpUsadaNaPorta = false;
 let historia5ConcluidaNoBackend = false;
+let restaurandoCapitulo5 = true;
 
 const STORAGE_CAPITULO5 = "scrum_dungeon_capitulo5_estado";
 const STORAGE_CAPITULO5_ENTRADA = "scrum_dungeon_capitulo5_entrada";
 const STORAGE_CAPITULO5_REPLAY = "scrum_dungeon_capitulo5_replay_temporal";
 
 function estaEmReplayTemporalCapitulo5() {
-  return sessionStorage.getItem(STORAGE_CAPITULO5_REPLAY) === "true";
+  return (
+    sessionStorage.getItem(STORAGE_CAPITULO5_REPLAY) === "true" ||
+    localStorage.getItem(STORAGE_CAPITULO5_REPLAY) === "true"
+  );
 }
 
 function encerrarReplayTemporalCapitulo5() {
   sessionStorage.removeItem(STORAGE_CAPITULO5_REPLAY);
+  localStorage.removeItem(STORAGE_CAPITULO5_REPLAY);
 }
 
 function limparEstadoLegadoCapitulo5() {
@@ -86,7 +91,8 @@ function duploMedalhaoAceitaCliqueNaMochila() {
   return (
     duploMedalhaoStage &&
     !duploMedalhaoStage.classList.contains("hidden") &&
-    (!duploRevelacaoStage || duploRevelacaoStage.classList.contains("hidden")) &&
+    (!duploRevelacaoStage ||
+      duploRevelacaoStage.classList.contains("hidden")) &&
     !etapasConcluidas.has("duplo") &&
     document.getElementById("artefatoMedalhao") &&
     (dispositivoUsaToque() || window.innerWidth <= 820)
@@ -300,7 +306,7 @@ const bugPontosAnalise = {
 ========================================================= */
 
 function salvarEstadoCapitulo5Local() {
-  sessionStorage.setItem(
+  localStorage.setItem(
     STORAGE_CAPITULO5,
     JSON.stringify({
       etapaAtualCapitulo5,
@@ -312,7 +318,7 @@ function salvarEstadoCapitulo5Local() {
 }
 
 function restaurarEstadoCapitulo5Local() {
-  const bruto = sessionStorage.getItem(STORAGE_CAPITULO5);
+  const bruto = localStorage.getItem(STORAGE_CAPITULO5);
   if (!bruto) return;
 
   try {
@@ -342,6 +348,7 @@ function restaurarEstadoCapitulo5Local() {
 
 function resetarJornadaCapitulo5() {
   sessionStorage.setItem(STORAGE_CAPITULO5_REPLAY, "true");
+  localStorage.setItem(STORAGE_CAPITULO5_REPLAY, "true");
 
   sessionStorage.removeItem(STORAGE_CAPITULO5);
   sessionStorage.removeItem(STORAGE_CAPITULO5_ENTRADA);
@@ -382,14 +389,14 @@ function aplicarEstadoCapitulo5ConcluidoPeloBackend() {
 }
 
 function salvarEntradaCapitulo5() {
-  sessionStorage.setItem(STORAGE_CAPITULO5_ENTRADA, "true");
+  localStorage.setItem(STORAGE_CAPITULO5_ENTRADA, "true");
 }
 
 function restaurarEntradaCapitulo5() {
   const capitulo5Page = document.getElementById("capitulo5Page");
   const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
 
-  const entrou = sessionStorage.getItem(STORAGE_CAPITULO5_ENTRADA) === "true";
+  const entrou = localStorage.getItem(STORAGE_CAPITULO5_ENTRADA) === "true";
 
   if (!entrou) return;
 
@@ -403,6 +410,134 @@ function restaurarEntradaCapitulo5() {
     btnEntrarNaPonte.classList.add("concluida");
     btnEntrarNaPonte.classList.remove("ativando");
   }
+}
+
+const somArtefatos = new Audio("/assets/audio/artefatos.mp3");
+
+function tocarSomArtefatos() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/artefatos.mp3");
+
+  som.volume = 0.05;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somConflito = new Audio("/assets/audio/conflito.mp3");
+
+function tocarSomConflito() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/conflito.mp3");
+
+  som.volume = 0.05;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somRosnado = new Audio("/assets/audio/rosnado.mp3");
+
+function tocarSomRosnado() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/rosnado.mp3");
+
+  som.volume = 0.1;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somAcerto = new Audio("/assets/audio/acerto.mp3");
+
+function tocarSomAcerto() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/acerto.mp3");
+
+  som.volume = 0.03;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somDesmoronamento = new Audio("/assets/audio/desmoronamento.mp3");
+
+function tocarSomDesmoronamento() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/desmoronamento.mp3");
+
+  som.volume = 0.02;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somCarta = new Audio("/assets/audio/carta.mp3");
+
+function tocarSomCarta() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/carta.mp3");
+
+  som.volume = 0.1;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somMetal = new Audio("/assets/audio/metal.mp3");
+
+function tocarSomMetal() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/metal.mp3");
+
+  som.volume = 0.02;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somFogo = new Audio("/assets/audio/fogueira.mp3");
+
+function tocarSomFogo() {
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/fogueira.mp3");
+
+  som.volume = 0.01;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
 }
 
 async function concluirHistoria() {
@@ -470,7 +605,7 @@ async function concluirHistoria() {
 function moduloTemDesafioConcluido(modulo) {
   return Boolean(
     modulo?.desafio_concluido ||
-      (modulo?.historia_concluida && !modulo?.desafio_atual),
+    (modulo?.historia_concluida && !modulo?.desafio_atual),
   );
 }
 
@@ -556,11 +691,6 @@ async function carregarEstadoHistoria() {
 
     historia5ConcluidaNoBackend = true;
 
-    if (moduloTemDesafioConcluido(modulo)) {
-      aplicarPortaFinalConcluida();
-      return;
-    }
-
     if (estaEmReplayTemporalCapitulo5()) {
       if (btnConcluir) {
         btnConcluir.classList.add("hidden");
@@ -572,9 +702,14 @@ async function carregarEstadoHistoria() {
 
       if (status) {
         status.textContent =
-          "História já registrada no sistema. Replay temporal ativo.";
+          "Replay temporal ativo. Avance novamente pela ponte até a porta final.";
       }
 
+      return;
+    }
+
+    if (moduloTemDesafioConcluido(modulo)) {
+      aplicarPortaFinalConcluida();
       return;
     }
 
@@ -590,7 +725,7 @@ async function carregarEstadoHistoria() {
 
     if (status) {
       status.textContent =
-        "História já registrada no sistema. A porta final está liberada.";
+        "Você conseguiu a porta da sala final se abriu. Entre e encare seu destino.";
     }
   } catch (error) {
     console.error(error);
@@ -1907,6 +2042,7 @@ function configurarDesafioStakeholder() {
         botoes.forEach((b) => (b.disabled = true));
 
         if (index === turno.correta) {
+          tocarSomAcerto();
           botao.classList.add("correta");
           stakeholderFeedback.className = "stakeholder-feedback sucesso";
           stakeholderFeedback.textContent = turno.feedback;
@@ -1939,6 +2075,7 @@ function configurarDesafioStakeholder() {
             }
           }, 1400);
         } else {
+          tocarSomRosnado();
           botao.classList.add("errada");
           stakeholderFeedback.className = "stakeholder-feedback erro";
           stakeholderFeedback.textContent =
@@ -1959,6 +2096,7 @@ function configurarDesafioStakeholder() {
   }
 
   btnIniciarStakeholder.addEventListener("click", () => {
+    tocarSomConflito();
     stakeholderTurnosWrap.classList.remove("hidden");
     stakeholderTurnosWrap.scrollIntoView({
       behavior: "smooth",
@@ -2223,6 +2361,7 @@ function configurarDesafioNecrobranch() {
 
   btnSelarNecrobranch.addEventListener("click", () => {
     if (necroAmpulhetaIcon) {
+      tocarSomArtefatos();
       necroAmpulhetaIcon.classList.add("girando");
     }
 
@@ -2232,6 +2371,7 @@ function configurarDesafioNecrobranch() {
 
       const necroRevealCopy = document.getElementById("necroRevealCopy");
       if (necroRevealCopy) {
+        tocarSomDesmoronamento();
         setTimeout(() => {
           necroRevealCopy.classList.add("show");
         }, 250);
@@ -2443,6 +2583,7 @@ function configurarDesafioBugInfernal() {
 
   if (bugFlipCard) {
     bugFlipCard.addEventListener("click", () => {
+      tocarSomCarta();
       const cartaVirada = bugFlipCard.classList.toggle("is-flipped");
 
       bugFlipCard.setAttribute("aria-pressed", String(cartaVirada));
@@ -2581,6 +2722,7 @@ function configurarFornalhasDaForja() {
 
   function atualizarEstadoFornalhas(fornalhaAtiva) {
     fornalhas.forEach((btn) => {
+      tocarSomFogo();
       btn.classList.toggle("is-ativa", btn === fornalhaAtiva);
     });
   }
@@ -2606,6 +2748,7 @@ function configurarFornalhasDaForja() {
   });
 
   btnLiberarMontagemForja.addEventListener("click", () => {
+    tocarSomMetal();
     forjaDropStage.classList.remove("hidden");
     forjaDropStage.scrollIntoView({
       behavior: "smooth",
@@ -2782,7 +2925,13 @@ function configurarForjaMvp() {
       );
     }
 
+    const jaEstavaPronto = btnForjarMvp.classList.contains("is-pronto");
+
     if (totalPreenchidos === 3) {
+      if (!restaurandoCapitulo5) {
+        tocarSomAcerto();
+      }
+
       btnForjarMvp.disabled = false;
       btnForjarMvp.classList.add("is-pronto");
 
@@ -2857,6 +3006,7 @@ function configurarForjaMvp() {
   }
 
   btnIniciarForja.addEventListener("click", () => {
+    tocarSomMetal();
     forjaAulaWrap.classList.remove("hidden");
     forjaDropStage.classList.add("hidden");
 
@@ -2929,6 +3079,7 @@ function configurarForjaMvp() {
   });
 
   btnForjarMvp.addEventListener("click", () => {
+    tocarSomArtefatos();
     const totalPreenchidos = contarArtefatosPosicionados();
 
     if (totalPreenchidos < 3) {
@@ -2997,11 +3148,11 @@ function configurarPortaFinal() {
 
   let portaFoiAberta = chaveMvpUsadaNaPorta;
 
-  function mostrarFeedbackPorta(mensagem) {
+  function mostrarFeedbackPorta(_mensagem) {
     if (!portaFinalFeedback) return;
 
-    portaFinalFeedback.textContent = mensagem;
-    portaFinalFeedback.classList.remove("hidden");
+    portaFinalFeedback.classList.add("hidden");
+    portaFinalFeedback.textContent = "";
   }
 
   function aplicarVisualPortaFechada() {
@@ -3029,9 +3180,7 @@ function configurarPortaFinal() {
     }
 
     if (portaBloqueada) {
-      portaBloqueada.textContent =
-        "O MVP foi forjado. A porta reconhece que o time está pronto, mas ainda espera a Chave MVP tocar sua fechadura.";
-      portaBloqueada.classList.add("liberada");
+      portaBloqueada.classList.add("hidden");
     }
 
     mostrarFeedbackPorta(
@@ -3060,18 +3209,12 @@ function configurarPortaFinal() {
     }
 
     if (portaBloqueada) {
-      portaBloqueada.textContent =
-        "A porta reconhece o fluxo. Clique na porta aberta para encarar o desafio final.";
-      portaBloqueada.classList.add("liberada");
+      portaBloqueada.classList.add("hidden");
     }
 
     if (btnEntrarDesafio) {
       btnEntrarDesafio.classList.remove("hidden");
     }
-
-    mostrarFeedbackPorta(
-      "A porta está aberta. Clique nela para encarar o desafio final.",
-    );
   }
 
   function abrirSalaDaPortaFinal() {
@@ -3147,10 +3290,6 @@ function configurarPortaFinal() {
     consumirArtefatoDaMochila("chave-mvp");
     salvarEstadoCapitulo5Local();
 
-    mostrarFeedbackPorta(
-      "A fechadura aceita a Chave MVP. A história está sendo registrada automaticamente.",
-    );
-
     if (btnConcluirHistoria) {
       btnConcluirHistoria.classList.add("hidden");
     }
@@ -3163,7 +3302,7 @@ function configurarPortaFinal() {
     if (historia5ConcluidaNoBackend) {
       if (statusHistoria) {
         statusHistoria.textContent =
-          "História já registrada no sistema. A porta final foi liberada.";
+          "Você conseguiu a porta da sala final se abriu. Entre e encare seu destino.";
       }
     } else {
       await concluirHistoria();
@@ -3175,10 +3314,6 @@ function configurarPortaFinal() {
     if (btnEntrarDesafio) {
       btnEntrarDesafio.classList.remove("hidden");
     }
-
-    mostrarFeedbackPorta(
-      "História concluída. Clique na porta aberta para encarar o desafio final.",
-    );
   }
 
   if (btnIrPortaFinal) {
@@ -3345,9 +3480,7 @@ function sincronizarVisualInicialPortaFinal() {
   }
 
   if (portaBloqueada) {
-    portaBloqueada.textContent =
-      "A porta reconhece o fluxo. Clique na porta aberta para encarar o desafio final.";
-    portaBloqueada.classList.add("liberada");
+    portaBloqueada.classList.add("hidden");
   }
 
   if (btnEntrarDesafio) {
@@ -3355,9 +3488,7 @@ function sincronizarVisualInicialPortaFinal() {
   }
 
   if (portaFinalFeedback) {
-    portaFinalFeedback.textContent =
-      "A porta está aberta. Clique nela para encarar o desafio final.";
-    portaFinalFeedback.classList.remove("hidden");
+    portaFinalFeedback.classList.add("hidden");
   }
 }
 
@@ -3367,7 +3498,7 @@ function sincronizarVisualInicialPortaFinal() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
-  limparEstadoLegadoCapitulo5();
+  //limparEstadoLegadoCapitulo5();
   restaurarEstadoCapitulo5Local();
   restaurarEntradaCapitulo5();
 
@@ -3419,4 +3550,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     stageInicial.classList.remove("hidden");
   }
   sincronizarVisualInicialPortaFinal();
+  restaurandoCapitulo5 = false;
 });

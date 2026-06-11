@@ -102,6 +102,27 @@ const principiosData = {
   },
 };
 
+function tocarSomDesmoronamentoInicial() {
+  if (sessionStorage.getItem("tocar_desmoronamento_capitulo1") !== "true") {
+    return;
+  }
+
+  sessionStorage.removeItem("tocar_desmoronamento_capitulo1");
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/desmoronamento.mp3");
+  som.volume = 0.04;
+
+  setTimeout(() => {
+    som.play().catch((erro) => {
+      console.error("Erro ao tocar áudio:", erro);
+    });
+  }, 600);
+}
+
 const somPilar = new Audio("/assets/audio/pilar.mp3");
 
 function tocarSomPilar(botao) {
@@ -112,7 +133,7 @@ function tocarSomPilar(botao) {
 
   // Cria uma nova instância para permitir cliques rápidos e sobreposição do sino
   const som = new Audio("/assets/audio/pilar.mp3");
-  som.volume = 0.15;
+  som.volume = 0.03;
 
   // Desativa a trava de tom do navegador
   som.preservesPitch = false;
@@ -126,6 +147,74 @@ function tocarSomPilar(botao) {
   // Se achar a diferença muito sutil, aumente para [1.0, 1.3, 1.6]
   const tons = [1.0, 1.2, 1.4]; 
   som.playbackRate = tons[indice] || 1.0;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somClick = new Audio("/assets/audio/click.mp3");
+
+function tocarSomClick() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/click.mp3");
+
+  som.volume = 0.06;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somPapel = new Audio("/assets/audio/papel.mp3");
+
+function tocarSomPapel() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/papel.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somRunas = new Audio("/assets/audio/runas.mp3");
+
+function tocarSomRunas() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/runas.mp3");
+
+  som.volume = 0.06;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somAcerto = new Audio("/assets/audio/acerto.mp3");
+
+function tocarSomAcerto() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/acerto.mp3");
+
+  som.volume = 0.01;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -162,6 +251,7 @@ function rolarParaElemento(seletor, offset = SCROLL_OFFSET) {
 function configurarScrollParaBotoes() {
   document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
     botao.addEventListener("click", () => {
+      tocarSomClick()
       rolarParaElemento(botao.dataset.scrollTo);
     });
   });
@@ -317,7 +407,12 @@ function configurarPergaminho() {
   if (!btn || !texto) return;
 
   btn.addEventListener("click", () => {
+
+    // toca o som do papel
+    tocarSomPapel();
+
     texto.classList.toggle("hidden");
+
     btn.textContent = texto.classList.contains("hidden")
       ? "Ler pergaminho"
       : "Fechar pergaminho";
@@ -382,6 +477,7 @@ function configurarBacklogVivo() {
     });
 
     cardsOrdenados.forEach((card) => {
+      tocarSomAcerto();
       lista.appendChild(card);
     });
 
@@ -438,60 +534,6 @@ function configurarBacklogVivo() {
   atualizarRanks(false);
 }
 
-function ativarBugPerseguidor() {
-  const bug = document.querySelector(".porta-boss-bug");
-  const porta = document.getElementById("portaBossScene");
-
-  if (!bug || !porta) return;
-
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-
-  let bugX = mouseX;
-  let bugY = mouseY;
-
-  let animationFrameId = null;
-
-  bug.classList.remove("bug-final");
-  bug.classList.add("bug-perseguidor");
-
-  function atualizarMouse(event) {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-  }
-
-  function animarBug() {
-    const velocidade = 0.12;
-
-    bugX += (mouseX - bugX) * velocidade;
-    bugY += (mouseY - bugY) * velocidade;
-
-    const inclinacao = Math.max(-10, Math.min(10, (mouseX - bugX) * 0.08));
-
-    bug.style.left = `${bugX}px`;
-    bug.style.top = `${bugY}px`;
-    bug.style.transform = `
-      translate(-50%, -50%)
-      scale(1)
-      rotate(${inclinacao}deg)
-    `;
-
-    animationFrameId = requestAnimationFrame(animarBug);
-  }
-
-  window.addEventListener("mousemove", atualizarMouse);
-  animarBug();
-
-  setTimeout(() => {
-    window.removeEventListener("mousemove", atualizarMouse);
-
-    if (animationFrameId) {
-      cancelAnimationFrame(animationFrameId);
-    }
-
-    posicionarBugPertoDaPorta(bug, porta);
-  }, 5000);
-}
 
 function posicionarBugPertoDaPorta(bug, porta) {
   const portaRect = porta.getBoundingClientRect();
@@ -581,10 +623,7 @@ async function concluirHistoria() {
     if (tooltip) {
       tooltip.textContent = "Seja ágil ou...";
     }
-
-    ativarBugPerseguidor();
-
-    ativarBugPerseguidor();
+    
   } catch (error) {
     console.error(error);
 
@@ -834,6 +873,7 @@ async function carregarEstadoHistoria() {
 document.addEventListener("DOMContentLoaded", async () => {
   // verifica se o usuário está autenticado
   obterToken();
+  tocarSomDesmoronamentoInicial()
   await carregarEstadoHistoria();
 
   configurarScrollParaBotoes();

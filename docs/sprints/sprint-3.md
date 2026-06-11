@@ -1,6 +1,6 @@
 # 📌 Sprint 3 — Scrum Dungeon
 
-> **Período:** 25/05 — 11/06/2026 · **Status:** 🔵 Em Andamento
+> **Período:** 25/05 — 11/06/2026 · **Status:** ✔️ Finalizada
 >
 > Voltar para o [README](../../README.md).
 
@@ -8,13 +8,13 @@
 
 ## Entregas
 
-Níveis 2–5 (histórias e desafios) · Polimento geral · Melhorias de Segurança
+Níveis 2–5 (histórias e desafios) · Polimento geral · Área Administrativa · Sons 
 
 ---
 
 ## Sprint Backlog
 
-[![Kanban](https://img.shields.io/badge/Acompanhar_Kanban-163451?style=plastic&logo=github&logoColor=white)](https://github.com/users/octopusCode26/projects/)
+[![Kanban](https://img.shields.io/badge/Acompanhar_Kanban-163451?style=plastic&logo=github&logoColor=white)](https://github.com/users/octopusCode26/projects/14)
 
 | Tarefa | Pontuação | Responsável | Requisitos | Prioridade | Dificuldade | Iniciada | Concluída |
 |--------|:---------:|:-----------:|:----------:|:----------:|:-----------:|:--------:|:---------:|
@@ -30,14 +30,14 @@ Níveis 2–5 (histórias e desafios) · Polimento geral · Melhorias de Seguran
 | Glossario interativo | 3 | Enzo | `RNF-00` | Alta | baixa | ✔️ | ✔️|
 | Perfil/Configurações (Sistema) | 8 | Enzo, Cauã, Lorenzo e Thiago | `RNF-00` | Média | Alta | ✔️ | ✔️|
 | Perfil/Tela | 8 | Lorenzo e Thiago | `RNF-00` | Média | Alta | ✔️ | ✔️|
-| Manutenção de questoes (Sistema) | 20 | Lorenzo e Thiago | `RF-12` | Média | Alta | ✔️ | ✔️|
-| Manutenção de questoes (Telas) | 20 | Lorenzo e Thiago | `RF-12` | Média | Alta | ✔️ | ✔️|
+| Manutenção de questões (Sistema) | 20 | Lorenzo e Thiago | `RF-12` | Média | Alta | ✔️ | ✔️|
+| Manutenção de questões (Telas) | 20 | Lorenzo e Thiago | `RF-12` | Média | Alta | ✔️ | ✔️|
 | Efeitos Sonoros | 5 | Cauã | `RF-10` | Baixa | Baixa | ✔️ | ✔️|
 | Trilha Sonora | 5 | Patricia | `RF-10` | Baixa | Baixa | ✔️ | ✔️|
 | Conclusões dos Capitulos | 5 | Vitor, Thiago | `RF-00` | Baixa | Baixa | ✔️ | ✔️|
 | Padronização da Identidade Visual | 20 | Igor, Renan | `RFN-01` `RFN-02` | Baixa | Baixa | ✔️ | ✔️|
 | Testes e ajustes gerais | — | Todos | `RNF-03` | Alta | Médio | ✔️ | — |
-| Documentação final (README + docs) | — | — | `RNF-05` `RNF-06` | Média | Fácil | ✔️ | — |
+| Documentação final (README + docs) | — | Vitor, Igor, Thiago e Enzo | `RNF-05` `RNF-06` | Média | Fácil | ✔️ | — |
 
 ---
 ## 📁 Documentações
@@ -51,7 +51,7 @@ Níveis 2–5 (histórias e desafios) · Polimento geral · Melhorias de Seguran
 ## 📉 Burndown
 
 <!-- Adicione o link ou imagem do burndown quando disponível -->
-[Ver gráfico de burndown]()
+[Ver gráfico de burndown](../assets/images/third-sprint-burndown.png)
 
 ---
 

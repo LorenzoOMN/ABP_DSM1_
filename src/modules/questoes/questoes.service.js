@@ -30,6 +30,10 @@ const {
   historiaConcluida,
 } = require("../progresso/progresso.repository");
 
+const {
+  coletarArtefatoPorModulo,
+} = require("../artefatos/artefatos.repository");
+
 // ============================================================================
 // FUNÇÃO: OBTER PRÓXIMA QUESTÃO
 // ============================================================================
@@ -290,10 +294,17 @@ async function _novaTentativaModulo(
 
 // ─────────────────────────────────────────────────────────────
 async function _processarAprovacao(idUsuario, moduloAtual) {
+  const moduloConcluido = Number(moduloAtual?.id_modulo);
+
   const proximoModulo = await findProximoModuloByUsuario(idUsuario);
 
   if (!proximoModulo) {
     const progresso = await avancarDesafio(idUsuario);
+
+    if (moduloConcluido) {
+      await coletarArtefatoPorModulo(idUsuario, moduloConcluido);
+    }
+
     return {
       aprovado: true,
       certificado_liberado: true,
@@ -313,6 +324,10 @@ async function _processarAprovacao(idUsuario, moduloAtual) {
     1,
   );
   const progresso = await avancarDesafio(idUsuario);
+
+  if (moduloConcluido) {
+    await coletarArtefatoPorModulo(idUsuario, moduloConcluido);
+  }
 
   return {
     aprovado: true,
@@ -335,6 +350,21 @@ async function getResultadoAtualService(idUsuario) {
   const resultado = await findResultadoModuloAtual(idUsuario);
   if (!resultado) throw new Error("Resultado atual não encontrado");
   return resultado;
+}
+
+async function getStatusAtualService(idUsuario) {
+  if (!idUsuario) throw new Error("ID do usuário é obrigatório");
+
+  const moduloAtual = await findModuloAtualByUsuario(idUsuario);
+  const concluido = moduloAtual
+    ? await usuarioConcluiuModuloAtual(idUsuario)
+    : false;
+
+  return {
+    concluido: Boolean(concluido),
+    id_exame: moduloAtual?.id_exame || null,
+    id_modulo: moduloAtual?.id_modulo || null,
+  };
 }
 
 // ============================================================================
@@ -381,5 +411,6 @@ module.exports = {
   getProximoModuloService,
   getModulosRespondidosService,
   getResultadoAtualService,
+  getStatusAtualService,
   getTodasQuestoesService,
 };

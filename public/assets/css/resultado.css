@@ -4,18 +4,21 @@
 
 .corpo-resultado {
   min-height: 100vh;
+  color: #f5ead2;
   background-image:
-    linear-gradient(180deg, rgba(6, 5, 4, 0.2) 0%, rgba(6, 5, 4, 0.82) 52%),
-    url("../img/parede_de_tijolos.png");
-  background-repeat: repeat-y;
+    radial-gradient(circle at 76% 28%, rgba(126, 49, 188, 0.18), transparent 24rem),
+    radial-gradient(circle at 24% 72%, rgba(214, 137, 31, 0.16), transparent 28rem),
+    linear-gradient(180deg, rgba(5, 4, 3, 0.32) 0%, rgba(5, 4, 3, 0.94) 70%),
+    url("../img/fundo_boss_questionario_arena.jpg");
+  background-repeat: no-repeat;
   background-size: cover;
-  background-position: center top;
-  background-color: #0f0a05;
+  background-position: center;
+  background-color: #080604;
 }
 
 .tela {
   min-height: calc(100vh - var(--header-height, 80px));
-  padding: 2rem 1rem 8rem;
+  padding: clamp(2rem, 4vw, 3.5rem) 1rem 8rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,34 +26,66 @@
 
 .resultado-box {
   width: min(92vw, 1320px);
-  min-height: 560px;
-  padding: 1.5rem 2rem;
-  border: 4px solid #ba9961;
-  border-radius: 1.5rem;
-  color: #121214;
+  min-height: 540px;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.15rem, 2.6vw, 2rem);
+  border: 1px solid rgba(214, 173, 53, 0.38);
+  border-radius: 12px;
+  color: #f5ead2;
   background:
-    linear-gradient(
-      175deg,
-      rgba(237, 214, 166, 0.98),
-      rgba(232, 198, 131, 0.95)
-    );
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    radial-gradient(circle at 82% 18%, rgba(139, 77, 255, 0.16), transparent 28rem),
+    radial-gradient(circle at 16% 100%, rgba(245, 157, 47, 0.12), transparent 25rem),
+    linear-gradient(180deg, rgba(30, 23, 16, 0.94), rgba(8, 7, 6, 0.96));
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.68),
+    0 0 34px rgba(139, 77, 255, 0.12),
+    inset 0 1px 0 rgba(255, 238, 190, 0.1);
+}
+
+.resultado-box::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(245, 210, 122, 0.14);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.resultado-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035), transparent 24% 76%, rgba(255, 255, 255, 0.025)),
+    radial-gradient(circle at center, transparent 42%, rgba(0, 0, 0, 0.28));
 }
 
 .resultado {
-  color: #17395f;
+  position: relative;
+  z-index: 1;
+  color: #f5d27a;
   font-family: "Cinzel", serif;
-  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-size: clamp(0.78rem, 1.4vw, 0.96rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
   margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 0 16px rgba(245, 210, 122, 0.24);
 }
 
 .linha {
   height: 1px;
-  background-color: #ba9961;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(245, 210, 122, 0.68), rgba(139, 77, 255, 0.24), transparent);
   margin: 0.7rem 0 1.2rem;
 }
 
 .resultado-layout {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(360px, 1fr) minmax(360px, 0.9fr);
   gap: clamp(1.5rem, 3vw, 3rem);
@@ -60,61 +95,86 @@
 .resultado-info {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.35rem;
 }
 
 .texto-posicao {
   max-width: 560px;
-  padding: 1.15rem 1.25rem;
-  border: 2px solid #f59e0b;
-  border-radius: 1rem;
-  background: rgba(255, 239, 190, 0.28);
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(245, 210, 122, 0.3);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(24, 18, 12, 0.72), rgba(8, 7, 6, 0.82)),
+    radial-gradient(circle at 0% 0%, rgba(139, 77, 255, 0.1), transparent 44%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 190, 0.08),
+    0 12px 24px rgba(0, 0, 0, 0.28);
 }
 
 .quadro-texto {
   margin: 0;
   font-family: "Cinzel", serif;
-  font-size: clamp(0.95rem, 1.35vw, 1.15rem);
+  color: rgba(255, 244, 220, 0.9);
+  font-size: clamp(0.9rem, 1.1vw, 1.02rem);
   font-weight: 700;
-  line-height: 1.55;
-  letter-spacing: 0.03em;
+  line-height: 1.62;
+  letter-spacing: 0;
 }
 
 .resultado-dados {
   display: grid;
-  gap: 0.8rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
   margin-top: 0.5rem;
 }
 
 .resultado-linha {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: 1rem;
-  padding: 0.55rem 0.8rem;
-  border-left: 4px solid rgba(186, 153, 97, 0.9);
-  background: rgba(255, 239, 190, 0.22);
-  border-radius: 0.6rem;
+  gap: 0.35rem;
+  min-height: 96px;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(214, 173, 53, 0.28);
+  border-left: 3px solid rgba(245, 210, 122, 0.62);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(139, 77, 255, 0.12), transparent 50%),
+    linear-gradient(180deg, rgba(31, 24, 17, 0.82), rgba(8, 7, 6, 0.9));
+  border-radius: 8px;
   font-family: "Cinzel", serif;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 190, 0.07),
+    0 10px 20px rgba(0, 0, 0, 0.24);
+}
+
+.resultado-tentativas-linha {
+  grid-column: 1 / -1;
 }
 
 .resultado-linha span {
-  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  color: #d8c7a3;
+  font-size: clamp(0.72rem, 1vw, 0.82rem);
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
 .resultado-linha strong {
-  font-size: clamp(1.35rem, 2.4vw, 2.2rem);
+  color: #fff1c8;
+  font-size: clamp(1.05rem, 1.75vw, 1.45rem);
   font-weight: 800;
   white-space: nowrap;
+  text-shadow:
+    0 0 12px rgba(245, 210, 122, 0.28),
+    0 0 20px rgba(139, 77, 255, 0.18);
 }
 
 .vidas-container {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  min-height: 58px;
+  min-height: 44px;
 }
 
 .vida-icon {
@@ -129,7 +189,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 1.5rem;
+  border: 1px solid rgba(245, 210, 122, 0.2);
+  border-radius: 10px;
+background:
+  radial-gradient(circle at center, rgba(255, 252, 232, 0.82), transparent 60%),
+  linear-gradient(180deg, rgba(250, 224, 169, 0.9), rgba(202, 145, 80, 0.72)),
+  url("../img/papel_texturizado.png");
+background-size: cover;
+background-position: center;
+  box-shadow:
+    inset 0 0 34px rgba(0, 0, 0, 0.32),
+    0 16px 30px rgba(0, 0, 0, 0.34);
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 
@@ -137,6 +207,9 @@
   width: min(100%, 520px);
   max-height: 420px;
   object-fit: contain;
+  filter:
+    drop-shadow(0 18px 18px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 18px rgba(245, 210, 122, 0.14));
   transition: transform 0.35s ease, filter 0.35s ease;
 }
 
@@ -220,14 +293,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
 }
 
 .button-posicao {
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 0;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  padding-right: 70;
+  gap: 0.75rem;
+  padding-right: 0;
 }
 
 #btnMelhorarNota[hidden] {
@@ -272,31 +348,37 @@
   align-items: center;
   justify-content: center;
   padding: 0.65rem 1rem;
-  border: 1px solid rgba(244, 208, 63, 1);
+  border: 1px solid rgba(245, 210, 122, 0.68);
   border-radius: 8px;
-  background: rgba(45, 19, 12, 0.96);
-  color: rgba(249, 237, 215, 0.9);
-  font-family: "Source Serif 4", serif;
+  background:
+    linear-gradient(180deg, rgba(72, 43, 16, 0.96), rgba(22, 14, 8, 0.98));
+  color: #fff1c8;
+  font-family: "Cinzel", serif;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   cursor: pointer;
   opacity: 1;
   transition: 0.25s ease;
   box-shadow:
-    0 0 5px rgba(255, 204, 0, 0.8),
-    0 0 15px rgba(255, 204, 0, 0.5),
-    inset 0 0 10px rgba(255, 204, 0, 0.15);
+    0 0 14px rgba(214, 173, 53, 0.18),
+    0 14px 28px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 238, 190, 0.09);
 }
 
 .tentar-novamente:hover,
 .tentar-novamente:focus-visible {
-  background: #f4d03f;
-  color: #1b1308;
+  border-color: #f5d27a;
+  background: linear-gradient(180deg, #f5d27a, #b98223);
+  color: #17100a;
   transform: translateY(-2px);
+  box-shadow:
+    0 0 24px rgba(245, 210, 122, 0.34),
+    0 18px 36px rgba(0, 0, 0, 0.4);
 }
 
 .texto-botao {
-  font-family: "Source Serif 4", serif;
+  font-family: "Cinzel", serif;
   text-transform: none;
 }
 
@@ -307,23 +389,29 @@
 .resultado-etiqueta {
   display: inline-block;
   margin-bottom: 0.4rem;
-  padding: 0.25rem 0.7rem;
-  border: 1px solid #ba9961;
+  padding: 0.32rem 0.76rem;
+  border: 1px solid rgba(245, 210, 122, 0.48);
   border-radius: 999px;
-  color: #17395f;
+  color: #f5d27a;
   font-family: "Cinzel", serif;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  background: rgba(8, 7, 6, 0.62);
+  box-shadow: inset 0 0 12px rgba(245, 210, 122, 0.08);
 }
 
 .resultado-status h1 {
   margin: 0;
-  color: #1f1608;
+  color: #fff1c8;
   font-family: "Cinzel", serif;
   font-size: clamp(2.2rem, 5vw, 4.3rem);
   line-height: 1;
+  text-shadow:
+    0 0 18px rgba(245, 210, 122, 0.28),
+    0 0 34px rgba(139, 77, 255, 0.22),
+    0 8px 26px rgba(0, 0, 0, 0.58);
 }
 
 @media (max-width: 980px) {

@@ -38,7 +38,7 @@ Prototipação no Figma · Diagramas UML · Organização da arquitetura · Nív
 ---
 ## 📉 Burndown
 
-![Burndown Sprint 1](../assets/images/first%20sprint%20burndown.png)
+![Burndown Sprint 1](../assets/images/first-sprint-burndown.png)
 
 ---
 
