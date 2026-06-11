@@ -245,7 +245,7 @@ function tocarSomArtefatos() {
 
   const som = new Audio("/assets/audio/artefatos.mp3");
 
-  som.volume = 0.1;
+  som.volume = 0.05;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -262,7 +262,7 @@ function tocarSomConflito() {
 
   const som = new Audio("/assets/audio/conflito.mp3");
 
-  som.volume = 0.1;
+  som.volume = 0.05;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -313,7 +313,7 @@ function tocarSomDesmoronamento() {
 
   const som = new Audio("/assets/audio/desmoronamento.mp3");
 
-  som.volume = 0.05;
+  som.volume = 0.02;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -330,7 +330,7 @@ function tocarSomCarta() {
 
   const som = new Audio("/assets/audio/carta.mp3");
 
-  som.volume = 0.2;
+  som.volume = 0.1;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -347,7 +347,7 @@ function tocarSomMetal() {
 
   const som = new Audio("/assets/audio/metal.mp3");
 
-  som.volume = 0.05;
+  som.volume = 0.02;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -364,7 +364,7 @@ function tocarSomFogo() {
 
   const som = new Audio("/assets/audio/fogueira.mp3");
 
-  som.volume = 0.03;
+  som.volume = 0.01;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
