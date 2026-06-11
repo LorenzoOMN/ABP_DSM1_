@@ -23,7 +23,24 @@ function tocarSomPapel() {
 
   const som = new Audio("/assets/audio/papel.mp3");
 
-  som.volume = 0.3;
+  som.volume = 0.2;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somPortal = new Audio("/assets/audio/portal.mp3");
+
+function tocarSomPortal() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/portal.mp3");
+
+  som.volume = 0.2;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -189,6 +206,7 @@ function definirPortalLiberado(liberado) {
   const linkPortal = document.querySelector(".ampulheta-link");
 
   if (portal) {
+    tocarSomPortal()
     portal.classList.toggle("is-locked", !liberado);
   }
 
