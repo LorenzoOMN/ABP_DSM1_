@@ -861,6 +861,10 @@ document.addEventListener("click", (event) => {
     return;
   }
 
+  if (document.body.classList.contains("capitulo")) {
+    return;
+  }
+
   const botao = event.target.closest("button");
 
   if (!botao) {

@@ -132,6 +132,23 @@ function tocarSomPilar(botao) {
   });
 }
 
+const somClick = new Audio("/assets/audio/click.mp3");
+
+function tocarSomClick() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/click.mp3");
+
+  som.volume = 0.06;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 const somPapel = new Audio("/assets/audio/papel.mp3");
 
 function tocarSomPapel() {
@@ -213,6 +230,7 @@ function rolarParaElemento(seletor, offset = SCROLL_OFFSET) {
 function configurarScrollParaBotoes() {
   document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
     botao.addEventListener("click", () => {
+      tocarSomClick()
       rolarParaElemento(botao.dataset.scrollTo);
     });
   });
@@ -297,7 +315,6 @@ function configurarRunas() {
 
   document.querySelectorAll(".runa-btn").forEach((botao) => {
     botao.addEventListener("click", () => {
-      tocarSomRunas()
       const runa = runasData[botao.dataset.runa];
       if (!runa || !card) return;
 
@@ -316,7 +333,6 @@ function configurarPrincipios() {
 
   document.querySelectorAll(".principio-btn").forEach((botao) => {
     botao.addEventListener("click", () => {
-      tocarSomRunas()
       const principio = principiosData[botao.dataset.principio];
       if (!principio || !card) return;
 
@@ -559,7 +575,6 @@ async function concluirHistoria() {
   if (!token) return;
 
   if (btnConcluir) {
-    tocarSomRunas();
     btnConcluir.disabled = true;
     btnConcluir.textContent = "Registrando progresso...";
   }
