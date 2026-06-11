@@ -61,6 +61,176 @@ const estadoForja = {
   concluida: false,
 };
 
+function dispositivoUsaToque() {
+  return (
+    window.matchMedia?.("(hover: none), (pointer: coarse)")?.matches ||
+    navigator.maxTouchPoints > 0
+  );
+}
+
+function forjaMvpAceitaCliqueNaMochila() {
+  const forjaDropStage = document.getElementById("forjaDropStage");
+
+  return (
+    forjaDropStage &&
+    !forjaDropStage.classList.contains("hidden") &&
+    !estadoForja.concluida &&
+    (dispositivoUsaToque() || window.innerWidth <= 820)
+  );
+}
+
+function duploMedalhaoAceitaCliqueNaMochila() {
+  const duploMedalhaoStage = document.getElementById("duploMedalhaoStage");
+  const duploRevelacaoStage = document.getElementById("duploRevelacaoStage");
+
+  return (
+    duploMedalhaoStage &&
+    !duploMedalhaoStage.classList.contains("hidden") &&
+    (!duploRevelacaoStage || duploRevelacaoStage.classList.contains("hidden")) &&
+    !etapasConcluidas.has("duplo") &&
+    document.getElementById("artefatoMedalhao") &&
+    (dispositivoUsaToque() || window.innerWidth <= 820)
+  );
+}
+
+function elementoVisivel(elemento) {
+  return (
+    elemento &&
+    !elemento.classList.contains("hidden") &&
+    elemento.offsetParent !== null
+  );
+}
+
+function stakeholderBacklogAceitaCliqueNaMochila() {
+  const stage = document.getElementById("stakeholderBacklogStage");
+  const dropzone = document.getElementById("stakeholderBacklogDropzone");
+
+  return (
+    elementoVisivel(stage) &&
+    elementoVisivel(dropzone) &&
+    (dispositivoUsaToque() || window.innerWidth <= 820)
+  );
+}
+
+function necroAmpulhetaAceitaCliqueNaMochila() {
+  const stage = document.getElementById("necroRitualStage");
+  const dropzone = document.getElementById("necroAmpulhetaDropzone");
+
+  return (
+    elementoVisivel(stage) &&
+    elementoVisivel(dropzone) &&
+    (dispositivoUsaToque() || window.innerWidth <= 820)
+  );
+}
+
+function bugBauAceitaCliqueNaMochila() {
+  const bugArrasteWrap = document.getElementById("bugArrasteWrap");
+  const bugMiniatura = document.getElementById("bugMiniaturaArrastavel");
+
+  return (
+    elementoVisivel(bugArrasteWrap) &&
+    elementoVisivel(bugMiniatura) &&
+    (dispositivoUsaToque() || window.innerWidth <= 820)
+  );
+}
+
+function portaFinalAceitaCliqueNaChave() {
+  const portaFinalStage = document.getElementById("encounter-porta");
+  const portaFinalLockZone = document.getElementById("portaFinalLockZone");
+
+  return (
+    elementoVisivel(portaFinalStage) &&
+    elementoVisivel(portaFinalLockZone) &&
+    (dispositivoUsaToque() || window.innerWidth <= 820)
+  );
+}
+
+function animarArtefatoAteDestino(origem, destino, aoFinalizar) {
+  if (!origem || !destino) {
+    aoFinalizar?.();
+    return false;
+  }
+
+  if (origem.dataset.animandoDropMobile === "true") {
+    return false;
+  }
+
+  const origemRect = origem.getBoundingClientRect();
+  const destinoRect = destino.getBoundingClientRect();
+
+  if (
+    origemRect.width <= 0 ||
+    origemRect.height <= 0 ||
+    destinoRect.width <= 0 ||
+    destinoRect.height <= 0
+  ) {
+    aoFinalizar?.();
+    return false;
+  }
+
+  origem.dataset.animandoDropMobile = "true";
+  origem.classList.add("is-mobile-drop-origin");
+
+  const clone = origem.cloneNode(true);
+  clone.removeAttribute("id");
+  clone.setAttribute("aria-hidden", "true");
+  clone.classList.add("mobile-drop-clone");
+
+  Object.assign(clone.style, {
+    position: "fixed",
+    left: `${origemRect.left}px`,
+    top: `${origemRect.top}px`,
+    width: `${origemRect.width}px`,
+    height: `${origemRect.height}px`,
+    margin: "0",
+    zIndex: "9999",
+    pointerEvents: "none",
+    transform: "translate3d(0, 0, 0) scale(1)",
+    transformOrigin: "center center",
+    transition:
+      "transform 460ms cubic-bezier(0.2, 0.85, 0.25, 1), opacity 460ms ease, filter 460ms ease",
+    willChange: "transform, opacity, filter",
+  });
+
+  document.body.appendChild(clone);
+
+  const deltaX =
+    destinoRect.left +
+    destinoRect.width / 2 -
+    (origemRect.left + origemRect.width / 2);
+  const deltaY =
+    destinoRect.top +
+    destinoRect.height / 2 -
+    (origemRect.top + origemRect.height / 2);
+
+  let finalizado = false;
+
+  function finalizarAnimacao() {
+    if (finalizado) return;
+    finalizado = true;
+
+    clone.removeEventListener("transitionend", finalizarAnimacao);
+    clone.remove();
+    origem.classList.remove("is-mobile-drop-origin");
+    delete origem.dataset.animandoDropMobile;
+    aoFinalizar?.();
+  }
+
+  clone.addEventListener("transitionend", finalizarAnimacao);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(0.72)`;
+      clone.style.opacity = "0.2";
+      clone.style.filter = "drop-shadow(0 0 18px rgba(245, 207, 120, 0.72))";
+    });
+  });
+
+  setTimeout(finalizarAnimacao, 620);
+
+  return true;
+}
+
 const stakeholderTurnos = [
   {
     titulo: "Turno 1 — Ruído sem prioridade",
@@ -1175,22 +1345,114 @@ function atualizarMochila() {
 
 function configurarCliqueArtefatosMochila() {
   document.querySelectorAll(".mochila-item").forEach((item) => {
-    item.addEventListener("click", () => {
+    item.addEventListener("click", (event) => {
       const artefato = item.dataset.artefato;
 
-      if (artefato === "medalhao" && etapaAtualCapitulo5 === "duplo") {
+      if (forjaMvpAceitaCliqueNaMochila()) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.dispatchEvent(
+          new CustomEvent("forja:mover-artefato", {
+            detail: { artefato, origem: item },
+          }),
+        );
+        return;
+      }
+
+      if (artefato === "medalhao" && duploMedalhaoAceitaCliqueNaMochila()) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.dispatchEvent(
+          new CustomEvent("duplo:usar-medalhao", {
+            detail: { origem: item },
+          }),
+        );
+        return;
+      }
+
+      if (artefato === "backlog" && stakeholderBacklogAceitaCliqueNaMochila()) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.dispatchEvent(
+          new CustomEvent("stakeholder:usar-backlog", {
+            detail: { origem: item },
+          }),
+        );
+        return;
+      }
+
+      if (artefato === "ampulheta" && necroAmpulhetaAceitaCliqueNaMochila()) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.dispatchEvent(
+          new CustomEvent("necro:usar-ampulheta", {
+            detail: { origem: item },
+          }),
+        );
+        return;
+      }
+
+      if (artefato === "bau" && bugBauAceitaCliqueNaMochila()) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.dispatchEvent(
+          new CustomEvent("bug:guardar-no-bau", {
+            detail: { origem: item },
+          }),
+        );
+        return;
+      }
+
+      if (artefato === "chave-mvp" && portaFinalAceitaCliqueNaChave()) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.dispatchEvent(
+          new CustomEvent("porta-final:usar-chave", {
+            detail: { origem: item },
+          }),
+        );
+        return;
+      }
+
+      if (
+        artefato === "medalhao" &&
+        etapaAtualCapitulo5 === "duplo" &&
+        !dispositivoUsaToque() &&
+        window.innerWidth > 820
+      ) {
         abrirStageCapitulo5("duplo");
       }
 
-      if (artefato === "backlog" && etapaAtualCapitulo5 === "stakeholder") {
+      if (
+        artefato === "backlog" &&
+        etapaAtualCapitulo5 === "stakeholder" &&
+        !dispositivoUsaToque() &&
+        window.innerWidth > 820
+      ) {
         abrirStageCapitulo5("stakeholder");
       }
 
-      if (artefato === "ampulheta" && etapaAtualCapitulo5 === "necrobranch") {
+      if (
+        artefato === "ampulheta" &&
+        etapaAtualCapitulo5 === "necrobranch" &&
+        !dispositivoUsaToque() &&
+        window.innerWidth > 820
+      ) {
         abrirStageCapitulo5("necrobranch");
       }
 
-      if (artefato === "bau" && etapaAtualCapitulo5 === "bug-infernal") {
+      if (
+        artefato === "bau" &&
+        etapaAtualCapitulo5 === "bug-infernal" &&
+        !dispositivoUsaToque() &&
+        window.innerWidth > 820
+      ) {
         abrirStageCapitulo5("bug-infernal");
       }
     });
@@ -1415,33 +1677,7 @@ function configurarDropMedalhaoDuplo() {
     return document.getElementById("artefatoMedalhao");
   }
 
-  document.addEventListener("dragstart", (event) => {
-    const medalhao = obterMedalhaoAtual();
-    if (!medalhao) return;
-    if (event.target !== medalhao && !medalhao.contains(event.target)) return;
-
-    event.dataTransfer.setData("text/plain", "medalhao");
-  });
-
-  duploMedalhaoDropzone.addEventListener("dragenter", () => {
-    duploMedalhaoDropzone.classList.add("is-over");
-  });
-  duploMedalhaoDropzone.addEventListener("dragover", (event) => {
-    event.preventDefault();
-    duploMedalhaoDropzone.classList.add("is-over");
-  });
-
-  duploMedalhaoDropzone.addEventListener("dragleave", () => {
-    duploMedalhaoDropzone.classList.remove("is-over");
-  });
-
-  duploMedalhaoDropzone.addEventListener("drop", (event) => {
-    event.preventDefault();
-    duploMedalhaoDropzone.classList.remove("is-over");
-
-    const artefato = event.dataTransfer.getData("text/plain");
-    if (artefato !== "medalhao") return;
-
+  function concluirUsoMedalhaoDuplo() {
     const medalhao = obterMedalhaoAtual();
     if (medalhao) {
       medalhao.classList.add("hidden");
@@ -1490,6 +1726,47 @@ function configurarDropMedalhaoDuplo() {
         }
       }, 1750);
     }
+  }
+
+  document.addEventListener("dragstart", (event) => {
+    const medalhao = obterMedalhaoAtual();
+    if (!medalhao) return;
+    if (event.target !== medalhao && !medalhao.contains(event.target)) return;
+
+    event.dataTransfer.setData("text/plain", "medalhao");
+  });
+
+  duploMedalhaoDropzone.addEventListener("dragenter", () => {
+    duploMedalhaoDropzone.classList.add("is-over");
+  });
+  duploMedalhaoDropzone.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    duploMedalhaoDropzone.classList.add("is-over");
+  });
+
+  duploMedalhaoDropzone.addEventListener("dragleave", () => {
+    duploMedalhaoDropzone.classList.remove("is-over");
+  });
+
+  duploMedalhaoDropzone.addEventListener("drop", (event) => {
+    event.preventDefault();
+    duploMedalhaoDropzone.classList.remove("is-over");
+
+    const artefato = event.dataTransfer.getData("text/plain");
+    if (artefato !== "medalhao") return;
+
+    concluirUsoMedalhaoDuplo();
+  });
+
+  document.addEventListener("duplo:usar-medalhao", (event) => {
+    if (!duploMedalhaoAceitaCliqueNaMochila()) return;
+
+    duploMedalhaoDropzone.classList.remove("is-over");
+    animarArtefatoAteDestino(
+      event.detail?.origem || obterMedalhaoAtual(),
+      duploMedalhaoDropzone,
+      concluirUsoMedalhaoDuplo,
+    );
   });
 }
 
@@ -1710,32 +1987,7 @@ function configurarDropBacklogStakeholder() {
   if (!dropzone || !stakeholderBacklogStage || !stakeholderRevelacaoStage)
     return;
 
-  document.addEventListener("dragstart", (event) => {
-    const backlog = document.querySelector(
-      '[data-artefato="backlog"][draggable="true"]',
-    );
-    if (!backlog) return;
-    if (event.target !== backlog && !backlog.contains(event.target)) return;
-
-    event.dataTransfer.setData("text/plain", "backlog");
-  });
-
-  dropzone.addEventListener("dragover", (event) => {
-    event.preventDefault();
-    dropzone.classList.add("is-over");
-  });
-
-  dropzone.addEventListener("dragleave", () => {
-    dropzone.classList.remove("is-over");
-  });
-
-  dropzone.addEventListener("drop", (event) => {
-    event.preventDefault();
-    dropzone.classList.remove("is-over");
-
-    const artefato = event.dataTransfer.getData("text/plain");
-    if (artefato !== "backlog") return;
-
+  function concluirUsoBacklogStakeholder() {
     const backlog = document.querySelector(
       '.mochila-item[data-artefato="backlog"]',
     );
@@ -1769,6 +2021,46 @@ function configurarDropBacklogStakeholder() {
       behavior: "smooth",
       block: "start",
     });
+  }
+
+  document.addEventListener("dragstart", (event) => {
+    const backlog = document.querySelector(
+      '[data-artefato="backlog"][draggable="true"]',
+    );
+    if (!backlog) return;
+    if (event.target !== backlog && !backlog.contains(event.target)) return;
+
+    event.dataTransfer.setData("text/plain", "backlog");
+  });
+
+  dropzone.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    dropzone.classList.add("is-over");
+  });
+
+  dropzone.addEventListener("dragleave", () => {
+    dropzone.classList.remove("is-over");
+  });
+
+  dropzone.addEventListener("drop", (event) => {
+    event.preventDefault();
+    dropzone.classList.remove("is-over");
+
+    const artefato = event.dataTransfer.getData("text/plain");
+    if (artefato !== "backlog") return;
+
+    concluirUsoBacklogStakeholder();
+  });
+
+  document.addEventListener("stakeholder:usar-backlog", (event) => {
+    if (!stakeholderBacklogAceitaCliqueNaMochila()) return;
+
+    dropzone.classList.remove("is-over");
+    animarArtefatoAteDestino(
+      event.detail?.origem,
+      dropzone,
+      concluirUsoBacklogStakeholder,
+    );
   });
 }
 
@@ -1813,6 +2105,23 @@ function configurarDesafioNecrobranch() {
 
   const causasRegistradas = new Set();
 
+  function concluirUsoAmpulhetaNecro() {
+    if (!necroAmpulhetaDropzone) return;
+
+    necroAmpulhetaDropzone.classList.add("hidden");
+
+    if (necroAmpulhetaAtivacao) {
+      necroAmpulhetaAtivacao.classList.remove("hidden");
+    }
+
+    document.body.classList.remove("mochila-highlight-ampulheta");
+
+    const ampulhetaItem = document.querySelector('[data-artefato="ampulheta"]');
+    if (ampulhetaItem) {
+      ampulhetaItem.classList.remove("convocado");
+    }
+  }
+
   document.addEventListener("dragstart", (event) => {
     const ampulhetaItem = document.querySelector(
       '[data-artefato="ampulheta"][draggable="true"]',
@@ -1846,22 +2155,20 @@ function configurarDesafioNecrobranch() {
       const artefato = event.dataTransfer.getData("text/plain");
       if (artefato !== "ampulheta") return;
 
-      necroAmpulhetaDropzone.classList.add("hidden");
-
-      if (necroAmpulhetaAtivacao) {
-        necroAmpulhetaAtivacao.classList.remove("hidden");
-      }
-
-      document.body.classList.remove("mochila-highlight-ampulheta");
-
-      const ampulhetaItem = document.querySelector(
-        '[data-artefato="ampulheta"]',
-      );
-      if (ampulhetaItem) {
-        ampulhetaItem.classList.remove("convocado");
-      }
+      concluirUsoAmpulhetaNecro();
     });
   }
+
+  document.addEventListener("necro:usar-ampulheta", (event) => {
+    if (!necroAmpulhetaAceitaCliqueNaMochila()) return;
+
+    necroAmpulhetaDropzone.classList.remove("is-over");
+    animarArtefatoAteDestino(
+      event.detail?.origem,
+      necroAmpulhetaDropzone,
+      concluirUsoAmpulhetaNecro,
+    );
+  });
 
   btnIniciarNecrobranch.addEventListener("click", () => {
     necroAnaliseWrap.classList.remove("hidden");
@@ -2192,6 +2499,27 @@ function configurarDropBugNoBau() {
     return;
   }
 
+  function concluirBugNoBau() {
+    bauItem.classList.remove("is-over");
+    bauItem.classList.remove("convocado");
+    document.body.classList.remove("mochila-highlight-bau");
+
+    bugArrasteWrap.classList.add("hidden");
+
+    bugRevelacaoStage.classList.remove("hidden");
+
+    setTimeout(() => {
+      if (bugRevealCopy) {
+        bugRevealCopy.classList.add("show");
+      }
+
+      bugRevelacaoStage.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 250);
+  }
+
   bugMiniaturaArrastavel.addEventListener("dragstart", (event) => {
     event.dataTransfer.setData("text/plain", "bug-infernal");
     bugMiniaturaArrastavel.classList.add("is-dragging");
@@ -2218,24 +2546,18 @@ function configurarDropBugNoBau() {
 
     if (tipoArrastado !== "bug-infernal") return;
 
+    concluirBugNoBau();
+  });
+
+  document.addEventListener("bug:guardar-no-bau", (event) => {
+    if (!bugBauAceitaCliqueNaMochila()) return;
+
     bauItem.classList.remove("is-over");
-    bauItem.classList.remove("convocado");
-    document.body.classList.remove("mochila-highlight-bau");
-
-    bugArrasteWrap.classList.add("hidden");
-
-    bugRevelacaoStage.classList.remove("hidden");
-
-    setTimeout(() => {
-      if (bugRevealCopy) {
-        bugRevealCopy.classList.add("show");
-      }
-
-      bugRevelacaoStage.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 250);
+    animarArtefatoAteDestino(
+      bugMiniaturaArrastavel,
+      event.detail?.origem || bauItem,
+      concluirBugNoBau,
+    );
   });
 }
 
@@ -2444,6 +2766,12 @@ function configurarForjaMvp() {
       );
     }
 
+    if (totalPreenchidos === 0 && dispositivoUsaToque()) {
+      definirFeedbackForja(
+        "Toque nos artefatos transformados da mochila para envia-los aos receptaculos da Forja.",
+      );
+    }
+
     if (totalPreenchidos > 0 && totalPreenchidos < 3) {
       const proximoArtefato = obterProximoArtefatoEsperado();
       const nomeProximo = artefatosForja[proximoArtefato]?.nome;
@@ -2554,6 +2882,27 @@ function configurarForjaMvp() {
 
     event.dataTransfer.setData("text/plain", artefato);
     event.dataTransfer.effectAllowed = "move";
+  });
+
+  document.addEventListener("forja:mover-artefato", (event) => {
+    const artefatoSelecionado = event.detail?.artefato;
+
+    if (!artefatoSelecionado || !forjaMvpAceitaCliqueNaMochila()) return;
+
+    const proximoArtefato = obterProximoArtefatoEsperado();
+
+    if (!proximoArtefato) return;
+
+    if (artefatoSelecionado !== proximoArtefato) {
+      tentarPosicionarArtefato(artefatoSelecionado, proximoArtefato);
+      return;
+    }
+
+    const destino = artefatosForja[proximoArtefato]?.slot;
+
+    animarArtefatoAteDestino(event.detail?.origem, destino, () => {
+      tentarPosicionarArtefato(artefatoSelecionado, proximoArtefato);
+    });
   });
 
   Object.entries(artefatosForja).forEach(([artefatoAceito, config]) => {
@@ -2873,6 +3222,25 @@ function configurarPortaFinal() {
       }
 
       abrirPortaFinal();
+    });
+
+    document.addEventListener("porta-final:usar-chave", (event) => {
+      if (!portaFinalAceitaCliqueNaChave()) return;
+
+      portaFinalLockZone.classList.remove("is-over");
+
+      if (portaFoiAberta) return;
+
+      if (!historia5ProntaParaConclusao()) {
+        mostrarFeedbackPorta(
+          "A porta permanece imÃ³vel. Antes de abri-la, a Forja precisa reconhecer o MVP.",
+        );
+        return;
+      }
+
+      animarArtefatoAteDestino(event.detail?.origem, portaFinalLockZone, () => {
+        abrirPortaFinal();
+      });
     });
   }
 
