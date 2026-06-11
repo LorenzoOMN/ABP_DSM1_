@@ -719,7 +719,7 @@ async function carregarEstadoHistoria() {
 
     if (status) {
       status.textContent =
-        "História já registrada no sistema. A porta final está liberada.";
+        "Você conseguiu a porta da sala final se abriu. Entre e encare seu destino.";
     }
   } catch (error) {
     console.error(error);
@@ -3174,9 +3174,10 @@ function configurarPortaFinal() {
     }
 
     if (portaBloqueada) {
+      portaBloqueada.classList.remove("hidden");
       portaBloqueada.textContent =
-        "O MVP foi forjado. A porta reconhece que o time está pronto, mas ainda espera a Chave MVP tocar sua fechadura.";
-      portaBloqueada.classList.add("liberada");
+        "O MVP foi forjado. A porta ainda espera a Chave MVP tocar sua fechadura.";
+      portaBloqueada.classList.remove("liberada");
     }
 
     mostrarFeedbackPorta(
@@ -3205,19 +3206,14 @@ function configurarPortaFinal() {
     }
 
     if (portaBloqueada) {
-      portaBloqueada.textContent =
-        "A porta reconhece o fluxo. Clique na porta aberta para encarar o desafio final.";
-      portaBloqueada.classList.add("liberada");
+      portaBloqueada.classList.add("hidden");
     }
 
     if (btnEntrarDesafio) {
       btnEntrarDesafio.classList.remove("hidden");
     }
 
-    mostrarFeedbackPorta(
-      "A porta está aberta. Clique nela para encarar o desafio final.",
-    );
-  }
+     }
 
   function abrirSalaDaPortaFinal() {
     if (!etapasConcluidas.has("forja-mvp")) {
@@ -3308,7 +3304,7 @@ function configurarPortaFinal() {
     if (historia5ConcluidaNoBackend) {
       if (statusHistoria) {
         statusHistoria.textContent =
-          "História já registrada no sistema. A porta final foi liberada.";
+          "Você conseguiu a porta da sala final se abriu. Entre e encare seu destino.";
       }
     } else {
       await concluirHistoria();
@@ -3320,10 +3316,7 @@ function configurarPortaFinal() {
     if (btnEntrarDesafio) {
       btnEntrarDesafio.classList.remove("hidden");
     }
-
-    mostrarFeedbackPorta(
-      "História concluída. Clique na porta aberta para encarar o desafio final.",
-    );
+   
   }
 
   if (btnIrPortaFinal) {
@@ -3490,9 +3483,7 @@ function sincronizarVisualInicialPortaFinal() {
   }
 
   if (portaBloqueada) {
-    portaBloqueada.textContent =
-      "A porta reconhece o fluxo. Clique na porta aberta para encarar o desafio final.";
-    portaBloqueada.classList.add("liberada");
+    portaBloqueada.classList.add("hidden");
   }
 
   if (btnEntrarDesafio) {
@@ -3500,10 +3491,8 @@ function sincronizarVisualInicialPortaFinal() {
   }
 
   if (portaFinalFeedback) {
-    portaFinalFeedback.textContent =
-      "A porta está aberta. Clique nela para encarar o desafio final.";
-    portaFinalFeedback.classList.remove("hidden");
-  }
+  portaFinalFeedback.classList.add("hidden");
+}
 }
 
 /* =========================================================
