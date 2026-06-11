@@ -155,6 +155,7 @@ async function avancarDesafio(idUsuario) {
       UPDATE progresso_desafio
       SET
         certificado_liberado = true,
+        modulo_desafio_atual = 6, -- valor simbólico para indicar que concluiu todos os módulos
         falhas_no_modulo = 0,
         atualizado_em = CURRENT_TIMESTAMP
       WHERE id_usuario = $1
