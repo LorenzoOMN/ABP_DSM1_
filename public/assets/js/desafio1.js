@@ -118,11 +118,11 @@ function atualizarTituloCapitulo(moduloId) {
   
   if (titleElement) {
     const nomesCapitulos = {
-      1: "Documentação Confusa",
-      2: "Reuniões Infinitas",
-      3: "Escopo Mutante",
-      4: "Bug Invisível",
-      5: "Guardião do Fluxo Perpétuo"
+      1: "Boss Fight",
+      2: "Boss Fight",
+      3: "Boss Fight",
+      4: "Boss Fight",
+      5: "Boss Fight"
     };
     
     const nomeCapitulo = nomesCapitulos[moduloId] || "Desafio";
