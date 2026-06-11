@@ -58,4 +58,4 @@ Níveis 2–5 (histórias e desafios) · Polimento geral · Área Administrativa
 ## 🎬 Demonstração
 
 <!-- Adicione o link do vídeo quando disponível -->
-[Assistir vídeo da Sprint 3]()
+[Assistir vídeo da Sprint 3](https://youtu.be/iSikcW3CIZE)
