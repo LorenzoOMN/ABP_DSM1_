@@ -3,7 +3,24 @@
  * Padrão igual ao questionario.js: usa localStorage para o token
  */
 
+const somArtefatos = new Audio("/assets/audio/artefatos.mp3");
+
+function tocarSomArtefatos() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  somArtefatos.volume = 0.05;
+  somArtefatos.currentTime = 0;
+
+  somArtefatos.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+  tocarSomArtefatos();
   // Elementos do carrossel
   const prevBtn = document.querySelector(".carousel-arrow.prev");
   const nextBtn = document.querySelector(".carousel-arrow.next");

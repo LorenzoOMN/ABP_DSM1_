@@ -112,7 +112,7 @@ function tocarSomPilar(botao) {
 
   // Cria uma nova instância para permitir cliques rápidos e sobreposição do sino
   const som = new Audio("/assets/audio/pilar.mp3");
-  som.volume = 0.15;
+  som.volume = 0.03;
 
   // Desativa a trava de tom do navegador
   som.preservesPitch = false;
@@ -126,6 +126,74 @@ function tocarSomPilar(botao) {
   // Se achar a diferença muito sutil, aumente para [1.0, 1.3, 1.6]
   const tons = [1.0, 1.2, 1.4]; 
   som.playbackRate = tons[indice] || 1.0;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somClick = new Audio("/assets/audio/click.mp3");
+
+function tocarSomClick() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/click.mp3");
+
+  som.volume = 0.06;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somPapel = new Audio("/assets/audio/papel.mp3");
+
+function tocarSomPapel() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/papel.mp3");
+
+  som.volume = 0.3;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somRunas = new Audio("/assets/audio/runas.mp3");
+
+function tocarSomRunas() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/runas.mp3");
+
+  som.volume = 0.06;
+
+  som.play().catch((erro) => {
+    console.error("Erro ao tocar áudio:", erro);
+  });
+}
+
+const somAcerto = new Audio("/assets/audio/acerto.mp3");
+
+function tocarSomAcerto() {
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/acerto.mp3");
+
+  som.volume = 0.01;
 
   som.play().catch((erro) => {
     console.error("Erro ao tocar áudio:", erro);
@@ -162,6 +230,7 @@ function rolarParaElemento(seletor, offset = SCROLL_OFFSET) {
 function configurarScrollParaBotoes() {
   document.querySelectorAll("[data-scroll-to]").forEach((botao) => {
     botao.addEventListener("click", () => {
+      tocarSomClick()
       rolarParaElemento(botao.dataset.scrollTo);
     });
   });
@@ -317,7 +386,12 @@ function configurarPergaminho() {
   if (!btn || !texto) return;
 
   btn.addEventListener("click", () => {
+
+    // toca o som do papel
+    tocarSomPapel();
+
     texto.classList.toggle("hidden");
+
     btn.textContent = texto.classList.contains("hidden")
       ? "Ler pergaminho"
       : "Fechar pergaminho";
@@ -382,6 +456,7 @@ function configurarBacklogVivo() {
     });
 
     cardsOrdenados.forEach((card) => {
+      tocarSomAcerto();
       lista.appendChild(card);
     });
 
