@@ -21,6 +21,10 @@ CREATE TABLE IF NOT EXISTS public.sessoes_usuario (
 -- Índice para performance (apenas na tabela nova)
 CREATE INDEX IF NOT EXISTS idx_sessoes_usuario ON public.sessoes_usuario(id_usuario);
 
+-- Índice para acelerar a limpeza de sessões antigas
+CREATE INDEX IF NOT EXISTS idx_sessoes_tempo_inicio 
+ON public.sessoes_usuario(tempo_inicio);
+
 -- REMOVIDO: Índices opcionais que podem falhar se as colunas não existirem
 -- CREATE INDEX IF NOT EXISTS idx_respostas_usuario ON public.respostas(id_usuario);
 -- CREATE INDEX IF NOT EXISTS idx_exames_usuario ON public.exames(id_usuario);

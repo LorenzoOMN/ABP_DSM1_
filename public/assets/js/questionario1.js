@@ -760,7 +760,7 @@
         // Se detectou um módulo válido, usa ele
         if (moduloDetectado && moduloDetectado >= 1 && moduloDetectado <= 5) {
           questionarioNumero = moduloDetectado;
-          console.log(`✅ Módulo detectado do backend: ${questionarioNumero}`);
+          console.log(`Módulo detectado: ${questionarioNumero}`);
         } else {
           console.warn("⚠️ Não foi possível detectar o módulo das questões. Usando módulo 1.");
           questionarioNumero = 1;
@@ -853,7 +853,7 @@
       };
     }
 
-    console.log(`🎨 Boss atualizado: ${boss.nome} (Módulo ${questionarioNumero})`);
+    console.log(`Boss atualizado: ${boss.nome}`);
   }
 
   // ============================================================================

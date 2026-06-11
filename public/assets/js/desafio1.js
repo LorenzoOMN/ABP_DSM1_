@@ -61,7 +61,7 @@ async function carregarDadosDoBackend() {
     }
 
     const data = await response.json();
-    console.log("📦 Resposta do backend:", data);
+    // console.log("Resposta do backend:", data); /*Caso queira o debug, basta descomentar*/
 
     // Extrai o modulo_desafio_atual do backend
     let moduloDoBanco = null;
@@ -86,15 +86,13 @@ async function carregarDadosDoBackend() {
       }
     }
 
-    console.log("🎯 Módulo do backend:", moduloDoBanco);
-
     // Garante que temos um valor válido
     const moduloFinal = (moduloDoBanco && moduloDoBanco >= 1 && moduloDoBanco <= 5) 
       ? moduloDoBanco 
       : 1;
 
-    console.log("✅ Módulo final selecionado:", moduloFinal);
-    console.log("💀 Falhas:", falhasDoBanco);
+    console.log("Módulo final selecionado:", moduloFinal);
+    console.log("Falhas:", falhasDoBanco);
 
     // Atualiza a interface
     const bossCorreto = BOSSES[moduloFinal] || BOSSES[1];

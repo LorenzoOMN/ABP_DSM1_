@@ -684,57 +684,6 @@ a.navegacao-inferior__item.item-ativo span {
 }
 /* ================= FIM DA NAVEGAÇÃO INFERIOR ================= */
 
-/* ================= BOTÃO VOLTAR ================= */
-
-.botao-voltar {
-  position: absolute;
-  top: calc(var(--header-height, 64px) + 1rem);
-  left: 1rem;
-  z-index: 8;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-
-  border: 1px solid rgba(153, 107, 15, 0.55);
-  border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-
-  background: rgba(15, 10, 5, 0.72);
-  color: #f5f1e6;
-
-  font-family: "Source Serif 4", serif;
-  font-size: 0.875rem;
-  font-weight: 700;
-  line-height: 1.2;
-
-  cursor: pointer;
-  opacity: 0.75;
-  transition: 0.25s ease;
-}
-
-.botao-voltar span {
-  color: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  letter-spacing: 0;
-}
-
-.botao-voltar:hover {
-  opacity: 1;
-  border-color: #f4d03f;
-  color: #f4d03f;
-  box-shadow: 0 0 10px rgba(244, 208, 63, 0.25);
-}
-
-.botao-voltar img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-}
-
 .vidas-container {
   display: flex;
   align-items: center;
@@ -768,56 +717,106 @@ a.navegacao-inferior__item.item-ativo span {
   font-weight: bold;
 
   cursor: help;
+
+  transition: color 0.2s ease;
 }
 
+.glossario:hover {
+  color: #7cedfc;
+}
+
+/* Caixa do glossário */
 .glossario::after {
   content: attr(data-tip);
 
   position: absolute;
 
-  bottom: 130%;
+  bottom: calc(100% + 12px);
   left: 50%;
 
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(4px);
 
-  width: 220px;
-  max-width: 220px;
+  width: 240px;
+  max-width: 240px;
 
-  background-color: #2c2318;
+  background: rgba(13, 23, 35, 0.80);
 
-  border: 1px solid #d6ad35;
+  backdrop-filter: blur(6px);
 
-  color: white;
+  -webkit-backdrop-filter: blur(6px);
 
-  padding: 10px;
+  border: 1px solid rgba(126, 176, 255);
 
-  border-radius: 8px;
+  color: #D5CDC1;
 
-  font-size: 14px;
+  padding: 14px 16px;
+
+  border-radius: 6px;
+
+  font-size: 0.9rem;
+  line-height: 1.5;
 
   text-align: center;
 
   white-space: normal;
 
-  word-wrap: break-word;
+  opacity: 0;
+  visibility: hidden;
+
+  pointer-events: none;
+
+  box-shadow:
+    0 0 10px rgba(0, 200, 255, 0.20),
+    0 0 25px rgba(0, 200, 255, 0.08);
+
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s ease;
+
+  z-index: 999;
+}
+
+/* Setinha */
+.glossario::before {
+  content: "";
+
+  position: absolute;
+
+  bottom: calc(100% + 7px);
+  left: 50%;
+
+  width: 10px;
+  height: 10px;
+
+  background: #0D1624;
+
+  border-right: 1px solid rgba(126, 176, 255);
+  border-bottom: 1px solid rgba(126, 176, 255);
+
+  transform: translateX(-50%) rotate(45deg);
 
   opacity: 0;
-
   visibility: hidden;
 
   pointer-events: none;
 
   transition:
-    opacity 0.2s ease,
-    visibility 0.2s ease;
+    opacity 0.18s ease,
+    visibility 0.18s ease;
 
-  z-index: 999;
+  z-index: 998;
+}
+
+/* Exibir tooltip */
+.glossario:hover::after,
+.glossario:hover::before {
+  opacity: 1;
+  visibility: visible;
 }
 
 .glossario:hover::after {
-  opacity: 1;
-
-  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* ================= RESPONSIVO (4 BREAKPOINTS) ================= */
