@@ -102,6 +102,27 @@ const principiosData = {
   },
 };
 
+function tocarSomDesmoronamentoInicial() {
+  if (sessionStorage.getItem("tocar_desmoronamento_capitulo1") !== "true") {
+    return;
+  }
+
+  sessionStorage.removeItem("tocar_desmoronamento_capitulo1");
+
+  if (!efeitosSonorosAtivos()) {
+    return;
+  }
+
+  const som = new Audio("/assets/audio/desmoronamento.mp3");
+  som.volume = 0.04;
+
+  setTimeout(() => {
+    som.play().catch((erro) => {
+      console.error("Erro ao tocar áudio:", erro);
+    });
+  }, 600);
+}
+
 const somPilar = new Audio("/assets/audio/pilar.mp3");
 
 function tocarSomPilar(botao) {

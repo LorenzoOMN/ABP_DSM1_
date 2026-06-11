@@ -46,7 +46,10 @@ if (formCadastroPopup) {
       const cadastroData = await cadastroResponse.json();
 
       if (!cadastroResponse.ok) {
-        mostrarAlerta(cadastroData.message || "Erro ao cadastrar aventureiro", "erro");
+        mostrarAlerta(
+          cadastroData.message || "Erro ao cadastrar aventureiro",
+          "erro",
+        );
         return;
       }
 
@@ -62,7 +65,10 @@ if (formCadastroPopup) {
       const loginData = await loginResponse.json();
 
       if (!loginResponse.ok) {
-        mostrarAlerta(loginData.message || "Erro ao fazer login automático", "erro");
+        mostrarAlerta(
+          loginData.message || "Erro ao fazer login automático",
+          "erro",
+        );
         return;
       }
 
@@ -75,6 +81,7 @@ if (formCadastroPopup) {
       // primeiro acesso -> capítulo 1
       // demais acessos -> mapa
       if (loginData.primeiro_acesso) {
+        sessionStorage.setItem("tocar_desmoronamento_capitulo1", "true");
         window.location.href = "/capitulo1";
       } else {
         window.location.href = "/mapa";
@@ -90,8 +97,7 @@ if (formLoginPopup) {
   formLoginPopup.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const cpf = normalizarCpf(document.getElementById("loginCpf").value,
-    );
+    const cpf = normalizarCpf(document.getElementById("loginCpf").value);
     const senha = document.getElementById("loginSenha").value;
 
     if (!cpfValido(cpf)) {
@@ -123,13 +129,14 @@ if (formLoginPopup) {
       // primeiro acesso -> capítulo 1
       // demais acessos -> mapa
       if (data.primeiro_acesso) {
+        sessionStorage.setItem("tocar_desmoronamento_capitulo1", "true");
         window.location.href = "/capitulo1";
       } else {
         window.location.href = "/mapa";
       }
     } catch (error) {
       console.error(error);
-      mostrarAlerta("Erro ao conectar com o servidor","erro");
+      mostrarAlerta("Erro ao conectar com o servidor", "erro");
     }
   });
 }

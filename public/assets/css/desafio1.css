@@ -398,8 +398,13 @@
     gap: clamp(12px, 3vw, 18px);
   }
 
-  .boss-intro-card {
-    display: contents;
+   .boss-intro-card {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .boss-image-frame {
+    order: 1;
   }
 
   .boss-briefing {
@@ -411,9 +416,7 @@
     width: 100%;
   }
 
-  .boss-image-frame {
-    order: 4;
-  }
+  
 }
 
 @media (max-width: 560px) {
