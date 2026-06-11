@@ -63,6 +63,10 @@ app.get("/", function (_req, res) {
     res.render("index");
 });
 
+app.get("/healthz", function (_req, res) {
+    res.status(200).json({ status: "ok" });
+});
+
 // Rota capítulo 1
 app.get("/capitulo1", function (_req, res) {
     res.render("capitulo1");

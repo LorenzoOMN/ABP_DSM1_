@@ -212,8 +212,12 @@ window.debugRestaurarRotas = function debugRestaurarRotas() {
     const progresso = await obterProgressoDaJornada(token);
     const modulos = Array.isArray(progresso?.modulos) ? progresso.modulos : [];
     const moduloAtual = modulos.find((modulo) => modulo.desafio_atual) || modulos[0];
+    const certificadoLiberado = modulos.some(
+      (modulo) => modulo.certificado_liberado,
+    );
 
     if (
+      !certificadoLiberado &&
       rotaAtual !== "/resultado" &&
       await deveRetomarResultadoDaBatalha(rotaAtual, token)
     ) {
@@ -228,7 +232,9 @@ window.debugRestaurarRotas = function debugRestaurarRotas() {
     );
 
     if (!modulos.length || !podeAcessar) {
-      window.location.replace(criarRotaSeguraDaJornada(moduloAtual));
+      window.location.replace(
+        criarRotaSeguraDaJornada(moduloAtual, certificadoLiberado),
+      );
     }
   } catch (error) {
     console.warn("Falha ao validar acesso da rota.", error);
@@ -368,7 +374,11 @@ async function deveRetomarResultadoDaBatalha(rota, token) {
   }
 }
 
-function criarRotaSeguraDaJornada(moduloAtual) {
+function criarRotaSeguraDaJornada(moduloAtual, certificadoLiberado = false) {
+  if (certificadoLiberado) {
+    return "/mapa";
+  }
+
   const idModuloAtual = Number(moduloAtual?.id_modulo) || 1;
 
   if (moduloAtual?.historia_concluida) {

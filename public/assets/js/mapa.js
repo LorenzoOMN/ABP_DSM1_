@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const mapaModulos = document.getElementById("mapaModulos");
 const btnCertificado = document.getElementById("btnCertificado");
+const mapaEpilogo = document.getElementById("mapaEpilogo");
 
 async function carregarMapa() {
   const token = localStorage.getItem("token");
@@ -128,6 +129,10 @@ function atualizarAtalhos(modulos) {
   const certificadoLiberado = modulos.some(
     (modulo) => modulo.certificado_liberado,
   );
+
+  if (mapaEpilogo) {
+    mapaEpilogo.hidden = !certificadoLiberado;
+  }
 
   if (btnCertificado) {
     btnCertificado.disabled = !certificadoLiberado;

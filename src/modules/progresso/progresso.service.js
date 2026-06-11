@@ -24,6 +24,9 @@ async function getProgressoMapaService(idUsuario) {
 
     // Busca dados crus do banco (PRECISA VIR ANTES!)
     const progressoRaw = await findProgressoMapa(idUsuario);
+    const certificadoLiberado = progressoRaw.some(
+        (modulo) => modulo.certificado_liberado,
+    );
 
     // Transforma os dados (regra de apresentação/negócio)
     const modulosFormatados = progressoRaw.map((modulo) => ({
@@ -37,11 +40,16 @@ async function getProgressoMapaService(idUsuario) {
         questionario_liberado: modulo.historia_concluida,
         
         // === ADICIONE ESTA LINHA AQUI ===
-        desafio_concluido: modulo.certificado_liberado && Number(modulo.id_modulo) === 5,
+        desafio_concluido:
+            (certificadoLiberado && Number(modulo.id_modulo) === 5) ||
+            (modulo.historia_concluida &&
+                Number(modulo.id_modulo) < Number(modulo.modulo_desafio_atual)),
         // ==================================
         
         // Regra: destaca o módulo que é o desafio atual
-        desafio_atual: Number(modulo.id_modulo) === Number(modulo.modulo_desafio_atual),
+        desafio_atual:
+            !certificadoLiberado &&
+            Number(modulo.id_modulo) === Number(modulo.modulo_desafio_atual),
         falhas_no_modulo: modulo.falhas_no_modulo,
         tentativas_gastas_total: modulo.tentativas_gastas_total,
         certificado_liberado: modulo.certificado_liberado,
