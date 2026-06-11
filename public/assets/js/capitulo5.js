@@ -300,7 +300,7 @@ const bugPontosAnalise = {
 ========================================================= */
 
 function salvarEstadoCapitulo5Local() {
-  sessionStorage.setItem(
+  localStorage.setItem(
     STORAGE_CAPITULO5,
     JSON.stringify({
       etapaAtualCapitulo5,
@@ -312,7 +312,7 @@ function salvarEstadoCapitulo5Local() {
 }
 
 function restaurarEstadoCapitulo5Local() {
-  const bruto = sessionStorage.getItem(STORAGE_CAPITULO5);
+  const bruto = localStorage.getItem(STORAGE_CAPITULO5);
   if (!bruto) return;
 
   try {
@@ -382,14 +382,14 @@ function aplicarEstadoCapitulo5ConcluidoPeloBackend() {
 }
 
 function salvarEntradaCapitulo5() {
-  sessionStorage.setItem(STORAGE_CAPITULO5_ENTRADA, "true");
+  localStorage.setItem(STORAGE_CAPITULO5_ENTRADA, "true");
 }
 
 function restaurarEntradaCapitulo5() {
   const capitulo5Page = document.getElementById("capitulo5Page");
   const btnEntrarNaPonte = document.getElementById("btnEntrarNaPonte");
 
-  const entrou = sessionStorage.getItem(STORAGE_CAPITULO5_ENTRADA) === "true";
+  const entrou = localStorage.getItem(STORAGE_CAPITULO5_ENTRADA) === "true";
 
   if (!entrou) return;
 
@@ -3514,7 +3514,7 @@ function sincronizarVisualInicialPortaFinal() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   obterToken();
-  limparEstadoLegadoCapitulo5();
+  //limparEstadoLegadoCapitulo5();
   restaurarEstadoCapitulo5Local();
   restaurarEntradaCapitulo5();
 
