@@ -36,9 +36,11 @@ Cadastro · Login · Sistema de questionário · Tela de mapa · Sistema de prog
 | Tela de Emissão de Certificado | 3 | Patricia, Alef | `RF-09` `RNF-04` | Média | Fácil | ✔️ | ✔️ |
 
 ---
-## 📁 Atas Daily
+## 📁 Documentações
 
 [Ata Sprint 2](https://docs.google.com/document/d/1i2Qys-QMGjRbHQBXx72YsXLIKSJUncoZE_PGJq3DvGs/edit?tab=t.dxwapvpy7sit)
+
+[Sprint Retrospective](https://docs.google.com/document/d/1i2Qys-QMGjRbHQBXx72YsXLIKSJUncoZE_PGJq3DvGs/edit?tab=t.s3vmjom5fxlz)
 
 ---
 

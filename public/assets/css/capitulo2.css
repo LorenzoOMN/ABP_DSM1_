@@ -46,7 +46,7 @@
 .manga-stage {
   position: sticky;
   top: 0;
-  min-height: 100vh;
+  min-height: var(--mobile-viewport-height, 100vh);
   overflow: hidden;
   display: block;
   background:
@@ -1148,8 +1148,8 @@
 .guardioes-final-stage {
   position: sticky;
   top: 0;
-  height: 100vh;
-  min-height: 100vh;
+  height: var(--mobile-viewport-height, 100vh);
+  min-height: var(--mobile-viewport-height, 100vh);
   overflow: hidden;
   background: #000;
   opacity: var(--guardioes-final-stage-opacity);
@@ -1508,6 +1508,22 @@
 .guardioes-final-portal.is-portal-active .portal-sparks {
   opacity: 1;
   animation: portalSparksDrift 2.8s ease-in-out infinite;
+}
+
+.guardioes-final-portal.porta-concluida {
+  filter: grayscale(1) brightness(0.7);
+}
+
+.guardioes-final-portal.porta-concluida .portal-vortex,
+.guardioes-final-portal.porta-concluida .portal-fog,
+.guardioes-final-portal.porta-concluida .portal-sparks {
+  opacity: 0;
+  animation: none;
+}
+
+.guardioes-final-portal-button.porta-concluida {
+  cursor: default;
+  pointer-events: none;
 }
 
 @keyframes portalFogBackDrift {

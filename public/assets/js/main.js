@@ -13,10 +13,166 @@
 window.__progressoSessao = window.__progressoSessao || {};
 
 /* =========================================================
+   DEBUG: LIBERAR TODAS AS ROTAS E CAPITULOS
+========================================================= */
+
+const DEBUG_UNLOCK_ALL_KEY = "scrum_dungeon_debug_unlock_all";
+const DEBUG_UNLOCK_TOKEN = "debug-unlock-token";
+
+function isDebugUnlockAllEnabled() {
+  try {
+    return localStorage.getItem(DEBUG_UNLOCK_ALL_KEY) === "true";
+  } catch (_error) {
+    return false;
+  }
+}
+
+function garantirSessaoDebugLocal() {
+  if (!isDebugUnlockAllEnabled()) return;
+
+  if (!localStorage.getItem("token")) {
+    localStorage.setItem("token", DEBUG_UNLOCK_TOKEN);
+  }
+
+  if (!localStorage.getItem("nome")) {
+    localStorage.setItem("nome", "Debug Unlock");
+  }
+}
+
+function criarProgressoDebug() {
+  return {
+    modulos: Array.from({ length: 5 }, (_, index) => ({
+      id_modulo: index + 1,
+      historia_liberada: true,
+      historia_concluida: true,
+      desafio_atual: true,
+      desafio_concluido: false,
+      certificado_liberado: true,
+    })),
+  };
+}
+
+function criarRespostaJsonDebug(payload, status = 200) {
+  return Promise.resolve(
+    new Response(JSON.stringify(payload), {
+      status,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }),
+  );
+}
+
+function normalizarUrlDebug(input) {
+  if (typeof window === "undefined") return null;
+
+  try {
+    if (input instanceof Request) {
+      return new URL(input.url, window.location.origin);
+    }
+
+    return new URL(String(input), window.location.origin);
+  } catch (_error) {
+    return null;
+  }
+}
+
+garantirSessaoDebugLocal();
+
+if (!window.__debugUnlockAllFetchPatched) {
+  const originalFetch = window.fetch.bind(window);
+
+  window.fetch = function fetchComDebugUnlock(input, init) {
+    if (!isDebugUnlockAllEnabled()) {
+      return originalFetch(input, init);
+    }
+
+    garantirSessaoDebugLocal();
+
+    const url = normalizarUrlDebug(input);
+    const pathname = url?.pathname || "";
+
+    if (pathname === "/api/usuarios/me") {
+      return criarRespostaJsonDebug({
+        id_usuario: 1,
+        nome: "Debug Unlock",
+        email: "debug@scrumdungeon.local",
+        barra_desbloqueada: true,
+        is_admin: true,
+      });
+    }
+
+    if (pathname === "/api/progresso/mapa") {
+      return criarRespostaJsonDebug(criarProgressoDebug());
+    }
+
+    if (pathname === "/api/navbar/status") {
+      return criarRespostaJsonDebug({
+        barra_desbloqueada: true,
+        desbloqueada: true,
+      });
+    }
+
+    if (pathname === "/api/navbar/desbloquear") {
+      return criarRespostaJsonDebug({
+        sucesso: true,
+        barra_desbloqueada: true,
+      });
+    }
+
+    if (/^\/api\/progresso\/historia\/\d+\/concluir$/.test(pathname)) {
+      return criarRespostaJsonDebug({
+        sucesso: true,
+        message: "Progresso liberado em modo debug.",
+      });
+    }
+
+    if (pathname === "/api/perfil/sessao/iniciar") {
+      return criarRespostaJsonDebug({
+        id_sessao: "debug-session",
+      });
+    }
+
+    if (pathname === "/api/perfil/sessao/finalizar") {
+      return criarRespostaJsonDebug({
+        sucesso: true,
+      });
+    }
+
+    return originalFetch(input, init);
+  };
+
+  window.__debugUnlockAllFetchPatched = true;
+}
+
+window.debugLiberarRotas = function debugLiberarRotas() {
+  localStorage.setItem(DEBUG_UNLOCK_ALL_KEY, "true");
+  garantirSessaoDebugLocal();
+  window.location.href = "/mapa";
+};
+
+window.debugRestaurarRotas = function debugRestaurarRotas() {
+  localStorage.removeItem(DEBUG_UNLOCK_ALL_KEY);
+
+  if (localStorage.getItem("token") === DEBUG_UNLOCK_TOKEN) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("nome");
+  }
+
+  window.__progressoSessao = {};
+  window.location.reload();
+};
+
+/* =========================================================
    BARREIRAS DE ACESSO POR PROGRESSO
 ========================================================= */
 
 (async function protegerRotasPorProgresso() {
+  if (isDebugUnlockAllEnabled()) {
+    garantirSessaoDebugLocal();
+    return;
+  }
+
   const rotaAtual = window.location.pathname;
   const rotasPublicas = ["/"];
   const rotasComBarreira = [
@@ -63,6 +219,12 @@ window.__progressoSessao = window.__progressoSessao || {};
 })();
 
 async function obterProgressoDaJornada(token) {
+  if (isDebugUnlockAllEnabled()) {
+    const progressoDebug = criarProgressoDebug();
+    window.__progressoSessao.progressoMapa = progressoDebug;
+    return progressoDebug;
+  }
+
   if (window.__progressoSessao.progressoMapa) {
     return window.__progressoSessao.progressoMapa;
   }
@@ -83,6 +245,10 @@ async function obterProgressoDaJornada(token) {
 }
 
 function podeAcessarRotaDaJornada(rota, modulos) {
+  if (isDebugUnlockAllEnabled()) {
+    return true;
+  }
+
   const rotaCapitulo = rota.match(/^\/capitulo([1-5])$/);
   const rotaDesafio = rota.match(/^\/desafio([1-5])$/);
   const moduloAtual = modulos.find((modulo) => modulo.desafio_atual);
@@ -461,6 +627,50 @@ async function controlarVisibilidadeNavbar() {
 /**
  * Gera chave única de progresso baseada no token do usuário
  */
+function calcularOffsetNavbarMobilePorFooter(footerRect, viewportHeight) {
+  if (!footerRect || !Number.isFinite(viewportHeight)) return 0;
+  if (footerRect.top >= viewportHeight || footerRect.bottom <= 0) return 0;
+
+  const alturaVisivel = viewportHeight - footerRect.top;
+  return Math.max(0, Math.min(alturaVisivel, footerRect.height));
+}
+
+function atualizarOffsetNavbarMobilePorFooter() {
+  const container = document.querySelector(".navbar-container-fixo");
+  const navbar = document.querySelector(".navegacao-inferior");
+  const footer = document.querySelector("footer");
+  const mobile = window.matchMedia("(max-width: 768px)").matches;
+
+  if (!container || !mobile) {
+    document.documentElement.style.setProperty("--mobile-navbar-footer-offset", "0px");
+    document.documentElement.style.setProperty("--mobile-navbar-height", "0px");
+    return;
+  }
+
+  const navbarHeight = Math.round(navbar?.getBoundingClientRect().height || 0);
+  document.documentElement.style.setProperty("--mobile-navbar-height", `${navbarHeight || 76}px`);
+
+  const offset = footer
+    ? calcularOffsetNavbarMobilePorFooter(footer.getBoundingClientRect(), window.innerHeight)
+    : 0;
+
+  document.documentElement.style.setProperty("--mobile-navbar-footer-offset", `${Math.round(offset)}px`);
+}
+
+function agendarOffsetNavbarMobilePorFooter() {
+  if (window.__navbarFooterOffsetFrame) return;
+
+  window.__navbarFooterOffsetFrame = window.requestAnimationFrame(() => {
+    window.__navbarFooterOffsetFrame = null;
+    atualizarOffsetNavbarMobilePorFooter();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", atualizarOffsetNavbarMobilePorFooter);
+window.addEventListener("load", atualizarOffsetNavbarMobilePorFooter);
+window.addEventListener("scroll", atualizarOffsetNavbarMobilePorFooter, { passive: true });
+window.addEventListener("resize", agendarOffsetNavbarMobilePorFooter);
+
 function getChaveProgressoUsuario() {
   const token = localStorage.getItem("token");
   if (!token) return "capitulo1_concluido_anon";
@@ -1031,3 +1241,4 @@ window.marcarCapitulo1Concluido = marcarCapitulo1Concluido;
 window.usuarioConcluiuCapitulo1 = usuarioConcluiuCapitulo1;
 window.verificarEAtualizarNavbar = verificarEAtualizarNavbar;
 window.mostrarNavbarInferior = mostrarNavbarInferior;
+window.atualizarOffsetNavbarMobilePorFooter = atualizarOffsetNavbarMobilePorFooter;

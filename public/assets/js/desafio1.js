@@ -30,13 +30,11 @@ const BOSSES = {
   }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  tocarEfeito("/assets/audio/porta.mp3", 0.25);
-  let moduloId = "1"; // Valor padrão de segurança
-})
+// ============================================================================
+// INICIALIZAÇÃO PRINCIPAL
+// ============================================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Carrega os dados do backend para determinar o módulo
   await carregarDadosDoBackend();
 });
 
@@ -56,61 +54,55 @@ async function carregarDadosDoBackend() {
     if (!response.ok) {
       console.error("❌ Erro ao buscar progresso do mapa");
       aplicarBossNoDOM(BOSSES[1]);
+      atualizarTituloCapitulo(1);
       configurarAcoesDesafio(1);
       return;
     }
 
     const data = await response.json();
-    // console.log("Resposta do backend:", data); /*Caso queira o debug, basta descomentar*/
+    console.log("📦 Resposta do backend:", data);
 
-    // Extrai o modulo_desafio_atual do backend
     let moduloDoBanco = null;
     let falhasDoBanco = 0;
 
     if (Array.isArray(data)) {
-      // Formato: array direto com CROSS JOIN
       const primeiroItem = data[0];
       moduloDoBanco = primeiroItem?.modulo_desafio_atual;
       falhasDoBanco = primeiroItem?.falhas_no_modulo || 0;
     } else if (data.modulos && Array.isArray(data.modulos)) {
-      // Formato: { modulos: [...] }
       const moduloAtual = data.modulos.find(m => m.desafio_atual);
       if (moduloAtual) {
         moduloDoBanco = moduloAtual.id_modulo || moduloAtual.numero || moduloAtual.modulo_desafio_atual;
         falhasDoBanco = moduloAtual.falhas_no_modulo || 0;
       }
-      // Fallback: tenta pegar modulo_desafio_atual do primeiro item
       if (!moduloDoBanco && data.modulos[0]?.modulo_desafio_atual) {
         moduloDoBanco = data.modulos[0].modulo_desafio_atual;
         falhasDoBanco = data.modulos[0].falhas_no_modulo || 0;
       }
     }
 
-    // Garante que temos um valor válido
+    console.log("🎯 Módulo do backend:", moduloDoBanco);
+
     const moduloFinal = (moduloDoBanco && moduloDoBanco >= 1 && moduloDoBanco <= 5) 
       ? moduloDoBanco 
       : 1;
 
-    console.log("Módulo final selecionado:", moduloFinal);
-    console.log("Falhas:", falhasDoBanco);
+    console.log("✅ Módulo final selecionado:", moduloFinal);
 
-    // Atualiza a interface
     const bossCorreto = BOSSES[moduloFinal] || BOSSES[1];
     aplicarBossNoDOM(bossCorreto);
+    atualizarTituloCapitulo(moduloFinal); // ← ATUALIZA O TÍTULO AQUI
     revelarElementosEmSequencia();
     configurarRegras();
 
-    // Atualiza vidas
     carregarVidasDesafio(moduloFinal, falhasDoBanco);
-
-    // Configura botão
     configurarAcoesDesafio(moduloFinal);
 
   } catch (error) {
     console.error("❌ Erro ao carregar dados do backend:", error);
-    // Em caso de erro, usa o módulo 1
     const bossPadrao = BOSSES[1];
     aplicarBossNoDOM(bossPadrao);
+    atualizarTituloCapitulo(1);
     revelarElementosEmSequencia();
     configurarRegras();
     configurarAcoesDesafio(1);
@@ -118,7 +110,30 @@ async function carregarDadosDoBackend() {
 }
 
 // ============================================================================
-// FUNÇÕES AUXILIARES
+// FUNÇÃO PARA ATUALIZAR O TÍTULO DO CAPÍTULO
+// ============================================================================
+
+function atualizarTituloCapitulo(moduloId) {
+  const titleElement = document.getElementById("chapterTitle");
+  
+  if (titleElement) {
+    const nomesCapitulos = {
+      1: "Boss Fight",
+      2: "Boss Fight",
+      3: "Boss Fight",
+      4: "Boss Fight",
+      5: "Boss Fight"
+    };
+    
+    const nomeCapitulo = nomesCapitulos[moduloId] || "Desafio";
+    titleElement.textContent = `Capítulo ${moduloId}: ${nomeCapitulo}`;
+    
+    console.log(`📝 Título atualizado: Capítulo ${moduloId}: ${nomeCapitulo}`);
+  }
+}
+
+// ============================================================================
+// OUTRAS FUNÇÕES (mantenha as existentes)
 // ============================================================================
 
 function aplicarBossNoDOM(boss) {
@@ -217,13 +232,11 @@ function configurarRegras() {
 function carregarVidasDesafio(moduloId, falhasDoBanco = null) {
   const container = document.getElementById("vidasDesafio");
   
-  // Se o backend já forneceu as falhas, usa direto
   if (falhasDoBanco !== null && typeof renderizarVidas === 'function') {
     renderizarVidas(container, falhasDoBanco);
     return;
   }
   
-  // Caso contrário, busca da API
   const token = localStorage.getItem("token");
   if (!token) return;
 

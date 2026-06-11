@@ -369,6 +369,39 @@ footer {
   transform: scale(1.05) !important;
 }
 
+.navbar-toggle-btn .toggle-icon {
+  width: 32px !important;
+  height: 32px !important;
+  display: block !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 0 6px rgba(255, 180, 40, 0.24)) !important;
+  transform-origin: center !important;
+  transition: filter 0.2s ease !important;
+}
+
+.navbar-toggle-btn:hover .toggle-icon {
+  animation: espadasMenuHover 0.58s ease both !important;
+  filter: drop-shadow(0 0 10px rgba(255, 180, 40, 0.42)) !important;
+}
+
+@keyframes espadasMenuHover {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  32% {
+    transform: rotate(-10deg) scale(1.08);
+  }
+
+  64% {
+    transform: rotate(8deg) scale(1.04);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
 /* Tooltip minimalista */
 .navbar-toggle-btn[data-tooltip]::before {
   content: attr(data-tooltip);
@@ -471,6 +504,7 @@ body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar::after {
 
 .navegacao-inferior__item,
 .navegacao-inferior__item:visited {
+  position: relative !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -478,6 +512,38 @@ body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar::after {
   font-size: 0.8rem !important;
   gap: 4px !important;
   padding: 6px 10px !important;
+  border-radius: 12px !important;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease !important;
+}
+
+.navegacao-inferior__item::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 4px !important;
+  left: 50% !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle, rgba(230, 161, 44, 0.24), rgba(139, 77, 255, 0.1) 52%, transparent 72%) !important;
+  opacity: 0 !important;
+  transform: translateX(-50%) scale(0.72) !important;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease !important;
+  pointer-events: none !important;
+}
+
+.navegacao-inferior__item:hover {
+  transform: translateY(-2px) !important;
+  background-color: rgba(255, 255, 255, 0.035) !important;
+}
+
+.navegacao-inferior__item:hover::before {
+  opacity: 1 !important;
+  transform: translateX(-50%) scale(1) !important;
 }
 
 .navegacao-inferior__item span,
@@ -491,15 +557,25 @@ body:has(.navegacao-inferior.navbar-aberta) #btnToggleNavbar::after {
 ========================================================= */
 
 .navegacao-inferior__icone {
+  position: relative !important;
+  z-index: 1 !important;
   width: 28px !important;
   height: 28px !important;
   object-fit: contain !important;
   filter: grayscale(100%) opacity(0.5) !important;
-  transition: filter 0.2s ease !important;
+  transform-origin: center !important;
+  transition:
+    filter 0.2s ease,
+    transform 0.18s ease !important;
 }
 
 .navegacao-inferior__item:hover .navegacao-inferior__icone {
-  filter: grayscale(0%) opacity(1) !important;
+  filter: grayscale(0%) opacity(1) drop-shadow(0 0 7px rgba(230, 161, 44, 0.34)) !important;
+  transform: translateY(-1px) scale(1.06) !important;
+}
+
+.navegacao-inferior__item:hover span {
+  color: #e6a12c !important;
 }
 
 a.navegacao-inferior__item.item-ativo {
@@ -522,6 +598,14 @@ a.navegacao-inferior__item.item-ativo span {
    REGRAS MOBILE (Menu de ponta a ponta com bordas apenas top/bottom)
 ========================================================= */
 @media (max-width: 768px) {
+    body:has(.navbar-container-fixo) {
+        --mobile-viewport-height: calc(100dvh - var(--mobile-navbar-height, 76px) - env(safe-area-inset-bottom, 0px));
+    }
+
+    body:has(.navbar-container-fixo) main {
+        min-height: var(--mobile-viewport-height) !important;
+    }
+
     .navbar-toggle-btn {
         display: none !important;
     }
@@ -536,10 +620,16 @@ a.navegacao-inferior__item.item-ativo span {
         pointer-events: auto !important;
         padding: 0 !important;
         display: block !important;
+        height: calc(var(--mobile-navbar-height, 76px) + env(safe-area-inset-bottom, 0px)) !important;
+        z-index: 1000 !important;
     }
 
     .navegacao-inferior {
-        position: relative !important;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + var(--mobile-navbar-footer-offset, 0px)) !important;
+        z-index: 1000 !important;
         display: flex !important;
         opacity: 1 !important;
         visibility: visible !important;
@@ -551,7 +641,6 @@ a.navegacao-inferior__item.item-ativo span {
         border: none !important;
         border-top: 2px solid rgba(153, 107, 15, 0.5) !important;
         border-bottom: 2px solid rgba(153, 107, 15, 0.5) !important;
-        bottom: 0px !important; 
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
     }
 }
